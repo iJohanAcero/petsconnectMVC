@@ -1,0 +1,882 @@
+/* POSIBLES COLORES A LA ELECCIÓN DE LA PAGINA WEB
+
+Para una red social de mascotas, es importante elegir colores que sean atractivos, amigables y transmitan sensaciones positivas. Los colores adecuados pueden hacer que la interfaz sea más visual y entretenida, creando una atmósfera acogedora y alegre. Aquí te sugiero algunos esquemas de colores:
+
+### 1. **Colores Principales:**
+   - **Verde menta (#98FF98)**: Un color suave y relajante, asociado con la naturaleza y la frescura. Refuerza la conexión con los animales y el entorno natural.
+   - **Turquesa (#40E0D0)**: Brillante y alegre, ideal para transmitir energía positiva. Funciona bien en botones o elementos interactivos.
+   - **Amarillo pastel (#FFFACD)**: Un color cálido y amigable que puede crear una sensación acogedora sin ser demasiado intenso.
+   - **Naranja claro (#FFA07A)**: Estimulante y divertido, pero no tan agresivo como otros tonos de naranja. Puede usarse para destacar acciones importantes, como botones de registro o publicaciones.
+
+### 2. **Colores Secundarios:**
+   - **Gris claro (#F5F5F5)**: Como fondo neutro para equilibrar los colores más vivos sin distraer demasiado.
+   - **Azul cielo (#87CEEB)**: Un tono suave que da una sensación de calma y confianza, ideal para secciones de información.
+   - **Rosa suave (#FFB6C1)**: Alegre y amigable, perfecto para pequeños detalles que resaltan sin ser abrumadores.
+
+### 3. **Colores de Acción:**
+   - **Verde lima (#32CD32)**: Para indicar acciones exitosas o positivas, como "Adoptar", "Donar" o "Me Gusta".
+   - **Rojo coral (#FF4040)**: Para acciones de advertencia o eliminaciones, pero en un tono más suave que no cause ansiedad.
+
+### 4. **Esquema de contraste:**
+   - **Blanco (#FFFFFF)**: Como fondo principal para mantener la claridad y el enfoque en las imágenes de las mascotas y el contenido.
+   - **Negro suave o Gris oscuro (#2F4F4F)**: Para texto y encabezados principales, asegurando buena legibilidad y contraste visual.
+
+### 5. **Consejos de implementación:**
+   - **Paleta amigable y cálida**: Colores como el turquesa, menta y amarillos suaves pueden generar una sensación de bienvenida y alegría, lo cual es perfecto para una red social de mascotas.
+   - **Imágenes destacadas**: Usa colores neutros (como grises claros o blancos) en el fondo para que las imágenes de las mascotas sean el foco principal.
+   - **Botones e interacciones**: Los colores brillantes (verde lima, azul cielo, naranja claro) ayudan a guiar al usuario a interactuar fácilmente con los botones y las acciones clave.
+
+### Ejemplo de paleta de colores:
+- **#98FF98 (Verde menta)**
+- **#40E0D0 (Turquesa)**
+- **#FFFACD (Amarillo pastel)**
+- **#FFA07A (Naranja claro)**
+- **#FFB6C1 (Rosa suave)**
+- **#F5F5F5 (Gris claro)**
+- **#32CD32 (Verde lima)**
+- **#2F4F4F (Gris oscuro)**
+
+### Efecto visual:
+Este esquema logra una mezcla de energía y calma, perfecta para un ambiente donde los usuarios compartirán momentos alegres con sus mascotas, manteniendo una experiencia visualmente entretenida y fácil de navegar.
+
+*/
+
+@import url('https://fonts.googleapis.com/css2?family=Delius&family=SUSE:wght@100..800&display=swap');
+
+@import url('https://fonts.googleapis.com/css2?family=SUSE:wght@100..800&display=swap'); /*importamos una fuente de google fonts para poder utilizarla en nuestro proyecto */
+
+/* AQUÍ CREAMOS VARIABLES DE COLOR QUE PODREMOS UTILIZAR MAS ADELANTE EN LA PAGINA WEB SIN TENER QUE APRENDERNOS COLORES, SOLO LLAMANDO LA VARIABLE, TENDREMOS EL COLOR YA CREADO*/
+:root {
+    /*PRIMER COLOR SELECCIONADO PARA PRUEBAS*/
+    --color-light: hsl(252, 30%, 95%); 
+    --color-white: hsl(252, 30%, 100%); 
+    --color-gray: hsl(252, 15%, 65%); 
+    --color-primary: #a3bced;
+    --color-secondary: hsl(252, 100%, 90%); 
+    --color-success: hsl(120, 95%, 65%);
+    --color-danger: hsl(0, 95%, 65%);
+    --color-dark: hsl(252, 30%, 17%);
+    --color-black: hsl(252, 30%, 10%);
+
+
+    /*SEGUNDA OPCION DE COLOR SELECCIONADO*/
+    /*--color-light: #f0f8ff;       /* Un azul muy claro, suave y acogedor */
+    /*--color-white: #ffffff;       /* Blanco puro */
+    /*--color-gray: #a9a9a9;        /* Gris medio, útil para texto secundario o bordes */
+    /*--color-primary: #ff6b6b;     /* Rojo coral vibrante, perfecto para destacar elementos */
+    /*--color-secondary: #4ecdc4;   /* Verde agua, refrescante y enérgico, ideal para botones secundarios */
+    /*--color-success: #38a169;     /* Verde más oscuro, asociado al éxito y confirmaciones */
+    /*--color-danger: #e53e3e;      /* Rojo más intenso, usado para alertas o mensajes de error */
+    /*--color-dark: #2d3748;        /* Gris oscuro, excelente para fondo o texto principal */
+    /*--color-black: #000000;       /* Negro puro */
+
+
+    /* AQUÍ CREAMOS LAS VARIABLES PARA EL RADIO, PADDING DE VARIOS ELEMENTOS*/
+    --border-radius: 2rem; 
+    --card-border-radius:1rem;
+    --btn-padding: 0.6rem 2rem;
+    --search-padding:0.6rem 1rem;
+    --card-padding:1rem;
+
+    /* CREAMOS VARIABLES PARA LOS DIV IZQUIERDA Y DERECHA*/
+    --sticky-top-left: 5.4rem;
+    --sticky-top-right: -18rem;
+}
+
+.darkmode {
+    --color-light: hsl(252, 30%, 10%);
+    --color-white: hsl(252, 30%, 17%);
+    --color-gray: hsl(252, 15%, 65%); 
+    --color-primary: /*hsl(240, 3%, 85%);*/#d4f3ef;
+    --color-secondary: hsl(252, 30%, 10%);
+    --color-success: hsl(120, 95%, 65%);
+    --color-danger: hsl(0, 95%, 65%);
+    --color-dark: hsl(252, 30%, 100%);
+    --color-black: hsl(252, 30%, 95%); 
+}
+
+/*REALIZAMOS CAMBIOS PREDETERMINADOS A TODA LA PAGINA PARA QUE ASI SE HAGA TODO DE MANERA MAS UNIFORME DESDE UN PRINCIPIO*/
+*, *::after, *::before {
+    margin: 0;
+    padding: 0;
+    outline: 0;
+    box-sizing: border-box;
+    text-decoration: none;
+    list-style: none;
+    border: none;
+}
+
+body {
+    font-family: "Delius", cursive;
+    color: var(--color-dark);
+    background-color: var(--color-light);
+    overflow-x:hidden; /*Cuando sobrepase el eje X, se corta, para que no aparezca el scroll inferior*/
+}
+
+
+/*ESTILOS GENERALES*/
+
+.container {
+    width: 90%;
+    margin: 0 auto;
+}
+
+.foto-perfil {
+    width: 3.5rem;
+    border-radius: 50%;
+    aspect-ratio: 1/1;
+    overflow: hidden;
+}
+
+img {
+    display: block;
+    width: 100%;
+}
+
+.btn {
+    display: inline-block;
+    padding: var(--btn-padding);
+    font-weight: 500;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    transition: all 300ms ease;
+    font-size: 0.9rem;
+}
+
+.btn:hover {
+    opacity: 0.8;
+}
+
+.btn-primario {
+    background:var(--color-primary);
+    color: black;
+}
+
+.text-fuerte {
+    font-weight: 500;
+}
+
+.text-suave {
+    color: var(--color-gray);
+}
+
+
+/* ------------------------BARRA DE NAVEGACIÓN------------------------------------------- */
+
+nav {
+    width: 100%;
+    background-color: var(--color-white);
+    padding: 0.7rem 0;
+    position: fixed;
+    top: 0;
+    z-index: 10;
+}
+
+/* EDITAMOS EL DIV DONDE TENEMOS TODA LA BARRA DE NAVEGACIÓN*/
+nav .container { 
+    display: flex;
+    align-items: center;             /* Activa Grid en el nav */
+}
+
+nav .container .nombre {
+    margin-left: 0;
+}
+
+nav .container .barra-buscador {
+    margin: auto;
+    display: flex;
+}
+
+nav .container .tema {
+    margin-right: 0;
+    margin-left: 2rem;
+}
+
+.barra-buscador {
+    background: var(--color-light);
+    border-radius: var(--border-radius);
+    padding: var(--search-padding);
+}
+
+.barra-buscador input[type="search"] {
+    background:transparent;
+    width: 30vw;
+    margin-left: 1rem;
+    font-size: 0.9rem;
+    color: var(--color-dark);
+}
+
+nav .barra-buscador input[type="search"]::placeholder{
+    color:var(--color-gray);
+}
+
+nav .crear {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+}
+
+
+/*---- TEMA DE OSUCRO Y CLARO ----- */
+
+
+
+#cambio-tema {
+    height: 40px;
+    width: 70px;
+    padding: 0;
+    border-radius: var(--border-radius);
+    background-color: var(--color-light);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+#cambio-tema i {
+    color: var(--color-dark);
+    font-size: 1.6rem;
+}
+
+#cambio-tema i:last-child {
+    display: none;
+}
+
+.darkmode #cambio-tema i:first-child {
+    display: none;
+}
+
+.darkmode #cambio-tema i:last-child {
+    display: block;
+}
+/*=============================================== MAIN ================================================*/
+
+main {
+    position:relative;
+    top: 5.4rem;
+}
+
+main .container {
+    display:grid;
+    grid-template-columns: 18vw/*left*/ auto/*middle*/ 18vw/*right*/;
+    column-gap: 2rem;
+    position: relative;
+}
+
+
+/*================================================= IZQUIERDA ===========================================*/
+/*ESTE CONTENEDOR SIRVE PARA QUE LA SIDEBAR NO SE MUEVA DURANTE EL SCROLL*/
+main .container .izquierda {
+    height: max-content;
+    position: sticky;
+    top: var(--sticky-top-left);
+    user-select: none;
+}
+
+main .container .izquierda .perfil  {
+    padding: var(--card-padding);
+    background: var(--color-white);
+    border-radius: var(--card-border-radius);
+    display: flex;
+    align-items: center;
+    column-gap: 1rem;
+    width: 100%;
+    user-select:text;
+}
+
+/*------------- SIDEBAR -------------*/
+
+.izquierda .sidebar {
+    margin-top: 1rem;
+    background: var(--color-white);
+    border-radius: var(--card-border-radius);
+
+}
+
+.izquierda .sidebar .menu-item  {
+    display: flex;
+    align-items: center;
+    height: 4rem;
+    cursor: pointer;
+    translate: all 300ms ease;
+    position: relative;
+}
+
+.izquierda .sidebar .menu-item:hover {
+    background: var(--color-light);
+}
+
+.izquierda .sidebar i {
+    font-size: 1.4rem;
+    color: var(--color-gray);
+    margin-left: 2rem;
+    position: relative;
+} 
+
+.izquierda .sidebar h3 {
+    margin-left: 1.5rem;
+    font-size: 1rem;
+}
+
+/* AQUÍ LE DAMOS UN COLOR AL ELEMENTO DEL SIDEBAR QUE ESTE ACTIVO*/
+.izquierda .sidebar .activo {
+    background:var(--color-light);
+
+}
+
+/* HACEMOS QUE CAMBIE DE COLOR EL i(icono) Y EL h3 CUANDO ESTE ACTIVO*/
+.izquierda .sidebar .activo i, 
+.izquierda .sidebar .activo h3 {
+    color: var(--color-primary);
+}
+
+/* AQUÍ AÑADIMOS UNA PEQUEÑA BARRA DEL COLOR PRIMARIO AL ELEMENTO ACTIVO*/
+.izquierda .sidebar .activo::before {
+    content: "";
+    display: block;
+    width: 0.5rem;
+    height: 100%;
+    position: absolute;
+    background: var(--color-primary);
+}
+
+.izquierda .sidebar .menu-item:first-child.activo {
+    border-top-left-radius: var(--card-border-radius);
+    overflow: hidden;
+}
+
+.izquierda .sidebar .menu-item:last-child.activo {
+    border-bottom-left-radius: var(--card-border-radius);
+    overflow: hidden;
+}
+
+.izquierda .btn {
+    margin-top: 1rem;
+    width: 100%;
+    text-align: center;
+    padding: 1rem 0 ;
+}
+
+/*----------------- TIPOS DE MASCOTAS POPUP -----------------*/
+
+.izquierda .mascotas-popup {
+    position: absolute;
+    top: 0;
+    left: 102%;
+    width: 100%;
+    background: var(--color-white);
+    border-radius: var(--card-border-radius);
+    padding: 0.5rem;
+    box-shadow: 0 0 2rem hsl(var(--color-primary) 75%, 60% 25%);
+    z-index: inherit;
+    display: none;
+}
+
+.izquierda .mascotas-popup > div {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+.izquierda .mascotas-popup .popup-item:last-child {
+    margin-bottom: 0;
+}
+
+.izquierda .mascotas-popup .popup-item:hover {
+    background: var(--color-light);
+    border-radius: var(--card-border-radius);
+    translate: all 300ms ease;
+    
+}
+
+/*----------------- TIPOS DE CRUD POPUP -----------------*/
+
+.izquierda .crud-popup {
+    position: absolute;
+    top: 0;
+    left: 102%;
+    width: 100%;
+    background: var(--color-white);
+    border-radius: var(--card-border-radius);
+    padding: 0.5rem;
+    box-shadow: 0 0 2rem hsl(var(--color-primary) 75%, 60% 25%);
+    z-index: inherit;
+    display: none;
+}
+
+.izquierda .crud-popup > div {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+.izquierda .crud-popup .popup-item:last-child {
+    margin-bottom: 0;
+}
+
+.izquierda .crud-popup .popup-item:hover {
+    background: var(--color-light);
+    border-radius: var(--card-border-radius);
+    translate: all 300ms ease;
+    
+}
+
+
+/*========================================= MEDIO ===================================*/
+.medio{
+    overflow: hidden;
+}
+
+.medio .scroll .recomendados{
+    display: flex;
+    justify-content: space-between; /*Para que esten separados de manera igual todos*/
+    height: 12rem;
+    gap: 0.5rem;
+    user-select: none; /* Para que no se pueda seleccionar el texto ni imagen*/
+}
+
+.medio .scroll[data-animated="true"] .recomendados{
+    width: max-content;
+    overflow: hidden;
+    flex-wrap: nowrap;
+    animation: scroll var(--animacion-duracion, 20s) linear infinite; /* Creamos la animacion de scroll durante 20seg de manera linear y que sea infinita*/
+}
+
+.medio .scroll[data-animated="true"] .recomendados:hover {
+    animation-play-state: paused; /*Aqui para que se pause cada vez que seleccionamos una mascota*/
+}
+
+
+@keyframes scroll {
+    to {
+        transform: translate(calc(-50%)); 
+    }
+}
+
+
+.medio .recomendados .recomendado-individual {
+    padding: 3rem;
+    padding-top:1rem;
+    border-radius: var(--card-border-radius);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items:center;
+    color:white;
+    text-shadow: 2px 2px 0 black; /* Sombras para simular un borde */
+    font-size: 1rem;
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer; /* Cursor como si fuera a seleccionar algo*/
+}
+
+.medio .recomendados .recomendado-individual::before {
+    content: "";
+    display: block;
+    width: 100%;
+    height: 5rem;
+    background: linear-gradient(transparent, rgba(0,0,0,0.75)); /*Aqui hacemos las sombras para que se vea mejor la letra de cada mascota*/
+    position: absolute;
+    bottom: 0;
+    
+}
+
+.medio .recomendados .recomendado-individual .mascota {
+    z-index: 2;
+    position: relative;
+    top:8rem;
+
+}
+
+/*--------CADA UNO DE LAS HISTORIAS INDIVIDUALES-----------*/
+.medio .recomendados .recomendado-individual:nth-child(1) {
+    background: url("../images/recomendado1.jpg") no-repeat center/cover;
+}
+
+.medio .recomendados .recomendado-individual:nth-child(2) {
+    background: url("../images/recomendado2.jpg") no-repeat center/cover;
+}
+
+.medio .recomendados .recomendado-individual:nth-child(3) {
+    background: url("../images/recomendado3.jpg") no-repeat center/cover;
+}
+
+.medio .recomendados .recomendado-individual:nth-child(4) {
+    background: url("../images/recomendado4.jpg") no-repeat center/cover;
+}
+
+.medio .recomendados .recomendado-individual:nth-child(5) {
+    background: url("../images/recomendado5.jpg") no-repeat center/cover;
+}
+
+.medio .recomendados .recomendado-individual:nth-child(6) {
+    background: url("../images/recomendado6.jpg") no-repeat center/cover;
+}
+
+.medio .recomendados .recomendado-individual:nth-child(7) {
+    background: url("../images/recomendado7.jpg") no-repeat center/cover;
+}
+
+.medio .recomendados .recomendado-individual:nth-child(8) {
+    background: url("../images/recomendado8.jpg") no-repeat center/cover;
+}
+
+.medio .recomendados .recomendado-individual:nth-child(9) {
+    background: url("../images/recomendado9.jpg") no-repeat center/cover;
+}
+
+
+.medio .recomendado-individual .foto-perfil {
+    width: 2rem;
+    height: 2rem;
+    border: 2px solid var(--color-primary); /* Le damos el borde de la foto de perfil con color primario*/
+    position: absolute;
+    left:5px;
+}
+
+
+
+/*-----------------CREAR POST------------------------*/
+
+.medio .crear-post {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 1rem;
+    background: var(--color-white);
+    padding: 0.4rem var(--card-padding);
+    border-radius: var(--card-border-radius);
+}
+
+.medio .crear-post input[type='text'] {
+    justify-self: start;
+    width: 100%;
+    padding-left: 1rem;
+    background: transparent;
+    color:var(--color-dark);
+    margin-right: 1rem;
+}
+
+/*------------------------FEED DE PUBLIACIONES---------------------------------*/
+
+.medio .feed .feed-individual {
+    background: var(--color-white);
+    border-radius: var(--card-border-radius);
+    padding: var(--card-padding);
+    margin: 1rem 0;
+    font-size: 0.85rem;
+    line-height: 1.5;
+}
+
+.medio .feed .head {
+    display: flex;
+    justify-content: space-between;
+}
+
+.medio .feed .usuario {
+    display: flex;
+    gap:1rem;
+}
+
+.medio .feed .foto-perfil {
+    overflow: hidden;
+    margin-bottom:0.5rem;
+}
+
+.medio .feed .boton-accion {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 1.4rem;
+    margin:0.6rem;
+}
+
+.medio .likes {
+    display: flex;
+}
+
+.medio .likes span{
+    width: 1.4rem;
+    height: 1.4rem;
+    display: block;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 2px solid var(--color-white);
+    margin-left: -0.4rem;   
+}
+
+.medio .likes span:first-child {
+    margin: 0;
+}
+
+.medio .likes p {
+    margin-left: 0.3rem;
+}
+
+/*================================================= DERECHA  ===========================================*/
+
+main .container .derecha {
+    height: max-content;
+    position: sticky;
+    top: var(--sticky-top-right);
+    bottom:0;
+}
+/*----------------------GUARDIANES REGISTRADOS---------------------------*/
+.derecha .guardianes {
+    background: var(--color-white);
+    border-radius:var(--card-border-radius);
+    padding: var(--card-padding);
+}
+
+.derecha .guardianes .head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+}
+
+.derecha .guardianes i {
+    font-size: 1.4rem;
+}
+/*-------------------BARRA BUSCADORA DE GUARDIANES----------------------*/
+.derecha .guardianes .barra-buscador {
+    display: flex;
+    margin-bottom: 1rem;
+    overflow: hidden;
+}
+/*---------------------CATEGORIAS DE ONLINE O OFFLINE---------------------*/
+
+.derecha .guardianes .categoria {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+}
+
+.derecha .guardianes .categoria a {
+    width: 100%;
+    text-align: center;
+    padding-bottom: 0.5rem;
+    font-size: 0.85rem;
+}
+
+.derecha .guardianes .categoria a:hover {
+    background: var(--color-light);
+    user-select: none;
+    cursor:pointer;
+}
+
+/* AQUÍ LE DAMOS UN COLOR AL ELEMENTO DEL SIDEBAR QUE ESTE ACTIVO*/
+.derecha .guardianes .categoria .activoOn{
+    background:var(--color-light);
+
+}
+
+/* AQUÍ AÑADIMOS UNA PEQUEÑA BARRA DEL COLOR PRIMARIO AL ELEMENTO ACTIVO*/
+.derecha .guardianes .categoria .activoOn::before {
+    content: "";
+    display: block;
+    width: 100%;
+    height: 0.4rem;
+    background: var(--color-dark);
+}
+/*---------- INICIO CATERGORIA ONLINE-----------------------*/
+
+
+.derecha .guardianes .guardian-enlinea {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    align-items: start;
+}
+.derecha .guardianes .foto-perfil {
+    position: relative;
+    overflow: visible;
+}
+
+.derecha .foto-perfil img {
+    border-radius: 50%;
+    aspect-ratio: 1/1;
+}
+
+.derecha .guardianes .guardian-enlinea:last-child {
+    margin: 0;
+}
+
+.derecha .guardianes .guardian-enlinea p {
+    font-size: 0.8rem;   
+}
+
+.derecha .guardianes .guardian-enlinea .foto-perfil .enlinea {
+    width: 0.9rem;
+    height: 0.9rem;
+    border-radius: 50%;
+    border: 3px solid var(--color-white);
+    background: var(--color-success);
+    position: absolute;
+    bottom: 0;
+    right: 0;
+}
+
+.derecha .guardianes .guardian-enlinea .accion {
+    display: flex;
+    padding-top: 0.4rem;
+}
+
+/*------------------INICIO CATGEGORIA OFFLINE----------------*/
+
+.derecha .guardianes .guardian-offline {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    align-items: start;
+}
+
+
+.derecha .guardianes .guardian-offline:last-child {
+    margin: 0;
+}
+
+.derecha .guardianes .guardian-offline p {
+    font-size: 0.8rem;   
+}
+
+.derecha .guardianes .guardian-offline .foto-perfil .offline {
+    width: 0.9rem;
+    height: 0.9rem;
+    border-radius: 50%;
+    border: 3px solid var(--color-white);
+    background: var(--color-danger);
+    position: absolute;
+    bottom: 0;
+    right: 0;
+}
+
+.derecha .guardianes .guardian-offline .accion {
+    display: flex;
+    padding-top: 0.4rem;
+}
+
+
+/*======================DISEÑO RESPONSIVE PARA LAPTOS Y TABLETS GRANDES===========================================*/
+
+@media screen and (max-width:1200px) {
+    .container {
+        width:96%;
+    }
+
+    main .container {
+        grid-template-columns: 5rem/*IZQUIERDA*/ auto/*MEDIO*/ 30vw/*DERECHA*/;
+        gap: 1rem;
+    }
+
+    .izquierda {
+        width:5rem;
+        z-index: 5;;
+    }
+
+
+    .izquierda .crud-popup {
+        position: absolute;
+        right: -20rem;
+        width: 20rem;
+    }
+
+    .izquierda .crud-popup::before {
+        display: none;
+        top:1.3rem;
+        left: calc(20rem - 0.6rem);
+        }
+        
+    .izquierda .mascotas-popup {
+        position: absolute;
+        right: -20rem;
+        width: 20rem;
+    }
+
+    .izquierda .mascotas-popup::before {
+        display: none;
+        top:1.3rem;
+        left: calc(20rem - 0.6rem);
+        }
+
+    main .container .izquierda .perfil {
+        display: none;
+    }
+
+    .sidebar h3 {
+        display: none;
+    }
+
+    .izquierda .btn {
+        display: none;
+    }
+}
+
+
+/*===================DISEÑO RESPONSIVE PARA TABLETS PEQUEÑAS Y CELULARES===========================*/
+
+@media screen and (max-width:992px) {
+    nav .crear {
+        display: none;
+    }
+    
+    nav {
+        display: flex;
+        margin: 0;
+    }
+    main .container {
+        grid-template-columns: 0 auto 5rem;   
+        gap: 0;
+    }
+
+    main .container .izquierda {
+        grid-column: 3/4;
+        position: fixed;
+        bottom: 0;
+        right: 0;
+    }
+
+    /*--------- POPUP DE MASCOTAS --------------*/
+
+    .izquierda .mascotas-popup {
+        position: absolute;
+        left: -20rem;
+        width: 20rem;
+    }
+
+    .izquierda .mascotas-popup::before {
+        display: none;
+        top:1.3rem;
+        left: calc(20rem - 0.6rem);
+        }
+
+/*--------- POPUP DE CRUD  --------------*/
+
+        .izquierda .crud-popup {
+            position: absolute;
+            left: -20rem;
+            width: 20rem;
+        }
+    
+        .izquierda .crud-popup::before {
+            display: none;
+            top:1.3rem;
+            left: calc(20rem - 0.6rem);
+            }
+            
+    main .container .izquierda .sidebar > div h3 {
+        display: none;
+    }
+
+    main .container .medio {
+        grid-column: 1/3;
+    }
+
+    main .container .derecha {
+        display: none;
+    }
+}
