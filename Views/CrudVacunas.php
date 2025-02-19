@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <link rel="shortcut icon" href="../Public/images/icono.png" />
-    <link rel="stylesheet" href="../Public/css/style.css" />
+<link rel="stylesheet" href="../Public/css/.css" />
+    
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">

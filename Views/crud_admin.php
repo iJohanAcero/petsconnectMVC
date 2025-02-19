@@ -6,9 +6,8 @@
     <title>HOME</title>
 
 	<link rel="shortcut icon" href="../Public/images/icono.png" />
-
-    <link rel="stylesheet" href="../Public/css/style.css">
-
+    <link rel="stylesheet" href="../Public/css/style.css" />
+    
 	
 
     <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.8/css/line.css"> <!-- Llamamos a la librería de iconos --> 
@@ -127,7 +126,7 @@
     
 <!--====================================================MEDIO=======================================================-->
                 <div class="medio">
-					<?php include("crudVacunas.php"); ?>
+                    <?php include("crudVacunas.php"); ?>
                 </div>
 <!--==============================================DERECHA===========================================-->
                 <div class="derecha">

@@ -10,7 +10,6 @@
 
 
     <link rel="stylesheet" href="../Public/css/style.css">
-    <link rel="stylesheet" href="../Public/css/crud.css">
     <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.8/css/line.css"> <!-- Llamamos a la librería de iconos --> 
 
 </head>
