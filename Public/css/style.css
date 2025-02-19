@@ -114,6 +114,10 @@ body {
 }
 
 
+.formulario {
+    background-color: red;
+}
+
 /*ESTILOS GENERALES*/
 
 .container {
@@ -218,6 +222,7 @@ nav .crear {
 
 
 /*---- TEMA DE OSUCRO Y CLARO ----- */
+
 
 
 
@@ -760,6 +765,9 @@ main .container .derecha {
     padding-top: 0.4rem;
 }
 
+/* Contenedor del formulario */
+
+
 
 /*======================DISEÑO RESPONSIVE PARA LAPTOS Y TABLETS GRANDES===========================================*/
 
@@ -879,4 +887,5 @@ main .container .derecha {
     main .container .derecha {
         display: none;
     }
+
 }

@@ -4,7 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Feedback</title>
+    
+	<link rel="shortcut icon" href="Public/images/icono.png" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+
+
     <link rel="stylesheet" href="../Public/css/style.css">
+    <link rel="stylesheet" href="../Public/css/crud.css">
     <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.8/css/line.css"> <!-- Llamamos a la librería de iconos --> 
 
 </head>
@@ -19,11 +25,9 @@
                 <input type="search" placeholder="Busca en publicaciones, perfiles o intereses...">
             </div>
 
-            
-            <a  class="crear" href="../index.php">
-                <label class="btn btn-primario" >Cerrar Sesión</label>
-            </a>
-            
+            <div  class="crear" >
+                <label class="btn btn-primario" for="crear-post">Cerrar Sesión</label>
+            </div>
 
             <div class="temas">
                 <button class="tema" id="cambio-tema">
@@ -54,7 +58,7 @@
                     
 <!------------------------------BARRA LATERAL - SIDE BAR-------------------------->
             <div class="sidebar">
-                <a class="menu-item activo">
+                <a class="menu-item" href="feedback_admin.php">
                     <span><i class="uil uil-house-user"></i></span> <h3>Inicio</h3>
                 </a>
                 
@@ -108,7 +112,7 @@
                     <!---------------------FIN DEL POPUP DE MASCOTAS----------------------------->
                 </a>
 
-                <a class="menu-item" href="crud_admin.php" >
+                <a class="menu-item" href="crud_admin.php">
                     <span><i class="uil uil-constructor"></i></span> <h3>CRUD Admin</h3>
                 </a>
 
@@ -123,160 +127,7 @@
     
 <!--====================================================MEDIO=======================================================-->
                 <div class="medio">
-                    <div class="scroll">
-                    <!------------------------ SCROLL HORIZONTAL DE MASCOTAS-->
-                    <div class="recomendados">
-                        
-                        <div class="recomendado-individual">
-                            <div class="foto-perfil">
-                                <img src="../Public/images/perfil2.jpg">
-                            </div>
-                            <p class="mascota">Apolo</p>
-                        </div>
 
-                        <div class="recomendado-individual">
-                            <div class="foto-perfil">
-                                <img src="../Public/images/perfil2.jpg">
-                            </div>
-                            <p class="mascota">Benji</p>
-                        </div>
-
-                        <div class="recomendado-individual">
-                            <div class="foto-perfil">
-                                <img src="../Public/images/perfil2.jpg">
-                            </div>
-                            <p class="mascota">Hanna</p>
-                        </div>
-
-                        <div class="recomendado-individual">
-                            <div class="foto-perfil">
-                                <img src="../Public/images/perfil2.jpg">
-                            </div>
-                            <p class="mascota">Lukas</p>
-                        </div>
-
-                        <div class="recomendado-individual">
-                            <div class="foto-perfil">
-                                <img src="../Public/images/perfil2.jpg">
-                            </div>
-                            <p class="mascota">Toby</p>
-                        </div>
-
-                        <div class="recomendado-individual">
-                            <div class="foto-perfil">
-                                <img src="../Public/images/perfil2.jpg">
-                            </div>
-                            <p class="mascota">Figaro</p>
-                        </div>
-
-                        <div class="recomendado-individual">
-                            <div class="foto-perfil">
-                                <img src="../Public/images/perfil2.jpg">
-                            </div>
-                            <p class="mascota">Tiger</p>
-                        </div>
-
-                        <div class="recomendado-individual">
-                            <div class="foto-perfil">
-                                <img src="../Public/images/perfil2.jpg">
-                            </div>
-                            <p class="mascota">Romeo</p>
-                        </div>
-
-                        <div class="recomendado-individual">
-                            <div class="foto-perfil">
-                                <img src="../Public/images/perfil2.jpg">
-                            </div>
-                            <p class="mascota">Beny</p>
-                        </div>
-                    </div>
-                </div>
-                    <!--------------------FIN DEL SCROLL RECOMENDADO------------>
-
-                    <!-----INPUT DE CREAR PUBLICACIÓN...IMPORTANTE!!(SOLO PARA EL ROL DE FUNDACIÓN)-->
-                    <form class="crear-post">
-                        <div class="foto-perfil">
-                            <img src="../Public/images/perfil2.jpg">
-                        </div>
-                        <input type="text" placeholder="Ayuda a una mascota o promueve un evento aquí..." id="crear-post">
-                        <input type="submit" value="Publicar" class="btn btn-primario">
-                    </form>
-                    <!---------------------------------FEED DE PUBLICACIONES----------------------------->
-                    <div class="feed">
-                        <!----------------FEED INDIVIDUAL NUMERO 01------------------>
-                        <div class="feed-individual">
-                            <div class="head">
-                                <div class="usuario">
-                                    <div class="foto-perfil">
-                                        <img src="../Public/images/fundacion.png" alt="">
-                                    </div>
-                                    <div class="informacion">
-                                        <h3>Fundacion TEPA</h3>
-                                        <small>Bogota, Hace 30 Minutos</small>
-                                    </div>
-                                </div>
-                                <span class="editar">
-                                    <i class="uil uil-ellipsis-h"></i>
-                                </span>
-                            </div>
-                            <div class="foto">
-                                <img src="../Public/images/feed1.jpeg">
-                            </div>
-                            <div class="boton-accion">
-                                <div class="botones-interaccion">
-                                    <span><i class="uil uil-thumbs-up"></i></span>
-                                    <span><i class="uil uil-share"></i></span>
-                                </div>
-                            </div>
-                            <div class="likes">
-                                <span><img src="../Public/images/perfil.jpg"></span>
-                                <span><img src="../Public/images/perfil2.jpg"></span>
-                                <span><img src="../Public/images/perfil.jpg"></span>
-                                <p>Han reaccionado <b>Valentina</b> y <b>40 otros</b></p>
-                            </div>
-                            <div class="descripcion"></div>
-                            <p>Jornada de adopcion, no se la pueden perder!!!</p>
-                        </div>
-                        <!----------------FIN DEL FEED 01------------------>
-                        <div class="feed">
-                            <!----------------FEED INDIVIDUAL NUMERO 02------------------>
-                            <div class="feed-individual">
-                                <div class="head">
-                                    <div class="usuario">
-                                        <div class="foto-perfil">
-                                            <img src="../Public/images/fundacion2.png" alt="">
-                                        </div>
-                                        <div class="informacion">
-                                            <h3>Fundacion Bogotá</h3>
-                                            <small>Bogota, Hace 50 Minutos</small>
-                                        </div>
-                                    </div>
-                                    <span class="editar">
-                                        <i class="uil uil-ellipsis-h"></i>
-                                    </span>
-                                </div>
-                                <div class="foto">
-                                    <img src="../Public/images/feed2.jpeg">
-                                </div>
-                                <div class="boton-accion">
-                                    <div class="botones-interaccion">
-                                        <span><i class="uil uil-thumbs-up"></i></span>
-                                        <span><i class="uil uil-share"></i></span>
-                                    </div>
-                                </div>
-                                <div class="likes">
-                                    <span><img src="../Public/images/perfil.jpg"></span>
-                                    <span><img src="../Public/images/perfil2.jpg"></span>
-                                    <span><img src="../Public/images/perfil.jpg"></span>
-                                    <p>Han reaccionado <b>Valentina</b> y <b>10 otros</b></p>
-                                </div>
-                                <div class="descripcion"></div>
-                                <p>Jornada de esterilización, de lo mejor!!!</p>
-                            </div>
-                            <!----------------FIN DEL FEED 02------------------>
-                        </div>
-                        <!--==============================================FIN DEL FEED DE PUBLICACIONES===========================================-->
-                    </div>
                 </div>
 <!--==============================================DERECHA===========================================-->
                 <div class="derecha">
