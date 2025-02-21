@@ -57,7 +57,7 @@
                     
 <!------------------------------BARRA LATERAL - SIDE BAR-------------------------->
             <div class="sidebar">
-                <a class="menu-item" href="feedback_admin.php">
+                <a class="menu-item" href="admin.php">
                     <span><i class="uil uil-house-user"></i></span> <h3>Inicio</h3>
                 </a>
                 
@@ -111,7 +111,7 @@
                     <!---------------------FIN DEL POPUP DE MASCOTAS----------------------------->
                 </a>
 
-                <a class="menu-item" href="crud_admin.php">
+                <a class="menu-item" onclick="cargarCruds()">
                     <span><i class="uil uil-constructor"></i></span> <h3>CRUD Admin</h3>
                 </a>
 
@@ -126,7 +126,7 @@
     
 <!--====================================================MEDIO=======================================================-->
                 <div class="medio">
-
+                    <div id="cruds"></div>
                 </div>
 <!--==============================================DERECHA===========================================-->
                 <div class="derecha">

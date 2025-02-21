@@ -192,6 +192,17 @@ cambioTema.addEventListener('click', () => {
 
 
 //========= CARGAR CRUDS DIFERENTES EN LA PAGINA DE CRUD =========//
+
+// ======= ESTA FUNCION CARGA LAS CRUD DISPONIBLES ===============//
+function cargarCruds() {
+    fetch("cruds_disponibles.php") // Nombre del archivo PHP a incluir
+        .then(response => response.text()) // Convertir respuesta en texto
+        .then(data => {
+            document.getElementById("cruds").innerHTML = data; // Incluir contenido
+        })
+        .catch(error => console.error("Error al cargar PHP:", error));
+}
+
 function cargarCrudVacunas() {
     fetch("crudVacunas.php") // Nombre del archivo PHP a incluir
         .then(response => response.text()) // Convertir respuesta en texto
