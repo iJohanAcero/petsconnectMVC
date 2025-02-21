@@ -120,7 +120,7 @@ table {
   width: 100%;
   margin: 20px auto;
   border-collapse: collapse;
-  background: white;
+  background: var(--color-dark);
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
   border-radius: var(--card-border-radius);
   overflow: hidden;
@@ -134,50 +134,10 @@ td {
 }
 
 th {
-  background-color: var(--color-gray);
-  color: var(--color-dark);
-}
-
-/* Estilos para los botones */
-.btn {
-  padding: 8px 12px;
-  text-decoration: none;
-  border-radius: 5px;
-  font-weight: bold;
-  display: inline-block;
-  margin: 2px;
-  transition: 0.3s ease-in-out;
-}
-
-.modificar {
-  background-color: #ffc107;
+  background-color: var(--color-primary);
   color: black;
 }
 
-.modificar:hover {
-  background-color: #e0a800;
-}
-
-.eliminar {
-  background-color: #dc3545;
-  color: white;
-}
-
-.eliminar:hover {
-  background-color: #c82333;
-}
-
-/* Estilos responsivos */
-@media (max-width: 768px) {
-  table {
-    width: 100%;
-  }
-
-  th,
-  td {
-    padding: 8px;
-  }
-}
 
 /*ESTILOS GENERALES*/
 
@@ -519,7 +479,6 @@ h1 {
     padding: 10px 24px;
     font-size: 18px;
     color: var(--color-dark);
-    border: 2px solid var(--color-dark);
     border-radius: 34px;
     background-color: var(--color-white);
     font-weight: 600;
@@ -537,7 +496,7 @@ h1 {
     border-radius: inherit;
     scale: 0;
     z-index: -1;
-    background-color: var(--color-dark);
+    background-color: var(--color-primary);
     transition: all 0.8s cubic-bezier(0.23, 1, 0.320, 1);
   }
   
@@ -917,6 +876,15 @@ main .container .derecha {
 /*===================DISEÑO RESPONSIVE PARA TABLETS PEQUEÑAS Y CELULARES===========================*/
 
 @media screen and (max-width: 992px) {
+
+  .botones-crud {
+    position: absolute;
+  }
+
+  h2 {
+    margin-top: 16rem;
+  }
+
   table {
     display: block;
     width: 100%;

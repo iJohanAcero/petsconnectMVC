@@ -19,11 +19,11 @@
                     <button class="button-crud">
                         Productos
                     </button>
-                    <button class="button-crud">
-                        Tipo de mascota
-                    </button>
                     <button onclick="cargarCrudVacunas()" class="button-crud">
                         Vacunas
+                    </button>
+                    <button class="button-crud">
+                        Tipo de mascota
                     </button>
                 </div>
                 <div id="crud">

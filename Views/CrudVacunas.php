@@ -7,7 +7,7 @@
 </head>
 <body>
 
-    <h2 class="titlo">CRUD de Vacunación</h2>
+<h2 class="titlo">CRUD de Vacunación</h2>
 
     <table border="1">
         <thead>
