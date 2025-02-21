@@ -1,32 +1,31 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<link rel="stylesheet" href="../Public/css/.css" />
-    
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Formulario de Vacunación</title>
-    
+    <title>CRUD Vacunación</title>
+    <link rel="stylesheet" href="styles.css"> <!-- Enlaza tu CSS -->
 </head>
 <body>
 
-    <form action="procesar.php" method="post" class="formulario">
-        <label for="id">ID:</label>
-        <input type="number" name="id" id="id" required>
+    <h2 class="titlo">CRUD de Vacunación</h2>
 
-        <label for="fecha">Fecha de Vacunación:</label>
-        <input type="date" name="fecha" id="fecha" required>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Fecha de Vacunación</th>
+                <th>Nombre de Vacuna</th>
+                <th>Dirección Veterinaria</th>
+                <th>Acciones</th>
+                
+            </tr>
 
-        <label for="nombre_vacuna">Nombre de Vacuna:</label>
-        <input type="text" name="nombre_vacuna" id="nombre_vacuna" required>
+                
+            </tr>
+        </thead>
 
-        <label for="direccion_veterinaria">Dirección Veterinaria:</label>
-        <input type="text" name="direccion_veterinaria" id="direccion_veterinaria" required>
-
-        <button type="submit" name="accion" value="modificar">Modificar</button>
-        <button type="submit" name="accion" value="eliminar">Eliminar</button>
-    </form>
+    </table>
 
 </body>
 </html>
