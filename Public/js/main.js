@@ -189,3 +189,14 @@ cambioTema.addEventListener('click', () => {
         desactivarDarkmode()
     } 
 })
+
+
+//========= CARGAR CRUDS DIFERENTES EN LA PAGINA DE CRUD =========//
+function cargarCrudVacunas() {
+    fetch("crudVacunas.php") // Nombre del archivo PHP a incluir
+        .then(response => response.text()) // Convertir respuesta en texto
+        .then(data => {
+            document.getElementById("crud").innerHTML = data; // Incluir contenido
+        })
+        .catch(error => console.error("Error al cargar PHP:", error));
+}
