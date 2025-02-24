@@ -16,7 +16,7 @@
                     <button class="button-crud">
                         Mascotas
                     </button>
-                    <button class="button-crud">
+                    <button onclick="cargarCrudProductos()" class="button-crud">
                         Productos
                     </button>
                     <button onclick="cargarCrudVacunas()" class="button-crud">
@@ -26,6 +26,9 @@
                         Tipo de mascota
                     </button>
                 </div>
+
+
+                
                 <div id="crud">
                 </div>
 </body>

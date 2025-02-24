@@ -57,6 +57,7 @@ Este esquema logra una mezcla de energía y calma, perfecta para un ambiente don
   --color-danger: hsl(0, 95%, 65%);
   --color-dark: hsl(252, 30%, 17%);
   --color-black: hsl(252, 30%, 10%);
+  --color-edit: hsl(210, 100%, 50%);
 
   /*SEGUNDA OPCION DE COLOR SELECCIONADO*/
   /*--color-light: #f0f8ff;       /* Un azul muy claro, suave y acogedor */
@@ -91,6 +92,7 @@ Este esquema logra una mezcla de energía y calma, perfecta para un ambiente don
   --color-danger: hsl(0, 95%, 65%);
   --color-dark: hsl(252, 30%, 100%);
   --color-black: hsl(252, 30%, 95%);
+  --color-edit: hsl(45, 100%, 60%);
 }
 
 /*REALIZAMOS CAMBIOS PREDETERMINADOS A TODA LA PAGINA PARA QUE ASI SE HAGA TODO DE MANERA MAS UNIFORME DESDE UN PRINCIPIO*/
@@ -115,21 +117,21 @@ body {
 
 /*--------ESTILOS DE LAS TABLAS  DE LAS CRUD----*/
 
-/* Estilos para la tabla */
+/* Estilos para la tabla CRUD*/
 table {
   width: 100%;
   margin: 20px auto;
   border-collapse: collapse;
-  background: var(--color-dark);
+  background: var(--color-white);
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
   border-radius: var(--card-border-radius);
-  overflow: hidden;
+  overflow-x: auto;
 }
 
 th,
 td {
+  color: var(--color-dark);
   padding: 12px;
-
   text-align: center;
 }
 
@@ -138,8 +140,30 @@ th {
   color: black;
 }
 
+.delete {
+  font-size: 1.4rem;
+  color: var(--color-danger);
+  margin-left: 2rem;
+  position: relative;
+}
 
-/*ESTILOS GENERALES*/
+.edit {
+  font-size: 1.4rem;
+  color: var(--color-edit);
+  margin-left: 2rem;
+  position: relative;
+}
+
+.añadir {
+  font-size: 1.4rem;
+  color: var(--color-success);
+  margin-left: 2rem;
+  position: relative;
+  
+}
+
+
+/* --------------- ESTILOS GENERALES ----------------------*/
 
 .container {
   width: 90%;
@@ -407,37 +431,6 @@ main .container .izquierda .perfil {
   translate: all 300ms ease;
 }
 
-/*----------------- TIPOS DE CRUD POPUP -----------------*/
-
-.izquierda .crud-popup {
-  position: absolute;
-  top: 0;
-  left: 102%;
-  width: 100%;
-  background: var(--color-white);
-  border-radius: var(--card-border-radius);
-  padding: 0.5rem;
-  box-shadow: 0 0 2rem hsl(var(--color-primary) 75%, 60% 25%);
-  z-index: inherit;
-  display: none;
-}
-
-.izquierda .crud-popup > div {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  margin-bottom: 0.5rem;
-}
-
-.izquierda .crud-popup .popup-item:last-child {
-  margin-bottom: 0;
-}
-
-.izquierda .crud-popup .popup-item:hover {
-  background: var(--color-light);
-  border-radius: var(--card-border-radius);
-  translate: all 300ms ease;
-}
 
 /*========================================= MEDIO ===================================*/
 .medio {
@@ -463,57 +456,99 @@ main .container .izquierda .perfil {
   animation-play-state: paused; /*Aqui para que se pause cada vez que seleccionamos una mascota*/
 }
 
-/* ESTILOS DE LOS BOTONES DE LA CRUD */
+/* -------------------- ESTILOS DE LOS BOTONES DE LA CRUD -------------------------------*/
 
 h1 {
-    text-align: center;
+  text-align: center;
 }
 
 .botones-crud {
-    justify-content: space-around;
+  justify-content: space-around;
 }
 
 .button-crud {
-    cursor: pointer;
-    margin: 20px;
-    padding: 10px 24px;
-    font-size: 18px;
-    color: var(--color-dark);
-    border-radius: 34px;
-    background-color: var(--color-white);
-    font-weight: 600;
-    transition: all 0.3s cubic-bezier(0.23, 1, 0.320, 1);
-    overflow: hidden;
-  }
-  
-  .button-crud::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    margin: auto;
-    width: 50px;
-    height: 50px;
-    border-radius: inherit;
-    scale: 0;
-    z-index: -1;
-    background-color: var(--color-primary);
-    transition: all 0.8s cubic-bezier(0.23, 1, 0.320, 1);
-  }
-  
-  .button-crud:hover::before {
-    scale: 5;
-  }
-  
-  .button-crud:hover {
-    color: var(--color-light);
-    scale: 1.1;
-    box-shadow: 0 0px 20px rgba(193, 163, 98,0.4);
-  }
-  
-  .button-crud:active {
-    scale: 1;
-  }
-  
+  cursor: pointer;
+  margin: 20px;
+  padding: 10px 24px;
+  font-size: 18px;
+  color: var(--color-dark);
+  border-radius: 34px;
+  background-color: var(--color-white);
+  font-weight: 600;
+  transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+  overflow: hidden;
+}
+
+.button-crud::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 50px;
+  height: 50px;
+  border-radius: inherit;
+  scale: 0;
+  z-index: -1;
+  background-color: var(--color-primary);
+  transition: all 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.button-crud:hover::before {
+  scale: 5;
+}
+
+.button-crud:hover {
+  color: var(--color-light);
+  scale: 1.1;
+  box-shadow: 0 0px 20px rgba(193, 163, 98, 0.4);
+}
+
+.button-crud:active {
+  scale: 1;
+}
+
+/* -------------- BOTONES DE AÑADIR Y ELIMINAR EN LA CRUD -------------------------------------*/
+.titulo {
+  text-align: center;
+  margin: 1.5rem;
+}
+
+.btn-añadir {
+  margin-right:1rem;
+  color: #ffffff;
+  cursor: pointer;
+  border: 1px solid hsl(252, 30%, 17%);
+  border-radius: 4px;
+  padding: 0.8em 2em;
+  background: hsl(252, 30%, 17%);
+  transition: 0.2s;
+}
+
+.btn-añadir:hover {
+  color: hsl(252, 30%, 17%);
+  transform: translate(-0.25rem, -0.25rem);
+  background: var(--color-success);
+  box-shadow: 0.25rem 0.25rem hsl(252, 30%, 17%);
+}
+
+.btn-eliminar {
+  color: #ffffff;
+  cursor: pointer;
+  border: 1px solid hsl(252, 30%, 17%);
+  border-radius: 4px;
+  padding: 0.8em 2em;
+  background: hsl(252, 30%, 17%);
+  transition: 0.2s;
+}
+
+.btn-eliminar:hover {
+  color: hsl(252, 30%, 17%);
+  transform: translate(-0.25rem, -0.25rem);
+  background: var(--color-danger);
+  box-shadow: 0.25rem 0.25rem hsl(252, 30%, 17%);
+}
+
+
 @keyframes scroll {
   to {
     transform: translate(calc(-50%));
@@ -876,7 +911,6 @@ main .container .derecha {
 /*===================DISEÑO RESPONSIVE PARA TABLETS PEQUEÑAS Y CELULARES===========================*/
 
 @media screen and (max-width: 992px) {
-
   .botones-crud {
     position: absolute;
   }
@@ -894,31 +928,20 @@ main .container .derecha {
   tbody,
   tr,
   td {
-    display: block;
-    width: 100%;
+    overflow-x: auto;
   }
 
   tr {
     margin-bottom: 10px;
-    border: 1px solid #ddd;
-    padding: 10px;
-    background: white;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   }
 
   td {
-    text-align: right;
-    padding-left: 50%;
-    position: relative;
+    text-align: center;
+  
   }
 
-  td::before {
-    content: attr(data-label);
-    position: absolute;
-    left: 10px;
-    font-weight: bold;
-    text-transform: uppercase;
-  }
+
 
   .btn {
     width: 100%; /* Hacer que los botones ocupen toda la pantalla */
@@ -946,6 +969,7 @@ main .container .derecha {
     right: 0;
   }
 
+
   /*--------- POPUP DE MASCOTAS --------------*/
 
   .izquierda .mascotas-popup {
@@ -960,19 +984,7 @@ main .container .derecha {
     left: calc(20rem - 0.6rem);
   }
 
-  /*--------- POPUP DE CRUD  --------------*/
-
-  .izquierda .crud-popup {
-    position: absolute;
-    left: -20rem;
-    width: 20rem;
-  }
-
-  .izquierda .crud-popup::before {
-    display: none;
-    top: 1.3rem;
-    left: calc(20rem - 0.6rem);
-  }
+/* ------------------------------------------------*/
 
   main .container .izquierda .sidebar > div h3 {
     display: none;

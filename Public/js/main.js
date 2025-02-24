@@ -203,8 +203,20 @@ function cargarCruds() {
         .catch(error => console.error("Error al cargar PHP:", error));
 }
 
+
+// =========  CRUD VACUNAS CARGAR ================//
 function cargarCrudVacunas() {
     fetch("crudVacunas.php") // Nombre del archivo PHP a incluir
+        .then(response => response.text()) // Convertir respuesta en texto
+        .then(data => {
+            document.getElementById("crud").innerHTML = data; // Incluir contenido
+        })
+        .catch(error => console.error("Error al cargar PHP:", error));
+}
+
+// =========  CRUD VACUNAS CARGAR ================//
+function cargarCrudProductos() {
+    fetch("crud_productos.php") // Nombre del archivo PHP a incluir
         .then(response => response.text()) // Convertir respuesta en texto
         .then(data => {
             document.getElementById("crud").innerHTML = data; // Incluir contenido
