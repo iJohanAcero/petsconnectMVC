@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Feedback</title>
+    <title>PetsConnect</title>
     
-	<link rel="shortcut icon" href="Public/images/icono.png" />
+	<link rel="shortcut icon" href="../Public/images/icono.png" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 
 
@@ -25,7 +25,10 @@
             </div>
 
             <div  class="crear" >
-                <label class="btn btn-primario" for="crear-post">Cerrar Sesión</label>
+                <a href="index.php?action=logout">
+                <label class="btn btn-primario">Cerrar Sesión</label>
+                </a>
+                
             </div>
 
             <div class="temas">
@@ -57,7 +60,7 @@
                     
 <!------------------------------BARRA LATERAL - SIDE BAR-------------------------->
             <div class="sidebar">
-                <a class="menu-item" href="admin.php">
+                <a class="menu-item">
                     <span><i class="uil uil-house-user"></i></span> <h3>Inicio</h3>
                 </a>
                 

@@ -1,3 +1,6 @@
+
+<!-- 
+
 <!DOCTYPE html>
 <html lang="es">
 
@@ -5,7 +8,7 @@
     <link rel="shortcut icon" href="../Public/images/icono.png" />
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.8/css/line.css"> <!-- Llamamos a la librería de iconos --> 
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.8/css/line.css"> <!-- Llamamos a la librería de iconos 
     <link rel="stylesheet" href="../Public/css/login.css" />
     <title>PetsConnect inicio sesión</title>
 </head>
@@ -15,16 +18,17 @@
     
         <div class="forms-container">
             <div class="signin-signup">
-                <form action="#" class="sign-in-form">
+                <form action="index.php" class="sign-in-form" method="POST">
                     <img src="../Public/images/logo.png" alt="">
                     <h2 class="title">Iniciar Sesión</h2>
+                    <input type="hidden" name="action" value="login">
                     <div class="input-field">
                     <i class="uil uil-user-square"></i>
-                        <input type="email" placeholder="Correo electronico" />
+                        <input type="email" id="email" placeholder="Correo electronico" required />
                     </div>
                     <div class="input-field">
                     <i class="uil uil-padlock"></i>
-                        <input type="password" placeholder="Contraseña" />
+                        <input type="password" placeholder="Contraseña" id="password" required/>
                     </div>
                     <input type="submit" value="Entrar" class="btn solid" />
                     <p class="social-text">O inicia sesion con tu cuenta de:</p>
@@ -66,6 +70,34 @@
             </div>
         </div>
     </div>
+</body>
+
+</html>-->
+
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+</head>
+
+<body>
+    <h1> Iniciar Sesion</h1>
+    <form action="index.php" method="POST">
+        <input type="hidden" name="action" value="login">
+        <label for="username">Usuario: </label>
+        <input type="text" name="email" id="email" required>
+        <br>
+        <label for="password">Contraseña: </label>
+        <input type="password" name="password" id="password" required>
+        <br>
+        <button type="submit">Iniciar Sesión</button>
+    </form>
+
+    <hr>
+    <a href="view/register.php">Registrarse</a>
 </body>
 
 </html>

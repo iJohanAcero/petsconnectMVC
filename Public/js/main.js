@@ -206,7 +206,7 @@ function cargarCruds() {
 
 // =========  CRUD VACUNAS CARGAR ================//
 function cargarCrudVacunas() {
-    fetch("crudVacunas.php") // Nombre del archivo PHP a incluir
+    fetch("crud_vacunas.php") // Nombre del archivo PHP a incluir
         .then(response => response.text()) // Convertir respuesta en texto
         .then(data => {
             document.getElementById("crud").innerHTML = data; // Incluir contenido
@@ -214,7 +214,7 @@ function cargarCrudVacunas() {
         .catch(error => console.error("Error al cargar PHP:", error));
 }
 
-// =========  CRUD VACUNAS CARGAR ================//
+// =========  CRUD PRODUCTOS CARGAR ================//
 function cargarCrudProductos() {
     fetch("crud_productos.php") // Nombre del archivo PHP a incluir
         .then(response => response.text()) // Convertir respuesta en texto

@@ -5,7 +5,7 @@ class Conexion {
     private $dbname = "petsconnect";
     private $user = "root";
     private $password = "";
-    private $conn;
+    public $conn;
 
     public function __construct()
     {
