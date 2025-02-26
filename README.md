@@ -30,7 +30,7 @@ PettsConnect es una plataforma diseñada para facilitar la conexión entre masco
 ### 🏗️ Instalación
 ```sh
 # Clonar el repositorio
-git clone https://github.com/tu-usuario/PettsConnect.git
+git clone https://github.com/iJohanAcero/petsconnectMVC.git
 cd PettsConnect
 
 # Instalar dependencias
