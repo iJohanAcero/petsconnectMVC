@@ -16,7 +16,7 @@ PettsConnect es una plataforma diseñada para facilitar la conexión entre masco
 - **Interfaz amigable** y accesible para todos los usuarios.
 
 ## 🛠️ Tecnologías utilizadas
-- **Frontend:** CSS puro
+- **Frontend:** CSS puro y JavaScript
 - **Backend:** PHP
 - **Base de datos:** Mysql
 - **Autenticación:** 
