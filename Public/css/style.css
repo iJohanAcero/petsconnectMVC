@@ -94,6 +94,7 @@ body {
 
 /* Estilos para la tabla CRUD*/
 table {
+  
   width: 100%;
   margin: 20px auto;
   border-collapse: collapse;
@@ -111,6 +112,7 @@ td {
 }
 
 th {
+  user-select: none;
   background-color: var(--color-primary);
   color: black;
 }
@@ -489,6 +491,7 @@ h1 {
 }
 
 .btn-añadir {
+  user-select: none;
   margin-right:1rem;
   color: var(--color-dark);
   cursor: pointer;
@@ -508,6 +511,7 @@ h1 {
 }
 
 .btn-eliminar {
+  user-select: none;
   color: var(--color-dark);
   cursor: pointer;
   border: 1px solid var(--color-white);
@@ -894,11 +898,13 @@ main .container .derecha {
 
 @media screen and (max-width: 992px) {
   .botones-crud {
-    position: absolute;
+    display: grid;
+    grid-template-columns: 50% 50%;
+
   }
 
-  h2 {
-    margin-top: 16rem;
+  .btn-modal  {
+    display: flex;
   }
 
   table {
@@ -920,7 +926,6 @@ main .container .derecha {
 
   td {
     text-align: center;
-  
   }
 
 

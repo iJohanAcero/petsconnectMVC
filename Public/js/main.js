@@ -195,9 +195,9 @@ cambioTema.addEventListener('click', () => {
 const modal = document.getElementById("addModal");
 const boton = document.getElementById("openAñadir");
 
-boton.onclick = function() {
+boton.addEventListener('click', () => {
     modal.style.display = "block";
-}
+});
 
 
 //========= CARGAR CRUDS DIFERENTES EN LA PAGINA DE CRUD =========//
