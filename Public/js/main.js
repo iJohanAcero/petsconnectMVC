@@ -190,6 +190,15 @@ cambioTema.addEventListener('click', () => {
     } 
 })
 
+// ======= CARGAR MODAL DE AGERGAR Y ELIMINAR =========== //
+
+const modal = document.getElementById("addModal");
+const boton = document.getElementById("openAñadir");
+
+boton.onclick = function() {
+    modal.style.display = "block";
+}
+
 
 //========= CARGAR CRUDS DIFERENTES EN LA PAGINA DE CRUD =========//
 
