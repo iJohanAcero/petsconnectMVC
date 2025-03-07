@@ -154,6 +154,10 @@ th {
   overflow: hidden;
 }
 
+.logo {
+  width: 15%;
+}
+
 img {
   display: block;
   width: 100%;
@@ -510,28 +514,40 @@ h1 {
   box-shadow: 0.1rem 0.1rem black;
 }
 
-.btn-eliminar {
-  user-select: none;
-  color: var(--color-dark);
-  cursor: pointer;
-  border: 1px solid var(--color-white);
-  border-radius: 4px;
-  padding: 0.8em 2em;
-  background: var(--color-white);
-  transition: 0.2s;
-}
-
-.btn-eliminar:hover {
-  color: hsl(252, 30%, 17%);
-  transform: translate(-0.25rem, -0.25rem);
-  border: 1px solid var(--color-danger);
-  background: var(--color-danger);
-  box-shadow: 0.1rem 0.1rem black;
-}
-
 /* --------- ESTILOS DEL MODAL DE AÑADIR Y ELIMINAR CRUD --------------- */
 .modal {
-  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+.modal-content {
+  background: var(--color-light);
+  margin: 15% auto;
+  padding: 20px;
+  width: 30%;
+  border-radius: 10px;
+  text-align: center;
+}
+.close {
+  color: var(--color-danger);
+  font-size: 3rem;
+  float: right;
+  cursor: pointer;
+}
+
+/* --------------- ESTILOS DEL FORMULARIO DEL MODAL ------------------ */
+.form-modal {
+  margin-top: 1rem;
+  text-align: center;
+}
+.input-modal {
+  border-radius: var(--border-radius);
+  border:solid 1px black;
+  padding: 5px;
 }
 
 
@@ -903,8 +919,11 @@ main .container .derecha {
 
   }
 
-  .btn-modal  {
-    display: flex;
+  .crud-vacunas {
+    display: grid;
+    grid-template-rows: auto auto;
+    justify-content: space-between;
+    width: 80%;
   }
 
   table {
@@ -983,5 +1002,10 @@ main .container .derecha {
 
   main .container .derecha {
     display: none;
+  }
+
+  /* MODAL CONTENEDOR */
+  .modal-content {
+    width: 80%;
   }
 }

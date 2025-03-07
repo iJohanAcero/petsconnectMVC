@@ -17,7 +17,9 @@
     <nav>
         <div class="container">
 
-            <h1 class="nombre">PetsConnect</h1>
+            <div class="logo">
+                <img id="logo" src="../Public/images/logo.png">
+            </div>
 
             <div class="barra-buscador">
                 <i class="uil uil-search"></i>
@@ -32,7 +34,7 @@
             </div>
 
             <div class="temas">
-                <button class="tema" id="cambio-tema">
+                <button onclick="cambiarLogo()" class="tema" id="cambio-tema">
                     <i class="uil uil-moon"></i>
                     <i class="uil uil-brightness"></i>
                 </button>
@@ -129,7 +131,8 @@
     
 <!--====================================================MEDIO=======================================================-->
                 <div class="medio">
-                    <div id="cruds"></div>
+                    <div id="cruds">
+                    </div>
                 </div>
 <!--==============================================DERECHA===========================================-->
                 <div class="derecha">

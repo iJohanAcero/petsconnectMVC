@@ -166,6 +166,16 @@ categoriaOn.forEach(item =>{
 let darkmode = localStorage.getItem('darkmode')
 const cambioTema = document.getElementById('cambio-tema')
 
+function cambiarLogo(){
+    let imagen = document.getElementById("logo");
+
+    if (imagen.src.includes("logo.png")) {
+        imagen.src = "../Public/images/logo-oscuro.png";
+    } else {
+        imagen.src = "../Public/images/logo.png";
+    }
+}
+
 const activarDarkmode = () => {
     document.body.classList.add('darkmode')
     localStorage.setItem('darkmode','activo')
@@ -188,15 +198,6 @@ cambioTema.addEventListener('click', () => {
     } else {
         desactivarDarkmode()
     } 
-})
-
-// ======= CARGAR MODAL DE AGERGAR Y ELIMINAR =========== //
-
-const modal = document.getElementById("addModal");
-const boton = document.getElementById("openAñadir");
-
-boton.addEventListener('click', () => {
-    modal.style.display = "block";
 });
 
 
@@ -215,10 +216,12 @@ function cargarCruds() {
 
 // =========  CRUD VACUNAS CARGAR ================//
 function cargarCrudVacunas() {
-    fetch("crud_vacunas.php") // Nombre del archivo PHP a incluir
+    fetch("crud_vacunas.php")// Nombre del archivo PHP a incluir
         .then(response => response.text()) // Convertir respuesta en texto
         .then(data => {
             document.getElementById("crud").innerHTML = data; // Incluir contenido
+
+            inicializarModal();
         })
         .catch(error => console.error("Error al cargar PHP:", error));
 }
@@ -231,4 +234,28 @@ function cargarCrudProductos() {
             document.getElementById("crud").innerHTML = data; // Incluir contenido
         })
         .catch(error => console.error("Error al cargar PHP:", error));
+}
+
+// ======= CARGAR MODAL DE AGERGAR Y ELIMINAR =========== //
+
+function inicializarModal() { // funcion para inicializar el modal 
+    setTimeout(() => {
+        const modal = document.getElementById("modal-vacunas");
+        const btn = document.getElementById("openModal");
+        const close = document.querySelector(".close");
+
+        btn.onclick = function () {
+            modal.style.display = "block"; //le decimos que bloquee el display cuando se haga click en el boton
+        };
+
+        close.onclick = function () {
+            modal.style.display = "none"; //le decimos que cuando de click en close(X) se desaparezca el display
+        };
+
+        window.onclick = function (event) {
+            if (event.target == modal) {
+                modal.style.display = "none"; //le decimos que cuando de click en otro lugar fuera del modal, este desaparezca.
+            }
+        };
+    }, 100); // Pequeño delay para asegurar que el DOM se haya actualizado
 }
