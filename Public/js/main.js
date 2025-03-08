@@ -223,3 +223,13 @@ function cargarCrudProductos() {
         })
         .catch(error => console.error("Error al cargar PHP:", error));
 }
+
+// =========  CRUD MASCOTAS CARGAR ================//
+function cargarCrudMascotas() {
+    fetch("crud_mascotas.php") // Nombre del archivo PHP a incluir
+        .then(response => response.text()) // Convertir respuesta en texto
+        .then(data => {
+            document.getElementById("crud").innerHTML = data; // Incluir contenido
+        })
+        .catch(error => console.error("Error al cargar PHP:", error));
+}
