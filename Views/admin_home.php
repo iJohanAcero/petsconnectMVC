@@ -131,7 +131,8 @@
     
 <!--====================================================MEDIO=======================================================-->
                 <div class="medio">
-                    <div id="cruds">
+                    <div id="cruds"> 
+                        <!-- AQUI SE CARGARAN LAS CRUDS DISPONIBLES POR EL FETCH EN JAVASCRIPT -->
                     </div>
                 </div>
 <!--==============================================DERECHA===========================================-->
@@ -209,5 +210,6 @@
 <!--==============================================CONFIGURACION DE FONDO===========================================-->
 
 <script src="../Public/js/main.js"></script>
+<script src="../Public/js/cruds.js"></script>
 </body>
 </html>

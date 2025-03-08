@@ -9,7 +9,7 @@
 </head>
 
 <body>
-    <div class="crud-vacunas">
+    <div class="crud">
         <h2 class="titulo">CRUD de Vacunación</h2>
 
         <a class="btn-añadir" id="openModal">
@@ -24,7 +24,6 @@
                 <th>Nombre de Vacuna</th>
                 <th>Dirección Veterinaria</th>
                 <th>Acciones</th>
-
             </tr>
 
             <tr>
@@ -70,8 +69,6 @@
 
                 <button class="btn-añadir" type="submit">Guardar</button>
             </form>
-
-
         </div>
     </div>
 

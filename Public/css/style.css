@@ -919,7 +919,7 @@ main .container .derecha {
 
   }
 
-  .crud-vacunas {
+  .crud {
     display: grid;
     grid-template-rows: auto auto;
     justify-content: space-between;

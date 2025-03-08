@@ -202,6 +202,17 @@ cambioTema.addEventListener('click', () => {
 
 
 //========= CARGAR CRUDS DIFERENTES EN LA PAGINA DE CRUD =========//
+/**
+ * 📌 Función `cargarCruds()`: Carga dinámicamente los botones de los CRUDs disponibles.
+ * 
+ * 🔹 ¿Cómo funciona?
+ * 1️⃣ Usa `fetch("cruds_disponibles.php")` para obtener el contenido del archivo PHP.  
+ * 2️⃣ Convierte la respuesta en texto con `.then(response => response.text())`.  
+ * 3️⃣ Inserta el contenido en el `<div id="cruds">`, mostrando los botones.  
+ * 4️⃣ Si hay un error, lo muestra en la consola con `.catch(error => console.error(...))`.  
+ * 
+ * 🚀 **Esta función permite cargar y actualizar la lista de CRUDs sin recargar la página.**
+ */
 
 // ======= ESTA FUNCION CARGA LAS CRUD DISPONIBLES ===============//
 function cargarCruds() {
@@ -211,51 +222,4 @@ function cargarCruds() {
             document.getElementById("cruds").innerHTML = data; // Incluir contenido
         })
         .catch(error => console.error("Error al cargar PHP:", error));
-}
-
-
-// =========  CRUD VACUNAS CARGAR ================//
-function cargarCrudVacunas() {
-    fetch("crud_vacunas.php")// Nombre del archivo PHP a incluir
-        .then(response => response.text()) // Convertir respuesta en texto
-        .then(data => {
-            document.getElementById("crud").innerHTML = data; // Incluir contenido
-
-            inicializarModal();
-        })
-        .catch(error => console.error("Error al cargar PHP:", error));
-}
-
-// =========  CRUD PRODUCTOS CARGAR ================//
-function cargarCrudProductos() {
-    fetch("crud_productos.php") // Nombre del archivo PHP a incluir
-        .then(response => response.text()) // Convertir respuesta en texto
-        .then(data => {
-            document.getElementById("crud").innerHTML = data; // Incluir contenido
-        })
-        .catch(error => console.error("Error al cargar PHP:", error));
-}
-
-// ======= CARGAR MODAL DE AGERGAR Y ELIMINAR =========== //
-
-function inicializarModal() { // funcion para inicializar el modal 
-    setTimeout(() => {
-        const modal = document.getElementById("modal-vacunas");
-        const btn = document.getElementById("openModal");
-        const close = document.querySelector(".close");
-
-        btn.onclick = function () {
-            modal.style.display = "block"; //le decimos que bloquee el display cuando se haga click en el boton
-        };
-
-        close.onclick = function () {
-            modal.style.display = "none"; //le decimos que cuando de click en close(X) se desaparezca el display
-        };
-
-        window.onclick = function (event) {
-            if (event.target == modal) {
-                modal.style.display = "none"; //le decimos que cuando de click en otro lugar fuera del modal, este desaparezca.
-            }
-        };
-    }, 100); // Pequeño delay para asegurar que el DOM se haya actualizado
 }
