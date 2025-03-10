@@ -25,6 +25,9 @@
                     <button class="button-crud">
                         Tipo de mascota
                     </button>
+                    <button onclick="cargarCrudRedSocial()" class="button-crud">
+                        Redes Sociales
+                    </button>
                 </div>
 
 
