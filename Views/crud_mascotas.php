@@ -41,6 +41,7 @@
                 <td>xx</td>
                 <td>xx</td>
                 <td>xx</td>
+                <td>xx</td>
                 <td>
                     <a href="#editProductModal" class="edit" data-bs-toggle="modal">
                         <i class="uil uil-pen"></i>
@@ -58,31 +59,57 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title">Añadir Producto</h4>
+                    <h4 class="modal-title">Añadir Mascota</h4>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
                 </div>
-                <div class="modal-body">
+                <di class="modal-body">
                     <form method="post">
+                        <div class="mb-3">
+                            <label for="nombre" class="form-label">ID:</label>
+                            <input type="number" class="form-control" name="id mascota" required>
+                        </div>
                         <div class="mb-3">
                             <label for="nombre" class="form-label">Nombre:</label>
                             <input type="text" class="form-control" name="nombre" required>
                         </div>
                         <div class="mb-3">
-                            <label for="tipo_producto" class="form-label">Tipo de producto:</label>
-                            <input type="text" class="form-control" name="tipo_producto" required>
+                            <label for="tipo_producto" class="form-label">Tipo edad:</label>
+                            <select class="form-control" required>
+                                <option>Años</option>
+                                <option>Meses</option>
+                            </select>
                         </div>
                         <div class="mb-3">
-                            <label for="descripcion" class="form-label">Descripción:</label>
-                            <input type="text" class="form-control" name="descripcion" required>
+                            <label for="tipo_producto" class="form-label">Edad:</label>
+                            <input type="number" class="form-control" name="edad" required>
                         </div>
                         <div class="mb-3">
-                            <label for="precio" class="form-label">Precio:</label>
-                            <input type="number" class="form-control" name="precio" required>
+                            <label for="descripcion" class="form-label">Sexo:</label>
+                            <select class="form-control" required>
+                                <option>Macho</option>
+                                <option>Hembra</option>
+                            </select>
                         </div>
                         <div class="mb-3">
-                            <label for="cantidad" class="form-label">Cantidad:</label>
-                            <input type="number" class="form-control" name="cantidad" required>
+                            <label for="precio" class="form-label">Imagen:</label>
+                            <input type="file" class="form-control" id="image" name="imagen" accept="image/*" required>
                         </div>
+                        <div class="mb-3">
+                            <label for="cantidad" class="form-label">Tipo mascota:</label>
+                            <select class="form-control" id="petType" name="id tipo mascota" onchange="updatePetTypeId()">
+                                <option value="1">Perro</option>
+                                <option value="2">Gato</option>
+                            </select>
+                        </div>
+                        <input type="hidden" id="petTypeId" name="petTypeId" min="0" value="1"> <!-- Campo oculto que almacenará el ID -->                           
+                        <div class="form-group">
+                            <label>NIT fundación</label>
+                            <input type="number" class="form-control" required>
+                        </div>        
+                        <div class="form-group">
+                            <label># de serie vacuna</label>
+                            <input type="text" class="form-control" required>
+                        </div> 
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
                             <button type="submit" class="btn btn-primary" name="btnregistrar">Registrar</button>

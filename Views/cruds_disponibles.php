@@ -13,7 +13,7 @@
                     <button class="button-crud">
                         Usuarios
                     </button>
-                    <button class="button-crud">
+                    <button onclick="cargarCrudMascotas()" class="button-crud">
                         Mascotas
                     </button>
                     <button onclick="cargarCrudProductos()" class="button-crud">
