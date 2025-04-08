@@ -22,12 +22,16 @@
                     <button onclick="cargarCrudVacunas()" class="button-crud">
                         Vacunas
                     </button>
+                    <button onclick="cargarCrudFundaciones()" class="button-crud">
+                        Fundaciones
+                    </button>
                     <button onclick="cargarCrudProcesos()" class="button-crud">
                         Procesos de adopción
                     </button>
-                    <button class="button-crud">
+                    <button onclick="cargarCrudTipoMascota()" class="button-crud">
                         Tipo de mascota
                     </button>
+                    
                 </div>
 
 

@@ -38,10 +38,10 @@
                 <td>xx</td>
                 <td>
                     <a class="edit" ">
-                        <i class=" uil uil-pen"></i>
+                        <i class=" uil uil-pen" style="cursor: pointer;"></i>
                     </a>
                     <a class="delete" "">
-                        <i class="uil uil-trash-alt"></i>
+                        <i class="uil uil-trash-alt" style="cursor: pointer;"></i>
                     </a>
                 </td>
             </tr>
