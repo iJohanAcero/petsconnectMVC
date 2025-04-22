@@ -8,17 +8,14 @@
 </head>
 
 <body>
+    <div class="crud">
+        <h2 class="titulo">CRUD de Vacunación</h2>
 
-    <h2 class="titulo">CRUD de Vacunación</h2>
-    <div>
-        <a href="#addProductModal" class="btn-añadir" data-bs-toggle="modal">
-            <i class="uil uil-plus-circle"></i> <span>Añadir Producto</span>
-        </a>
-        <a href="#deleteMultipleProductsModal" class="btn-eliminar" data-bs-toggle="modal">
-            <i class="uil uil-trash"></i> <span>Eliminar Seleccionados</span>
+        <a class="btn-añadir" id="openModal">
+            <i class=" uil uil-plus-circle"></i> <span>Añadir Vacuna</span>
         </a>
     </div>
-    <table border="1">
+    <table>
         <thead>
             <tr>
                 <th>ID</th>
@@ -26,7 +23,6 @@
                 <th>Nombre de Vacuna</th>
                 <th>Dirección Veterinaria</th>
                 <th>Acciones</th>
-
             </tr>
 
             <tr>
@@ -35,11 +31,11 @@
                 <td>xx</td>
                 <td>xx</td>
                 <td>
-                    <a href="#editProductModal" class="edit" data-bs-toggle="modal">
-                        <i class="uil uil-pen"></i>
+                    <a class="edit" ">
+                        <i class=" uil uil-pen" style="cursor: pointer;"></i>
                     </a>
-                    <a href="#deleteProductModal" class="delete" data-bs-toggle="modal">
-                        <i class="uil uil-trash-alt"></i>
+                    <a class="delete" "">
+                        <i class="uil uil-trash-alt" style="cursor: pointer;"></i>
                     </a>
                 </td>
             </tr>
@@ -47,44 +43,37 @@
 
     </table>
 
-    <div id="addProductModal" class="modal fade" tabindex="-1">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title">Añadir Producto</h4>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
-                </div>
-                <div class="modal-body">
-                    <form method="post">
-                        <div class="mb-3">
-                            <label for="nombre" class="form-label">Nombre:</label>
-                            <input type="text" class="form-control" name="nombre" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="tipo_producto" class="form-label">Tipo de producto:</label>
-                            <input type="text" class="form-control" name="tipo_producto" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="descripcion" class="form-label">Descripción:</label>
-                            <input type="text" class="form-control" name="descripcion" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="precio" class="form-label">Precio:</label>
-                            <input type="number" class="form-control" name="precio" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="cantidad" class="form-label">Cantidad:</label>
-                            <input type="number" class="form-control" name="cantidad" required>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                            <button type="submit" class="btn btn-primary" name="btnregistrar">Registrar</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
+
+    <!-- ================================= HTML DEL FORMULARIO DE REGISTRO  ======================================= -->
+    <!----------- MODAL DEL BOTON DE AÑADIR REGISTRO -------------->
+    <div id="modal-vacunas" class="modal" style="display: none;">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2 class="titulo-modal">¡Registro Nueva Vacuna!</h2>
+
+            <!-------------- FORMULARIO VACUNAS ------->
+
+            <form action="procesar_vacuna.php" method="POST" class="form-modal">
+                
+                <label for="id">ID:</label>
+                <input class="input-modal" type="text" id="id" name="id" required><br><br>
+
+                <label for="fecha_vacunacion">Fecha de Vacunación:</label>
+                <input class="input-modal" type="date" id="fecha_vacunacion" name="fecha_vacunacion" required><br><br>
+
+                <label for="nombre_vacuna">Nombre de Vacuna:</label>
+                <input class="input-modal" type="text" id="nombre_vacuna" name="nombre_vacuna" required><br><br>
+
+                <label for="direccion_veterinaria">Dirección Veterinaria:</label>
+                <input class="input-modal" type="text" id="direccion_veterinaria" name="direccion_veterinaria" required><br><br>
+
+                <button class="btn-añadir" type="submit">Guardar</button>
+            </form>
+
         </div>
     </div>
+
 </body>
+
 
 </html>

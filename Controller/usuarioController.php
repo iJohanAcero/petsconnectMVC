@@ -10,8 +10,13 @@ class UsuarioController {
         $this->usuarioModel = new Usuario();
     }
 
-    public function login($email, $password){
-        return $this->usuarioModel->login($email, $password);
+    public function login($email, $contrasena) {
+        return $this->usuarioModel->login($email, $contrasena);
+    }
+
+    public function registrar($nombre,$contrasena,$email,$direccion,$telefono ) {
+        return $this->usuarioModel->registrar($nombre,$contrasena,$email,$direccion,$telefono);
     }
 }
 ?>
+<!-- Hola estoy probando el git  -->

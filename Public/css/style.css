@@ -2,44 +2,19 @@
 
 Para una red social de mascotas, es importante elegir colores que sean atractivos, amigables y transmitan sensaciones positivas. Los colores adecuados pueden hacer que la interfaz sea más visual y entretenida, creando una atmósfera acogedora y alegre. Aquí te sugiero algunos esquemas de colores:
 
-### 1. **Colores Principales:**
-   - **Verde menta (#98FF98)**: Un color suave y relajante, asociado con la naturaleza y la frescura. Refuerza la conexión con los animales y el entorno natural.
-   - **Turquesa (#40E0D0)**: Brillante y alegre, ideal para transmitir energía positiva. Funciona bien en botones o elementos interactivos.
-   - **Amarillo pastel (#FFFACD)**: Un color cálido y amigable que puede crear una sensación acogedora sin ser demasiado intenso.
-   - **Naranja claro (#FFA07A)**: Estimulante y divertido, pero no tan agresivo como otros tonos de naranja. Puede usarse para destacar acciones importantes, como botones de registro o publicaciones.
+    --color-light (hsl(252, 30%, 95%)) – Un tono claro, casi pastel, que aporta limpieza y suavidad al diseño. Se puede usar como fondo para secciones o tarjetas de información sobre los animales.
+    --color-white (hsl(252, 30%, 100%)) – Blanco puro, ideal para mejorar la legibilidad del contenido y dar una sensación de pureza y frescura, perfecto para fondos y textos destacados.
+    --color-gray (hsl(252, 15%, 65%)) – Un tono gris neutro que funciona bien para textos secundarios, bordes o elementos menos importantes, aportando equilibrio al diseño.
+    --color-primary (#a3bced) – Un azul suave que transmite calma y confianza, ideal para resaltar botones, encabezados o secciones clave relacionadas con información de los animales.
+    --color-secondary (hsl(252, 100%, 90%)) – Un tono lavanda claro que da un toque amigable y moderno. Puede ser útil para destacar enlaces o secciones especiales.
+    --color-success (hsl(120, 95%, 65%)) – Un verde vibrante que evoca naturaleza, vida y bienestar. Perfecto para indicar acciones exitosas, áreas de adopción o mensajes positivos.
+    --color-danger (hsl(0, 95%, 65%)) – Rojo intenso que llama la atención sobre alertas, advertencias o temas urgentes, como animales en peligro o notificaciones importantes.
+    --color-dark (hsl(252, 30%, 17%)) – Un tono oscuro y elegante que se puede usar para encabezados, menús o fondos contrastantes.
+    --color-black (hsl(252, 30%, 10%)) – Negro profundo que aporta seriedad y contraste, útil para textos importantes o secciones de impacto.
+    --color-edit (hsl(210, 100%, 50%)) – Un azul vibrante, generalmente asociado con interacción y cambios. Puede servir para botones de edición o elementos interactivos.
 
-### 2. **Colores Secundarios:**
-   - **Gris claro (#F5F5F5)**: Como fondo neutro para equilibrar los colores más vivos sin distraer demasiado.
-   - **Azul cielo (#87CEEB)**: Un tono suave que da una sensación de calma y confianza, ideal para secciones de información.
-   - **Rosa suave (#FFB6C1)**: Alegre y amigable, perfecto para pequeños detalles que resaltan sin ser abrumadores.
+💡 Estos colores combinan bien para una web amigable, equilibrada y centrada en el bienestar animal. ¿Quieres ayuda con el diseño o estructura del sitio? 🚀
 
-### 3. **Colores de Acción:**
-   - **Verde lima (#32CD32)**: Para indicar acciones exitosas o positivas, como "Adoptar", "Donar" o "Me Gusta".
-   - **Rojo coral (#FF4040)**: Para acciones de advertencia o eliminaciones, pero en un tono más suave que no cause ansiedad.
-
-### 4. **Esquema de contraste:**
-   - **Blanco (#FFFFFF)**: Como fondo principal para mantener la claridad y el enfoque en las imágenes de las mascotas y el contenido.
-   - **Negro suave o Gris oscuro (#2F4F4F)**: Para texto y encabezados principales, asegurando buena legibilidad y contraste visual.
-
-### 5. **Consejos de implementación:**
-   - **Paleta amigable y cálida**: Colores como el turquesa, menta y amarillos suaves pueden generar una sensación de bienvenida y alegría, lo cual es perfecto para una red social de mascotas.
-   - **Imágenes destacadas**: Usa colores neutros (como grises claros o blancos) en el fondo para que las imágenes de las mascotas sean el foco principal.
-   - **Botones e interacciones**: Los colores brillantes (verde lima, azul cielo, naranja claro) ayudan a guiar al usuario a interactuar fácilmente con los botones y las acciones clave.
-
-### Ejemplo de paleta de colores:
-- **#98FF98 (Verde menta)**
-- **#40E0D0 (Turquesa)**
-- **#FFFACD (Amarillo pastel)**
-- **#FFA07A (Naranja claro)**
-- **#FFB6C1 (Rosa suave)**
-- **#F5F5F5 (Gris claro)**
-- **#32CD32 (Verde lima)**
-- **#2F4F4F (Gris oscuro)**
-
-### Efecto visual:
-Este esquema logra una mezcla de energía y calma, perfecta para un ambiente donde los usuarios compartirán momentos alegres con sus mascotas, manteniendo una experiencia visualmente entretenida y fácil de navegar.
-
-*/
 
 @import url("https://fonts.googleapis.com/css2?family=Delius&family=SUSE:wght@100..800&display=swap");
 
@@ -119,6 +94,7 @@ body {
 
 /* Estilos para la tabla CRUD*/
 table {
+  
   width: 100%;
   margin: 20px auto;
   border-collapse: collapse;
@@ -136,6 +112,7 @@ td {
 }
 
 th {
+  user-select: none;
   background-color: var(--color-primary);
   color: black;
 }
@@ -175,6 +152,10 @@ th {
   border-radius: 50%;
   aspect-ratio: 1/1;
   overflow: hidden;
+}
+
+.logo {
+  width: 15%;
 }
 
 img {
@@ -514,6 +495,7 @@ h1 {
 }
 
 .btn-añadir {
+  user-select: none;
   margin-right:1rem;
   color: var(--color-dark);
   cursor: pointer;
@@ -532,22 +514,44 @@ h1 {
   box-shadow: 0.1rem 0.1rem black;
 }
 
-.btn-eliminar {
-  color: var(--color-dark);
+/* --------- ESTILOS DEL MODAL DE AÑADIR Y ELIMINAR CRUD --------------- */
+.modal {
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  
+}
+.modal-content {
+  background: var(--color-light);
+  margin: 15% auto;
+  padding: 20px;
+  width: 30%;
+  border-radius: 10px;
+  text-align: center;
+  
+}
+.close {
+  color: var(--color-danger);
+  font-size: 3rem;
+  float: right;
   cursor: pointer;
-  border: 1px solid var(--color-white);
-  border-radius: 4px;
-  padding: 0.8em 2em;
-  background: var(--color-white);
-  transition: 0.2s;
 }
 
-.btn-eliminar:hover {
-  color: hsl(252, 30%, 17%);
-  transform: translate(-0.25rem, -0.25rem);
-  border: 1px solid var(--color-danger);
-  background: var(--color-danger);
-  box-shadow: 0.1rem 0.1rem black;
+/* --------------- ESTILOS DEL FORMULARIO DEL MODAL ------------------ */
+.form-modal {
+  margin: 1rem 5rem 1rem 5rem;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+}
+.input-modal {
+  border-radius: var(--border-radius);
+  border:solid 1px black;
+  padding: 5px;
 }
 
 
@@ -914,11 +918,16 @@ main .container .derecha {
 
 @media screen and (max-width: 992px) {
   .botones-crud {
-    position: absolute;
+    display: grid;
+    grid-template-columns: 50% 50%;
+
   }
 
-  h2 {
-    margin-top: 16rem;
+  .crud {
+    display: grid;
+    grid-template-rows: auto auto;
+    justify-content: space-between;
+    width: 80%;
   }
 
   table {
@@ -940,7 +949,6 @@ main .container .derecha {
 
   td {
     text-align: center;
-  
   }
 
 
@@ -998,5 +1006,10 @@ main .container .derecha {
 
   main .container .derecha {
     display: none;
+  }
+
+  /* MODAL CONTENEDOR */
+  .modal-content {
+    width: 80%;
   }
 }

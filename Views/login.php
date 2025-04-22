@@ -87,17 +87,18 @@
     <h1> Iniciar Sesion</h1>
     <form action="index.php" method="POST">
         <input type="hidden" name="action" value="login">
-        <label for="username">Usuario: </label>
+        <label for="email">Email: </label>
         <input type="text" name="email" id="email" required>
         <br>
         <label for="password">Contraseña: </label>
-        <input type="password" name="password" id="password" required>
+        <input type="text" name="contrasena" id="contrasena" required>
         <br>
+        
         <button type="submit">Iniciar Sesión</button>
     </form>
 
     <hr>
-    <a href="view/register.php">Registrarse</a>
+    <a href="Views/register.php">Registrarse</a>
 </body>
 
 </html>
