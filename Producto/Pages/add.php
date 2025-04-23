@@ -13,7 +13,11 @@
         Nombre<br>
         <input type="text" name="Nombre" required autocomplete="off" placeholder="Nombre producto"><br><br>
         Tipo de producto <br>
-        <input type="text" name="TipoProducto" required autocomplete="off" placeholder="Tipo producto"><br><br>
+        <select name="TipoProducto" required>
+            <option>Seleccione</option>
+            <option value="ComidaGato">Comida para gato</option>
+            <option value="ComidaPerro">Comidapara perro</option>
+            <option value="ArenaGato">Arena para gatos</option>
         Descripción <br>
         <input type="text" name="Descripcion" required autocomplete="off" placeholder="Descripción del producto"><br><br>
         Precio <br>
