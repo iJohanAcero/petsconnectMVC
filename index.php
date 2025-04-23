@@ -7,17 +7,19 @@ $controller = new UsuarioController();
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["action"])) {
     if($_POST["action"] == "register") {
         $nombre = $_POST["nombre"];
+        $apellido = $_POST["apellido"];
         $contrasena = $_POST["contrasena"];
         $email = $_POST["email"];
         $direccion = $_POST["direccion"];
         $telefono = $_POST["telefono"];
 
-        if ($controller->registrar($nombre,$contrasena,$email,$direccion,$telefono)) {
-            echo "Usuario registrado correctamente";
+        if ($controller->registrar($nombre, $apellido,$contrasena,$email,$direccion,$telefono)) {
+            $mensajeRegsitroCorrecto = "Usuario registrado correctamente";
         } else {
-            echo "Error al registrar el usuario";
+            $mensajeRegistroIncorrecto= "Error al registrar el usuario";
         }
     }
+
     if ($_POST["action"] == "login") {
         $email = $_POST["email"];
         $contrasena = $_POST["contrasena"];
@@ -28,7 +30,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["action"])) {
             $_SESSION["user"] = $user;
             header("Location: index.php");
         } else {
-            echo "Usuario o contraseña incorrecta";
+            $mensaje = "Usuario o contraseña incorrecta";
         }
     }
     

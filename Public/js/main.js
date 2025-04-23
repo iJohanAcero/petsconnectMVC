@@ -170,9 +170,9 @@ function cambiarLogo(){
     let imagen = document.getElementById("logo");
 
     if (imagen.src.includes("logo.png")) {
-        imagen.src = "../Public/images/logo-oscuro.png";
+        imagen.src = "Public/images/logo-oscuro.png";
     } else {
-        imagen.src = "../Public/images/logo.png";
+        imagen.src = "Public/images/logo.png";
     }
 }
 
@@ -216,7 +216,7 @@ cambioTema.addEventListener('click', () => {
 
 // ======= ESTA FUNCION CARGA LAS CRUD DISPONIBLES ===============//
 function cargarCruds() {
-    fetch("cruds_disponibles.php") // Nombre del archivo PHP a incluir
+    fetch("Views/cruds_disponibles.php") // Nombre del archivo PHP a incluir
         .then(response => response.text()) // Convertir respuesta en texto
         .then(data => {
             document.getElementById("cruds").innerHTML = data; // Incluir contenido

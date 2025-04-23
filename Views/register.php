@@ -1,33 +1,59 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../Public/css/login.css">
     <title>Registrar Usuarios</title>
 </head>
+
 <body>
-    <h1>Registrar Nuevo usuario</h1>
-    <form action="../index.php" method="POST">
-        <input type="hidden" name="action" value="register">
-        <label for="username">Nombre:</label>
-        <input type="text" name="nombre" id="nombre" required>
-        <br>
-        <label for="contrasena">Contraseña: </label>
-        <input type="text" name="contrasena" id="contrasena" required> 
-        <br>
-        <label for="email">Email:</label>
-        <input type="text" name="email" id="email" required>
-        <br>
-        <label for="password">Direccion: </label>
-        <input type="text" name="direccion" id="direccion" required> 
-        <br>
-        <label for="password">Telefono: </label>
-        <input type="text" name="telefono" id="telefono" required> 
-        <br>
-        <button type="submit">Registrar</button>
-    </form>
+    <div class="barra-top">
+        <img class="logo" src="../Public/images/logo-oscuro.png">
+    </div>
     
-    <hr>
-    <a href="../index.php">Volver al Login</a>
+    <div class="formulario">
+        <form class="form" action="../index.php" method="POST">
+            <input type="hidden" name="action" value="register">
+            <p class="title_registro">Registrar Nuevo usuario </p>
+            <p class="message"> Registrate para tener acceso a todas las funcionalidades </p>
+            <div class="flex">
+                <label>
+                    <input class="input" name="nombre" id="nombre" type="text" placeholder="" required>
+                    <span>Nombre</span>
+                </label>
+
+                <label>
+                    <input class="input" name="apellido" id="apellido" type="text" placeholder="" required>
+                    <span>Apellido</span>
+                </label>
+            </div>
+
+            <label>
+                <input class="input" name="contrasena" id="contrasena" type="password" placeholder="" required>
+                <span>Password</span>
+            </label>
+
+            <label>
+                <input class="input" name="email" id="email" type="email" placeholder="" required>
+                <span>Email</span>
+            </label>
+
+            <label>
+                <input class="input" name="direccion" id="direccion" type="text" placeholder="" required>
+                <span>Direccion</span>
+            </label>
+
+            <label>
+                <input class="input" name="telefono" id="telefono" type="text" placeholder="" required>
+                <span>Telefono</span>
+            </label>
+
+            <button class="submit">Registrar </button>
+            <p class="signin">Ya tienes una cuenta ? <a href="../index.php">Inicio de Sesión</a> </p>
+        </form>
+    </div>
 </body>
+
 </html>

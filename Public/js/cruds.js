@@ -33,7 +33,7 @@
 // =========== CRUD DE PROCESOS DE ADOPCION =========== //
 
 function cargarCrudProcesos() {
-    fetch("crud_procesoAdopcion.php") // Nombre del archivo PHP a incluir
+    fetch("Views/crud_procesoAdopcion.php") // Nombre del archivo PHP a incluir
         .then(response => response.text()) // Convertir respuesta en texto
         .then(data => {
             document.getElementById("crud").innerHTML = data; // Incluir contenido
@@ -104,7 +104,7 @@ function inicializarModalProcesos() { // funcion para inicializar el modal
 // =========== CRUD DE VACUNACION =========== //
 
 function cargarCrudVacunas() {
-    fetch("crud_vacunas.php")// Nombre del archivo PHP a incluir
+    fetch("Views/crud_vacunas.php")// Nombre del archivo PHP a incluir
         .then(response => response.text()) // Convertir respuesta en texto
         .then(data => {
             document.getElementById("crud").innerHTML = data; // Incluir contenido
@@ -143,7 +143,7 @@ function inicializarModalVacunas() { // funcion para inicializar el modal
 // =========== CRUD DE TIPO DE MASCOTA =========== //
 
 function cargarCrudTipoMascota() {
-    fetch("crud_tipo_mascota.php") // Nombre del archivo PHP a incluir
+    fetch("Views/crud_tipo_mascota.php") // Nombre del archivo PHP a incluir
         .then(response => response.text()) // Convertir respuesta en texto
         .then(data => {
             document.getElementById("crud").innerHTML = data; // Incluir contenido
@@ -181,7 +181,7 @@ function inicializarModalTipoMascota() { // funcion para inicializar el modal
 // =========== CRUD DE FUNDACION =========== //
 
 function cargarCrudFundaciones() {
-    fetch("crud_fundaciones.php") // Nombre del archivo PHP a incluir
+    fetch("Views/crud_fundaciones.php") // Nombre del archivo PHP a incluir
         .then(response => response.text()) // Convertir respuesta en texto
         .then(data => {
             document.getElementById("crud").innerHTML = data; // Incluir contenido
