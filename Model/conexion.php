@@ -16,5 +16,9 @@ class Conexion {
             die("Error en la conexion: " . $e->getMessage());
         }
     }
+
+    public function getConexion() {
+        return $this->conn;
+    }
 }
 ?>

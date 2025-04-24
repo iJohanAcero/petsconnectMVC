@@ -2,6 +2,7 @@
 
 require_once "Model/conexion.php";
 
+
 class Usuario
 {
     private $db;
@@ -12,7 +13,6 @@ class Usuario
     {
         $this->db = (new Conexion())->conn;
     }
-
 
     public function login($email, $contrasena)
     {
