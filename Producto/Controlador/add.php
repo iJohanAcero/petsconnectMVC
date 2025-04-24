@@ -9,7 +9,7 @@ if($_POST){
     $Precio=$_POST['Precio'];
     $Cantidad=$_POST['Cantidad'];
 
-    $ModeloProducto->add($Nombre, $TipoProducto, $Descripcion, $Precio, $Cantidad);
+    $ModeloProducto->add($Nombre, $TipoProducto, $Descripcion, $Cantidad, $Precio);
 }else{
     header("Location: ../Pages/ProductoView.php");
 }
