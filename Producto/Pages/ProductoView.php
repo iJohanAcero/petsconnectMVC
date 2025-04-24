@@ -1,3 +1,9 @@
+<?php
+////////////////////VALIDAR SESIÓN//////////////////
+require_once ("../Modelo/ProductoModel.php");
+$Modelo = new Productos();
+?>
+
 <!DOCTYPE html>
 <html lang="es">
 
@@ -54,14 +60,19 @@
                             </tr>
                         </thead>
                         <tbody>
+                            <?php 
+                            $Productos = $Modelo->getProducto();
+                            if($Productos!==null){
+                                foreach($Productos as $Producto){
+                            ?>
                             <tr>
                                 <td><input type="checkbox"></td>
-                                <td>*****</td>
-                                <td>*****</td>
-                                <td>*****</td>
-                                <td>*****</td>
-                                <td>*****</td>
-                                <td>*****</td>
+                                <td><?php echo $Producto ['id_producto']; ?></td>
+                                <td><?php echo $Producto ['nombre']; ?></td>
+                                <td><?php echo $Producto ['tipo_producto']; ?></td>
+                                <td><?php echo $Producto ['descripcion']; ?></td>
+                                <td>$<?php echo $Producto ['precio']; ?></td>
+                                <td><?php echo $Producto ['cantidad_disponible']; ?></td>
                                 <td>
                                     <a href="#editProductModal" class="edit" data-bs-toggle="modal">
                                         <i class="material-icons text-warning">&#xE254;</i>
@@ -71,6 +82,10 @@
                                     </a>
                                 </td>
                             </tr>
+                            <?php
+                                }
+                            }
+                            ?>
                         </tbody>
                     </table>
                 </div>
