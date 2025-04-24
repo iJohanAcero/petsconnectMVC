@@ -1,3 +1,7 @@
+<?php
+//////VALIDAR SESIÓN//////////
+$Id=$_GET['Id'];
+?>
 <!DOCTYPE html>
 <html lang="es">
 
@@ -10,7 +14,7 @@
 <body>
     <h1>Eliminar producto</h1>
     <form method="POST" action="../Controlador/delete.php">
-        <input type="hidden" name="Id" value="">
+        <input type="hidden" name="Id" value="<?php echo $Id;?>">
         <p>¿Estas seguro que deseas eliminar este producto?</p>
         <input type="submit" value="Eliminar producto">
     </form>
