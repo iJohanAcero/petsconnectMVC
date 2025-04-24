@@ -1,6 +1,6 @@
 <?php
 ////////////////////VALIDAR SESIÓN//////////////////
-require_once ("../Modelo/ProductoModel.php");
+require_once("../Modelo/ProductoModel.php");
 $Modelo = new Productos();
 
 if (isset($_POST['btnregistrar'])) {
@@ -70,28 +70,28 @@ if (isset($_POST['btnregistrar'])) {
                             </tr>
                         </thead>
                         <tbody>
-                            <?php 
+                            <?php
                             $Productos = $Modelo->getProducto();
-                            if($Productos!==null){
-                                foreach($Productos as $Producto){
+                            if ($Productos !== null) {
+                                foreach ($Productos as $Producto) {
                             ?>
-                            <tr>
-                                <td><input type="checkbox"></td>
-                                <td><?php echo $Producto ['id_producto']; ?></td>
-                                <td><?php echo $Producto ['nombre']; ?></td>
-                                <td><?php echo $Producto ['tipo_producto']; ?></td>
-                                <td><?php echo $Producto ['descripcion']; ?></td>
-                                <td>$<?php echo $Producto ['precio']; ?></td>
-                                <td><?php echo $Producto ['cantidad_disponible']; ?></td>
-                                <td>
-                                    <a href="#editProductModal" class="edit" data-bs-toggle="modal">
-                                        <i class="material-icons text-warning">&#xE254;</i>
-                                    </a>
-                                    <a href="#deleteProductModal" class="delete" data-bs-toggle="modal">
-                                        <i class="material-icons text-danger">&#xE872;</i>
-                                    </a>
-                                </td>
-                            </tr>
+                                    <tr>
+                                        <td><input type="checkbox"></td>
+                                        <td><?php echo $Producto['id_producto']; ?></td>
+                                        <td><?php echo $Producto['nombre']; ?></td>
+                                        <td><?php echo $Producto['tipo_producto']; ?></td>
+                                        <td><?php echo $Producto['descripcion']; ?></td>
+                                        <td>$<?php echo $Producto['precio']; ?></td>
+                                        <td><?php echo $Producto['cantidad_disponible']; ?></td>
+                                        <td>
+                                            <a href="edit.php?Id=<?php echo $Producto['id_producto']; ?>" class="edit">
+                                                <i class="material-icons text-warning">&#xE254;</i>
+                                            </a>
+                                            <a href="delete.php?Id=<?php echo $Producto['id_producto']; ?>" class="delete">
+                                                <i class="material-icons text-danger">&#xE872;</i>
+                                            </a>
+                                        </td>
+                                    </tr>
                             <?php
                                 }
                             }
