@@ -16,13 +16,14 @@
         <select name="TipoProducto" required>
             <option>Seleccione</option>
             <option value="ComidaGato">Comida para gato</option>
-            <option value="ComidaPerro">Comidapara perro</option>
+            <option value="ComidaPerro">Comida para perro</option>
             <option value="ArenaGato">Arena para gatos</option>
+        </select><br><br>
         Descripción <br>
         <input type="text" name="Descripcion" required autocomplete="off" placeholder="Descripción del producto"><br><br>
         Precio <br>
         <input type="number" name="Precio" required autocomplete="off" placeholder="Precio producto"><br><br>
-        Catidad disponible <br>
+        Cantidad disponible <br>
         <input type="number" name="Cantidad" required autocomplete="off" placeholder="Cantidad disponible"><br><br>
         <input type="submit" value="Registrar producto">
     </form>
