@@ -6,6 +6,7 @@
 -- Tiempo de generación: 22-04-2025 a las 05:17:16
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
+-- probando clonacion de repositorio - pablo
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
