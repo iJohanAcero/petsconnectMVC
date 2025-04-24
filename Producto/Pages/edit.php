@@ -1,36 +1,64 @@
+<?php
+require_once("../Modelo/ProductoModel.php");
+
+$Modelo = new Productos();
+
+if (!isset($_GET['Id'])) {
+    echo "ID de producto no especificado.";
+    exit;
+}
+
+$Id = $_GET['Id'];
+$producto = $Modelo->getId($Id);
+
+if (!$producto || empty($producto)) {
+    echo "Producto no encontrado.";
+    exit;
+}
+
+$producto = $producto[0]; // Obtener el primer (y único) resultado si devuelve array de 1 producto
+?>
+
 <!DOCTYPE html>
 <html lang="es">
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Editar producto</title>
+    <link rel="stylesheet" href="../../Public/Css/edit.css">
 </head>
 
 <body>
     <h1>Editar producto</h1>
-    <form method="POST" action="../Controladores/edit.php">
-        <input type="hidden" name="Id" value="">
-        Nombre<br>
-        <input type="text" name="Nombre" required autocomplete="off" placeholder="Nombre producto"><br><br>
-        Tipo de producto <br>
+    <form method="POST" action="../Controlador/edit.php">
+        <input type="hidden" name="Id" value="<?= $producto['id_producto']; ?>">
+
+        <label>Nombre:</label><br>
+        <input type="text" name="Nombre" value="<?= $producto['nombre']; ?>" required><br><br>
+
+        <label>Tipo de producto:</label><br>
         <select name="TipoProducto" required>
-            <option>Seleccione</option>
-            <option value="ComidaGato">Comida para gato</option>
-            <option value="ComidaPerro">Comidapara perro</option>
-            <option value="ArenaGato">Arena para gatos</option>
-        Descripción <br>
-        <input type="text" name="Descripcion" required autocomplete="off" placeholder="Descripción del producto"><br><br>
-        Precio <br>
-        <input type="number" name="Precio" required autocomplete="off" placeholder="Precio producto"><br><br>
-        Catidad disponible <br>
-        <input type="number" name="Cantidad" required autocomplete="off" placeholder="Cantidad disponible"><br><br>
-        Estado <br>
-        <select name="Estado" required>
-            <option value="Disponible">Disponible</option>
-            <option value="No disponible">No disponible</option>
-        </select><br><br> <input type="submit" value="Editar producto">
-    </form>
+            <option value="">Seleccione</option>
+            <option value="ComidaGato" <?= $producto['tipo_producto'] == 'ComidaGato' ? 'selected' : '' ?>>Comida para gato</option>
+            <option value="ComidaPerro" <?= $producto['tipo_producto'] == 'ComidaPerro' ? 'selected' : '' ?>>Comida para perro</option>
+            <option value="ArenaGato" <?= $producto['tipo_producto'] == 'ArenaGato' ? 'selected' : '' ?>>Arena para gatos</option>
+        </select><br><br>
+
+        <label>Descripción:</label><br>
+        <input type="text" name="Descripcion" value="<?= $producto['descripcion']; ?>" required><br><br>
+
+        <label>Precio:</label><br>
+        <input type="number" name="Precio" value="<?= $producto['precio']; ?>" step="0.01" required><br><br>
+
+        <label>Cantidad disponible:</label><br>
+        <input type="number" name="Cantidad" value="<?= $producto['cantidad_disponible']; ?>" required><br><br>
+
+        <input type="submit" value="Actualizar producto">
+    </form><br><br>
+
+    <div>
+        <a href="ProductoView.php">← Volver a la lista de productos</a>
+    </div>
 </body>
 
 </html>
