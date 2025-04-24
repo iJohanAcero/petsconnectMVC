@@ -214,3 +214,40 @@ function inicializarModalFundaciones() { // funcion para inicializar el modal
         };
     }, 100); // Pequeño delay para asegurar que el DOM se haya actualizado
 }
+
+// =========== CRUD DE FUNDACION =========== //
+
+function cargarCrudProductos() {
+    fetch("Producto/Pages/ProductoView.php") // Nombre del archivo PHP a incluir
+        .then(response => response.text()) // Convertir respuesta en texto
+        .then(data => {
+            document.getElementById("crud").innerHTML = data; // Incluir contenido
+
+            inicializarModalFundaciones();
+        })
+        .catch(error => console.error("Error al cargar PHP:", error));
+}
+
+// =========== MODAL DE FUNDACION =========== //
+
+function inicializarModalProductos() { // funcion para inicializar el modal 
+    setTimeout(() => {
+        const modal = document.getElementById("modal-productos");
+        const btn = document.getElementById("openModal");
+        const close = document.querySelector(".close");
+
+        btn.onclick = function () {
+            modal.style.display = "block"; //le decimos que bloquee el display cuando se haga click en el boton
+        };
+
+        close.onclick = function () {
+            modal.style.display = "none"; //le decimos que cuando de click en close(X) se desaparezca el display
+        };
+
+        window.onclick = function (event) {
+            if (event.target == modal) {
+                modal.style.display = "none"; //le decimos que cuando de click en otro lugar fuera del modal, este desaparezca.
+            }
+        };
+    }, 100); // Pequeño delay para asegurar que el DOM se haya actualizado
+}
