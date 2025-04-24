@@ -17,6 +17,7 @@ class Conexion {
             $this->db = new PDO(
                 "{$this->driver}:host={$this->host};port={$this->port};dbname={$this->dbname}", $this->user, $this->password);
             $this->db->setAttribute (PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            return $this->db;
         } catch (PDOException $e) {
             die("Error en la conexion: " . $e->getMessage());
         }
