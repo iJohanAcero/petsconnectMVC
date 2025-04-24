@@ -42,6 +42,18 @@ class Usuario
         $stmt->bindParam(":direccion", $direccion);
         $stmt->bindParam(":telefono", $telefono);
 
-        return $stmt->execute();
+        if ($stmt->execute()) {
+            // Obtener el ID del nuevo usuario
+            $id_usuario = $this->db->lastInsertId();
+
+            // Llamar al procedimiento almacenado para crear guardian + perfil + registro
+            $call = $this->db->prepare("CALL crear_guardian(:id_usuario)");
+            $call->bindParam(":id_usuario", $id_usuario, PDO::PARAM_INT);
+            $call->execute();
+
+            return true;
+        }
+
+        return false;
     }
 }

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 22-04-2025 a las 05:17:16
+-- Tiempo de generación: 23-04-2025 a las 23:50:00
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -18,8 +18,36 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Base de datos: `kathe`
+-- Base de datos: `petsconnect2`
 --
+
+DELIMITER $$
+--
+-- Procedimientos
+--
+CREATE DEFINER=`root`@`localhost` PROCEDURE `crear_guardian` (IN `p_id_usuario` INT)   BEGIN
+  DECLARE v_id_perfil INT;
+  DECLARE v_id_registro INT;
+
+  -- Insertar en perfil
+  INSERT INTO t_perfil (nombre, preferencia, descripcion, imagen)
+  VALUES ('Perfil Guardian', 'Ninguna', 'Auto-generado', 'default.jpg');
+
+  SET v_id_perfil = LAST_INSERT_ID();
+
+  -- Insertar en registro
+  INSERT INTO t_registro (fecha, tipo_usuario)
+  VALUES (CURDATE(), 'GUARDIAN');
+
+  SET v_id_registro = LAST_INSERT_ID();
+
+  -- Insertar en guardian
+  INSERT INTO t_guardian (id_usuario, id_registro, id_perfil)
+VALUES (p_id_usuario, v_id_registro, v_id_perfil);
+
+END$$
+
+DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -94,11 +122,17 @@ CREATE TABLE `t_fundacion` (
 --
 
 CREATE TABLE `t_guardian` (
-  `n_documento` int(11) NOT NULL,
   `id_registro` int(11) NOT NULL,
   `id_usuario` int(11) NOT NULL,
   `id_perfil` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `t_guardian`
+--
+
+INSERT INTO `t_guardian` (`id_registro`, `id_usuario`, `id_perfil`) VALUES
+(1, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -147,6 +181,13 @@ CREATE TABLE `t_perfil` (
   `imagen` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Volcado de datos para la tabla `t_perfil`
+--
+
+INSERT INTO `t_perfil` (`id_perfil`, `nombre`, `preferencia`, `descripcion`, `imagen`) VALUES
+(1, 'Perfil Guardian', 'Ninguna', 'Auto-generado', 'default.jpg');
+
 -- --------------------------------------------------------
 
 --
@@ -157,7 +198,7 @@ CREATE TABLE `t_proceso_adopcion` (
   `id` int(11) NOT NULL,
   `fecha_inicio` datetime NOT NULL,
   `fecha_actializada` datetime NOT NULL,
-  `id_guardian` int(11) NOT NULL,
+  `id_usuario` int(11) NOT NULL,
   `id_mascota` int(11) NOT NULL,
   `nit_fundacion` bigint(11) NOT NULL,
   `id_estado` int(11) NOT NULL
@@ -233,6 +274,13 @@ CREATE TABLE `t_registro` (
   `tipo_usuario` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Volcado de datos para la tabla `t_registro`
+--
+
+INSERT INTO `t_registro` (`id_registro`, `fecha`, `tipo_usuario`) VALUES
+(1, '2025-04-23', 'GUARDIAN');
+
 -- --------------------------------------------------------
 
 --
@@ -255,11 +303,18 @@ CREATE TABLE `t_usuario` (
   `id_usuario` int(11) NOT NULL,
   `nombre` varchar(100) NOT NULL,
   `apellido` varchar(100) NOT NULL,
-  `contraseña` varchar(200) NOT NULL,
+  `contrasena` varchar(200) NOT NULL,
   `email` varchar(100) NOT NULL,
   `direccion` varchar(100) NOT NULL,
   `telefono` varchar(15) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `t_usuario`
+--
+
+INSERT INTO `t_usuario` (`id_usuario`, `nombre`, `apellido`, `contrasena`, `email`, `direccion`, `telefono`) VALUES
+(1, 'johan', 'acero', '$2y$10$CH4iOqn/H8DN47gIPn4WO.gPWP/wm1waGPBGWN5S06LZwhI1UVbIa', 'jasdj@gmail.com', '123123dasd', '1231412');
 
 -- --------------------------------------------------------
 
@@ -321,9 +376,9 @@ ALTER TABLE `t_fundacion`
 -- Indices de la tabla `t_guardian`
 --
 ALTER TABLE `t_guardian`
-  ADD PRIMARY KEY (`n_documento`),
-  ADD KEY `fk_guardian_id_registro` (`id_registro`),
+  ADD PRIMARY KEY (`id_usuario`),
   ADD KEY `fk_guardian_id_usuario` (`id_usuario`),
+  ADD KEY `fk_guardian_id_registro` (`id_registro`),
   ADD KEY `fk_guardian_id_perfil` (`id_perfil`);
 
 --
@@ -355,7 +410,7 @@ ALTER TABLE `t_perfil`
 --
 ALTER TABLE `t_proceso_adopcion`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `fk_id_guardian` (`id_guardian`),
+  ADD KEY `fk_id_usuario` (`id_usuario`),
   ADD KEY `fk_id_mascota` (`id_mascota`),
   ADD KEY `fk_id_fundacion` (`nit_fundacion`),
   ADD KEY `fk_id_estado` (`id_estado`);
@@ -449,7 +504,7 @@ ALTER TABLE `t_mascota`
 -- AUTO_INCREMENT de la tabla `t_perfil`
 --
 ALTER TABLE `t_perfil`
-  MODIFY `id_perfil` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_perfil` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `t_proceso_adopcion`
@@ -485,7 +540,7 @@ ALTER TABLE `t_red_social`
 -- AUTO_INCREMENT de la tabla `t_registro`
 --
 ALTER TABLE `t_registro`
-  MODIFY `id_registro` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_registro` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `t_tipo_mascota`
@@ -497,7 +552,7 @@ ALTER TABLE `t_tipo_mascota`
 -- AUTO_INCREMENT de la tabla `t_usuario`
 --
 ALTER TABLE `t_usuario`
-  MODIFY `id_usuario` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_usuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- Restricciones para tablas volcadas
@@ -514,7 +569,7 @@ ALTER TABLE `t_administrador`
 -- Filtros para la tabla `t_calificacion`
 --
 ALTER TABLE `t_calificacion`
-  ADD CONSTRAINT `fk_n_documento` FOREIGN KEY (`n_documento`) REFERENCES `t_guardian` (`n_documento`),
+  ADD CONSTRAINT `fk_n_documento` FOREIGN KEY (`n_documento`) REFERENCES `t_guardian` (`id_usuario`),
   ADD CONSTRAINT `fk_nit_fundacion` FOREIGN KEY (`nit_fundacion`) REFERENCES `t_fundacion` (`nit_fundacion`);
 
 --
@@ -522,7 +577,7 @@ ALTER TABLE `t_calificacion`
 --
 ALTER TABLE `t_donacion`
   ADD CONSTRAINT `fk_dona_id_producto` FOREIGN KEY (`id_producto`) REFERENCES `t_producto` (`id_producto`),
-  ADD CONSTRAINT `fk_dona_n_documento` FOREIGN KEY (`n_documento`) REFERENCES `t_guardian` (`n_documento`),
+  ADD CONSTRAINT `fk_dona_n_documento` FOREIGN KEY (`n_documento`) REFERENCES `t_guardian` (`id_usuario`),
   ADD CONSTRAINT `fk_dona_nit_fundacion` FOREIGN KEY (`nit_fundacion`) REFERENCES `t_fundacion` (`nit_fundacion`);
 
 --
@@ -545,8 +600,7 @@ ALTER TABLE `t_fundacion`
 ALTER TABLE `t_guardian`
   ADD CONSTRAINT `fk_guardian_id_perfil` FOREIGN KEY (`id_perfil`) REFERENCES `t_perfil` (`id_perfil`),
   ADD CONSTRAINT `fk_guardian_id_registro` FOREIGN KEY (`id_registro`) REFERENCES `t_registro` (`id_registro`),
-  ADD CONSTRAINT `fk_guardian_id_usuario` FOREIGN KEY (`id_usuario`) REFERENCES `t_usuario` (`id_usuario`),
-  ADD CONSTRAINT `t_guardian_ibfk_1` FOREIGN KEY (`n_documento`) REFERENCES `t_proceso_adopcion` (`id_guardian`);
+  ADD CONSTRAINT `fk_guardian_id_usuario` FOREIGN KEY (`id_usuario`) REFERENCES `t_usuario` (`id_usuario`);
 
 --
 -- Filtros para la tabla `t_informe`
