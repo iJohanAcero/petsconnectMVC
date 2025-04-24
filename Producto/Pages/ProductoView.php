@@ -2,6 +2,16 @@
 ////////////////////VALIDAR SESIÓN//////////////////
 require_once ("../Modelo/ProductoModel.php");
 $Modelo = new Productos();
+
+if (isset($_POST['btnregistrar'])) {
+    $nombre = $_POST['nombre'];
+    $tipo = $_POST['tipo_producto'];
+    $descripcion = $_POST['descripcion'];
+    $precio = $_POST['precio'];
+    $cantidad = $_POST['cantidad'];
+
+    $Modelo->add($nombre, $tipo, $descripcion, $cantidad, $precio);
+}
 ?>
 
 <!DOCTYPE html>
