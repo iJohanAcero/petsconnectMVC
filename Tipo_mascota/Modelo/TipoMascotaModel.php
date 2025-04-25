@@ -17,7 +17,7 @@ class TipoMascota
     }
 
     // Método para agregar un nuevo producto a la base de datos
-    public function add( $especie, $raza)
+    public function add($especie, $raza)
     {
         // Preparar la consulta SQL para insertar un nuevo producto en la base de datos
         $statement = $this->db->prepare("INSERT INTO t_tipo_mascota (especie, raza)
