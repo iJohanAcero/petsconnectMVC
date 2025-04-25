@@ -10,7 +10,8 @@
 
 body,
 input {
-    font-family: "Poppins", sans-serif;
+    font-family: "Delius", cursive;
+
 }
 
 .container {
@@ -235,11 +236,11 @@ form.sign-in-form {
 
 .btn.transparent {
     margin: 0;
+    padding: 0.5rem;
     border: 2px solid #fff;
-    width: 130px;
-    height: 41px;
     font-weight: 600;
     font-size: 0.8rem;
+    text-decoration: none;
 }
 
 .btn.transparent :hover{
@@ -425,3 +426,166 @@ form.sign-in-form {
         left: 50%;
     }
 }
+
+
+/* ESTILOS PARA EL FORMULARIO DE REGISTRO DE USUARIOS */
+
+.barra-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: hsl(252, 30%, 10%);
+    padding: 1rem;
+}
+
+.logo {
+    width: 18rem;
+    height: 4rem;
+}
+
+.formulario {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 90vh;
+    background-color: #d4f3ef;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-width: 350px;
+    padding: 20px;
+    border-radius: 20px;
+    position: relative;
+    background-color: #a3bced;
+    color: #333;
+    border: 1px solid #333;
+}
+
+.title_registro {
+    font-size: 28px;
+    font-weight: 600;
+    letter-spacing: -1px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    padding-left: 30px;
+    color: hsl(252, 30%, 10%);
+}
+
+.title_registro::before {
+    width: 18px;
+    height: 18px;
+}
+
+.title_registro::after {
+    width: 18px;
+    height: 18px;
+    animation: pulse 1s linear infinite;
+}
+
+.title_registro::before,
+.title_registro::after {
+    position: absolute;
+    content: "";
+    height: 16px;
+    width: 16px;
+    border-radius: 50%;
+    left: 0px;
+    background-color: hsl(252, 30%, 10%);
+}
+
+.message, 
+.signin {
+    font-size: 14.5px;
+    color: rgb(255, 255, 255);
+}
+
+.signin {
+    text-align: center;
+}
+
+.signin a:hover {
+    text-decoration: underline hsl(0, 0%, 100%);
+}
+
+.signin a {
+    color: hsl(252, 30%, 10%);
+    }
+    
+    .flex {
+        display: flex;
+        width: 100%;
+        gap: 6px;
+    }
+    
+    .form label {
+        position: relative;
+    }
+    
+    .form label .input {
+        background-color: hsl(252, 30%, 10%);
+        color: #fff;
+        width: 100%;
+        padding: 20px 05px 05px 10px;
+        outline: 0;
+        border: 1px solid hsl(252, 30%, 10%);
+        border-radius: 10px;
+    }
+    
+    .form label .input + span {
+        color:  #a3bced;
+        position: absolute;
+        left: 10px;
+        top: 0px;
+        font-size: 0.9em;
+        cursor: text;
+        transition: 0.3s ease;
+    }
+    
+    .form label .input:placeholder-shown + span {
+        top: 12.5px;
+        font-size: 0.9em;
+    }
+    
+    .form label .input:focus + span,
+    .form label .input:valid + span {
+        color: #a3bced;
+        top: 0px;
+        font-size: 0.7em;
+        font-weight: 600;
+    }
+    
+    .input {
+        font-size: medium;
+    }
+    
+    .submit {
+        border: none;
+        outline: none;
+        padding: 10px;
+        border-radius: 10px;
+        color: #fff;
+        font-size: 16px;
+        transform: .3s ease;
+        background-color: hsl(252, 30%, 17%);
+        cursor: pointer;
+    }
+    
+    .submit:hover {
+        background-color: #006d2d;
+    }
+    
+    @keyframes pulse {
+        from {
+            transform: scale(0.9);
+            opacity: 1;
+        }
+        
+        to {
+            transform: scale(1.8);
+            opacity: 0;
+        }
+    }

@@ -166,6 +166,16 @@ categoriaOn.forEach(item =>{
 let darkmode = localStorage.getItem('darkmode')
 const cambioTema = document.getElementById('cambio-tema')
 
+function cambiarLogo(){
+    let imagen = document.getElementById("logo");
+
+    if (imagen.src.includes("logo.png")) {
+        imagen.src = "Public/images/logo-oscuro.png";
+    } else {
+        imagen.src = "Public/images/logo.png";
+    }
+}
+
 const activarDarkmode = () => {
     document.body.classList.add('darkmode')
     localStorage.setItem('darkmode','activo')
@@ -188,38 +198,28 @@ cambioTema.addEventListener('click', () => {
     } else {
         desactivarDarkmode()
     } 
-})
+});
 
 
 //========= CARGAR CRUDS DIFERENTES EN LA PAGINA DE CRUD =========//
+/**
+ * 📌 Función `cargarCruds()`: Carga dinámicamente los botones de los CRUDs disponibles.
+ * 
+ * 🔹 ¿Cómo funciona?
+ * 1️⃣ Usa `fetch("cruds_disponibles.php")` para obtener el contenido del archivo PHP.  
+ * 2️⃣ Convierte la respuesta en texto con `.then(response => response.text())`.  
+ * 3️⃣ Inserta el contenido en el `<div id="cruds">`, mostrando los botones.  
+ * 4️⃣ Si hay un error, lo muestra en la consola con `.catch(error => console.error(...))`.  
+ * 
+ * 🚀 **Esta función permite cargar y actualizar la lista de CRUDs sin recargar la página.**
+ */
 
 // ======= ESTA FUNCION CARGA LAS CRUD DISPONIBLES ===============//
 function cargarCruds() {
-    fetch("cruds_disponibles.php") // Nombre del archivo PHP a incluir
+    fetch("Views/cruds_disponibles.php") // Nombre del archivo PHP a incluir
         .then(response => response.text()) // Convertir respuesta en texto
         .then(data => {
             document.getElementById("cruds").innerHTML = data; // Incluir contenido
-        })
-        .catch(error => console.error("Error al cargar PHP:", error));
-}
-
-
-// =========  CRUD VACUNAS CARGAR ================//
-function cargarCrudVacunas() {
-    fetch("crud_vacunas.php") // Nombre del archivo PHP a incluir
-        .then(response => response.text()) // Convertir respuesta en texto
-        .then(data => {
-            document.getElementById("crud").innerHTML = data; // Incluir contenido
-        })
-        .catch(error => console.error("Error al cargar PHP:", error));
-}
-
-// =========  CRUD PRODUCTOS CARGAR ================//
-function cargarCrudProductos() {
-    fetch("crud_productos.php") // Nombre del archivo PHP a incluir
-        .then(response => response.text()) // Convertir respuesta en texto
-        .then(data => {
-            document.getElementById("crud").innerHTML = data; // Incluir contenido
         })
         .catch(error => console.error("Error al cargar PHP:", error));
 }

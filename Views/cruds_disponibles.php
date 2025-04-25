@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="styles.css">
-    <title>prueba</title>
+    <title> CRUD disponibles</title>
 </head>
 <body>
 <h1> CRUD disponibles</h1>
@@ -22,14 +22,22 @@
                     <button onclick="cargarCrudVacunas()" class="button-crud">
                         Vacunas
                     </button>
-                    <button class="button-crud">
+                    <button onclick="cargarCrudFundaciones()" class="button-crud">
+                        Fundaciones
+                    </button>
+                    <button onclick="cargarCrudProcesos()" class="button-crud">
+                        Procesos de adopción
+                    </button>
+                    <button onclick="cargarCrudTipoMascota()" class="button-crud">
                         Tipo de mascota
                     </button>
+                    
                 </div>
 
 
                 
                 <div id="crud">
+                    <!-- AQUI SE CARGARAN LAS CRUDS CUANDO SE ACTIVE EL ONCLICK DE CADA BOTON POR EL FETCH EN JAVASCRIPT -->
                 </div>
 </body>
 </html>

@@ -1,6 +1,6 @@
 <?php
 require_once('../Modelo/ProductoModel.php');
-require_once('../../Conexion.php');
+require_once('../../Model/conexion.php');
 
 if ($_POST) {
     $ModeloProducto = new Productos();

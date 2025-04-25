@@ -6,13 +6,10 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-if (!isset($_SESSION["user"]) || $_SESSION["tipo_usuario"] !== "admin") {
+if (!isset($_SESSION["user"]) || $_SESSION["tipo_usuario"] !== "guardian") {
     header("Location: ../acceso_denegado.php");
     exit;
 }
-
-
-
 ?>
 
 <!DOCTYPE html>
@@ -146,17 +143,6 @@ if (!isset($_SESSION["user"]) || $_SESSION["tipo_usuario"] !== "admin") {
                         </div>
                         <!---------------------FIN DEL POPUP DE MASCOTAS----------------------------->
                     </a>
-
-                    <!---------------------CRUDS ADMIN DISPONIBLES ----------------------------->
-                    <a class="menu-item" onclick="cargarCruds()">
-                        <span><i class="uil uil-constructor"></i></span>
-                        <h3>CRUD Admin</h3>
-                    </a>
-
-                    <a class="menu-item">
-                        <span><i class="uil uil-setting"></i></span>
-                        <h3>Configuración</h3>
-                    </a>
                 </div>
                 <!------------------------FIN DEL SIDEBAR---------------------->
                 <label for="crear-publicacion" class="btn btn-primario">Crear publicación</label>
@@ -165,8 +151,8 @@ if (!isset($_SESSION["user"]) || $_SESSION["tipo_usuario"] !== "admin") {
 
             <!--====================================================MEDIO=======================================================-->
             <div class="medio">
-                <div id="cruds">
-                    <!-- AQUI SE CARGARAN LAS CRUDS DISPONIBLES POR EL FETCH EN JAVASCRIPT -->
+                <div id="publicaciones">
+                    <!-- AQUI SE CARGARAN LAS PUBLICACIONES DISPONIBLES-->
                 </div>
             </div>
             <!--==============================================DERECHA===========================================-->
