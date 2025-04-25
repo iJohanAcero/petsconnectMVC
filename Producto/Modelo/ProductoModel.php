@@ -1,5 +1,6 @@
 <?php
 // Se requiere el archivo de conexión con la base de datos
+
 require_once '../../Model/conexion.php';
 // Inicia la sesión del usuario
 // session_start();
@@ -105,13 +106,13 @@ class Productos
     }
 
     // Método para eliminar un producto usando su ID
-    public function delete($id)
+    public function delete($Id)
     {
         // Preparar la consulta SQL para eliminar el producto con el ID correspondiente
         $statement = $this->db->prepare("DELETE FROM t_producto WHERE id_producto = :id");
         // Se usa ':id' como marcador para evitar inyecciones SQL y se enlaza con bindParam() para asignar el valor de forma segura
 
-        $statement->bindParam(':id', $id);
+        $statement->bindParam(':id', $Id);
 
         // Ejecutar la consulta
         if ($statement->execute()) {
