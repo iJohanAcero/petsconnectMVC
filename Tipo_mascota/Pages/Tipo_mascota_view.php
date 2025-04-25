@@ -47,10 +47,10 @@ if (isset($_POST['btnregistrar'])) {
                         <td><?php echo $Tipo_mascota['especie']; ?></td>
                         <td><?php echo $Tipo_mascota['raza']; ?></td>
                         <td>
-                            <a href="edit.php?Id=<?php echo $Tipo_mascota['id_Tipo_mascota']; ?>" class="edit">
+                            <a class="edit">
                                 <i class=" uil uil-pen" style="cursor: pointer;"></i>
                             </a>
-                            <a href="delete.php?Id=<?php echo $Tipo_mascota['id_Tipo_mascota']; ?>" class="delete">
+                            <a  class="delete">
                                 <i class="uil uil-trash-alt" style="cursor: pointer;"></i>
                             </a>
                         </td>

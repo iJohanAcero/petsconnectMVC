@@ -7,7 +7,7 @@ class Conexion {
     private $driver = "mysql";
     private $host = "localhost";
     private $port = '3306';
-    private $dbname = "petsconnect2";
+    private $dbname = "petsconnect";
     private $user = "root";
     private $password = "";
 

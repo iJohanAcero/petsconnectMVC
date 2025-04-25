@@ -185,9 +185,8 @@ function inicializarModalTipoMascota() {
         if (form) {
             form.addEventListener("submit", function (e) {
                 e.preventDefault();
-            
                 const formData = new FormData(form);
-            
+
                 fetch("Tipo_mascota/Controlador/add.php", {
                     method: "POST",
                     body: formData
