@@ -11,7 +11,7 @@ class Usuario
 
     public function __construct()
     {
-        $this->db = (new Conexion())->conn;
+        $this->db = (new Conexion())->getConexion();
     }
 
     public function login($email, $contrasena)

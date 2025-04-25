@@ -2,11 +2,15 @@
 
 require_once "config/roles.php";
 
-session_start();
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
 if (!isset($_SESSION["user"]) || $_SESSION["tipo_usuario"] !== "admin") {
     header("Location: ../acceso_denegado.php");
     exit;
 }
+
 
 
 ?>

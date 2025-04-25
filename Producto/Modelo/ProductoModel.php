@@ -1,17 +1,16 @@
 <?php
 // Se requiere el archivo de conexión con la base de datos
-require_once '../../Conexion.php';
+require_once '../../Model/conexion.php';
 // Inicia la sesión del usuario
 // session_start();
 
 // Definición de la clase Producto que hereda de la clase Conexion
-class Productos extends Conexion
+class Productos
 {
+    private $db;
     // Constructor de la clase
-    public function __construct()
-    {
-        // Llama al constructor de la clase padre (Conexion) para establecer la conexión a la base de datos
-        $this->db = parent::__construct();
+    public function __construct() {
+        $this->db = (new Conexion())->getConexion(); 
     }
 
     // Método para agregar un nuevo producto a la base de datos
