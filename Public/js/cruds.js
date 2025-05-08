@@ -33,7 +33,7 @@
 // =========== CRUD DE PROCESOS DE ADOPCION =========== //
 
 function cargarCrudProcesos() {
-    fetch("crud_procesoAdopcion.php") // Nombre del archivo PHP a incluir
+    fetch("Views/crud_procesoAdopcion.php") // Nombre del archivo PHP a incluir
         .then(response => response.text()) // Convertir respuesta en texto
         .then(data => {
             document.getElementById("crud").innerHTML = data; // Incluir contenido
@@ -104,7 +104,7 @@ function inicializarModalProcesos() { // funcion para inicializar el modal
 // =========== CRUD DE VACUNACION =========== //
 
 function cargarCrudVacunas() {
-    fetch("crud_vacunas.php")// Nombre del archivo PHP a incluir
+    fetch("Views/crud_vacunas.php")// Nombre del archivo PHP a incluir
         .then(response => response.text()) // Convertir respuesta en texto
         .then(data => {
             document.getElementById("crud").innerHTML = data; // Incluir contenido
@@ -143,7 +143,7 @@ function inicializarModalVacunas() { // funcion para inicializar el modal
 // =========== CRUD DE TIPO DE MASCOTA =========== //
 
 function cargarCrudTipoMascota() {
-    fetch("crud_tipo_mascota.php") // Nombre del archivo PHP a incluir
+    fetch("Tipo_mascota/Pages/Tipo_mascota_view.php") // Nombre del archivo PHP a incluir
         .then(response => response.text()) // Convertir respuesta en texto
         .then(data => {
             document.getElementById("crud").innerHTML = data; // Incluir contenido
@@ -155,33 +155,66 @@ function cargarCrudTipoMascota() {
 
 // =========== MODAL DE TIPO DE MASCOTA =========== //
 
-function inicializarModalTipoMascota() { // funcion para inicializar el modal 
+
+function inicializarModalTipoMascota() {
     setTimeout(() => {
         const modal = document.getElementById("modal-tipoMascota");
         const btn = document.getElementById("openModal");
         const close = document.querySelector(".close");
 
+        // Abrir modal
         btn.onclick = function () {
-            modal.style.display = "block"; //le decimos que bloquee el display cuando se haga click en el boton
+            modal.style.display = "block";
         };
 
+        //Cerrar modal por (X)
         close.onclick = function () {
-            modal.style.display = "none"; //le decimos que cuando de click en close(X) se desaparezca el display
+            modal.style.display = "none";
         };
 
+        // Cerrar haciendo clic fuera del modal
         window.onclick = function (event) {
-            if (event.target == modal) {
-                modal.style.display = "none"; //le decimos que cuando de click en otro lugar fuera del modal, este desaparezca.
+            if (event.target === modal) {
+                modal.style.display = "none";
             }
         };
-    }, 100); // Pequeño delay para asegurar que el DOM se haya actualizado
+
+        // Enviar formulario vía fetch + FormData
+        const form = document.querySelector(".form-modal");
+
+        if (form) {
+            form.addEventListener("submit", function (e) {
+                e.preventDefault();
+            
+                const formData = new FormData(form);
+            
+                fetch("Tipo_mascota/Controlador/add.php", {
+                  method: "POST",
+                  body: formData
+                })
+                .then(response => response.text())
+                .then(data => {
+                  console.log("🟢 Respuesta recibida:", data);
+                  alert("✅ Producto añadido correctamente.");
+                  form.reset();
+                  modal.style.display = "none";
+                  cargarCrudTipoMascota();
+                })
+                .catch(error => {
+                  console.error("❌ Error en la petición:", error);
+                  alert("⚠️ Error al enviar el formulario.");
+                });
+              });
+        }
+
+    }, 100); // Delay para que el DOM se cargue si viene por innerHTML
 }
 
 
 // =========== CRUD DE FUNDACION =========== //
 
 function cargarCrudFundaciones() {
-    fetch("crud_fundaciones.php") // Nombre del archivo PHP a incluir
+    fetch("Views/crud_fundaciones.php") // Nombre del archivo PHP a incluir
         .then(response => response.text()) // Convertir respuesta en texto
         .then(data => {
             document.getElementById("crud").innerHTML = data; // Incluir contenido
@@ -213,4 +246,122 @@ function inicializarModalFundaciones() { // funcion para inicializar el modal
             }
         };
     }, 100); // Pequeño delay para asegurar que el DOM se haya actualizado
+}
+
+// =========== CRUD DE PRODUCTOS =========== //
+
+function cargarCrudProductos() {
+    fetch("Producto/Pages/ProductoView.php") // Nombre del archivo PHP a incluir
+        .then(response => response.text()) // Convertir respuesta en texto
+        .then(data => {
+            document.getElementById("crud").innerHTML = data; // Incluir contenido
+
+            inicializarModalProductos();
+            inicializarModalProductosEdit();
+        })
+        .catch(error => console.error("Error al cargar PHP:", error));
+}
+
+// =========== MODAL DE PRODUCTOS =========== //
+
+function inicializarModalProductos() {
+    setTimeout(() => {
+        const modal = document.getElementById("modal-productos");
+        const btn = document.getElementById("openModal");
+        const close = document.querySelector(".close");
+
+        // Abrir modal
+        btn.onclick = function () {
+            modal.style.display = "block";
+        };
+
+        //Cerrar modal por (X)
+        close.onclick = function () {
+            modal.style.display = "none";
+        };
+
+        // Cerrar haciendo clic fuera del modal
+        window.onclick = function (event) {
+            if (event.target === modal) {
+                modal.style.display = "none";
+            }
+        };
+
+        // Enviar formulario vía fetch + FormData
+        const form = document.querySelector(".form-modal");
+
+        if (form) {
+            form.addEventListener("submit", function (e) {
+                e.preventDefault();
+            
+                const formData = new FormData(form);
+            
+                fetch("Producto/Controlador/add.php", {
+                    method: "POST",
+                    body: formData
+                })
+                .then(response => response.text())
+                .then(data => {
+                    form.reset();
+                    modal.style.display = "none";
+                    cargarCrudProductos();
+                })
+                .catch(error => {
+                    alert("⚠️ Error al enviar el formulario.");
+                });
+            });
+        }
+
+    }, 100); // Delay para que el DOM se cargue si viene por innerHTML
+}
+
+function inicializarModalProductosEdit() {
+    setTimeout(() => {
+        const modal = document.getElementById("modal-productos-edit");
+        const btn = document.getElementById("openModal");
+        const close = document.querySelector(".close");
+
+        // Abrir modal
+        btn.onclick = function () {
+            modal.style.display = "block";
+        };
+
+        //Cerrar modal por (X)
+        close.onclick = function () {
+            modal.style.display = "none";
+        };
+
+        // Cerrar haciendo clic fuera del modal
+        window.onclick = function (event) {
+            if (event.target === modal) {
+                modal.style.display = "none";
+            }
+        };
+
+        // Enviar formulario vía fetch + FormData
+        const form = document.querySelector(".form-modal");
+
+        if (form) {
+            form.addEventListener("submit", function (e) {
+                e.preventDefault();
+            
+                const formData = new FormData(form);
+            
+                fetch("Producto/Controlador/add.php", {
+                    method: "POST",
+                    body: formData
+                })
+                .then(response => response.text())
+                .then(data => {
+                    form.reset();
+                    modal.style.display = "none";
+                    cargarCrudProductos();
+                })
+                .catch(error => {
+                    alert("⚠️ Error al enviar el formulario.");
+                });
+            });
+        }
+
+    }, 100); // Delay para que el DOM se c
 }
