@@ -189,22 +189,19 @@ function inicializarModalTipoMascota() {
                 const formData = new FormData(form);
             
                 fetch("Tipo_mascota/Controlador/add.php", {
-                  method: "POST",
-                  body: formData
+                    method: "POST",
+                    body: formData
                 })
                 .then(response => response.text())
                 .then(data => {
-                  console.log("🟢 Respuesta recibida:", data);
-                  alert("✅ Producto añadido correctamente.");
-                  form.reset();
-                  modal.style.display = "none";
-                  cargarCrudTipoMascota();
+                    form.reset();
+                    modal.style.display = "none";
+                    cargarCrudTipoMascota();
                 })
                 .catch(error => {
-                  console.error("❌ Error en la petición:", error);
-                  alert("⚠️ Error al enviar el formulario.");
+                    console.error("❌ Error en la petición:", error);
                 });
-              });
+            });
         }
 
     }, 100); // Delay para que el DOM se cargue si viene por innerHTML
