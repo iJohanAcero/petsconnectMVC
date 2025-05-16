@@ -312,53 +312,53 @@ function inicializarModalProductos() {
     }, 100); // Delay para que el DOM se cargue si viene por innerHTML
 }
 
-function inicializarModalProductosEdit() {
-    setTimeout(() => {
-        const modal = document.getElementById("modal-productos-edit");
-        const btn = document.getElementById("openModal");
-        const close = document.querySelector(".close");
+// function inicializarModalProductosEdit() {
+//     setTimeout(() => {
+//         const modal = document.getElementById("modal-productos-edit");
+//         const btn = document.getElementById("openModal");
+//         const close = document.querySelector(".close");
 
-        // Abrir modal
-        btn.onclick = function () {
-            modal.style.display = "block";
-        };
+//         // Abrir modal
+//         btn.onclick = function () {
+//             modal.style.display = "block";
+//         };
 
-        //Cerrar modal por (X)
-        close.onclick = function () {
-            modal.style.display = "none";
-        };
+//         //Cerrar modal por (X)
+//         close.onclick = function () {
+//             modal.style.display = "none";
+//         };
 
-        // Cerrar haciendo clic fuera del modal
-        window.onclick = function (event) {
-            if (event.target === modal) {
-                modal.style.display = "none";
-            }
-        };
+//         // Cerrar haciendo clic fuera del modal
+//         window.onclick = function (event) {
+//             if (event.target === modal) {
+//                 modal.style.display = "none";
+//             }
+//         };
 
-        // Enviar formulario vía fetch + FormData
-        const form = document.querySelector(".form-modal");
+//         // Enviar formulario vía fetch + FormData
+//         const form = document.querySelector(".form-modal");
 
-        if (form) {
-            form.addEventListener("submit", function (e) {
-                e.preventDefault();
+//         if (form) {
+//             form.addEventListener("submit", function (e) {
+//                 e.preventDefault();
             
-                const formData = new FormData(form);
+//                 const formData = new FormData(form);
             
-                fetch("Producto/Controlador/add.php", {
-                    method: "POST",
-                    body: formData
-                })
-                .then(response => response.text())
-                .then(data => {
-                    form.reset();
-                    modal.style.display = "none";
-                    cargarCrudProductos();
-                })
-                .catch(error => {
-                    alert("⚠️ Error al enviar el formulario.");
-                });
-            });
-        }
+//                 fetch("Producto/Controlador/add.php", {
+//                     method: "POST",
+//                     body: formData
+//                 })
+//                 .then(response => response.text())
+//                 .then(data => {
+//                     form.reset();
+//                     modal.style.display = "none";
+//                     cargarCrudProductos();
+//                 })
+//                 .catch(error => {
+//                     alert("⚠️ Error al enviar el formulario.");
+//                 });
+//             });
+//         }
 
-    }, 100); // Delay para que el DOM se c
-}
+//     }, 100); // Delay para que el DOM se c
+// }
