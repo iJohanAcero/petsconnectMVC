@@ -30,18 +30,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["action"])) {
         if ($user) {
             $_SESSION["user"] = $user;
 
-            // 🧠 DETECCIÓN DE ROL
+            // DETECCIÓN DE ROL
             $tipo_usuario = "";
 
-            // 🔍 DETECTAR ROL
+            // DETECTAR ROL
             if (esAdmin($user["id_usuario"])) {
                 $_SESSION["tipo_usuario"] = "admin";
                 header("Location: index.php?page=admin_home");
                 exit;
+
             } else if (esGuardian($user["id_usuario"])) {
                 $_SESSION["tipo_usuario"] = "guardian";
                 header("Location: index.php?page=guardian_home");
                 exit;
+
             } else {
                 $_SESSION["tipo_usuario"] = "desconocido";
                 header("Location: acceso_denegado.php");
@@ -69,7 +71,7 @@ switch ($page) {
         if ($_SESSION["tipo_usuario"] === "admin") {
             require_once "views/admin_home.php";
         } else {
-            require_once "views/acceso_denegado.php";
+            exit("Acceso denegado");
         }
         break;
 
@@ -77,7 +79,7 @@ switch ($page) {
         if ($_SESSION["tipo_usuario"] === "guardian") {
             require_once "views/guardian_home.php";
         } else {
-            require_once "views/acceso_denegado.php";
+            exit("Acceso denegado");
         }
         break;
 
@@ -89,9 +91,4 @@ switch ($page) {
         }
         break;
 
-
-    case "logout":
-        session_destroy();
-        header("Location: index.php");
-        break;
 }
