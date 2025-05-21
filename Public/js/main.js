@@ -1,4 +1,5 @@
 
+
 //================ SCROLL DE MASCOTAS RECOMENDADAS ===========================
 const scroller = document.querySelectorAll(".scroll");
 
