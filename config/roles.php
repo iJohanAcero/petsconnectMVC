@@ -15,3 +15,10 @@ function esGuardian($id_usuario) {
     $stmt->execute([$id_usuario]);
     return $stmt->rowCount() > 0;
 }
+
+function esFundación($nit_Fundacion) {
+    $db = (new Conexion())->getConexion();
+    $stmt = $db->prepare("SELECT 1 FROM t_fundacion WHERE nit_Fundacion = ? LIMIT 1");
+    $stmt->execute([$nit_Fundacion]);
+    return $stmt->rowCount() > 0;
+}
