@@ -566,8 +566,9 @@ form.sign-in-form {
 
 .validar-email {
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
+    margin-left: 2.5rem;
 }
 
 .NoEmail {
@@ -579,6 +580,8 @@ form.sign-in-form {
     height: 30px;
     border-radius: 50%;
     display: flex;
+    margin: 5px;
+    align-items: center;
 
 }
 
