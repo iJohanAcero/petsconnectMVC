@@ -2,8 +2,7 @@
 // Se requiere el archivo de conexión con la base de datos
 
 require_once '../../Model/conexion.php';
-// Inicia la sesión del usuario
-// session_start();
+
 
 // Definición de la clase Producto que hereda de la clase Conexion
 class Productos
@@ -31,10 +30,10 @@ class Productos
         // Ejecutar la consulta
         if ($statement->execute()) {
             // Si la consulta es exitosa, redirige a la página de inicio
-            header("Location: ../Pages/ProductoView.php");
+            header("Location: ../view/producto/ProductoView.php");
         } else {
-            // Si la consulta falla, redirige a la página de agregar producto para intentar nuevamente
-            header("Location: ../Pages/add.php");
+           //si la consulta falla, mostrar una alerta de error
+            echo "<script>alert('Error al registrar.');</script>";
         }
     }
 

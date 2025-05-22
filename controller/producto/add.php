@@ -1,6 +1,6 @@
 <?php
 
-require_once ('../Modelo/ProductoModel.php');
+require_once ('../../Model/producto/ProductoModel.php');
 
 if($_POST){
     $ModeloProducto = new Productos();
@@ -12,6 +12,6 @@ if($_POST){
 
     $ModeloProducto->add($Nombre, $TipoProducto, $Descripcion, $Cantidad, $Precio);
 }else{
-    header("Location: ../Pages/ProductoView.php");
+    header("Location: view/producto/ProductoView.php");
 }
 ?>

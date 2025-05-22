@@ -59,7 +59,7 @@
                     <p>
                         Introduce tus datos y comienza tu adopción con nosotros
                     </p>
-                    <a href="Views/register.php" class="btn transparent" id="sign-up-btn">
+                    <a href="view/login/register.php" class="btn transparent" id="sign-up-btn">
                         Registrate
                     </a>
                 </div>

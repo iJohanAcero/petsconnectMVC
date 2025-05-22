@@ -1,6 +1,6 @@
 <?php
-////////////////////VALIDAR SESIÓN//////////////////
-require_once("../Modelo/ProductoModel.php");
+
+require_once("../../Model/producto/ProductoModel.php");
 $Modelo = new Productos();
 
 if (isset($_POST['btnregistrar'])) {
@@ -115,7 +115,7 @@ if (isset($_POST['btnregistrar'])) {
             <span class="close">&times;</span>
             <h2 class="titulo-modal">Editar producto!</h2>
 
-            <form action="../Controlador/add.php" method="POST" class="form-modal">
+            <form action="controller/producto/add.php" method="POST" class="form-modal">
                 <label for="nombre">Nombre:</label>
                 <input class="input-modal" type="text" id="nombre" name="nombre" autocomplete="off" required>
 

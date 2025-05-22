@@ -1,6 +1,6 @@
 <?php
-////////////////////VALIDAR SESIÓN//////////////////
-require_once("../Modelo/TipoMascotaModel.php");
+
+require_once("../../Model/tipo_mascota/TipoMascotaModel.php");
 $Modelo = new TipoMascota();
 
 if (isset($_POST['btnregistrar'])) {
@@ -58,7 +58,7 @@ if (isset($_POST['btnregistrar'])) {
             <?php
                 }
             } else {
-                echo "<tr><td colspan='8'>No hay tipo$Tipo_mascota registrados.</td></tr>";
+                echo "<tr><td colspan='8'>No hay tipo mascotas registradas.</td></tr>";
             }
             ?>
         </tbody>
@@ -74,7 +74,7 @@ if (isset($_POST['btnregistrar'])) {
 
             <!-------------- FORMULARIO VACUNAS ------->
 
-            <form action="../Controlador/add.php" method="POST" class="form-modal">
+            <form action="controller/tipo_mascota/add.php" method="POST" class="form-modal">
 
                 <label for="especie">Especie:</label>
                 <input class="input-modal" type="text" id="especie" name="especie" required>

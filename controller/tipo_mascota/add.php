@@ -1,6 +1,6 @@
 <?php
 
-require_once ('../Modelo/TipoMascotaModel.php');
+require_once ('../../Model/tipo_mascota/TipoMascotaModel.php');
 
 if($_POST){
     $ModeloTipoMascota = new TipoMascota();
@@ -9,6 +9,6 @@ if($_POST){
 
     $ModeloTipoMascota->add($especie, $raza);
 }else{
-    header("Location: ../Pages/Tipo_mascota_view.php");
+    header("Location: view/tipo_mascota/Tipo_mascota_view.php");
 }
 ?>

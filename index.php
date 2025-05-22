@@ -1,5 +1,5 @@
 <?php
-require_once "controller/usuarioController.php";
+require_once "controller/usuario/usuarioController.php";
 require_once "config/roles.php";
 
 session_start();
@@ -46,7 +46,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["action"])) {
 
             } else {
                 $_SESSION["tipo_usuario"] = "desconocido";
-                header("Location: acceso_denegado.php");
+                $mensaje = "No se pudo determinar el rol del usuario";
                 exit;
             }
         } else {
@@ -61,7 +61,7 @@ if (isset($_GET["action"]) && $_GET["action"] == "logout") {
 }
 
 if (!isset($_SESSION["user"])) {
-    require_once "Views/login.php";
+    require_once "view/login/login.php";
 }
 
 $page = $_GET["page"] ?? "";
@@ -69,7 +69,7 @@ $page = $_GET["page"] ?? "";
 switch ($page) {
     case "admin_home":
         if ($_SESSION["tipo_usuario"] === "admin") {
-            require_once "views/admin_home.php";
+            require_once "view/home/admin_home.php";
         } else {
             exit("Acceso denegado");
         }
@@ -77,7 +77,7 @@ switch ($page) {
 
     case "guardian_home":
         if ($_SESSION["tipo_usuario"] === "guardian") {
-            require_once "views/guardian_home.php";
+            require_once "view/home/guardian_home.php";
         } else {
             exit("Acceso denegado");
         }
@@ -85,9 +85,9 @@ switch ($page) {
 
     case "registro":
         if (!isset($_SESSION["user"])) {
-            require_once "views/registro.php";
+            require_once "view/login/register.php";
         } else {
-            header("Location: index.php?page=admin_home"); // o guardian_home
+            header("Location: index.php?page=registro"); 
         }
         break;
 

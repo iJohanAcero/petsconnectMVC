@@ -8,7 +8,6 @@
     <title> CRUD disponibles</title>
 </head>
 <body>
-<h1> CRUD disponibles</h1>
                 <div class="botones-crud">
                     <button class="button-crud">
                         Usuarios

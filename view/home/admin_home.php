@@ -4,6 +4,7 @@ require_once "config/roles.php";
 
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
+
     // No cachear esta página
     header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
     header("Cache-Control: post-check=0, pre-check=0", false);
@@ -14,11 +15,6 @@ if (!isset($_SESSION["user"]) || $_SESSION["tipo_usuario"] !== "admin") {
     
     exit;
 }
-
-
-
-
-
 
 
 ?>
@@ -45,7 +41,9 @@ if (!isset($_SESSION["user"]) || $_SESSION["tipo_usuario"] !== "admin") {
         <div class="container">
 
             <div class="logo">
-                <img id="logo" src="Public/images/logo.png">
+                <a onClick="history.go(0);">
+                    <img id="logo" src="Public/images/logo.png">
+                </a>
             </div>
 
             <div class="barra-buscador">

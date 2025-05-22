@@ -6,19 +6,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <link rel="stylesheet" href="../Public/css/login.css">
+    <link rel="stylesheet" href="../../Public/css/login.css">
     <title>Registrar Usuarios</title>
 </head>
 
 <body>
 
 
-    <div class="barra-top">
-        <img class="logo" src="../Public/images/logo-oscuro.png">
+    <div class="barra-top" >
+        <a href="../../index.php">
+        <img class="logo" src="../../Public/images/logo-oscuro.png">
+        </a>
     </div>
 
     <div class="formulario">
-        <form class="form" action="../index.php" method="POST">
+        <form class="form" action="../../index.php" method="POST">
             <input type="hidden" name="action" value="register">
             <p class="title_registro">Registrar Nuevo usuario </p>
             <p class="message"> Registrate para tener acceso a todas las funcionalidades </p>
@@ -64,11 +66,11 @@
             </label>
 
             <button class="submit">Registrar </button>
-            <p class="signin">Ya tienes una cuenta ? <a href="../index.php">Inicio de Sesión</a> </p>
+            <p class="signin">Ya tienes una cuenta ? <a href="../../index.php">Inicio de Sesión</a> </p>
         </form>
     </div>
 
-    <script src="../Public/js/regex.js"></script>
+    <script src="../../public/js/regex.js"></script>
 </body>
 
 </html>
