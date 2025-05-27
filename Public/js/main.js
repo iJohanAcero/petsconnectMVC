@@ -1,4 +1,5 @@
 
+
 //================ SCROLL DE MASCOTAS RECOMENDADAS ===========================
 const scroller = document.querySelectorAll(".scroll");
 
@@ -216,7 +217,7 @@ cambioTema.addEventListener('click', () => {
 
 // ======= ESTA FUNCION CARGA LAS CRUD DISPONIBLES ===============//
 function cargarCruds() {
-    fetch("Views/cruds_disponibles.php") // Nombre del archivo PHP a incluir
+    fetch("view/home/cruds_disponibles.php") // Nombre del archivo PHP a incluir
         .then(response => response.text()) // Convertir respuesta en texto
         .then(data => {
             document.getElementById("cruds").innerHTML = data; // Incluir contenido

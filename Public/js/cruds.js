@@ -1,34 +1,3 @@
-/**
- * 📌 Función para cargar un CRUD en la vista principal de manera dinámica.
- * 
- * 🔹 ¿Qué hace esta función?
- *    - Esta función permite cargar distintos CRUDs (Crear, Leer, Actualizar, Eliminar) 
- *      dentro de un espacio específico en la página sin necesidad de recargarla.
- * 
- * 🔹 ¿Cómo funciona?
- * 1️⃣ La función se llama `cargarCrud(nombreCrud)`, donde `nombreCrud` es el nombre 
- *    del archivo PHP que contiene el CRUD que queremos mostrar.
- * 
- * 2️⃣ Se usa `fetch()` para hacer una petición al servidor y obtener el contenido del 
- *    archivo PHP correspondiente (por ejemplo, `"crud_vacunas.php"` si `nombreCrud` es `"crud_vacunas"`).
- * 
- * 3️⃣ Una vez que `fetch()` recibe la respuesta, convertimos el contenido en texto 
- *    con `.then(response => response.text())`. Esto permite insertar el contenido en el DOM.
- * 
- * 4️⃣ Luego, usamos `document.getElementById("crud").innerHTML = data;` para colocar 
- *    el contenido dentro de un `<div>` con `id="crud"`. 
- *    📌 **IMPORTANTE:** Este `div` debe existir en el HTML y es donde se mostrará el CRUD.
- * 
- * 5️⃣ Después de insertar el contenido, llamamos a la función `inicializarModal();`
- *    📌 **¿Por qué llamamos a `inicializarModal()`?**
- *       - Si el CRUD tiene un modal, este no funcionará correctamente si no se inicializa.
- *       - `inicializarModal()` se encarga de asignar los eventos y hacer que el modal funcione.
- *       - Sin esta función, el botón para abrir el modal no haría nada.
- * 
- * 🚀 **Esta función permite cambiar entre diferentes CRUDs sin recargar la página, 
- *     haciendo que la experiencia sea más rápida y fluida.**
- */
-
 
 // =========== CRUD DE PROCESOS DE ADOPCION =========== //
 
@@ -44,38 +13,6 @@ function cargarCrudProcesos() {
 }
 
 
-/**
- * 📌 Función `inicializarModal()`: Permite que el modal funcione correctamente en la página.
- * 
- * 🔹 ¿Por qué necesitamos `inicializarModal()`?
- *    - Cuando un modal se carga dinámicamente en la página (por ejemplo, con `fetch()`),
- *      los eventos de clic en el botón y en el botón de cerrar (`X`) no funcionan automáticamente.
- *    - Esta función asigna los eventos para **abrir** y **cerrar** el modal correctamente.
- * 
- * 🔹 ¿Cómo funciona la función?
- * 1️⃣ **Esperamos 100 milisegundos (`setTimeout()`)** antes de ejecutar el código.
- *    📌 **¿Por qué?**  
- *       - Esto da tiempo para que el contenido del modal se inserte en el DOM si fue cargado dinámicamente.  
- *       - Si intentamos acceder a los elementos antes de que existan, el código fallará.
- * 
- * 2️⃣ **Obtenemos los elementos del modal** con `document.getElementById()`:
- *    - `modal`: La ventana emergente (`id="modal-procesos"`).
- *    - `btn`: El botón que abre el modal (`id="openModal"`).
- *    - `close`: El botón "X" para cerrar el modal (`class="close"`).
- * 
- * 3️⃣ **Evento para abrir el modal (`btn.onclick`)**:
- *    - Cuando el usuario hace clic en el botón, cambiamos `modal.style.display = "block";`
- *    - Esto hace que el modal se muestre en la pantalla.
- * 
- * 4️⃣ **Evento para cerrar el modal con "X" (`close.onclick`)**:
- *    - Cuando el usuario hace clic en el botón "X", cambiamos `modal.style.display = "none";`
- *    - Esto oculta el modal.
- * 
- * 5️⃣ **Cerrar el modal al hacer clic fuera de él (`window.onclick`)**:
- *    - Si el usuario hace clic fuera del modal (en el fondo oscuro), lo ocultamos.
- *    - Se verifica con `if (event.target == modal)`.
- * 
- */
 // =========== MODAL DE PROCESOS DE ADOPCION =========== //
 
 function inicializarModalProcesos() { // funcion para inicializar el modal 
@@ -143,7 +80,7 @@ function inicializarModalVacunas() { // funcion para inicializar el modal
 // =========== CRUD DE TIPO DE MASCOTA =========== //
 
 function cargarCrudTipoMascota() {
-    fetch("Tipo_mascota/Pages/Tipo_mascota_view.php") // Nombre del archivo PHP a incluir
+    fetch("view/tipo_mascota/Tipo_mascota_view.php") // Nombre del archivo PHP a incluir
         .then(response => response.text()) // Convertir respuesta en texto
         .then(data => {
             document.getElementById("crud").innerHTML = data; // Incluir contenido
@@ -188,23 +125,20 @@ function inicializarModalTipoMascota() {
             
                 const formData = new FormData(form);
             
-                fetch("Tipo_mascota/Controlador/add.php", {
-                  method: "POST",
-                  body: formData
+                fetch("controller/tipo_mascota/add.php", {
+                    method: "POST",
+                    body: formData
                 })
                 .then(response => response.text())
                 .then(data => {
-                  console.log("🟢 Respuesta recibida:", data);
-                  alert("✅ Producto añadido correctamente.");
-                  form.reset();
-                  modal.style.display = "none";
-                  cargarCrudTipoMascota();
+                    form.reset();
+                    modal.style.display = "none";
+                    cargarCrudTipoMascota();
                 })
                 .catch(error => {
-                  console.error("❌ Error en la petición:", error);
-                  alert("⚠️ Error al enviar el formulario.");
+                    console.error("Error en la petición:", error);
                 });
-              });
+            });
         }
 
     }, 100); // Delay para que el DOM se cargue si viene por innerHTML
@@ -251,7 +185,7 @@ function inicializarModalFundaciones() { // funcion para inicializar el modal
 // =========== CRUD DE PRODUCTOS =========== //
 
 function cargarCrudProductos() {
-    fetch("Producto/Pages/ProductoView.php") // Nombre del archivo PHP a incluir
+    fetch("view/producto/ProductoView.php") // Nombre del archivo PHP a incluir
         .then(response => response.text()) // Convertir respuesta en texto
         .then(data => {
             document.getElementById("crud").innerHTML = data; // Incluir contenido
@@ -296,7 +230,7 @@ function inicializarModalProductos() {
             
                 const formData = new FormData(form);
             
-                fetch("Producto/Controlador/add.php", {
+                fetch("controller/producto/add.php", {
                     method: "POST",
                     body: formData
                 })
@@ -307,7 +241,7 @@ function inicializarModalProductos() {
                     cargarCrudProductos();
                 })
                 .catch(error => {
-                    alert("⚠️ Error al enviar el formulario.");
+                    console.error(" Error al enviar el formulario.", error);
                 });
             });
         }
@@ -315,53 +249,3 @@ function inicializarModalProductos() {
     }, 100); // Delay para que el DOM se cargue si viene por innerHTML
 }
 
-function inicializarModalProductosEdit() {
-    setTimeout(() => {
-        const modal = document.getElementById("modal-productos-edit");
-        const btn = document.getElementById("openModal");
-        const close = document.querySelector(".close");
-
-        // Abrir modal
-        btn.onclick = function () {
-            modal.style.display = "block";
-        };
-
-        //Cerrar modal por (X)
-        close.onclick = function () {
-            modal.style.display = "none";
-        };
-
-        // Cerrar haciendo clic fuera del modal
-        window.onclick = function (event) {
-            if (event.target === modal) {
-                modal.style.display = "none";
-            }
-        };
-
-        // Enviar formulario vía fetch + FormData
-        const form = document.querySelector(".form-modal");
-
-        if (form) {
-            form.addEventListener("submit", function (e) {
-                e.preventDefault();
-            
-                const formData = new FormData(form);
-            
-                fetch("Producto/Controlador/add.php", {
-                    method: "POST",
-                    body: formData
-                })
-                .then(response => response.text())
-                .then(data => {
-                    form.reset();
-                    modal.style.display = "none";
-                    cargarCrudProductos();
-                })
-                .catch(error => {
-                    alert("⚠️ Error al enviar el formulario.");
-                });
-            });
-        }
-
-    }, 100); // Delay para que el DOM se c
-}
