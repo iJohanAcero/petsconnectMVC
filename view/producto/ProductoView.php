@@ -89,7 +89,7 @@ if (isset($_POST['btnregistrar'])) {
                 <input class="input-modal" type="text" id="nombre" name="nombre" autocomplete="off" required>
 
                 <label for="tipo_producto">Tipo:</label>
-                <select class="input-modal" name="TipoProducto" required>
+                <select class="input-modal" name="tipo_producto" required>
                     <option>Seleccione</option>
                     <option value="ComidaGato">Comida para gato</option>
                     <option value="ComidaPerro">Comida para perro</option>
@@ -120,7 +120,7 @@ if (isset($_POST['btnregistrar'])) {
                 <input class="input-modal" type="text" id="nombre" name="nombre" autocomplete="off" required>
 
                 <label for="tipo_producto">Tipo:</label>
-                <select class="input-modal" name="TipoProducto" required>
+                <select class="input-modal" name="tipo_producto" required>
                     <option>Seleccione</option>
                     <option value="ComidaGato">Comida para gato</option>
                     <option value="ComidaPerro">Comida para perro</option>
