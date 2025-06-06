@@ -148,7 +148,7 @@ function inicializarModalTipoMascota() {
 // =========== CRUD DE FUNDACION =========== //
 
 function cargarCrudFundaciones() {
-    fetch("Views/crud_fundaciones.php") // Nombre del archivo PHP a incluir
+    fetch("view/fundacion/fundacion_view.php") // Nombre del archivo PHP a incluir
         .then(response => response.text()) // Convertir respuesta en texto
         .then(data => {
             document.getElementById("crud").innerHTML = data; // Incluir contenido
