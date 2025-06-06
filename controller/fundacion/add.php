@@ -1,6 +1,6 @@
 <?php
 
-require_once ('../Modelo/FundacionModel.php');
+require_once ('../../Modelo/FundacionModel.php');
 
 // Validamos que venga una solicitud POST
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
