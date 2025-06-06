@@ -13,7 +13,8 @@ $fundaciones = $fundacionModel->getFundacion();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CRUD_Fundacion</title>
-    
+    <!-- Podés linkear tus estilos aquí -->
+    <link rel="stylesheet" href="../css/estilos.css"> <!-- opcional -->    
 </head>
 
 <body>
