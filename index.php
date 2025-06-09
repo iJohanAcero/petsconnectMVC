@@ -61,7 +61,7 @@ if (isset($_GET["action"]) && $_GET["action"] == "logout") {
 }
 
 if (!isset($_SESSION["user"])) {
-    require_once "view/login/login.php";
+    require_once "view/login/landing.php";
 }
 
 $page = $_GET["page"] ?? "";

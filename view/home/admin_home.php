@@ -27,6 +27,7 @@ if (!isset($_SESSION["user"]) || $_SESSION["tipo_usuario"] !== "admin") {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PetsConnect</title>
 
+    <link href="https://cdn.lineicons.com/5.0/lineicons.css" rel="stylesheet" />
     <link rel="shortcut icon" href="Public/images/icono.png" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 

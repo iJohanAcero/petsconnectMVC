@@ -190,6 +190,28 @@ img {
   color: var(--color-gray);
 }
 
+.hero {
+            background: linear-gradient(135deg, #a3bced, #f5faff);
+            padding: 80px 0;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            font-weight: bold;
+        }
+
+        .card img {
+            object-fit: cover;
+            height: 200px;
+        }
+
+        footer {
+            background-color: #f1f1f1;
+            padding: 20px 0;
+            text-align: center;
+        }
+
 /* ------------------------BARRA DE NAVEGACIÓN------------------------------------------- */
 
 nav {
@@ -1013,3 +1035,4 @@ main .container .derecha {
     width: 80%;
   }
 }
+
