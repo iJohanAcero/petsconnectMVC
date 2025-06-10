@@ -1,6 +1,6 @@
 <?php
 //////VALIDAR SESIÓN//////////
-$Id=$_GET['Id'];
+$id=$_GET['id'];
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -13,11 +13,13 @@ $Id=$_GET['Id'];
 
 <body>
     <h1>Eliminar producto</h1>
-    <form method="POST" action="../Controlador/delete.php">
-        <input type="hidden" name="Id" value="<?php echo $Id;?>">
-        <p>¿Estas seguro que deseas eliminar este producto?</p>
-        <input type="submit" value="Eliminar producto">
-    </form>
+    <form method="POST" action="/petsconnectMVC/controller/producto/ProductoController.php">
+    <input type="hidden" name="id" value="<?php echo $id; ?>">
+    <input type="hidden" name="eliminar" value="1">
+    <p>¿Estás seguro que deseas eliminar este producto?</p>
+    <input type="submit" value="Eliminar producto">
+</form>
+
 </body>
 
 </html>
