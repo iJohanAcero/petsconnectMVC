@@ -27,7 +27,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
-                    <nav class="navbar navbar-expand-lg">
+                    <nav class="navbar navbar-expand-lg" id="header">
                         <a class="navbar-brand" href="index.php">
                             <img src="Public/images/logo/logo-oscuro.png" alt="Logo" />
                         </a>
@@ -59,10 +59,10 @@
                         </div>
 
                         <div class="navbar-btn d-none d-sm-inline-block ud-hero-buttons">
-                            <a href="login.html" class="ud-main-btn ud-login-btn">
+                            <a href="view/login/login.php" class="ud-main-btn ud-login-btn">
                                 Iniciar Sesión
                             </a>
-                            <a class="ud-main-btn ud-white-btn" href="javascript:void(0)">
+                            <a class="ud-main-btn ud-white-btn" href="view/login/.php">
                                 Registrarse
                             </a>
                         </div>
@@ -219,7 +219,7 @@
                         <p>
                             Nuestra comunidad crece con cada historia de adopción, cada guardián registrado y cada sonrisa compartida. No solo es una red social, es un movimiento por el bienestar animal.
                         </p>
-                        <a href="javascript:void(0)" class="ud-main-btn">Descubre cómo ayudamos cada día</a>
+                        <a href="javascript:void(0)" class="ud-main-btn">Descubre!</a>
                     </div>
                 </div>
                 <div class="ud-about-image">
@@ -456,7 +456,7 @@
                 <div class="col-lg-12">
                     <div class="ud-section-title mx-auto text-center">
                         <span>Testimonios</span>
-                        <h2>Lo que dicen nuestros clientes</h2>
+                        <h2>Lo que dice nuestra comunidad</h2>
                         <p>
                             Nuestros usuarios comparten sus experiencias y cómo PetsConnect ha cambiado sus vidas y las de sus mascotas.
                         </p>
