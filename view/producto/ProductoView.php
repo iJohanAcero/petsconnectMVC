@@ -2,16 +2,15 @@
 
 require_once("../../Model/producto/ProductoModel.php");
 $Modelo = new Productos();
+// if (isset($_POST['btnregistrar'])) {
+//     $nombre = $_POST['nombre'];
+//     $tipo = $_POST['tipo_producto'];
+//     $descripcion = $_POST['descripcion'];
+//     $precio = $_POST['precio'];
+//     $cantidad = $_POST['cantidad'];
 
-if (isset($_POST['btnregistrar'])) {
-    $nombre = $_POST['nombre'];
-    $tipo = $_POST['tipo_producto'];
-    $descripcion = $_POST['descripcion'];
-    $precio = $_POST['precio'];
-    $cantidad = $_POST['cantidad'];
-
-    $Modelo->add($nombre, $tipo, $descripcion, $cantidad, $precio);
-}
+//     $Modelo->add($nombre, $tipo, $descripcion, $cantidad, $precio);
+// }
 ?>
 
 
@@ -64,9 +63,12 @@ if (isset($_POST['btnregistrar'])) {
                             <a id="OpenModal" class="edit" data-id="<?php echo $Producto['id_producto']; ?>">
                                 <i class="uil uil-pen" style="cursor: pointer;"></i>
                             </a>
-                            <a href="delete.php?Id=<?php echo $Producto['id_producto']; ?>" class="delete">
-                                <i class="uil uil-trash-alt" style="cursor: pointer;"></i>
-                            </a>
+                            <form action="../controller/producto/ProductoController.php" method="POST" style="display:inline;">
+                                <input type="hidden" name="Id" value="<?php echo $Producto['id_producto']; ?>">
+                                <button type="submit" name="eliminar" class="delete" onclick="return confirm('¿Estás seguro de eliminar este producto?')">
+                                    <i class="uil uil-trash-alt" style="cursor: pointer;"></i>
+                                </button>
+                            </form>
                         </td>
                     </tr>
             <?php
@@ -84,12 +86,12 @@ if (isset($_POST['btnregistrar'])) {
             <span class="close">&times;</span>
             <h2 class="titulo-modal">¡Registrar nuevo producto!</h2>
 
-            <form action="../Controlador/add.php" method="POST" class="form-modal">
+            <form action="../../controller/producto/ProductoController.php" method="POST" class="form-modal">
                 <label for="nombre">Nombre:</label>
                 <input class="input-modal" type="text" id="nombre" name="nombre" autocomplete="off" required>
 
                 <label for="tipo_producto">Tipo:</label>
-                <select class="input-modal" name="TipoProducto" required>
+                <select class="input-modal" name="tipo_producto" required>
                     <option>Seleccione</option>
                     <option value="ComidaGato">Comida para gato</option>
                     <option value="ComidaPerro">Comida para perro</option>
@@ -99,13 +101,13 @@ if (isset($_POST['btnregistrar'])) {
                 <label for="descripcion">Descripción:</label>
                 <input class="input-modal" type="text" id="descripcion" name="descripcion" autocomplete="off" required><br><br>
 
-                <label for="precio">Precio:</label>
-                <input class="input-modal" type="number" id="precio" name="precio" step="0.01" autocomplete="off" required><br><br>
-
                 <label for="cantidad_disponible">Cantidad:</label>
                 <input class="input-modal" type="number" id="cantidad_disponible" name="cantidad_disponible" autocomplete="off" required><br><br>
 
-                <button class="btn-añadir" type="submit">Guardar</button>
+                <label for="precio">Precio:</label>
+                <input class="input-modal" type="number" id="precio" name="precio" step="0.01" autocomplete="off" required><br><br>
+
+                <button class="btn-añadir" type="submit" name="btnregistrar">Guardar</button>
             </form>
         </div>
     </div>
@@ -115,12 +117,12 @@ if (isset($_POST['btnregistrar'])) {
             <span class="close">&times;</span>
             <h2 class="titulo-modal">Editar producto!</h2>
 
-            <form action="controller/producto/add.php" method="POST" class="form-modal">
+            <form action="../../controller/producto/ProductoController.php" method="POST" class="form-modal">
                 <label for="nombre">Nombre:</label>
                 <input class="input-modal" type="text" id="nombre" name="nombre" autocomplete="off" required>
 
                 <label for="tipo_producto">Tipo:</label>
-                <select class="input-modal" name="TipoProducto" required>
+                <select class="input-modal" name="tipo_producto" required>
                     <option>Seleccione</option>
                     <option value="ComidaGato">Comida para gato</option>
                     <option value="ComidaPerro">Comida para perro</option>
@@ -130,13 +132,15 @@ if (isset($_POST['btnregistrar'])) {
                 <label for="descripcion">Descripción:</label>
                 <input class="input-modal" type="text" id="descripcion" name="descripcion" autocomplete="off" required><br><br>
 
-                <label for="precio">Precio:</label>
-                <input class="input-modal" type="number" id="precio" name="precio" step="0.01" autocomplete="off" required><br><br>
-
                 <label for="cantidad_disponible">Cantidad:</label>
                 <input class="input-modal" type="number" id="cantidad_disponible" name="cantidad_disponible" autocomplete="off" required><br><br>
 
-                <button class="btn-añadir" type="submit">Guardar</button>
+                <label for="precio">Precio:</label>
+                <input class="input-modal" type="number" id="precio" name="precio" step="0.01" autocomplete="off" required><br><br>
+
+                <input type="hidden" name="accion" value="registrar">
+
+                <button class="btn-añadir" type="submit" name="btnregistrar">Guardar</button>
             </form>
         </div>
     </div>
