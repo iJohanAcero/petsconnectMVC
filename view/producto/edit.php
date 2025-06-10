@@ -30,7 +30,7 @@ $producto = $producto[0]; // Obtener el primer (y único) resultado si devuelve 
 
 <body>
     <h1>Editar producto</h1>
-    <form method="POST" action="../Controlador/edit.php">
+    <form method="POST" action="../../controller/producto/ProductoController.php">
         <input type="hidden" name="Id" value="<?= $producto['id_producto']; ?>">
 
         <label>Nombre:</label><br>
@@ -53,7 +53,7 @@ $producto = $producto[0]; // Obtener el primer (y único) resultado si devuelve 
         <label>Cantidad disponible:</label><br>
         <input type="number" name="Cantidad" value="<?= $producto['cantidad_disponible']; ?>" required><br><br>
 
-        <input type="submit" value="Actualizar producto">
+        <button type="submit" name="actualizar">Actualizar</button>
     </form><br><br>
 
     <div>
