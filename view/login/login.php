@@ -8,7 +8,7 @@
 
     <link
         rel="shortcut icon"
-        href="../../Public/images/icono.png"
+        href="../../Public/images/icono2.png"
         type="image/png" />
 
 
@@ -22,9 +22,9 @@
     <title>PetsConnect inicio sesión</title>
 </head>
 
-<body style="background-color: hsl(252, 30%, 10%);">
+<body style="background-color: f3f4fe; background-image: url('../../Public/images/login/background.jpg'); background-size:contain;">
     <!-- ====== Header Section Start ====== -->
-    <header class="ud-header">
+    <header class="ud-header" style="padding-top: 0.5rem; position: sticky; background-color: hsl(252, 30%, 10%);">
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
@@ -32,11 +32,6 @@
                         <a class="navbar-brand" href="../../index.php">
                             <img src="../../Public/images/logo/logo-oscuro.png" alt="Logo" />
                         </a>
-                        <button class="navbar-toggler">
-                            <span class="toggler-icon"> </span>
-                            <span class="toggler-icon"> </span>
-                            <span class="toggler-icon"> </span>
-                        </button>
 
                         <div class="navbar-collapse">
                             <ul id="nav" class="navbar-nav mx-auto">
@@ -44,8 +39,8 @@
                         </div>
 
                         <div class="navbar-btn d-none d-sm-inline-block ud-hero-buttons">
-                            <a href="" class="ud-main-btn ud-login-btn">
-                                Iniciar Sesión
+                            <a href="../../index.php" class="ud-main-btn ud-login-btn">
+                                Volver al inicio
                             </a>
                             <a class="ud-main-btn ud-white-btn" href="register.php">
                                 Registrarse
@@ -134,53 +129,53 @@
                 <div class="col-lg-12">
                     <div class="ud-login-wrapper">
                         <div class="ud-login-logo">
-                            <img src="assets/images/logo/logo-2.svg" alt="logo" />
+                            <img src="../../Public/images/icono.png" alt="logo" />
                         </div>
                         <form class="ud-login-form">
                             <div class="ud-form-group">
                                 <input
                                     type="email"
                                     name="email"
-                                    placeholder="Email/username" />
+                                    placeholder="Correo electrónico" />
                             </div>
                             <div class="ud-form-group">
                                 <input
                                     type="password"
                                     name="password"
-                                    placeholder="*********" />
+                                    placeholder="Contraseña" />
                             </div>
                             <div class="ud-form-group">
-                                <button type="submit" class="ud-main-btn w-100">Login</button>
+                                <button type="submit" class="ud-main-btn w-100">Iniciar Sesión</button>
                             </div>
                         </form>
 
                         <div class="ud-socials-connect">
-                            <p>Connect With</p>
+                            <p>Iniciar sesión con</p>
 
                             <ul>
                                 <li>
                                     <a href="javascript:void(0)" class="facebook">
-                                        <i class="lni lni-facebook-filled"></i>
+                                        <i class="uil uil-facebook"></i>
                                     </a>
                                 </li>
                                 <li>
                                     <a href="javascript:void(0)" class="twitter">
-                                        <i class="lni lni-twitter-filled"></i>
+                                        <i class="uil uil-twitter"></i>
                                     </a>
                                 </li>
                                 <li>
                                     <a href="javascript:void(0)" class="google">
-                                        <i class="lni lni-google"></i>
+                                        <i class="uil uil-google"></i>
                                     </a>
                                 </li>
                             </ul>
                         </div>
 
                         <a class="forget-pass" href="javascript:void(0)">
-                            Forget Password?
+                            ¿Olvidaste tu contraseña?
                         </a>
                         <p class="signup-option">
-                            Not a member yet? <a href="javascript:void(0)"> Sign Up </a>
+                            ¿No eres miembro aún? <a href="javascript:void(0)" > Registrate </a>
                         </p>
                     </div>
                 </div>
@@ -188,13 +183,13 @@
         </div>
     </section>
     <!-- ====== Login End ====== -->
-     <!-- ====== Footer Start ====== -->
+    <!-- ====== Footer Start ====== -->
     <footer class="ud-footer wow fadeInUp" data-wow-delay=".15s">
         <div class="shape shape-2">
-            <img src="Public/images/footer/shape-2.svg" alt="shape" />
+            <img src="../../Public/images/footer/shape-2.svg" alt="shape" />
         </div>
         <div class="shape shape-3">
-            <img src="Public/images/footer/shape-3.svg" alt="shape" />
+            <img src="../../Public/images/footer/shape-3.svg" alt="shape" />
         </div>
         <div class="ud-footer-widgets">
             <div class="container">
@@ -202,7 +197,7 @@
                     <div class="col-xl-3 col-lg-4 col-md-6">
                         <div class="ud-widget">
                             <a href="index.php" class="ud-footer-logo">
-                                <img src="Public/images/logo/logo-oscuro.png" alt="logo" />
+                                <img src="../../Public/images/logo/logo-oscuro.png" alt="logo" />
                             </a>
                             <p class="ud-widget-desc">
                                 PetsConnect es una plataforma dedicada a conectar animales necesitados con personas dispuestas a brindarles un hogar amoroso. Nuestra misión es facilitar la adopción responsable y promover el bienestar animal en nuestra comunidad.
@@ -237,19 +232,19 @@
                             <h5 class="ud-widget-title">Sobre nosotros</h5>
                             <ul class="ud-widget-links">
                                 <li>
-                                    <a href="#home">Inicio</a>
+                                    <a href="../../index.php #home">Inicio</a>
                                 </li>
                                 <li>
-                                    <a href="#about">Misión</a>
+                                    <a href="../../index.php #about">Misión</a>
                                 </li>
                                 <li>
-                                    <a href="#pricing">Actividades</a>
+                                    <a href="../../index.php #pricing">Actividades</a>
                                 </li>
                                 <li>
-                                    <a href="#testimonials">Testimonios</a>
+                                    <a href="../../index.php #testimonials">Testimonios</a>
                                 </li>
                                 <li>
-                                    <a href="#team">Equipo</a>
+                                    <a href="../../index.php #team">Equipo</a>
                                 </li>
                             </ul>
                         </div>
@@ -259,16 +254,13 @@
                             <h5 class="ud-widget-title">Información </h5>
                             <ul class="ud-widget-links">
                                 <li>
-                                    <a href="#about">¿Cómo funciona?</a>
+                                    <a href="../../index.php #about">¿Cómo funciona?</a>
                                 </li>
                                 <li>
                                     <a href="javascript:void(0)">Política de privacidad</a>
                                 </li>
                                 <li>
                                     <a href="javascript:void(0)">Términos del servicio</a>
-                                </li>
-                                <li>
-                                    <a href="javascript:void(0)">Política de reembolso</a>
                                 </li>
                             </ul>
                         </div>
@@ -283,7 +275,7 @@
                                         rel="nofollow noopner"
                                         target="_blank">
                                         <img
-                                            src="Public/images/footer/brands/sena.png"
+                                            src="../../Public/images/footer/brands/sena.png"
                                             alt="SENA" />
                                     </a>
                                 </li>
@@ -293,7 +285,7 @@
                                         rel="nofollow noopner"
                                         target="_blank">
                                         <img
-                                            src="Public/images/footer/brands/iconscout.png"
+                                            src="../../Public/images/footer/brands/iconscout.png"
                                             alt="ecommerce-html" />
                                     </a>
                                 </li>
@@ -303,7 +295,7 @@
                                         rel="nofollow noopner"
                                         target="_blank">
                                         <img
-                                            src="Public/images/footer/brands/bootstrap.png"
+                                            src="../../Public/images/footer/brands/bootstrap.png"
                                             alt="graygrids" />
                                     </a>
                                 </li>
@@ -313,11 +305,11 @@
                                         rel="nofollow noopner"
                                         target="_blank">
                                         <img
-                                            src="Public/images/footer/brands/uideck.svg"
+                                            src="../../Public/images/footer/brands/uideck.svg"
                                             alt="lineicons" />
                                     </a>
                                 </li>
-                                
+
                             </ul>
                         </div>
                     </div>
@@ -327,7 +319,7 @@
         <div class="ud-footer-bottom">
             <div class="container">
                 <div class="row">
-                    
+
                     <div class="col-md-5">
                         <p class="ud-footer-bottom-right">
                             Diseñado y desarrollado por
@@ -346,49 +338,5 @@
     <!-- ====== All Javascript Files ====== -->
     <script src="../../Public/js/bootstrap.bundle.min.js"></script>
     <script src="../../Public/js/wow.min.js"></script>
-    <script src="../../Public/js/main.js"></script>
-    <script>
-        // ==== for menu scroll
-        const pageLink = document.querySelectorAll(".ud-menu-scroll");
 
-        pageLink.forEach((elem) => {
-            elem.addEventListener("click", (e) => {
-                e.preventDefault();
-                document.querySelector(elem.getAttribute("href")).scrollIntoView({
-                    behavior: "smooth",
-                    offsetTop: 1 - 60,
-                });
-            });
-        });
-
-        // section menu active
-        function onScroll(event) {
-            const sections = document.querySelectorAll(".ud-menu-scroll");
-            const scrollPos =
-                window.pageYOffset ||
-                document.documentElement.scrollTop ||
-                document.body.scrollTop;
-
-            for (let i = 0; i < sections.length; i++) {
-                const currLink = sections[i];
-                const val = currLink.getAttribute("href");
-                const refElement = document.querySelector(val);
-                const scrollTopMinus = scrollPos + 73;
-                if (
-                    refElement.offsetTop <= scrollTopMinus &&
-                    refElement.offsetTop + refElement.offsetHeight > scrollTopMinus
-                ) {
-                    document
-                        .querySelector(".ud-menu-scroll")
-                        .classList.remove("active");
-                    currLink.classList.add("active");
-                } else {
-                    currLink.classList.remove("active");
-                }
-            }
-        }
-
-        window.document.addEventListener("scroll", onScroll);
-
-    </script>
 </body>

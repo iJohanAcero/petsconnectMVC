@@ -690,7 +690,6 @@ p {
   font-weight: 700;
   font-size: 42px;
   line-height: 55px;
-  text-transform: capitalize;
   color: var(--heading-color);
   margin-bottom: 20px;
 }
@@ -892,7 +891,7 @@ p {
 .ud-single-pricing {
   margin-bottom: 40px;
   background: var(--white);
-  border: 2px solid #d4deff;
+  border: 2px solid var(--white);
   border-radius: 8px;
   text-align: center;
   padding: 45px 30px;
@@ -1268,7 +1267,6 @@ p {
 .ud-single-team .ud-team-info h5 {
   font-weight: 500;
   font-size: 18px;
-  text-transform: capitalize;
   margin-bottom: 10px;
 }
 
@@ -1675,8 +1673,10 @@ p {
   background: var(--white);
   text-align: center;
   padding: 60px;
+  border-radius: 0.6rem;
   -webkit-box-shadow: 0px 10px 35px rgba(0, 0, 0, 0.05);
           box-shadow: 0px 10px 35px rgba(0, 0, 0, 0.05);
+  
 }
 
 .ud-login-wrapper .ud-login-logo {
@@ -1781,6 +1781,12 @@ p {
 
 .signup-option a {
   color: var(--primary-color);
+  font-weight: 600;
+  text-decoration:underline;
+}
+
+.signup-option a:hover {
+  color: #ffffff;
 }
 
 /* ====== Blog CSS ====== */

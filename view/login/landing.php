@@ -9,7 +9,7 @@
     <!--====== Favicon Icon ======-->
     <link
         rel="shortcut icon"
-        href="Public/images/icono.png"
+        href="Public/images/icono2.png"
         type="image/png" />
 
 
@@ -50,7 +50,7 @@
                                     <a class="ud-menu-scroll" href="#pricing">Actividades</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="ud-menu-scroll" href="#team">Equipo</a>
+                                    <a class="ud-menu-scroll" href="#team">Ayudas</a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="ud-menu-scroll" href="#contact">Contacto</a>
@@ -59,7 +59,7 @@
                         </div>
 
                         <div class="navbar-btn d-none d-sm-inline-block ud-hero-buttons">
-                            <a href="view/login/login.php" class="ud-main-btn ud-login-btn">
+                            <a href="view/login/login.php"  class="ud-main-btn ud-login-btn">
                                 Iniciar Sesión
                             </a>
                             <a class="ud-main-btn ud-white-btn" href="view/login/.php">
@@ -87,7 +87,7 @@
                         </p>
                         <ul class="ud-hero-buttons">
                             <li>
-                                <a href="" rel="nofollow noopener" target="_blank" class="ud-main-btn ud-white-btn">
+                                <a href="view/login/login.php" rel="nofollow noopener" class="ud-main-btn ud-white-btn">
                                     ¡ Adopta ahora !
                                 </a>
                             </li>
@@ -127,7 +127,7 @@
                 <div class="col-lg-12">
                     <div class="ud-section-title">
                         <span>¿Por qué elegirnos?</span>
-                        <h2>Características principales de PetsConnect</h2>
+                        <h2>Características principales de Petsconnect</h2>
                         <p>
                             Más que una red, somos un puente entre humanos y mascotas que necesitan amor.
                         </p>
@@ -213,7 +213,7 @@
                         <span class="tag">Nuestra Misión</span>
                         <h2>Conectamos corazones, un hogar a la vez.</h2>
                         <p>
-                            En PetsConnect creemos que cada mascota merece una segunda oportunidad. Creamos una plataforma que une a animales necesitados con personas dispuestas a brindarles amor, cuidado y un hogar para siempre.
+                            En Petsconnect creemos que cada mascota merece una segunda oportunidad. Creamos una plataforma que une a animales necesitados con personas dispuestas a brindarles amor, cuidado y un hogar para siempre.
                         </p>
 
                         <p>
@@ -237,7 +237,7 @@
                 <div class="col-lg-12">
                     <div class="ud-section-title mx-auto text-center">
                         <span>Actividades</span>
-                        <h2>¿Qué puedes hacer en PetsConnect?</h2>
+                        <h2>¿Qué puedes hacer en Petsconnect?</h2>
                         <p>
                             Explora funciones que te permiten ayudar, interactuar y transformar vidas peludas.
                         </p>
@@ -280,8 +280,7 @@
                         <div class="ud-pricing-body">
                             <ul>
                                 <li>Infórmate y apoya campañas de rescate, vacunación y eventos de adopción organizados por fundaciones y refugios verificados. </li>
-                                <li>Funcionalidad:
-                                    Feed con posts de fundaciones + botón de contacto/apoyo.</li>
+        
                             </ul>
                         </div>
                         <div class="ud-pricing-footer">
@@ -342,7 +341,7 @@
                                 <span class="icon flex-shrink-0">
                                     <i class="uil uil-question-circle"></i>
                                 </span>
-                                <span>¿Cómo puedo adoptar una mascota en PetsConnect?</span>
+                                <span>¿Cómo puedo adoptar una mascota en Petsconnect?</span>
                             </button>
                             <div id="collapseOne" class="accordion-collapse collapse">
                                 <div class="ud-faq-body">
@@ -360,11 +359,11 @@
                                 <span class="icon flex-shrink-0">
                                     <i class="uil uil-question-circle"></i>
                                 </span>
-                                <span>¿PetsConnect cobra por sus servicios?</span>
+                                <span>¿Petsconnect cobra por sus servicios?</span>
                             </button>
                             <div id="collapseTwo" class="accordion-collapse collapse">
                                 <div class="ud-faq-body">
-                                    No. Todas las funcionalidades de PetsConnect son 100% gratuitas. No pedimos dinero ni comisiones por adopciones, publicaciones o conexión con fundaciones.
+                                    No. Todas las funcionalidades de Petsconnect son 100% gratuitas. No pedimos dinero ni comisiones por adopciones, publicaciones o conexión con fundaciones.
                                 </div>
                             </div>
                         </div>
@@ -382,7 +381,7 @@
                             </button>
                             <div id="collapseThree" class="accordion-collapse collapse">
                                 <div class="ud-faq-body">
-                                    No. Actualmente, solo las fundaciones y organizaciones verificadas pueden publicar mascotas para adopción en PetsConnect. Esto nos permite asegurar que cada publicación cumple con nuestras políticas de bienestar y trazabilidad.
+                                    No. Actualmente, solo las fundaciones y organizaciones verificadas pueden publicar mascotas para adopción en Petsconnect. Esto nos permite asegurar que cada publicación cumple con nuestras políticas de bienestar y trazabilidad.
                                 </div>
                             </div>
                         </div>
@@ -416,7 +415,7 @@
                                 <span class="icon flex-shrink-0">
                                     <i class="uil uil-question-circle"></i>
                                 </span>
-                                <span>¿Qué es un "Guardián" en PetsConnect?</span>
+                                <span>¿Qué es un "Guardián" en Petsconnect?</span>
                             </button>
                             <div id="collapseFive" class="accordion-collapse collapse">
                                 <div class="ud-faq-body">
@@ -458,7 +457,7 @@
                         <span>Testimonios</span>
                         <h2>Lo que dice nuestra comunidad</h2>
                         <p>
-                            Nuestros usuarios comparten sus experiencias y cómo PetsConnect ha cambiado sus vidas y las de sus mascotas.
+                            Nuestros usuarios comparten sus experiencias y cómo Petsconnect ha cambiado sus vidas y las de sus mascotas.
                         </p>
                     </div>
                 </div>
@@ -478,7 +477,7 @@
                         </div>
                         <div class="ud-testimonial-content">
                             <p>
-                                “Nuestra experiencia con PetsConnect ha sido transformadora. Adoptamos a Luna y ahora es parte de nuestra familia. La plataforma es fácil de usar y nos permitió encontrarla rápidamente.”
+                                “Nuestra experiencia con Petsconnect ha sido transformadora. Adoptamos a Luna y ahora es parte de nuestra familia. La plataforma es fácil de usar y nos permitió encontrarla rápidamente. Gracias Petsconnect ”
                             </p>
                         </div>
                         <div class="ud-testimonial-info">
@@ -508,7 +507,7 @@
                         </div>
                         <div class="ud-testimonial-content">
                             <p>
-                                "PetsConnect ha sido una bendición para nuestra fundación. Nos ha permitido conectar con personas maravillosas que quieren ayudar a nuestros animales rescatados. La comunidad es increíble y el apoyo es invaluable."
+                                "Petsconnect ha sido una bendición para nuestra fundación. Nos ha permitido conectar con personas maravillosas que quieren ayudar a nuestros animales rescatados. La comunidad es increíble y el apoyo es invaluable."
                             </p>
                         </div>
                         <div class="ud-testimonial-info">
@@ -537,7 +536,7 @@
                         </div>
                         <div class="ud-testimonial-content">
                             <p>
-                                "Gracias a PetsConnect, pude encontrar un hogar para Max, un perro que había estado en la calle por meses. La plataforma es segura y confiable, y me siento feliz de haber podido ayudar a un animal necesitado."
+                                "Gracias a Petsconnect, pude encontrar un hogar para Max, un perro que había estado en la calle por meses. La plataforma es segura y confiable, y me siento feliz de haber podido ayudar a un animal necesitado."
                             </p>
                         </div>
                         <div class="ud-testimonial-info">
@@ -565,10 +564,10 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="ud-section-title mx-auto text-center">
-                        <span>Nuestro equipo</span>
-                        <h2>Conoce al equipo</h2>
+                        <span>Nuestros productos</span>
+                        <h2>Conoce todas las formas de ayudar</h2>
                         <p>
-                            Un grupo apasionado por el bienestar animal, trabajando juntos para hacer del mundo un lugar mejor para nuestras mascotas.
+                            En Petsconnect, tenemos una variedad de productos y servicios diseñados para facilitar la adopción, el cuidado y el bienestar de las mascotas. Alimentos y accesorios  cada producto está pensado para mejorar la vida de los animales y sus adoptantes.
                         </p>
                     </div>
                 </div>
@@ -579,7 +578,7 @@
                     <div class="ud-single-team wow fadeInUp" data-wow-delay=".1s">
                         <div class="ud-team-image-wrapper">
                             <div class="ud-team-image">
-                                <img src="Public/images/team/johan.jpg" alt="team" />
+                                <img src="Public/images/team/atun.jpg" alt="team" />
                             </div>
 
                             <img
@@ -592,33 +591,17 @@
                                 class="shape shape-2" />
                         </div>
                         <div class="ud-team-info">
-                            <h5>Johan Acero</h5>
-                            <h6>Ingeniero</h6>
+                            <h5>Alimento humedo</h5>
+                            <h6>Comida</h6>
                         </div>
-                        <ul class="ud-team-socials">
-                            <li>
-                                <a href="https://twitter.com/MusharofChy" target="_blank">
-                                    <i class="uil uil-twitter"></i>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="https://twitter.com/MusharofChy" target="_blank">
-                                    <i class="uil uil-facebook"></i>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="https://twitter.com/MusharofChy" target="_blank">
-                                    <i class="uil uil-instagram"></i>
-                                </a>
-                            </li>
-                        </ul>
+                        
                     </div>
                 </div>
                 <div class="col-xl-3 col-lg-3 col-sm-6">
                     <div class="ud-single-team wow fadeInUp" data-wow-delay=".1s">
                         <div class="ud-team-image-wrapper">
                             <div class="ud-team-image">
-                                <img src="Public/images/team/pablo.jpg" alt="pablo" />
+                                <img src="Public/images/team/comida-perro.jpg" alt="pablo" />
                             </div>
 
                             <img
@@ -631,33 +614,17 @@
                                 class="shape shape-2" />
                         </div>
                         <div class="ud-team-info">
-                            <h5>Pablo Vela</h5>
-                            <h6>Ingeniero</h6>
+                            <h5>Concentrado</h5>
+                            <h6>Comida</h6>
                         </div>
-                        <ul class="ud-team-socials">
-                            <li>
-                                <a href="https://twitter.com/MusharofChy" target="_blank">
-                                    <i class="uil uil-twitter"></i>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="https://twitter.com/MusharofChy" target="_blank">
-                                    <i class="uil uil-facebook"></i>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="https://twitter.com/MusharofChy" target="_blank">
-                                    <i class="uil uil-instagram"></i>
-                                </a>
-                            </li>
-                        </ul>
+                        
                     </div>
                 </div>
                 <div class="col-xl-3 col-lg-3 col-sm-6">
                     <div class="ud-single-team wow fadeInUp" data-wow-delay=".1s">
                         <div class="ud-team-image-wrapper">
                             <div class="ud-team-image">
-                                <img src="Public/images/team/kathe.jpg" alt="kathe" />
+                                <img src="Public/images/team/arena.jpg" alt="pablo" />
                             </div>
 
                             <img
@@ -670,29 +637,44 @@
                                 class="shape shape-2" />
                         </div>
                         <div class="ud-team-info">
-                            <h5>Katherine Rojas</h5>
-                            <h6>Ingeniera</h6>
+                            <h5>Arena gato</h5>
+                            <h6>Higiene</h6>
                         </div>
-                        <ul class="ud-team-socials">
-                            <li>
-                                <a href="https://twitter.com/MusharofChy" target="_blank">
-                                    <i class="uil uil-twitter"></i>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="https://twitter.com/MusharofChy" target="_blank">
-                                    <i class="uil uil-facebook"></i>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="https://twitter.com/MusharofChy"  target="_blank">
-                                    <i class="uil uil-instagram"></i>
-                                </a>
-                            </li>
-                        </ul>
+                        
                     </div>
                 </div>
-                
+
+                <div class="col-xl-3 col-lg-3 col-sm-6">
+                    <div class="ud-single-team wow fadeInUp" data-wow-delay=".1s">
+                        <div class="ud-team-image-wrapper">
+                            <div class="ud-team-image">
+                                <img src="Public/images/team/gimnasio.jpg" alt="pablo" />
+                            </div>
+
+                            <img
+                                src="Public/images/team/dotted-shape.svg"
+                                alt="shape"
+                                class="shape shape-1" />
+                            <img
+                                src="Public/images/team/shape-2.svg"
+                                alt="shape"
+                                class="shape shape-2" />
+                        </div>
+                        <div class="ud-team-info">
+                            <h5>Gimnasio</h5>
+                            <h6>Accesorios</h6>
+                        </div>
+                        
+                    </div>
+                </div>
+                <ul class="ud-hero-buttons">
+                            <li>
+                                <a href="view/login/login.php" rel="nofollow noopener" target="_blank" class="ud-main-btn ud-white-btn">
+                                    ¡ Ver mas productos !
+                                </a>
+                            </li>
+
+                        </ul>
             </div>
         </div>
     </section>
@@ -798,7 +780,7 @@
                                 <img src="Public/images/logo/logo-oscuro.png" alt="logo" />
                             </a>
                             <p class="ud-widget-desc">
-                                PetsConnect es una plataforma dedicada a conectar animales necesitados con personas dispuestas a brindarles un hogar amoroso. Nuestra misión es facilitar la adopción responsable y promover el bienestar animal en nuestra comunidad.
+                                Petsconnect es una plataforma dedicada a conectar animales necesitados con personas dispuestas a brindarles un hogar amoroso. Nuestra misión es facilitar la adopción responsable y promover el bienestar animal en nuestra comunidad.
                             </p>
                             <ul class="ud-widget-socials">
                                 <li>
@@ -842,7 +824,7 @@
                                     <a href="#testimonials">Testimonios</a>
                                 </li>
                                 <li>
-                                    <a href="#team">Equipo</a>
+                                    <a href="#team">Ayudas</a>
                                 </li>
                             </ul>
                         </div>
@@ -859,9 +841,6 @@
                                 </li>
                                 <li>
                                     <a href="javascript:void(0)">Términos del servicio</a>
-                                </li>
-                                <li>
-                                    <a href="javascript:void(0)">Política de reembolso</a>
                                 </li>
                             </ul>
                         </div>
