@@ -59,7 +59,7 @@
                         </div>
 
                         <div class="navbar-btn d-none d-sm-inline-block ud-hero-buttons">
-                            <a href="login.html" class="ud-main-btn ud-login-btn">
+                            <a href="./view/login/recuperarContraseña.php" class="ud-main-btn ud-login-btn">
                                 Iniciar Sesión
                             </a>
                             <a class="ud-main-btn ud-white-btn" href="javascript:void(0)">

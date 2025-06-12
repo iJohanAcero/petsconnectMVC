@@ -92,3 +92,7 @@ switch ($page) {
         break;
 
 }
+
+if ($_GET['action'] === 'guardar_nueva_contraseña') {
+    (new AuthController())->guardar_nueva_contraseña();
+}
