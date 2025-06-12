@@ -19,7 +19,7 @@
     <link rel="stylesheet" href="../../Public/css/animate.css" />
     <link rel="stylesheet" href="../../Public/css/ud-styles.css" />
 
-    <title>PetsConnect inicio sesión</title>
+    <title>PetsConnect | inicio sesión</title>
 </head>
 
 <body style="background-color: f3f4fe; background-image: url('../../Public/images/login/background.jpg'); background-size:contain;">
@@ -108,48 +108,37 @@
         </div>
     </div> -->
 
-    <!-- ====== Banner Start ====== -->
-    <!-- <section class="ud-page-banner" >
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="ud-banner-content">
-                        <h1>Login Page</h1>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section> -->
-    <!-- ====== Banner End ====== -->
-
     <!-- ====== Login Start ====== -->
     <section class="ud-login">
         <div class="container">
             <div class="row">
-                <div class="col-lg-12">
+                <div class="col-lg-12" style="padding-bottom:5rem;">
                     <div class="ud-login-wrapper">
                         <div class="ud-login-logo">
                             <img src="../../Public/images/icono.png" alt="logo" />
                         </div>
-                        <form class="ud-login-form">
+                        <form class="ud-login-form" action="../../index.php" method="POST">
+                            <input type="hidden" name="action" value="login">
                             <div class="ud-form-group">
-                                <input
-                                    type="email"
-                                    name="email"
-                                    placeholder="Correo electrónico" />
+                                <input type="email" id="email" placeholder="Correo electronico" name="email" required />
                             </div>
                             <div class="ud-form-group">
-                                <input
-                                    type="password"
-                                    name="password"
-                                    placeholder="Contraseña" />
+                                <input type="password" placeholder="Contraseña" id="contrasena" name="contrasena" required />
                             </div>
+                            <?php if (isset($mensaje)): ?>
+                                <div class="ud-form-group error-message">
+                                    <?php echo $mensaje; ?>
+                                </div>
+                            <?php endif; ?>
                             <div class="ud-form-group">
                                 <button type="submit" class="ud-main-btn w-100">Iniciar Sesión</button>
                             </div>
+
+
                         </form>
 
                         <div class="ud-socials-connect">
+                            <p> O </p>
                             <p>Iniciar sesión con</p>
 
                             <ul>
@@ -175,9 +164,9 @@
                             ¿Olvidaste tu contraseña?
                         </a>
                         <p class="signup-option">
-                            ¿No eres miembro aún? <a href="javascript:void(0)" > Registrate </a>
+                            ¿No eres miembro aún? <a href="register.php"> Registrate </a>
                         </p>
-                    </div>
+                    </div> 
                 </div>
             </div>
         </div>
@@ -257,10 +246,10 @@
                                     <a href="../../index.php #about">¿Cómo funciona?</a>
                                 </li>
                                 <li>
-                                    <a href="javascript:void(0)">Política de privacidad</a>
+                                    <a href="../../view/terms_privacy/Politica_de_Privacidad_PetsConnect.pdf" target="_blank">Política de privacidad</a>
                                 </li>
                                 <li>
-                                    <a href="javascript:void(0)">Términos del servicio</a>
+                                    <a href="../../view/terms_privacy/terminos_condiciones.pdf" target="_blank">Términos y Condiciones</a>
                                 </li>
                             </ul>
                         </div>
@@ -320,10 +309,10 @@
             <div class="container">
                 <div class="row">
 
-                    <div class="col-md-5">
+                    <div class="col-md-5" >
                         <p class="ud-footer-bottom-right">
                             Diseñado y desarrollado por
-                            <a href="#" rel="nofollow" class="autor">Johan Acero |</a>
+                             <a href="https://www.linkedin.com/in/johan-acero/" target="no_blank" rel="nofollow" class="autor">Johan Acero |</a>
                             <a href="#" rel="nofollow" class="autor">Pablo Vela |</a>
                             <a href="#" rel="nofollow" class="autor">Katherine Rojas</a>
                         </p>
@@ -332,6 +321,7 @@
             </div>
         </div>
     </footer>
+
     <!-- ====== Footer End ====== -->
 
 

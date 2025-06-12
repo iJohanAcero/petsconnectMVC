@@ -34,17 +34,6 @@ Para una red social de mascotas, es importante elegir colores que sean atractivo
   --color-black: hsl(252, 30%, 10%);
   --color-edit: hsl(210, 100%, 50%);
 
-  /*SEGUNDA OPCION DE COLOR SELECCIONADO*/
-  /*--color-light: #f0f8ff;       /* Un azul muy claro, suave y acogedor */
-  /*--color-white: #ffffff;       /* Blanco puro */
-  /*--color-gray: #a9a9a9;        /* Gris medio, útil para texto secundario o bordes */
-  /*--color-primary: #ff6b6b;     /* Rojo coral vibrante, perfecto para destacar elementos */
-  /*--color-secondary: #4ecdc4;   /* Verde agua, refrescante y enérgico, ideal para botones secundarios */
-  /*--color-success: #38a169;     /* Verde más oscuro, asociado al éxito y confirmaciones */
-  /*--color-danger: #e53e3e;      /* Rojo más intenso, usado para alertas o mensajes de error */
-  /*--color-dark: #2d3748;        /* Gris oscuro, excelente para fondo o texto principal */
-  /*--color-black: #000000;       /* Negro puro */
-
   /* AQUÍ CREAMOS LAS VARIABLES PARA EL RADIO, PADDING DE VARIOS ELEMENTOS*/
   --border-radius: 2rem;
   --card-border-radius: 1rem;

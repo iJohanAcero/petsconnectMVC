@@ -62,7 +62,7 @@
                             <a href="view/login/login.php"  class="ud-main-btn ud-login-btn">
                                 Iniciar Sesión
                             </a>
-                            <a class="ud-main-btn ud-white-btn" href="view/login/.php">
+                            <a class="ud-main-btn ud-white-btn" href="view/login/register.php">
                                 Registrarse
                             </a>
                         </div>
@@ -219,7 +219,7 @@
                         <p>
                             Nuestra comunidad crece con cada historia de adopción, cada guardián registrado y cada sonrisa compartida. No solo es una red social, es un movimiento por el bienestar animal.
                         </p>
-                        <a href="javascript:void(0)" class="ud-main-btn">Descubre!</a>
+                        <a href="view/login/login.php" class="ud-main-btn">Descubre!</a>
                     </div>
                 </div>
                 <div class="ud-about-image">
@@ -837,10 +837,10 @@
                                     <a href="#about">¿Cómo funciona?</a>
                                 </li>
                                 <li>
-                                    <a href="javascript:void(0)">Política de privacidad</a>
+                                    <a href="view/terms_privacy/Politica_de_Privacidad_PetsConnect.pdf" target="_blank">Política de privacidad</a>
                                 </li>
                                 <li>
-                                    <a href="javascript:void(0)">Términos del servicio</a>
+                                    <a href="view/terms_privacy/terminos_condiciones.pdf" target="_blank">Términos y Condiciones</a>
                                 </li>
                             </ul>
                         </div>
@@ -903,7 +903,7 @@
                     <div class="col-md-5">
                         <p class="ud-footer-bottom-right">
                             Diseñado y desarrollado por
-                            <a href="#" rel="nofollow" class="autor">Johan Acero |</a>
+                             <a href="https://www.linkedin.com/in/johan-acero/" target="no_blank" rel="nofollow" class="autor">Johan Acero |</a>
                             <a href="#" rel="nofollow" class="autor">Pablo Vela |</a>
                             <a href="#" rel="nofollow" class="autor">Katherine Rojas</a>
                         </p>
