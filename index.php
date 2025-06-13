@@ -114,13 +114,12 @@ if (isset($routes[$page])) {
 }
 
 if (isset($_POST['action'])) {
-    exit('Datos recibidos: ' . print_r($_POST, true));
     if ($_POST['action'] === 'enviar_recuperacion') {
         (new AuthController())->enviar_recuperacion();
         exit;
     }
-    if ($_POST['action'] === 'guardar_nueva_contraseña') {die("Contraseña actualizada correctamente");
-        (new AuthController())->guardar_nueva_contraseña();
+    if ($_POST['action'] === 'guardar_nueva_contrasena') {
+        (new AuthController())->guardar_nueva_contrasena();
         exit;
     }
 }

@@ -95,7 +95,7 @@ class AuthController
     }
 
     // Procesar restablecimiento de contraseña
-    public function guardar_nueva_contraseña()
+    public function guardar_nueva_contrasena()
     {
         $mensaje = '';
         $error = '';
@@ -104,7 +104,7 @@ class AuthController
             $email = $_POST['email'] ?? '';
             $contrasena = $_POST['contrasena'] ?? '';
             $contrasena2 = $_POST['contrasena2'] ?? '';
-die(var_dump($token, $email, $contrasena, $contrasena2));
+die('Entró a guardar_nueva_contraseña');
             if (empty($token) || empty($email) || empty($contrasena) || empty($contrasena2)) {
                 $error = "Todos los campos son obligatorios.";
                 require __DIR__ . '/../view/login/restablecerContraseña.php';
