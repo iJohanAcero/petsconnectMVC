@@ -8,7 +8,7 @@
         .container { max-width: 400px; margin: 60px auto; background: #fff; padding: 30px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);}
         h2 { text-align: center; color: #333; }
         label { display: block; margin-bottom: 8px; color: #555; }
-        input[type="password"] { width: 100%; padding: 10px; margin-bottom: 18px; border: 1px solid #ccc; border-radius: 4px; }
+        input[type="email"], input[type="password"] { width: 100%; padding: 10px; margin-bottom: 18px; border: 1px solid #ccc; border-radius: 4px; }
         button { width: 100%; padding: 10px; background: #007bff; color: #fff; border: none; border-radius: 4px; cursor: pointer;}
         button:hover { background: #0056b3; }
         .mensaje { color: green; text-align: center; }
@@ -18,9 +18,10 @@
 <body>
     <div class="container">
         <h2>Restablecer Contraseña</h2>
-
-        <form action="/index.php?action=guardar_nueva_contraseña" method="post">
+        <form action="/petsconnectmvc/index.php?action=guardar_nueva_contraseña" method="post">
             <input type="hidden" name="token" value="<?= htmlspecialchars($_GET['token'] ?? '') ?>">
+            <label for="email">Confirma tu correo electrónico:</label>
+            <input type="email" id="email" name="email" required placeholder="Ingresa tu correo">
             <label for="password">Nueva contraseña:</label>
             <input type="password" id="password" name="password" required placeholder="Nueva contraseña">
             <label for="password2">Repite la contraseña:</label>

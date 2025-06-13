@@ -1,6 +1,7 @@
 <?php
 require_once "controller/usuario/usuarioController.php";
 require_once "config/roles.php";
+require_once "controller/AuthController.php"; // Agrega esta línea arriba
 
 session_start();
 $controller = new UsuarioController();
@@ -69,7 +70,7 @@ $page = $_GET["page"] ?? "";
 switch ($page) {
     case "admin_home":
         if ($_SESSION["tipo_usuario"] === "admin") {
-            require_once "view/home/admin_home.php";
+            require_once "/view/home/admin_home.php";
         } else {
             exit("Acceso denegado");
         }
@@ -93,6 +94,13 @@ switch ($page) {
 
 }
 
-if ($_GET['action'] === 'guardar_nueva_contraseña') {
-    (new AuthController())->guardar_nueva_contraseña();
+if (isset($_POST['action'])) {
+    if ($_POST['action'] === 'enviar_recuperacion') {
+        (new AuthController())->enviar_recuperacion();
+        exit;
+    }
+    if ($_POST['action'] === 'guardar_nueva_contraseña') {
+        (new AuthController())->guardar_nueva_contraseña();
+        exit;
+    }
 }
