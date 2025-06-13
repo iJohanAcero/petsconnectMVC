@@ -12,7 +12,7 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 
 if (!isset($_SESSION["user"]) || $_SESSION["tipo_usuario"] !== "admin") {
-    
+
     exit;
 }
 
@@ -27,47 +27,51 @@ if (!isset($_SESSION["user"]) || $_SESSION["tipo_usuario"] !== "admin") {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PetsConnect</title>
 
-    <link href="https://cdn.lineicons.com/5.0/lineicons.css" rel="stylesheet" />
-    <link rel="shortcut icon" href="Public/images/icono.png" />
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link
+        rel="shortcut icon"
+        href="Public/images/icono2.png"
+        type="image/png" />
+    <!-- ===== All CSS files ===== -->
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.8/css/line.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 
-
-    <link rel="stylesheet" href="Public/css/ud-style.css"> <!-- Llamamos al CSS de la plantilla -->
-    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.8/css/line.css"> <!-- Llamamos a la librería de iconos -->
+    <link rel="stylesheet" href="Public/css/styles.css" />
+    <link rel="stylesheet" href="Public/css/animate.css" />
+    <link rel="stylesheet" href="Public/css/ud-styles.css" /> <!-- Llamamos a la librería de iconos -->
 
 </head>
 
-<body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-white fixed-top shadow-sm py-2">
-    <div class="container-fluid">
-        <!-- Logo -->
-        <a class="navbar-brand" onClick="history.go(0);">
-            <img id="logo" src="Public/images/logo/logo.png" alt="Logo" height="40">
-        </a>
+<body id="bodyAdmin">
+    <!-- Navbar Bootstrap -->
+    <nav class="navbar navbar-expand-lg" id="navbarAdmin">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#" onclick="history.go(0);">
+                <img src="Public/images/logo/logo.png" alt="Logo" id="logo" class="d-inline-block align-text-top">
+            </a>
 
-        <!-- Barra de búsqueda -->
-        <div class="d-flex align-items-center mx-auto" style="max-width: 500px;">
-            <div class="input-group rounded-pill bg-light">
-                <span class="input-group-text border-0 bg-transparent">
-                    <i class="uil uil-search"></i>
-                </span>
-                <input type="search" class="form-control border-0 bg-transparent" placeholder="Busca en Publicaciones, perfiles o intereses...">
+            <div class="collapse navbar-collapse">
+                <form class="d-flex justify-content-center flex-grow-1" role="search" style="max-width: 600px; margin: 0 auto;">
+                    <input class="form-control me-2 flex-grow-1 " type="search" placeholder="Busca en publicaciones, perfiles o intereses..." aria-label="Buscar" style="min-width: 300px;">
+                    <button class="btn btn-outline-dark" type="submit"><i class="uil uil-search"></i></button>
+                </form>
+
+                <div class="d-flex align-items-center">
+                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link" href="index.php?action=logout">Cerrar Sesión</a>
+                        </li>
+                        <li class="nav-item">
+                            <button onclick="cambiarLogo()" class="btn btn-link nav-link " id="cambio-tema" title="Cambiar tema">
+                                <i class="uil uil-moon"></i>
+                                <i class="uil uil-brightness"></i>
+                            </button>
+                        </li>
+                    </ul>
+                </div>
             </div>
         </div>
-
-        <!-- Botones derecha -->
-        <div class="d-flex align-items-center">
-            <!-- Cerrar sesión -->
-            <a href="index.php?action=logout" class="btn btn-primary me-3">Cerrar Sesión</a>
-            
-            <!-- Tema oscuro/claro -->
-            <button onclick="cambiarLogo()" class="btn btn-light rounded-pill p-2" id="cambio-tema" style="width: 70px; height: 40px;">
-                <i class="uil uil-moon fs-5"></i>
-                <i class="uil uil-brightness fs-5 d-none"></i>
-            </button>
-        </div>
-    </div>
-</nav>
+    </nav>
+    <!-- Fin Navbar Bootstrap -->
 
     <!--============================================================MAIN=============================================-->
     <main>
@@ -76,7 +80,7 @@ if (!isset($_SESSION["user"]) || $_SESSION["tipo_usuario"] !== "admin") {
             <div class="izquierda">
                 <a class="perfil">
                     <div class="foto-perfil">
-                        <img src="Public2/images/perfil2.jpg">
+                        <img src="Public/images/perfil2.jpg">
                     </div>
                     <div class="hundle">
                         <?php if (isset($_SESSION["user"])): ?>
@@ -127,7 +131,7 @@ if (!isset($_SESSION["user"]) || $_SESSION["tipo_usuario"] !== "admin") {
                         <div class="mascotas-popup">
                             <div class="popup-item">
                                 <div class="foto-perfil">
-                                    <img src="Public2/images/perro.JPG">
+                                    <img src="Public/images/sidebar/perro.JPG">
                                 </div>
                                 <div class="popup-body">
                                     <b class="text-suave">Perros</b>
@@ -136,7 +140,7 @@ if (!isset($_SESSION["user"]) || $_SESSION["tipo_usuario"] !== "admin") {
 
                             <div class="popup-item">
                                 <div class="foto-perfil">
-                                    <img src="Public2/images/gato.jpg">
+                                    <img src="Public/images/sidebar/gato.jpg">
                                 </div>
                                 <div class="popup-body">
                                     <b class="text-suave">Gatos</b>
@@ -144,7 +148,7 @@ if (!isset($_SESSION["user"]) || $_SESSION["tipo_usuario"] !== "admin") {
                             </div>
                             <div class="popup-item">
                                 <div class="foto-perfil">
-                                    <img src="Public2/images/todo-mascotas.jpg">
+                                    <img src="Public/images/sidebar/todo-mascotas.jpg">
                                 </div>
                                 <div class="popup-body">
                                     <b class="text-suave">Todos</b>
@@ -166,7 +170,7 @@ if (!isset($_SESSION["user"]) || $_SESSION["tipo_usuario"] !== "admin") {
                     </a>
                 </div>
                 <!------------------------FIN DEL SIDEBAR---------------------->
-                <label for="crear-Public2acion" class="btn btn-primario">Crear Public2ación</label>
+                <label for="crear-publicacion" class="btn btn-primario">Crear publicación</label>
             </div>
             <!------------------------------FIN DEL LADO IZQUIERDO-------------------------->
 
@@ -196,7 +200,7 @@ if (!isset($_SESSION["user"]) || $_SESSION["tipo_usuario"] !== "admin") {
                     <!------------------------ GUARDIAN EN LINEA--------------------->
                     <div class="guardian-enlinea">
                         <div class="foto-perfil">
-                            <img src="Public2/images/perfil.jpg">
+                            <img src="Public/images/perfil.jpg">
                             <div class="enlinea"></div>
                         </div>
                         <div class="guardian-body">
@@ -212,7 +216,7 @@ if (!isset($_SESSION["user"]) || $_SESSION["tipo_usuario"] !== "admin") {
 
                     <div class="guardian-enlinea">
                         <div class="foto-perfil">
-                            <img src="Public2/images/valen.jpg">
+                            <img src="Public/images/valen.jpg">
                             <div class="enlinea"></div>
                         </div>
                         <div class="guardian-body">
@@ -228,7 +232,7 @@ if (!isset($_SESSION["user"]) || $_SESSION["tipo_usuario"] !== "admin") {
                     <!------------------------ GUARDIAN OFFLINE--------------------->
                     <div class="guardian-offline">
                         <div class="foto-perfil">
-                            <img src="Public2/images/perfil2.jpg">
+                            <img src="Public/images/perfil2.jpg">
                             <div class="offline"></div>
                         </div>
                         <div>
@@ -250,8 +254,9 @@ if (!isset($_SESSION["user"]) || $_SESSION["tipo_usuario"] !== "admin") {
     </main>
     <!--==============================================CONFIGURACION DE FONDO===========================================-->
 
-    <script src="Public2/js/main.js"></script>
-    <script src="Public2/js/cruds.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="Public/js/main.js"></script>
+    <script src="Public/js/cruds.js"></script>
 </body>
 
 </html>
