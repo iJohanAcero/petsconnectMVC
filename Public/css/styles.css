@@ -30,3 +30,18 @@
 #navbarAdmin {
     background-color: var(--color-white);
 }
+
+#logout-btn {
+    background-color: var(--color-dark);
+    border-radius: var(--border-radius);
+    padding: var(--btn-padding);
+    margin:0;
+    
+}
+
+#mainAdmin {
+    display: grid;
+    grid-template-columns: 18vw /*left*/ auto /*middle*/ 18vw /*right*/;
+    column-gap: 2rem;
+    position: relative;
+}

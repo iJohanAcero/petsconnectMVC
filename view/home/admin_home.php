@@ -44,7 +44,7 @@ if (!isset($_SESSION["user"]) || $_SESSION["tipo_usuario"] !== "admin") {
 <body id="bodyAdmin">
     <!-- Navbar Bootstrap -->
     <nav class="navbar navbar-expand-lg" id="navbarAdmin">
-        <div class="container-fluid">
+        <div class="container-fluid m-2">
             <a class="navbar-brand" href="#" onclick="history.go(0);">
                 <img src="Public/images/logo/logo.png" alt="Logo" id="logo" class="d-inline-block align-text-top">
             </a>
@@ -57,14 +57,57 @@ if (!isset($_SESSION["user"]) || $_SESSION["tipo_usuario"] !== "admin") {
 
                 <div class="d-flex align-items-center">
                     <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                        <li class="nav-item">
-                            <a class="nav-link" href="index.php?action=logout">Cerrar Sesión</a>
-                        </li>
-                        <li class="nav-item">
+                        <!-- <li class="nav-item">
+                            <a class="nav-link btn " href="index.php?action=logout" id="logout-btn">Cerrar Sesión</a>
+                        </li> -->
+                        <!-- <li class="nav-item">
                             <button onclick="cambiarLogo()" class="btn btn-link nav-link " id="cambio-tema" title="Cambiar tema">
                                 <i class="uil uil-moon"></i>
                                 <i class="uil uil-brightness"></i>
                             </button>
+                        </li> -->
+                    </ul>
+                </div>
+                <div class="dropdown">
+                    <a
+                        class="d-flex align-items-center"
+                        href="#"
+                        id="navbarDropdownMenuAvatar"
+                        role="button"
+                        data-bs-toggle="dropdown"
+                        aria-expanded="false"
+                        style="text-decoration: none;">
+                        <img
+                            src="Public/images/perfil/perfil2.jpg"
+                            class="rounded-circle"
+                            height="40"
+                            width="40"
+                            alt="Foto de perfil"
+                            loading="lazy" />
+                    </a>
+                    <ul
+                        class="dropdown-menu dropdown-menu-end"
+                        aria-labelledby="navbarDropdownMenuAvatar">
+                        <li>
+                            <?php if (isset($_SESSION["user"])): ?>
+                                <p class="m-3 user-select-all">
+                                    <?php 
+                                        echo htmlspecialchars($_SESSION["user"]["nombre"] . ' ' . $_SESSION["user"]["apellido"]); 
+                                    ?>
+                                </p>
+                            <?php endif; ?>
+                        </li>
+                        <li>
+                            <?php if (isset($_SESSION["user"])): ?>
+                            <p class="m-3 user-select-all">
+                                <?php echo htmlspecialchars($_SESSION["user"]["email"]); ?>
+                            </p>
+                        <?php endif; ?>
+                        </li>
+                        <li class="nav-item">
+                            <a class="m-3 bg-body rounded text-muted" href="index.php?action=logout" id="">
+                                
+                            </a>
                         </li>
                     </ul>
                 </div>
@@ -75,26 +118,9 @@ if (!isset($_SESSION["user"]) || $_SESSION["tipo_usuario"] !== "admin") {
 
     <!--============================================================MAIN=============================================-->
     <main>
-        <div class="container">
+        <div id="mainAdmin">
             <!--==================================IZQUIERDA================================================-->
-            <div class="izquierda">
-                <a class="perfil">
-                    <div class="foto-perfil">
-                        <img src="Public/images/perfil2.jpg">
-                    </div>
-                    <div class="hundle">
-                        <?php if (isset($_SESSION["user"])): ?>
-                            <h4><?php echo htmlspecialchars($_SESSION["user"]["nombre"]); ?></h4>
-                        <?php endif; ?>
 
-                        <?php if (isset($_SESSION["user"])): ?>
-                            <p class="text-suave">
-                                <?php echo htmlspecialchars($_SESSION["user"]["email"]); ?>
-                            </p>
-                        <?php endif; ?>
-                        </p>
-                    </div>
-                </a>
 
                 <!------------------------------BARRA LATERAL - SIDE BAR-------------------------->
                 <div class="sidebar">
