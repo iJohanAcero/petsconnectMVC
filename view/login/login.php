@@ -233,7 +233,7 @@
                                     <a href="../../index.php #testimonials">Testimonios</a>
                                 </li>
                                 <li>
-                                    <a href="../../index.php #team">Equipo</a>
+                                    <a href="../../index.php #team">Ayudas</a>
                                 </li>
                             </ul>
                         </div>

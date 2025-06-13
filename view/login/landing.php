@@ -59,7 +59,7 @@
                         </div>
 
                         <div class="navbar-btn d-none d-sm-inline-block ud-hero-buttons">
-                            <a href="view/login/login.php"  class="ud-main-btn ud-login-btn">
+                            <a href="view/login/login.php" class="ud-main-btn ud-login-btn">
                                 Iniciar Sesión
                             </a>
                             <a class="ud-main-btn ud-white-btn" href="view/login/register.php">
@@ -80,10 +80,10 @@
                 <div class="col-lg-12">
                     <div class="ud-hero-content wow fadeInUp" data-wow-delay=".2s">
                         <h1 class="ud-hero-title">
-                            Dale una segunda oportunidad a una vida peluda
+                            Dale una segunda oportunidad a una vida peluda.
                         </h1>
                         <p class="ud-hero-desc">
-                            Porque ellos también buscan un hogar .
+                            Porque ellos también buscan un hogar.
                         </p>
                         <ul class="ud-hero-buttons">
                             <li>
@@ -280,7 +280,7 @@
                         <div class="ud-pricing-body">
                             <ul>
                                 <li>Infórmate y apoya campañas de rescate, vacunación y eventos de adopción organizados por fundaciones y refugios verificados. </li>
-        
+
                             </ul>
                         </div>
                         <div class="ud-pricing-footer">
@@ -295,7 +295,7 @@
                         class="ud-single-pricing last-item wow fadeInUp"
                         data-wow-delay=".15s">
                         <div class="ud-pricing-header">
-                            
+
                             <h4>Editar tu Perfil de Guardián</h4>
                         </div>
                         <div class="ud-pricing-body">
@@ -503,7 +503,7 @@
                             <i class="uil uil-star"></i>
                             <i class="uil uil-star"></i>
                             <i class="uil uil-star"></i>
-                            
+
                         </div>
                         <div class="ud-testimonial-content">
                             <p>
@@ -553,7 +553,7 @@
                     </div>
                 </div>
             </div>
-            
+
         </div>
     </section>
     <!-- ====== Testimonials End ====== -->
@@ -567,7 +567,7 @@
                         <span>Nuestros productos</span>
                         <h2>Conoce todas las formas de ayudar</h2>
                         <p>
-                            En Petsconnect, tenemos una variedad de productos y servicios diseñados para facilitar la adopción, el cuidado y el bienestar de las mascotas. Alimentos y accesorios  cada producto está pensado para mejorar la vida de los animales y sus adoptantes.
+                            En Petsconnect, tenemos una variedad de productos y servicios diseñados para facilitar la adopción, el cuidado y el bienestar de las mascotas. Alimentos y accesorios cada producto está pensado para mejorar la vida de los animales y sus adoptantes.
                         </p>
                     </div>
                 </div>
@@ -594,7 +594,7 @@
                             <h5>Alimento humedo</h5>
                             <h6>Comida</h6>
                         </div>
-                        
+
                     </div>
                 </div>
                 <div class="col-xl-3 col-lg-3 col-sm-6">
@@ -617,7 +617,7 @@
                             <h5>Concentrado</h5>
                             <h6>Comida</h6>
                         </div>
-                        
+
                     </div>
                 </div>
                 <div class="col-xl-3 col-lg-3 col-sm-6">
@@ -640,7 +640,7 @@
                             <h5>Arena gato</h5>
                             <h6>Higiene</h6>
                         </div>
-                        
+
                     </div>
                 </div>
 
@@ -664,17 +664,17 @@
                             <h5>Gimnasio</h5>
                             <h6>Accesorios</h6>
                         </div>
-                        
+
                     </div>
                 </div>
                 <ul class="ud-hero-buttons">
-                            <li>
-                                <a href="view/login/login.php" rel="nofollow noopener" target="_blank" class="ud-main-btn ud-white-btn">
-                                    ¡ Ver mas productos !
-                                </a>
-                            </li>
+                    <li>
+                        <a href="view/login/login.php" rel="nofollow noopener" target="_blank" class="ud-main-btn ud-white-btn">
+                            ¡ Ver mas productos !
+                        </a>
+                    </li>
 
-                        </ul>
+                </ul>
             </div>
         </div>
     </section>
@@ -889,7 +889,7 @@
                                             alt="lineicons" />
                                     </a>
                                 </li>
-                                
+
                             </ul>
                         </div>
                     </div>
@@ -899,11 +899,11 @@
         <div class="ud-footer-bottom">
             <div class="container">
                 <div class="row">
-                    
+
                     <div class="col-md-5">
                         <p class="ud-footer-bottom-right">
                             Diseñado y desarrollado por
-                             <a href="https://www.linkedin.com/in/johan-acero/" target="no_blank" rel="nofollow" class="autor">Johan Acero |</a>
+                            <a href="https://www.linkedin.com/in/johan-acero/" target="no_blank" rel="nofollow" class="autor">Johan Acero |</a>
                             <a href="#" rel="nofollow" class="autor">Pablo Vela |</a>
                             <a href="#" rel="nofollow" class="autor">Katherine Rojas</a>
                         </p>
