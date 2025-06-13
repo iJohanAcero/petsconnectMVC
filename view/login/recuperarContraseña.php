@@ -18,7 +18,7 @@
             <a href="./restablecerContraseña.php">¿Ya tienes un token? Restablecer contraseña</a>
         </div>
         <?php if (isset($mensaje)) : ?>
-            <p class="mensaje"><?= htmlspecialchars($mensaje) ?></p>
+            <p class="mensaje"><?= $mensaje ?></p>
         <?php endif; ?>
         <?php if (isset($error)) : ?>
             <p class="error"><?= htmlspecialchars($error) ?></p>

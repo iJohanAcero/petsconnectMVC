@@ -70,7 +70,7 @@ $page = $_GET["page"] ?? "";
 switch ($page) {
     case "admin_home":
         if ($_SESSION["tipo_usuario"] === "admin") {
-            require_once "/view/home/admin_home.php";
+            require_once "view/home/admin_home.php";
         } else {
             exit("Acceso denegado");
         }
@@ -95,12 +95,17 @@ switch ($page) {
 }
 
 if (isset($_POST['action'])) {
+    exit('Datos recibidos: ' . print_r($_POST, true));
     if ($_POST['action'] === 'enviar_recuperacion') {
         (new AuthController())->enviar_recuperacion();
         exit;
     }
-    if ($_POST['action'] === 'guardar_nueva_contraseña') {
+    if ($_POST['action'] === 'guardar_nueva_contraseña') {die("Contraseña actualizada correctamente");
         (new AuthController())->guardar_nueva_contraseña();
         exit;
     }
 }
+
+;
+
+// Aquí cargas tu landing page u otras vistas normalmente

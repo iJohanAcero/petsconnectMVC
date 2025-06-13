@@ -160,7 +160,7 @@
                             </ul>
                         </div>
 
-                        <a class="forget-pass" href="javascript:void(0)">
+                        <a class="forget-pass" href="recuperarContraseña.php">
                             ¿Olvidaste tu contraseña?
                         </a>
                         <p class="signup-option">

@@ -1,93 +1,15 @@
 <?php
 
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
+require_once __DIR__ . '/../vendor/autoload.php'; // Ajusta la ruta si es necesario
+
 class AuthController
 {
     // Enviar enlace de recuperación de contraseña
-    public function sendResetLink(Request $request)
-    {
-        $request->validate(['email' => 'required|email']);
 
-        // Buscar usuario por email
-        $usuario = \App\Models\Usuario::where('email', $request->email)->first();
-        if (!$usuario) {
-            return back()->withErrors(['email' => 'No se encontró un usuario con ese email.']);
-        }
 
-        // Generar token único
-        $token = Str::random(60);
-        DB::table('password_resets')->updateOrInsert(
-            ['email' => $request->email],
-            [
-                'token' => $token,
-                'created_at' => now()
-            ]
-        );
-
-        $usuario->notify(new ResetPasswordNotification($token));
-        return back()->with('status', 'Se ha enviado un enlace de recuperación a tu email.');
-    }
-
-    // Mostrar formulario para restablecer contraseña
-    public function showResetForm(Request $request, $token)
-    {
-        $email = $request->query('email');
-        return view('auth.reset-password', ['token' => $token, 'email' => $email]);
-    }
-
-    // Procesar el restablecimiento de contraseña
-    public function resetPassword(Request $request)
-    {
-        $request->validate([
-            'email' => 'required|email',
-            'password' => 'required|confirmed|min:6',
-            'token' => 'required'
-        ]);
-
-        // Buscar el registro de password_resets
-        $reset = DB::table('password_resets')
-            ->where('email', $request->email)
-            ->where('token', $request->token)
-            ->first();
-
-        if (!$reset) {
-            return back()->withErrors(['email' => 'El enlace de recuperación no es válido o ha expirado.']);
-        }
-
-        // Buscar el usuario y actualizar la contraseña
-        $usuario = \App\Models\Usuario::where('email', $request->email)->first();
-        if (!$usuario) {
-            return back()->withErrors(['email' => 'No se encontró un usuario con ese email.']);
-        }
-        $usuario->password = Hash::make($request->password);
-        $usuario->save();
-
-        // Eliminar el registro de password_resets
-        DB::table('password_resets')->where('email', $request->email)->delete();
-
-        return redirect()->route('login')->with('success', '¡Contraseña restablecida correctamente! Ya puedes iniciar sesión.');
-    }
-
-    // Actualizar perfil de usuario
-    public function updateProfile(Request $request)
-    {
-        $user = Usuario::find(Auth::id());
-        $request->validate([
-            'nombre' => 'required|string|max:100',
-            'apellido' => 'required|string|max:100',
-            'imagen' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-        ]);
-
-        $user->nombre = $request->nombre;
-        $user->apellido = $request->apellido;
-
-        if ($request->hasFile('imagen')) {
-            $path = $request->file('imagen')->store('profile', 'public');
-            $user->imagen = $path;
-        }
-
-        $user->save();
-        return back()->with('success', 'Perfil actualizado correctamente.');
-    }
 
 
     // Mostrar formulario de recuperación
@@ -129,15 +51,34 @@ class AuthController
                 $stmt->execute();
                 $stmt->close();
 
-                // Enviar correo con el enlace de recuperación
-                $enlace = "http://localhost/petsconnectMVC/view/login/restablecerContraseña.php?token=$token";
-                $asunto = "Recupera tu contraseña";
-                $mensajeCorreo = "Hola,\n\nHaz clic en el siguiente enlace para restablecer tu contraseña:\n$enlace\n\nSi no solicitaste este cambio, ignora este correo.";
-                $cabeceras = "From: no-reply@petsconnect.com\r\n";
-                if (mail($email, $asunto, $mensajeCorreo, $cabeceras)) {
-                    $mensaje = "Se ha enviado un enlace de recuperación a tu correo.";
-                } else {
-                    $error = "No se pudo enviar el correo. Intenta más tarde.";
+                // Enlace de restablecimiento
+                $url = "http://localhost:8080/petsconnectMVC/view/login/restablecerContraseña.php?token=$token";
+                $mensaje = 'Haz clic en el siguiente enlace para cambiar tu contraseña: <a href="' . $url . '">Cambiar contraseña</a>';
+
+                // Envío de correo (opcional)
+                $mail = new PHPMailer(true);
+
+                try {
+                    // Configuración del servidor SMTP de Gmail
+                    $mail->isSMTP();
+                    $mail->Host = 'smtp.gmail.com';
+                    $mail->SMTPAuth = true;
+                    $mail->Username = 'pablovela.upn@gmail.com'; // Tu correo de Gmail
+                    $mail->Password = 'ezfx nzzz refl boit
+'; // Contraseña de aplicación de Gmail
+                    $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+                    $mail->Port = 587;
+
+                    $mail->setFrom('pablovela.upn@gmail.com', 'PetsConnect');
+                    $mail->addAddress($email); // $email es el destinatario
+
+                    $mail->Subject = 'Recupera tu contraseña';
+                    $mail->Body    = "Hola,\n\nHaz clic en el siguiente enlace para restablecer tu contraseña:\n$url\n\nSi no solicitaste este cambio, ignora este correo.";
+
+                    $mail->send();
+                    $mensaje .= "<br>Se ha enviado un enlace de recuperación a tu correo.";
+                } catch (Exception $e) {
+                    $mensaje .= "<br><span style='color:red;'>No se pudo enviar el correo. Usa el enlace de arriba.<br>Error: {$mail->ErrorInfo}</span>";
                 }
             } else {
                 $error = "El correo no está registrado.";
@@ -160,10 +101,16 @@ class AuthController
         $error = '';
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $token = $_POST['token'] ?? '';
-            $password = $_POST['password'] ?? '';
-            $password2 = $_POST['password2'] ?? '';
-
-            if ($password !== $password2) {
+            $email = $_POST['email'] ?? '';
+            $contrasena = $_POST['contrasena'] ?? '';
+            $contrasena2 = $_POST['contrasena2'] ?? '';
+die(var_dump($token, $email, $contrasena, $contrasena2));
+            if (empty($token) || empty($email) || empty($contrasena) || empty($contrasena2)) {
+                $error = "Todos los campos son obligatorios.";
+                require __DIR__ . '/../view/login/restablecerContraseña.php';
+                return;
+            }
+            if ($contrasena !== $contrasena2) {
                 $error = "Las contraseñas no coinciden.";
                 require __DIR__ . '/../view/login/restablecerContraseña.php';
                 return;
@@ -177,10 +124,12 @@ class AuthController
             }
 
             // Validar token y obtener usuario
-            $stmt = $conn->prepare("SELECT id_usuario, fecha_expiracion FROM t_recuperar_constrasena WHERE codigo_recuperacion = ?");
+            $stmt = $conn->prepare("SELECT id_usuario, email, fecha_expiracion FROM t_recuperar_constrasena WHERE codigo_recuperacion = ?");
             $stmt->bind_param("s", $token);
             $stmt->execute();
-            $stmt->bind_result($id_usuario, $fecha_expiracion);
+            $stmt->bind_result($id_usuario, $email_token, $fecha_expiracion);
+            $prueba = $stmt->execute();
+            die(var_dump($prueba));
             if ($stmt->fetch()) {
                 if (strtotime($fecha_expiracion) < strtotime(date('Y-m-d'))) {
                     $error = "El enlace ha expirado.";
@@ -189,10 +138,17 @@ class AuthController
                     require __DIR__ . '/../view/login/restablecerContraseña.php';
                     return;
                 }
+                if ($email !== $email_token) {
+                    $error = "El correo no coincide con el de la solicitud.";
+                    $stmt->close();
+                    $conn->close();
+                    require __DIR__ . '/../view/login/restablecerContraseña.php';
+                    return;
+                }
                 $stmt->close();
 
                 // Actualizar contraseña
-                $hash = password_hash($password, PASSWORD_DEFAULT);
+                $hash = password_hash($contrasena, PASSWORD_DEFAULT);
                 $stmt = $conn->prepare("UPDATE t_usuario SET contrasena = ? WHERE id_usuario = ?");
                 $stmt->bind_param("si", $hash, $id_usuario);
                 $stmt->execute();
@@ -217,4 +173,3 @@ class AuthController
 if (isset($_GET['action']) && $_GET['action'] === 'enviar_recuperacion') {
     (new AuthController())->enviar_recuperacion();
 }
-
