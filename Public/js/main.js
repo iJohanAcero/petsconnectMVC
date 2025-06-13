@@ -20,6 +20,7 @@
       logo.src = "Public/images/logo/logo-oscuro.png";
     }
 
+
     // show or hide the back-top-top button
     const backToTop = document.querySelector(".back-to-top");
     if (
@@ -78,6 +79,14 @@
     };
 
     animateScroll();
+  }
+
+  function changeLogo(){
+    if (ud_header.classList.contains("sticky")) {
+      logo.src = "../../Public/images/logo/logo.png";
+    } else {
+      logo.src = "../../Public/images/logo/logo-oscuro.png";
+    }
   }
 
   Math.easeInOutQuad = function (t, b, c, d) {

@@ -58,7 +58,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["action"])) {
 
 if (isset($_GET["action"]) && $_GET["action"] == "logout") {
     session_destroy();
-    header("Location: index.php");
+    header("Location: view/login/login.php");
 }
 
 if (!isset($_SESSION["user"])) {
