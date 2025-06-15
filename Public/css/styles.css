@@ -4,6 +4,7 @@
     --color-white: hsl(252, 30%, 100%);
     --color-gray: hsl(252, 15%, 65%);
     --color-primary: #a3bced;
+    --secondary-color-pink: #fdaac4;
     --color-secondary: hsl(252, 100%, 90%);
     --color-success: hsl(120, 95%, 65%);
     --color-danger: hsl(0, 95%, 65%);
@@ -23,8 +24,16 @@
     --sticky-top-right: -18rem;
 }
 
+
+.wrapper {
+    min-height: 100vh;
+    height: 100%;
+    display: flex;
+}
+
 #bodyAdmin {
     background-color: var(--color-light);
+
 }
 
 #navbarAdmin {
@@ -39,9 +48,77 @@
     
 }
 
-#mainAdmin {
-    display: grid;
-    grid-template-columns: 18vw /*left*/ auto /*middle*/ 18vw /*right*/;
-    column-gap: 2rem;
-    position: relative;
+.a{
+    color: var(--color-dark);
+    text-decoration: none;
+}
+
+.li {
+    list-style: none;
+}
+
+
+.main {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    overflow: hidden;
+    transition: all 0.3s ease-in-out;
+    background-color: var(--color-danger);
+}
+#sidebar {
+    width: 90px;
+    min-width: 90px;
+    transition: all 0.3s ease-in-out;
+    background-color: var(--color-white);
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    min-height: 100vh;
+}
+
+#sidebar.expand {
+    width: 260px;
+    min-width: 260px;
+}
+
+#sidebar:not(.expand) .sidebar-logo {
+    display: none;
+}
+
+.toggle-btn {
+    width: 30px;
+    height: 30px;
+    color: var(--color-white);
+    border-radius: 0.4rem;
+    font-size: 18px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--color-dark);
+}
+
+.toggle-btn i {
+    color: var(--color-white);
+    font-size: 30px;
+}
+
+#sidebar.expand .sidebar-logo {
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+    
+}
+
+#sidebar-logo a {
+    color: var(--color-white);
+    font-size: 1.5rem;
+    font-weight: 600;
 }

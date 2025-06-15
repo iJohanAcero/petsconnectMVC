@@ -57,18 +57,10 @@ if (!isset($_SESSION["user"]) || $_SESSION["tipo_usuario"] !== "admin") {
 
                 <div class="d-flex align-items-center">
                     <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                        <!-- <li class="nav-item">
-                            <a class="nav-link btn " href="index.php?action=logout" id="logout-btn">Cerrar Sesión</a>
-                        </li> -->
-                        <!-- <li class="nav-item">
-                            <button onclick="cambiarLogo()" class="btn btn-link nav-link " id="cambio-tema" title="Cambiar tema">
-                                <i class="uil uil-moon"></i>
-                                <i class="uil uil-brightness"></i>
-                            </button>
-                        </li> -->
                     </ul>
                 </div>
                 <div class="dropdown">
+                    
                     <a
                         class="d-flex align-items-center"
                         href="#"
@@ -77,6 +69,7 @@ if (!isset($_SESSION["user"]) || $_SESSION["tipo_usuario"] !== "admin") {
                         data-bs-toggle="dropdown"
                         aria-expanded="false"
                         style="text-decoration: none;">
+                        <p class="m-1"> Administrador </p>
                         <img
                             src="Public/images/perfil/perfil2.jpg"
                             class="rounded-circle"
@@ -88,11 +81,7 @@ if (!isset($_SESSION["user"]) || $_SESSION["tipo_usuario"] !== "admin") {
                     <ul
                         class="dropdown-menu dropdown-menu-end"
                         aria-labelledby="navbarDropdownMenuAvatar">
-                        <li>
-                            <p class="dropdown-item " href="index.php?action=perfil">
-                                <i class="uil uil-keyhole-square"></i> Administrador
-                            </p>
-                        </li>
+                        
                         <li>
                             <?php if (isset($_SESSION["user"])): ?>
                                 <p class=" user-select-all dropdown-item">
@@ -127,171 +116,24 @@ if (!isset($_SESSION["user"]) || $_SESSION["tipo_usuario"] !== "admin") {
     <!-- Fin Navbar Bootstrap -->
 
     <!--============================================================MAIN=============================================-->
-    <main id="mainAdmin">
-        <div>
-            <!--==================================IZQUIERDA================================================-->
-
-
-            <!------------------------------BARRA LATERAL - SIDE BAR-------------------------->
-            <div class="sidebar collapse show" id="sidebarAdmin">
-                <a class="menu-item">
-                    <span><i class="uil uil-house-user"></i></span>
-                    <h3>Inicio</h3>
-                </a>
-
-                <a class="menu-item">
-                    <span><i class="uil uil-user-circle"></i></span>
-                    <h3>Perfil</h3>
-                </a>
-
-                <a class="menu-item" id="guardianes-box">
-                    <span><i class="uil uil-smile-squint-wink"></i></span>
-                    <h3>Guardianes</h3>
-                </a>
-
-                <a class="menu-item">
-                    <span><i class="uil uil-shop"></i></span>
-                    <h3>Fundaciones</h3>
-                </a>
-
-                <a class="menu-item">
-                    <span><i class="uil uil-credit-card"></i></span>
-                    <h3>Donaciones</h3>
-                </a>
-
-                <a class="menu-item" id="popup-mascotas">
-                    <span><i class="uil uil-heartbeat"></i></span>
-                    <h3>Mascotas</h3>
-
-                    <!---------------------------------------------------POPUP DE MASCOTAS --------------------------------------------->
-                    <div class="mascotas-popup">
-                        <div class="popup-item">
-                            <div class="foto-perfil">
-                                <img src="Public/images/sidebar/perro.JPG">
-                            </div>
-                            <div class="popup-body">
-                                <b class="text-suave">Perros</b>
-                            </div>
-                        </div>
-
-                        <div class="popup-item">
-                            <div class="foto-perfil">
-                                <img src="Public/images/sidebar/gato.jpg">
-                            </div>
-                            <div class="popup-body">
-                                <b class="text-suave">Gatos</b>
-                            </div>
-                        </div>
-                        <div class="popup-item">
-                            <div class="foto-perfil">
-                                <img src="Public/images/sidebar/todo-mascotas.jpg">
-                            </div>
-                            <div class="popup-body">
-                                <b class="text-suave">Todos</b>
-                            </div>
-                        </div>
-                    </div>
-                    <!---------------------FIN DEL POPUP DE MASCOTAS----------------------------->
-                </a>
-
-                <!---------------------CRUDS ADMIN DISPONIBLES ----------------------------->
-                <a class="menu-item" onclick="cargarCruds()">
-                    <span><i class="uil uil-constructor"></i></span>
-                    <h3>CRUD Admin</h3>
-                </a>
-
-                <a class="menu-item">
-                    <span><i class="uil uil-setting"></i></span>
-                    <h3>Configuración</h3>
-                </a>
+    <div class="wrapper justify-content-between align-items-center">
+        <aside id="sidebar">
+            <div class="d-flex justify-content-between p-4">
+                <div class="sidebar-logo">
+                    <a href="#"> Menu </a>
+                </div>
+                <button class="toggle-btn border-0" type="button">
+                <i id="icon" class="uil uil-angle-double-right"></i>
+                </button>
             </div>
-            <!------------------------FIN DEL SIDEBAR---------------------->
-            <label for="crear-publicacion" class="btn btn-primario">Crear publicación</label>
-        </div>
-        <!------------------------------FIN DEL LADO IZQUIERDO-------------------------->
+        </aside>
+        <div class="main">
 
-        <!--====================================================MEDIO=======================================================-->
-        <div class="medio">
-            <div id="cruds">
-                <!-- AQUI SE CARGARAN LAS CRUDS DISPONIBLES POR EL FETCH EN JAVASCRIPT -->
-            </div>
         </div>
-        <!--==============================================DERECHA===========================================-->
-        <div class="derecha">
-            <!------------------------ OTROS GUARDIANES------------------------>
-            <div class="guardianes">
-                <div class="head">
-                    <h4>Otros guardianes</h4><i class="uil uil-users-alt"></i>
-                </div>
-                <!------------------------ BARRA DE BUSCADOR --------------------->
-                <div class="barra-buscador">
-                    <i class="uil uil-search"></i>
-                    <input type="search" placeholder="Buscar guardianes" id="guardian-buscador">
-                </div>
-                <!------------------------ CATEGORIA DE GUARDIANES --------------------->
-                <div class="categoria">
-                    <a class="enlinea">En Linea</a>
-                    <a class="offline">Offline</a>
-                </div>
-                <!------------------------ GUARDIAN EN LINEA--------------------->
-                <div class="guardian-enlinea">
-                    <div class="foto-perfil">
-                        <img src="Public/images/perfil.jpg">
-                        <div class="enlinea"></div>
-                    </div>
-                    <div class="guardian-body">
-                        <h5>Juank Pera</h5>
-                        <p class="text-suave">Me encantan los gatos uwu</p>
-                        <div class="accion">
-                            <button class="btn btn-primario">
-                                Ver perfil
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="guardian-enlinea">
-                    <div class="foto-perfil">
-                        <img src="Public/images/valen.jpg">
-                        <div class="enlinea"></div>
-                    </div>
-                    <div class="guardian-body">
-                        <h5>Valentina Urrego</h5>
-                        <p class="text-suave">Me encantan los michis :3</p>
-                        <div class="accion">
-                            <button class="btn btn-primario">
-                                Ver perfil
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                <!------------------------ GUARDIAN OFFLINE--------------------->
-                <div class="guardian-offline">
-                    <div class="foto-perfil">
-                        <img src="Public/images/perfil2.jpg">
-                        <div class="offline"></div>
-                    </div>
-                    <div>
-                        <h5>Manuel Moncada</h5>
-                        <p class="text-suave">
-                            Activo hace 2 dias
-                        </p>
-                        <div class="accion">
-                            <button class="btn btn-primario">
-                                Ver perfil
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        </div>
-        <!--==============================================FIN DE LA DERECHA===========================================-->
-    </main>
+    </div>
     <!--==============================================CONFIGURACION DE FONDO===========================================-->
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="Public/js/main.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" ></script>
     <script src="Public/js/cruds.js"></script>
 </body>
 

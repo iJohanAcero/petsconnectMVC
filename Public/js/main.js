@@ -1,4 +1,25 @@
+document.addEventListener('DOMContentLoaded', function() {
+    // Debugging
+    console.log("DOM loaded");
+    
+    const hamburger = document.querySelector(".toggle-btn");
+    
+    const toggler = document.querySelector("#icon");
+    
+    const sidebar = document.querySelector("#sidebar");
+
+    if(hamburger && toggler && sidebar) {
+        hamburger.addEventListener("click", function() {
+            sidebar.classList.toggle("expand");
+            toggler.classList.toggle("bxs-chevron-right");
+            toggler.classList.toggle("bxs-chevron-left");
+        });
+    } else {
+        console.log("Missing elements - hamburger:", !!hamburger, "toggler:", !!toggler, "sidebar:", !!sidebar);
+    }
+});
 (function () {
+
   "use strict";
 
   // ======= Sticky
@@ -99,4 +120,14 @@
   document.querySelector(".back-to-top").onclick = () => {
     scrollTo(document.documentElement);
   };
+
+  const hamburger = document.querySelector(".toggle-btn");
+  const toggler = document.querySelector("#icon");
+
+  hamburger.addEventListener("click", function() {
+    document.querySelector("#sidebar").classList.toggle("expand");
+    toggler.classList.toggle("uil-angle-double-right");
+    toggler.classList.toggle("uil-angle-double-left");
+  });
+
 })();
