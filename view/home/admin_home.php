@@ -43,7 +43,7 @@ if (!isset($_SESSION["user"]) || $_SESSION["tipo_usuario"] !== "admin") {
 
 <body id="bodyAdmin">
     <!-- Navbar Bootstrap -->
-    <nav class="navbar navbar-expand-lg" id="navbarAdmin">
+    <nav class="navbar navbar-expand-lg sticky" id="navbarAdmin">
         <div class="container-fluid m-2">
             <a class="navbar-brand" href="#" onclick="history.go(0);">
                 <img src="Public/images/logo/logo.png" alt="Logo" id="logo" class="d-inline-block align-text-top">
@@ -60,7 +60,7 @@ if (!isset($_SESSION["user"]) || $_SESSION["tipo_usuario"] !== "admin") {
                     </ul>
                 </div>
                 <div class="dropdown">
-                    
+
                     <a
                         class="d-flex align-items-center"
                         href="#"
@@ -81,7 +81,7 @@ if (!isset($_SESSION["user"]) || $_SESSION["tipo_usuario"] !== "admin") {
                     <ul
                         class="dropdown-menu dropdown-menu-end"
                         aria-labelledby="navbarDropdownMenuAvatar">
-                        
+
                         <li>
                             <?php if (isset($_SESSION["user"])): ?>
                                 <p class=" user-select-all dropdown-item">
@@ -120,12 +120,180 @@ if (!isset($_SESSION["user"]) || $_SESSION["tipo_usuario"] !== "admin") {
         <aside id="sidebar">
             <div class="d-flex justify-content-between p-4">
                 <div class="sidebar-logo">
-                    <a href="#"> Menu </a>
+                    <h4 class="text-muted">Hola <?php echo htmlspecialchars($_SESSION["user"]["nombre"]); ?>...</h4>
+                    <p>
+                        <span class="text-muted">¡Explora las opciones!</span>
+                    </p>
                 </div>
                 <button class="toggle-btn border-0" type="button">
-                <i id="icon" class="uil uil-angle-double-right"></i>
+                    <i id="icon" class="uil uil-angle-double-right"></i>
                 </button>
             </div>
+            <ul class="sidebar-nav">
+                <li class="sidebar-item">
+                    <a href="" class="sidebar-link">
+                        <i class="uil uil-home"></i>
+                        <span class="sidebar-text">Inicio</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="" class="sidebar-link">
+                        <i class="uil uil-user"></i>
+                        <span class="sidebar-text">Perfil</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="" class="sidebar-link">
+                        <i class="uil uil-building"></i>
+                        <span class="sidebar-text">Fundaciones</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="" class="sidebar-link">
+                        <i class="uil uil-credit-card"></i>
+                        <span class="sidebar-text">Donaciones</span>
+                    </a>
+                </li>
+                <li class="sidebar-item has-dropdown">
+                    <a href="" class="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse" data-bs-target="#mascota" aria-expanded="false" aria-controls="mascota">
+                        <i class="uil uil-heart"></i>
+                        <span class="sidebar-text">Mascotas</span>
+                    </a>
+                    <ul id="mascota" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
+                        <li class="sidebar-item">
+                            <a href="" class="sidebar-link">Perros</a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a href="" class="sidebar-link">Gatos</a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a href="" class="sidebar-link">Todos</a>
+                        </li>
+
+                    </ul>
+                </li>
+                <li class="sidebar-item has-dropdown">
+                    <a href="" class="sidebar-link" data-bs-toggle="collapse" data-bs-target="#crud" aria-expanded="false" aria-controls="crud">
+                        <i class="uil uil-clipboard-alt"></i>
+                        <span class="sidebar-text">Administrador de Cruds</span>
+                    </a>
+
+                    <ul id="crud" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
+                        <li class="sidebar-item has-dropdown">
+                            <a href="" class="sidebar-link" data-bs-toggle="collapse" data-bs-target="#crud-2" aria-expanded="false" aria-controls="crud-2">
+                            Modulo Usuarios
+                            </a>
+                            <ul id="crud-2" class="sidebar-dropdown list-unstyled collapse">
+                                <li class="sidebar-item">
+                                    <a href="" class="sidebar-link">
+                                        Usuarios
+                                    </a>
+                                </li>
+                                <li class="sidebar-item">
+                                    <a href="" class="sidebar-link">
+                                        Guardianes
+                                    </a>
+                                </li>
+                                <li class="sidebar-item">
+                                    <a href="" class="sidebar-link">
+                                        Fundaciones
+                                    </a>
+                                </li>
+                                <li class="sidebar-item">
+                                    <a href="" class="sidebar-link">
+                                        Administradores
+                                    </a>
+                                </li>
+
+                            </ul>
+                        </li>
+                        <li class="sidebar-item collapsed has-dropdown">
+                            <a href="" class="sidebar-link " data-bs-toggle="collapse" data-bs-target="#crud-3" aria-expanded="false" aria-controls="crud-3">
+                            Modulo Mascotas
+                            </a>
+                            <ul id="crud-3" class="sidebar-dropdown list-unstyled collapse">
+                                <li class="sidebar-item">
+                                    <a href="" class="sidebar-link">
+                                        Mascotas
+                                    </a>
+                                </li>
+                                <li class="sidebar-item">
+                                    <a href="" class="sidebar-link">
+                                        Tipo Mascotas
+                                    </a>
+                                </li>
+                                <li class="sidebar-item">
+                                    <a href="" class="sidebar-link">
+                                        Vacunas
+                                    </a>
+                                </li>
+                                <li class="sidebar-item">
+                                    <a href="" class="sidebar-link">
+                                        XXXXXX
+                                    </a>
+                                </li>
+
+                            </ul>
+                        </li>
+                        <li class="sidebar-item has-dropdown">
+                            <a href="" class="sidebar-link has-dropdown" data-bs-toggle="collapse" data-bs-target="#crud-4" aria-expanded="false" aria-controls="crud-4">
+                            Modulo Productos
+                            </a>
+                            <ul id="crud-4" class="sidebar-dropdown list-unstyled collapse">
+                                <li class="sidebar-item">
+                                    <a href="" class="sidebar-link">
+                                        Productos
+                                    </a>
+                                </li>
+                                <li class="sidebar-item">
+                                    <a href="" class="sidebar-link">
+                                        XXXXXX
+                                    </a>
+                                </li>
+                                <li class="sidebar-item">
+                                    <a href="" class="sidebar-link">
+                                        XXXXXX
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="sidebar-item has-dropdown">
+                            <a href="" class="sidebar-link has-dropdown" data-bs-toggle="collapse" data-bs-target="#crud-5" aria-expanded="false" aria-controls="crud-5">
+                            Modulo Donaciones
+                            </a>
+                            <ul id="crud-5" class="sidebar-dropdown list-unstyled collapse">
+                                <li class="sidebar-item">
+                                    <a href="" class="sidebar-link">
+                                        Donaciones
+                                    </a>
+                                </li>
+                                <li class="sidebar-item">
+                                    <a href="" class="sidebar-link">
+                                        XXXXXX
+                                    </a>
+                                </li>
+                                <li class="sidebar-item">
+                                    <a href="" class="sidebar-link">
+                                        XXXXXX
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                <li class="sidebar-item">
+                    <a href="" class="sidebar-link">
+                        <i class="uil uil-setting"></i>
+                        <span class="sidebar-text">Dashboard</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="" class="sidebar-link">
+                        <i class="uil uil-dashboard"></i>
+                        <span class="sidebar-text">Configuración</span>
+                    </a>
+                </li>
+            </ul>
         </aside>
         <div class="main">
 
@@ -133,7 +301,7 @@ if (!isset($_SESSION["user"]) || $_SESSION["tipo_usuario"] !== "admin") {
     </div>
     <!--==============================================CONFIGURACION DE FONDO===========================================-->
     <script src="Public/js/main.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" ></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="Public/js/cruds.js"></script>
 </body>
 

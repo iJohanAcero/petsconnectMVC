@@ -11,12 +11,10 @@ document.addEventListener('DOMContentLoaded', function() {
     if(hamburger && toggler && sidebar) {
         hamburger.addEventListener("click", function() {
             sidebar.classList.toggle("expand");
-            toggler.classList.toggle("bxs-chevron-right");
-            toggler.classList.toggle("bxs-chevron-left");
+            toggler.classList.toggle("uil-angle-double-right");
+            toggler.classList.toggle("uil-angle-double-left");
         });
-    } else {
-        console.log("Missing elements - hamburger:", !!hamburger, "toggler:", !!toggler, "sidebar:", !!sidebar);
-    }
+    } 
 });
 (function () {
 
@@ -120,14 +118,5 @@ document.addEventListener('DOMContentLoaded', function() {
   document.querySelector(".back-to-top").onclick = () => {
     scrollTo(document.documentElement);
   };
-
-  const hamburger = document.querySelector(".toggle-btn");
-  const toggler = document.querySelector("#icon");
-
-  hamburger.addEventListener("click", function() {
-    document.querySelector("#sidebar").classList.toggle("expand");
-    toggler.classList.toggle("uil-angle-double-right");
-    toggler.classList.toggle("uil-angle-double-left");
-  });
 
 })();
