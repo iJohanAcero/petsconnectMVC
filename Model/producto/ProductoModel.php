@@ -80,22 +80,26 @@ class Productos
     }
 
     // Método para actualizar un producto usando su ID
+    // Reemplaza el método update con este:
     public function update($id, $nombre, $tipo_producto, $descripcion, $precio, $cantidad_disponible)
-{
-    $statement = $this->db->prepare("UPDATE t_producto 
-        SET nombre = :nombre, tipo_producto = :tipo, descripcion = :descripcion, precio = :precio, cantidad_disponible = :cantidad_disponible 
+    {
+        $statement = $this->db->prepare("UPDATE t_producto 
+        SET nombre = :nombre, 
+            tipo_producto = :tipo_producto, 
+            descripcion = :descripcion, 
+            precio = :precio, 
+            cantidad_disponible = :cantidad_disponible 
         WHERE id_producto = :id");
 
-    $statement->bindParam(':id', $id);
-    $statement->bindParam(':nombre', $nombre);
-    $statement->bindParam(':tipo', $tipo_producto);
-    $statement->bindParam(':descripcion', $descripcion);
-    $statement->bindParam(':precio', $precio);
-    $statement->bindParam(':cantidad', $cantidad_disponible);
+        $statement->bindParam(':id', $id);
+        $statement->bindParam(':nombre', $nombre);
+        $statement->bindParam(':tipo_producto', $tipo_producto); 
+        $statement->bindParam(':descripcion', $descripcion);
+        $statement->bindParam(':precio', $precio);
+        $statement->bindParam(':cantidad_disponible', $cantidad_disponible); 
 
-    // ✅ Devolvemos true o false para que el controlador lo maneje
-    return $statement->execute();
-}
+        return $statement->execute();
+    }
 
     // Método para eliminar un producto usando su ID
     public function delete($id)

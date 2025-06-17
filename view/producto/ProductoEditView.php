@@ -26,7 +26,7 @@ $producto = $producto[0]; // Tomamos el primer registro si viene en forma de arr
 
 <head>
     <meta charset="UTF-8">
-    <title>Editar producto</title>
+    <title>Actualizar producto</title>
 
     <!-- Bootstrap 5 CDN (CSS) -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -40,7 +40,7 @@ $producto = $producto[0]; // Tomamos el primer registro si viene en forma de arr
         <h2 class="mb-4"></h2>
 
         <!-- Formulario con clases de Bootstrap -->
-        <form id="form-editar-producto" method="POST" action="../../controller/producto/ProductoController.php">
+        <form  id="form-editar-producto" method="POST" action="../../controller/producto/ProductoController.php">
 
             <!-- Campo oculto para el ID del producto -->
             <input type="hidden" name="id" value="<?= $producto['id_producto']; ?>">
@@ -80,7 +80,7 @@ $producto = $producto[0]; // Tomamos el primer registro si viene en forma de arr
                 <input type="number" name="cantidad_dosponible" class="form-control" value="<?= $producto['cantidad_disponible']; ?>" required>
             </div>
 
-            <input type="hidden" name="accion" value="editar">
+            <input type="hidden" name="editar" value="editar">
 
             <!-- Botón de acción -->
             <button type="submit" name="actualizar" class="btn btn-primary">Actualizar</button>

@@ -2,65 +2,74 @@
 // Incluimos el modelo de productos
 require_once('../../Model/producto/ProductoModel.php');
 
-// Verificamos que hay datos enviados por el método POST
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+session_start(); // Para manejar mensajes entre redirecciones
 
-    // Instanciamos el modelo
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $modeloProducto = new Productos();
 
-    // 🔍 Detectamos qué operación se va a hacer
-    // La clave está en verificar qué botón o dato viene en el POST
-
-    // -------------------------------
-    // 1️⃣ AGREGAR producto
-    // Si el formulario de registro fue enviado (btnregistrar existe)
-    if (isset($_POST['btnregistrar'])) {
-
-        // Recogemos los datos del formulario
-        $nombre        = $_POST['nombre'];
+    // 1️⃣ REGISTRAR
+    if (isset($_POST['accion']) && $_POST['accion'] === 'registrar') {
+        $nombre = $_POST['nombre'];
         $tipo_producto = $_POST['tipo_producto'];
-        $descripcion   = $_POST['descripcion'];
-        $precio        = $_POST['precio'];
-        $cantidad      = $_POST['cantidad_disponible'];
+        $descripcion = $_POST['descripcion'];
+        $precio = $_POST['precio'];
+        $cantidad_disponible = $_POST['cantidad_disponible'];
 
-        // Llamamos al método 'add' del modelo
-        $modeloProducto->add($nombre, $tipo_producto, $descripcion, $precio, $cantidad);
+        $resultado = $modeloProducto->add($nombre, $tipo_producto, $descripcion, $precio, $cantidad_disponible);
+
+        if ($resultado) {
+            $_SESSION['mensaje'] = 'Producto registrado correctamente';
+            $_SESSION['tipo_mensaje'] = 'success';
+        } else {
+            $_SESSION['mensaje'] = 'Error al registrar producto';
+            $_SESSION['tipo_mensaje'] = 'error';
+        }
+
+        header("Location: ../../view/producto/ProductoView.php");
         exit;
     }
 
-    // -------------------------------
-    // 2️⃣ ACTUALIZAR producto
-    // Si se recibe un campo llamado 'actualizar' (puedes cambiar el nombre si usas otro)
-    if (isset($_POST['actualizar'])) {
+    // 2️⃣ ACTUALIZAR
+    if (isset($_POST['accion']) && $_POST['accion'] === 'editar') {
+        $id = $_POST['id'];
+        $nombre = $_POST['nombre'];
+        $tipo_producto = $_POST['tipo_producto'];
+        $descripcion = $_POST['descripcion'];
+        $precio = $_POST['precio'];
+        $cantidad_disponible = $_POST['cantidad_disponible'];
 
-        $id           = $_POST['Id'];
-        $nombre       = $_POST['Nombre'];
-        $tipo         = $_POST['tipo_producto'];
-        $descripcion  = $_POST['Descripcion'];
-        $precio       = $_POST['Precio'];
-        $cantidad     = $_POST['Cantidad'];
+        $resultado = $modeloProducto->update($id, $nombre, $tipo_producto, $descripcion, $precio, $cantidad_disponible);
 
-        // Llamamos al método 'update'
-        $modeloProducto->update($id, $nombre, $tipo, $descripcion, $precio, $cantidad);
+        if ($resultado) {
+            $_SESSION['mensaje'] = 'Producto actualizado correctamente';
+            $_SESSION['tipo_mensaje'] = 'success';
+        } else {
+            $_SESSION['mensaje'] = 'Error al actualizar producto';
+            $_SESSION['tipo_mensaje'] = 'error';
+        }
+
+        header("Location: ../../view/producto/ProductoView.php");
         exit;
     }
 
-    // -------------------------------
-    // 3️⃣ ELIMINAR producto
-    // Si se recibió un ID sin más campos, asumimos que es una eliminación
-    // Ahora: Si en el POST hay 'eliminar' y 'Id', eliminamos el producto
-    if (isset($_POST['eliminar']) && isset($_POST['Id'])) {
-        $id = $_POST['Id'];
-        $modeloProducto->delete($id);
+    // 3️⃣ ELIMINAR
+    if (isset($_POST['eliminar']) && isset($_POST['id'])) {
+        $id = $_POST['id'];
+        $resultado = $modeloProducto->delete($id);
 
-        // Después de eliminar, redirigimos para evitar problemas al recargar la página
-        header("Location: /petsconnectMVC/View/producto/ProductoView.php");
+        if ($resultado) {
+            $_SESSION['mensaje'] = 'Producto eliminado correctamente';
+            $_SESSION['tipo_mensaje'] = 'success';
+        } else {
+            $_SESSION['mensaje'] = 'Error al eliminar producto';
+            $_SESSION['tipo_mensaje'] = 'error';
+        }
+
+        header("Location: ../../view/producto/ProductoView.php");
         exit;
     }
-
-    // ⚠️ Si llega hasta aquí, no se reconoce la acción
-    echo "<script>alert('Acción no reconocida.'); window.location.href = '../../View/producto/ProductoView.php';</script>";
-} else {
-    // Si no es una petición POST, redirigimos a la vista
-    header("Location: ../../View/producto/ProductoView.php");
 }
+
+// Si no es POST o no hay acción reconocida
+header("Location: ../../view/producto/ProductoView.php");
+exit;

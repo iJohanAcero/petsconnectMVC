@@ -181,7 +181,7 @@ if (!isset($_SESSION["user"]) || $_SESSION["tipo_usuario"] !== "admin") {
                     <ul id="crud" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
                         <li class="sidebar-item has-dropdown">
                             <a href="" class="sidebar-link" data-bs-toggle="collapse" data-bs-target="#crud-2" aria-expanded="false" aria-controls="crud-2">
-                            Modulo Usuarios
+                                Modulo Usuarios
                             </a>
                             <ul id="crud-2" class="sidebar-dropdown list-unstyled collapse">
                                 <li class="sidebar-item">
@@ -209,7 +209,7 @@ if (!isset($_SESSION["user"]) || $_SESSION["tipo_usuario"] !== "admin") {
                         </li>
                         <li class="sidebar-item collapsed has-dropdown">
                             <a href="" class="sidebar-link " data-bs-toggle="collapse" data-bs-target="#crud-3" aria-expanded="false" aria-controls="crud-3">
-                            Modulo Mascotas
+                                Modulo Mascotas
                             </a>
                             <ul id="crud-3" class="sidebar-dropdown list-unstyled collapse">
                                 <li class="sidebar-item">
@@ -237,29 +237,19 @@ if (!isset($_SESSION["user"]) || $_SESSION["tipo_usuario"] !== "admin") {
                         </li>
                         <li class="sidebar-item has-dropdown">
                             <a href="" class="sidebar-link has-dropdown" data-bs-toggle="collapse" data-bs-target="#crud-4" aria-expanded="false" aria-controls="crud-4">
-                            Modulo Productos
+                                Modulo Productos
                             </a>
                             <ul id="crud-4" class="sidebar-dropdown list-unstyled collapse">
                                 <li class="sidebar-item">
-                                    <a href="" class="sidebar-link">
-                                        Productos
-                                    </a>
-                                </li>
-                                <li class="sidebar-item">
-                                    <a href="" class="sidebar-link">
-                                        XXXXXX
-                                    </a>
-                                </li>
-                                <li class="sidebar-item">
-                                    <a href="" class="sidebar-link">
-                                        XXXXXX
+                                    <a href="#" class="sidebar-link" onclick="cargarCrudProductos()">
+                                        <i class="fas fa-list"></i> Productos
                                     </a>
                                 </li>
                             </ul>
                         </li>
                         <li class="sidebar-item has-dropdown">
                             <a href="" class="sidebar-link has-dropdown" data-bs-toggle="collapse" data-bs-target="#crud-5" aria-expanded="false" aria-controls="crud-5">
-                            Modulo Donaciones
+                                Modulo Donaciones
                             </a>
                             <ul id="crud-5" class="sidebar-dropdown list-unstyled collapse">
                                 <li class="sidebar-item">
@@ -295,14 +285,16 @@ if (!isset($_SESSION["user"]) || $_SESSION["tipo_usuario"] !== "admin") {
                 </li>
             </ul>
         </aside>
+        <!--============================================ MAIN =============================================-->
         <div class="main">
-
+            <div class="col-md-9 col-lg-10 main-content">
+                <div id="crud-container"></div>
+            </div>
         </div>
-    </div>
-    <!--==============================================CONFIGURACION DE FONDO===========================================-->
-    <script src="Public/js/main.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="Public/js/cruds.js"></script>
+        <!--==============================================CONFIGURACION DE FONDO===========================================-->
+        <script src="Public/js/main.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="Public2/js/cruds.js"></script>
 </body>
 
 </html>
