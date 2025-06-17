@@ -161,13 +161,13 @@ if (!isset($_SESSION["user"]) || $_SESSION["tipo_usuario"] !== "admin") {
                     </a>
                     <ul id="mascota" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
                         <li class="sidebar-item">
-                            <a href="" class="sidebar-link">Perros</a>
+                            <a href="" class="sidebar-link">✔ Perros</a>
                         </li>
                         <li class="sidebar-item">
-                            <a href="" class="sidebar-link">Gatos</a>
+                            <a href="" class="sidebar-link">✔ Gatos</a>
                         </li>
                         <li class="sidebar-item">
-                            <a href="" class="sidebar-link">Todos</a>
+                            <a href="" class="sidebar-link">✔ Todos</a>
                         </li>
 
                     </ul>
@@ -181,27 +181,27 @@ if (!isset($_SESSION["user"]) || $_SESSION["tipo_usuario"] !== "admin") {
                     <ul id="crud" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
                         <li class="sidebar-item has-dropdown">
                             <a href="" class="sidebar-link" data-bs-toggle="collapse" data-bs-target="#crud-2" aria-expanded="false" aria-controls="crud-2">
-                            Modulo Usuarios
+                            ✔ Modulo Usuarios
                             </a>
                             <ul id="crud-2" class="sidebar-dropdown list-unstyled collapse">
                                 <li class="sidebar-item">
                                     <a href="" class="sidebar-link">
-                                        Usuarios
+                                        - Usuarios
                                     </a>
                                 </li>
                                 <li class="sidebar-item">
                                     <a href="" class="sidebar-link">
-                                        Guardianes
+                                        - Guardianes
                                     </a>
                                 </li>
                                 <li class="sidebar-item">
                                     <a href="" class="sidebar-link">
-                                        Fundaciones
+                                        - Fundaciones
                                     </a>
                                 </li>
                                 <li class="sidebar-item">
                                     <a href="" class="sidebar-link">
-                                        Administradores
+                                        - Administradores
                                     </a>
                                 </li>
 
@@ -209,22 +209,22 @@ if (!isset($_SESSION["user"]) || $_SESSION["tipo_usuario"] !== "admin") {
                         </li>
                         <li class="sidebar-item collapsed has-dropdown">
                             <a href="" class="sidebar-link " data-bs-toggle="collapse" data-bs-target="#crud-3" aria-expanded="false" aria-controls="crud-3">
-                            Modulo Mascotas
+                            ✔ Modulo Mascotas
                             </a>
                             <ul id="crud-3" class="sidebar-dropdown list-unstyled collapse">
                                 <li class="sidebar-item">
                                     <a href="" class="sidebar-link">
-                                        Mascotas
+                                        - Mascotas
                                     </a>
                                 </li>
                                 <li class="sidebar-item">
                                     <a href="" class="sidebar-link">
-                                        Tipo Mascotas
+                                        - Tipo Mascotas
                                     </a>
                                 </li>
                                 <li class="sidebar-item">
                                     <a href="" class="sidebar-link">
-                                        Vacunas
+                                        - Vacunas
                                     </a>
                                 </li>
                                 <li class="sidebar-item">
@@ -237,34 +237,24 @@ if (!isset($_SESSION["user"]) || $_SESSION["tipo_usuario"] !== "admin") {
                         </li>
                         <li class="sidebar-item has-dropdown">
                             <a href="" class="sidebar-link has-dropdown" data-bs-toggle="collapse" data-bs-target="#crud-4" aria-expanded="false" aria-controls="crud-4">
-                            Modulo Productos
+                            ✔ Modulo Productos
                             </a>
                             <ul id="crud-4" class="sidebar-dropdown list-unstyled collapse">
                                 <li class="sidebar-item">
                                     <a href="" class="sidebar-link">
-                                        Productos
-                                    </a>
-                                </li>
-                                <li class="sidebar-item">
-                                    <a href="" class="sidebar-link">
-                                        XXXXXX
-                                    </a>
-                                </li>
-                                <li class="sidebar-item">
-                                    <a href="" class="sidebar-link">
-                                        XXXXXX
+                                        - Productos
                                     </a>
                                 </li>
                             </ul>
                         </li>
                         <li class="sidebar-item has-dropdown">
                             <a href="" class="sidebar-link has-dropdown" data-bs-toggle="collapse" data-bs-target="#crud-5" aria-expanded="false" aria-controls="crud-5">
-                            Modulo Donaciones
+                            ✔ Modulo Donaciones
                             </a>
                             <ul id="crud-5" class="sidebar-dropdown list-unstyled collapse">
                                 <li class="sidebar-item">
                                     <a href="" class="sidebar-link">
-                                        Donaciones
+                                        - Donaciones
                                     </a>
                                 </li>
                                 <li class="sidebar-item">
