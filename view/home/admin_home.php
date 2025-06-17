@@ -62,14 +62,14 @@ if (!isset($_SESSION["user"]) || $_SESSION["tipo_usuario"] !== "admin") {
                 <div class="dropdown">
 
                     <a
-                        class="d-flex align-items-center"
+                        class="d-flex align-items-center font-weight-bold"
                         href="#"
                         id="navbarDropdownMenuAvatar"
                         role="button"
                         data-bs-toggle="dropdown"
                         aria-expanded="false"
                         style="text-decoration: none;">
-                        <p class="m-1"> Administrador </p>
+                        <p class="m-1 "> Administrador </p>
                         <img
                             src="Public/images/perfil/perfil2.jpg"
                             class="rounded-circle"
@@ -118,12 +118,10 @@ if (!isset($_SESSION["user"]) || $_SESSION["tipo_usuario"] !== "admin") {
     <!--============================================================MAIN=============================================-->
     <div class="wrapper justify-content-between align-items-center">
         <aside id="sidebar">
-            <div class="d-flex justify-content-between p-4">
+            <div class="d-flex justify-content-between" style="padding: 24px 24px 0 24px;">
                 <div class="sidebar-logo">
-                    <h4 class="text-muted">Hola <?php echo htmlspecialchars($_SESSION["user"]["nombre"]); ?>...</h4>
-                    <p>
-                        <span class="text-muted">¡Explora las opciones!</span>
-                    </p>
+                    <h4 class="text-muted mx-auto">Menú<h4>
+                    
                 </div>
                 <button class="toggle-btn border-0" type="button">
                     <i id="icon" class="uil uil-angle-double-right"></i>
@@ -154,7 +152,7 @@ if (!isset($_SESSION["user"]) || $_SESSION["tipo_usuario"] !== "admin") {
                         <span class="sidebar-text">Donaciones</span>
                     </a>
                 </li>
-                <li class="sidebar-item has-dropdown">
+                <li class="sidebar-item has-dropdown" id="mascotas">
                     <a href="" class="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse" data-bs-target="#mascota" aria-expanded="false" aria-controls="mascota">
                         <i class="uil uil-heart"></i>
                         <span class="sidebar-text">Mascotas</span>
@@ -173,9 +171,9 @@ if (!isset($_SESSION["user"]) || $_SESSION["tipo_usuario"] !== "admin") {
                     </ul>
                 </li>
                 <li class="sidebar-item has-dropdown">
-                    <a href="" class="sidebar-link" data-bs-toggle="collapse" data-bs-target="#crud" aria-expanded="false" aria-controls="crud">
+                    <a href="" class="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse" data-bs-target="#crud" aria-expanded="false" aria-controls="crud">
                         <i class="uil uil-clipboard-alt"></i>
-                        <span class="sidebar-text">Administrador de Cruds</span>
+                        <span class="sidebar-text">Gestiones </span>
                     </a>
 
                     <ul id="crud" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
@@ -273,20 +271,19 @@ if (!isset($_SESSION["user"]) || $_SESSION["tipo_usuario"] !== "admin") {
                 </li>
                 <li class="sidebar-item">
                     <a href="" class="sidebar-link">
-                        <i class="uil uil-setting"></i>
+                        <i class="uil uil-dashboard"></i>
                         <span class="sidebar-text">Dashboard</span>
                     </a>
                 </li>
                 <li class="sidebar-item">
                     <a href="" class="sidebar-link">
-                        <i class="uil uil-dashboard"></i>
+                        <i class="uil uil-setting "></i>
                         <span class="sidebar-text">Configuración</span>
                     </a>
                 </li>
             </ul>
         </aside>
         <div class="main">
-
         </div>
     </div>
     <!--==============================================CONFIGURACION DE FONDO===========================================-->

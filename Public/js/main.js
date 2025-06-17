@@ -1,6 +1,4 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // Debugging
-    console.log("DOM loaded");
     
     const hamburger = document.querySelector(".toggle-btn");
     
