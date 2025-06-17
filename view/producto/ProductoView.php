@@ -1,38 +1,10 @@
 <?php
-
 require_once("../../Model/producto/ProductoModel.php");
 $Modelo = new Productos();
-// if (isset($_POST['btnregistrar'])) {
-//     $nombre = $_POST['nombre'];
-//     $tipo = $_POST['tipo_producto'];
-//     $descripcion = $_POST['descripcion'];
-//     $precio = $_POST['precio'];
-//     $cantidad = $_POST['cantidad'];
-
-//     $Modelo->add($nombre, $tipo, $descripcion, $cantidad, $precio);
-// }
 ?>
 
-
-<!DOCTYPE html>
-<html lang="es">
-
-<head>
-    <meta charset="UTF-8">
-    <title>CRUD Productos</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Podés linkear tus estilos aquí -->
-    <link rel="stylesheet" href="../css/estilos.css"> <!-- opcional -->
-</head>
-
-<body>
-    <div class="crud">
-        <h2 class="titulo">CRUD de Productos</h2>
-
-        <a class="btn-añadir" id="openModal">
-            <i class="uil uil-plus-circle"></i> <span>Añadir producto</span>
-        </a>
-    </div>
+<div class="crud" id="crud">
+    <h2 class="titulo">CRUD de Productos</h2>
 
     <table>
         <thead>
@@ -60,11 +32,11 @@ $Modelo = new Productos();
                         <td>$<?php echo $Producto['precio']; ?></td>
                         <td><?php echo $Producto['cantidad_disponible']; ?></td>
                         <td>
-                            <a id="OpenModal" class="edit" data-id="<?php echo $Producto['id_producto']; ?>">
+                            <a class="btn-editar-producto" data-id="<?php echo $Producto['id_producto']; ?>">
                                 <i class="uil uil-pen" style="cursor: pointer;"></i>
                             </a>
-                            <form action="../controller/producto/ProductoController.php" method="POST" style="display:inline;">
-                                <input type="hidden" name="Id" value="<?php echo $Producto['id_producto']; ?>">
+                            <form action="../../controller/producto/ProductoController.php" method="POST" style="display:inline;">
+                                <input type="hidden" name="id" value="<?php echo $Producto['id_producto']; ?>">
                                 <button type="submit" name="eliminar" class="delete" onclick="return confirm('¿Estás seguro de eliminar este producto?')">
                                     <i class="uil uil-trash-alt" style="cursor: pointer;"></i>
                                 </button>
@@ -80,71 +52,56 @@ $Modelo = new Productos();
         </tbody>
     </table>
 
-    <!-- MODAL PARA REGISTRO -->
-    <div id="modal-productos" class="modal" style="display: none;">
-        <div class="modal-content">
-            <span class="close">&times;</span>
-            <h2 class="titulo-modal">¡Registrar nuevo producto!</h2>
+    <!-- ✅ BOTÓN para abrir el modal -->
+    <a class="btn-añadir" id="btn-abrir-modal-producto">
+        <i class="uil uil-plus-circle"></i> <span>Añadir producto</span>
+    </a>
 
-            <form action="../../controller/producto/ProductoController.php" method="POST" class="form-modal">
-                <label for="nombre">Nombre:</label>
-                <input class="input-modal" type="text" id="nombre" name="nombre" autocomplete="off" required>
-
-                <label for="tipo_producto">Tipo:</label>
-                <select class="input-modal" name="tipo_producto" required>
-                    <option>Seleccione</option>
-                    <option value="ComidaGato">Comida para gato</option>
-                    <option value="ComidaPerro">Comida para perro</option>
-                    <option value="ArenaGato">Arena para gatos</option>
-                </select><br><br>
-
-                <label for="descripcion">Descripción:</label>
-                <input class="input-modal" type="text" id="descripcion" name="descripcion" autocomplete="off" required><br><br>
-
-                <label for="cantidad_disponible">Cantidad:</label>
-                <input class="input-modal" type="number" id="cantidad_disponible" name="cantidad_disponible" autocomplete="off" required><br><br>
-
-                <label for="precio">Precio:</label>
-                <input class="input-modal" type="number" id="precio" name="precio" step="0.01" autocomplete="off" required><br><br>
-
-                <button class="btn-añadir" type="submit" name="btnregistrar">Guardar</button>
-            </form>
+    <!-- ✅ MODAL Bootstrap para registrar producto -->
+    <div class="modal fade" id="modal-productos" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalLabel">Registrar nuevo producto</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="form-registrar-producto">
+                        <div class="mb-3">
+                            <label for="nombre" class="form-label">Nombre</label>
+                            <input type="text" class="form-control" name="nombre" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="tipo_producto" class="form-label">Tipo</label>
+                            <select class="form-select" name="tipo_producto" required>
+                                <option value="">Seleccione</option>
+                                <option value="ComidaGato">Comida para gato</option>
+                                <option value="ComidaPerro">Comida para perro</option>
+                                <option value="ArenaGato">Arena para gatos</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="descripcion" class="form-label">Descripción</label>
+                            <input type="text" class="form-control" name="descripcion" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="cantidad_disponible" class="form-label">Cantidad disponible</label>
+                            <input type="number" class="form-control" name="cantidad_disponible" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="precio" class="form-label">Precio</label>
+                            <input type="number" class="form-control" name="precio" required>
+                        </div>
+                        <input type="hidden" name="accion" value="registrar">
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary">Añadir producto</button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
         </div>
     </div>
-
-    <div id="modal-edit-productos" class="modal" style="display: none;">
-        <div class="modal-content">
-            <span class="close">&times;</span>
-            <h2 class="titulo-modal">Editar producto!</h2>
-
-            <form action="../../controller/producto/ProductoController.php" method="POST" class="form-modal">
-                <label for="nombre">Nombre:</label>
-                <input class="input-modal" type="text" id="nombre" name="nombre" autocomplete="off" required>
-
-                <label for="tipo_producto">Tipo:</label>
-                <select class="input-modal" name="tipo_producto" required>
-                    <option>Seleccione</option>
-                    <option value="ComidaGato">Comida para gato</option>
-                    <option value="ComidaPerro">Comida para perro</option>
-                    <option value="ArenaGato">Arena para gatos</option>
-                </select><br><br>
-
-                <label for="descripcion">Descripción:</label>
-                <input class="input-modal" type="text" id="descripcion" name="descripcion" autocomplete="off" required><br><br>
-
-                <label for="cantidad_disponible">Cantidad:</label>
-                <input class="input-modal" type="number" id="cantidad_disponible" name="cantidad_disponible" autocomplete="off" required><br><br>
-
-                <label for="precio">Precio:</label>
-                <input class="input-modal" type="number" id="precio" name="precio" step="0.01" autocomplete="off" required><br><br>
-
-                <input type="hidden" name="accion" value="registrar">
-
-                <button class="btn-añadir" type="submit" name="btnregistrar">Guardar</button>
-            </form>
-        </div>
-    </div>
-
+</div>
 </body>
-
 </html>
