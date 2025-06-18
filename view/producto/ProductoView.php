@@ -3,19 +3,6 @@ require_once("../../Model/producto/ProductoModel.php");
 $Modelo = new Productos();
 ?>
 
-<!DOCTYPE html>
-<html lang="es">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CRUD de Productos</title>
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Iconos de Bootstrap Icons -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-</head>
-
 <body>
     <div class="container crud-container" style="padding: 40px; margin-right: 0px; background-color: #f8f9fa; border-radius: 8px;  justify-content: flex-end; width: 80%;">
         <?php if (isset($_GET['success']) && $_GET['success'] == 1): ?>
@@ -136,11 +123,3 @@ $Modelo = new Productos();
             </div>
         </div>
     </div>
-
-    <!-- Bootstrap JS y dependencias -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- Tu archivo JS personalizado -->
-    <script src="../../Public2/js/cruds.js"></script>
-</body>
-
-</html>

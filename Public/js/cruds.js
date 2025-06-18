@@ -190,7 +190,7 @@ window.cargarCrudProductos = function () {
         .then(response => response.text())
         .then(data => {
             // Cambia el objetivo al contenedor del main
-            const mainContainer = document.querySelector(".main-content #crud-container") ||
+            const mainContainer = document.getElementById("main-content") ||
                 document.getElementById("crud-container") ||
                 document.getElementById("crud");
 
