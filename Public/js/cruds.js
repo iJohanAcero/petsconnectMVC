@@ -1,3 +1,5 @@
+const BASE_URL = window.location.origin + "/petsconnectMVC";
+window.BASE_URL = window.BASE_URL || '';
 
 // =========== CRUD DE PROCESOS DE ADOPCION =========== //
 
@@ -122,22 +124,22 @@ function inicializarModalTipoMascota() {
         if (form) {
             form.addEventListener("submit", function (e) {
                 e.preventDefault();
-            
+
                 const formData = new FormData(form);
-            
+
                 fetch("controller/tipo_mascota/add.php", {
                     method: "POST",
                     body: formData
                 })
-                .then(response => response.text())
-                .then(data => {
-                    form.reset();
-                    modal.style.display = "none";
-                    cargarCrudTipoMascota();
-                })
-                .catch(error => {
-                    console.error("Error en la petición:", error);
-                });
+                    .then(response => response.text())
+                    .then(data => {
+                        form.reset();
+                        modal.style.display = "none";
+                        cargarCrudTipoMascota();
+                    })
+                    .catch(error => {
+                        console.error("Error en la petición:", error);
+                    });
             });
         }
 
@@ -183,69 +185,129 @@ function inicializarModalFundaciones() { // funcion para inicializar el modal
 }
 
 // =========== CRUD DE PRODUCTOS =========== //
-
-function cargarCrudProductos() {
-    fetch("view/producto/ProductoView.php") // Nombre del archivo PHP a incluir
-        .then(response => response.text()) // Convertir respuesta en texto
+window.cargarCrudProductos = function () {
+    fetch("view/producto/ProductoView.php")
+        .then(response => response.text())
         .then(data => {
-            document.getElementById("crud").innerHTML = data; // Incluir contenido
+            // Cambia el objetivo al contenedor del main
+            const mainContainer = document.getElementById("main-content") ||
+                document.getElementById("crud-container") ||
+                document.getElementById("crud");
 
-            inicializarModalProductos();
-            inicializarModalProductosEdit();
+            if (mainContainer) {
+                mainContainer.innerHTML = data;
+                inicializarEventosProductos();
+            } else {
+                console.error("No se encontró el contenedor principal para el CRUD");
+            }
         })
         .catch(error => console.error("Error al cargar PHP:", error));
 }
 
-// =========== MODAL DE PRODUCTOS =========== //
+function abrirModalCrearProducto() {
+    const modalElement = document.getElementById("modal-productos");
+    const modalBootstrap = new bootstrap.Modal(modalElement);
+    modalBootstrap.show();
+}
 
-function inicializarModalProductos() {
-    setTimeout(() => {
-        const modal = document.getElementById("modal-productos");
-        const btn = document.getElementById("openModal");
-        const close = document.querySelector(".close");
+function inicializarEventosProductos() {
+    // Modal para crear producto
+    const btnAbrirModal = document.getElementById("btn-abrir-modal-producto");
+    if (btnAbrirModal) {
+        btnAbrirModal.addEventListener("click", abrirModalCrearProducto);
+    }
 
-        // Abrir modal
-        btn.onclick = function () {
-            modal.style.display = "block";
-        };
+    // Botones de edición
+    const botonesEditar = document.querySelectorAll(".btn-editar-producto");
+    botonesEditar.forEach(btn => {
+        btn.addEventListener("click", function () {
+            const idProducto = this.dataset.id;
+            fetch(`view/producto/ProductoEditView.php?id=${idProducto}`)
+                .then(response => response.text())
+                .then(html => {
+                    document.getElementById("modal-edit-form").innerHTML = html;
+                    const modalElement = document.getElementById("modal-edit-productos");
+                    const modal = new bootstrap.Modal(modalElement);
+                    modal.show();
 
-        //Cerrar modal por (X)
-        close.onclick = function () {
-            modal.style.display = "none";
-        };
+                    // Inicializar formulario de edición
+                    const formEditar = document.getElementById("form-editar-producto");
+                    if (formEditar) {
+                        formEditar.addEventListener("submit", function (e) {
+                            e.preventDefault();
+                            const formData = new FormData(formEditar);
 
-        // Cerrar haciendo clic fuera del modal
-        window.onclick = function (event) {
-            if (event.target === modal) {
-                modal.style.display = "none";
-            }
-        };
+                            fetch(`${BASE_URL}/controller/producto/ProductoController.php`, {
+                                method: "POST",
+                                body: formData
+                            })
+                                .then(response => response.json())
+                                .then(data => {
+                                    if (data.success) {
+                                        mostrarAlerta('success', 'Producto actualizado correctamente');
+                                        const modalElement = document.getElementById("modal-edit-productos");
+                                        const modal = bootstrap.Modal.getInstance(modalElement);
+                                        if (modal) modal.hide();
+                                        cargarCrudProductos();
+                                    } else {
+                                        mostrarAlerta('error', data.message || 'Error al actualizar producto');
+                                    }
+                                })
+                                .catch(error => {
+                                    console.error("Error:", error);
+                                    mostrarAlerta('error', 'Error en la comunicación con el servidor');
+                                });
+                        });
+                    }
+                })
+                .catch(error => console.error("Error al cargar el modal de edición:", error));
+        });
+    });
 
-        // Enviar formulario vía fetch + FormData
-        const form = document.querySelector(".form-modal");
+    // Botones de eliminación
+    const botonesEliminar = document.querySelectorAll(".btn-eliminar-producto");
+    botonesEliminar.forEach(btn => {
+        btn.addEventListener("click", function () {
+            const idProducto = this.dataset.id;
+            if (confirm("¿Estás seguro de que deseas eliminar este producto?")) {
+                const formData = new FormData();
+                formData.append('eliminar', 'true');
+                formData.append('id', idProducto);
 
-        if (form) {
-            form.addEventListener("submit", function (e) {
-                e.preventDefault();
-            
-                const formData = new FormData(form);
-            
-                fetch("controller/producto/add.php", {
+                fetch(`${BASE_URL}/controller/producto/ProductoController.php`, {
                     method: "POST",
                     body: formData
                 })
-                .then(response => response.text())
-                .then(data => {
-                    form.reset();
-                    modal.style.display = "none";
-                    cargarCrudProductos();
-                })
-                .catch(error => {
-                    console.error(" Error al enviar el formulario.", error);
-                });
-            });
-        }
-
-    }, 100); // Delay para que el DOM se cargue si viene por innerHTML
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            mostrarAlerta('success', 'Producto eliminado correctamente');
+                            cargarCrudProductos();
+                        } else {
+                            mostrarAlerta('error', data.message || 'Error al eliminar producto');
+                        }
+                    })
+                    .catch(error => {
+                        console.error("Error:", error);
+                        mostrarAlerta('error', 'Error en la comunicación con el servidor');
+                    });
+            }
+        });
+    });
 }
 
+// Función auxiliar para mostrar alertas con SweetAlert o similar
+function mostrarAlerta(tipo, mensaje) {
+    // Puedes implementar SweetAlert o usar alertas de Bootstrap
+    if (tipo === 'success') {
+        alert(mensaje); // Reemplaza esto con tu sistema de alertas preferido
+    } else {
+        alert(mensaje); // Reemplaza esto con tu sistema de alertas preferido
+    }
+}
+
+// Inicializar cuando el DOM esté listo
+document.addEventListener("DOMContentLoaded", function () {
+    // Opcional: cargar el CRUD automáticamente al entrar al módulo
+    // cargarCrudProductos();
+});

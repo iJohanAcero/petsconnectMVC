@@ -166,7 +166,7 @@ if (!isset($_SESSION["user"]) || $_SESSION["tipo_usuario"] !== "admin") {
                     </a>
                 </div>
                 <!------------------------FIN DEL SIDEBAR---------------------->
-                <label for="crear-Public2acion" class="btn btn-primario">Crear Public2ación</label>
+                <label for="crear-Public2acion" class="btn btn-primario">Crear Publicación</label>
             </div>
             <!------------------------------FIN DEL LADO IZQUIERDO-------------------------->
 
