@@ -239,12 +239,12 @@ if (!isset($_SESSION["user"]) || $_SESSION["tipo_usuario"] !== "admin") {
                         </li>
                         <li class="sidebar-item has-dropdown">
                             <a href="" class="sidebar-link has-dropdown" data-bs-toggle="collapse" data-bs-target="#crud-4" aria-expanded="false" aria-controls="crud-4">
-                                ✔ Modulo Productos
+                                Modulo Productos
                             </a>
                             <ul id="crud-4" class="sidebar-dropdown list-unstyled collapse">
                                 <li class="sidebar-item">
-                                    <a href="" class="sidebar-link">
-                                        - Productos
+                                    <a href="#" class="sidebar-link" onclick="cargarCrudProductos()">
+                                        <i class="fas fa-list"></i> Productos
                                     </a>
                                 </li>
                             </ul>
@@ -287,6 +287,7 @@ if (!isset($_SESSION["user"]) || $_SESSION["tipo_usuario"] !== "admin") {
                 </li>
             </ul>
         </aside>
+        <!--============================================ MAIN =============================================-->
         <div class="main">
             <div class="container py-4" id="main-content">
                 <!-- Aquí se cargará el contenido dinámico según la opción del sidebar -->
