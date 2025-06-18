@@ -25,7 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $_SESSION['tipo_mensaje'] = 'error';
         }
 
-        header("Location: ../../view/producto/ProductoView.php");
+        header("Location: ../../view/producto/ProductoView.php?success=1");
         exit;
     }
 

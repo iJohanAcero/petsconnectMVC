@@ -5,6 +5,7 @@ $Modelo = new Productos();
 
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,28 +14,13 @@ $Modelo = new Productos();
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Iconos de Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-    <style>
-        .crud-container {
-            padding: 20px;
-            margin-top: 20px;
-            background-color: #f8f9fa;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-        .table-responsive {
-            margin-top: 20px;
-        }
-        .btn-action {
-            padding: 5px 10px;
-            margin: 0 2px;
-        }
-        .btn-add {
-            margin-top: 20px;
-        }
-    </style>
 </head>
+
 <body>
-    <div class="container crud-container">
+    <div class="container crud-container" style="padding: 40px; margin-right: 0px; background-color: #f8f9fa; border-radius: 8px;  justify-content: flex-end; width: 80%;">
+        <?php if (isset($_GET['success']) && $_GET['success'] == 1): ?>
+            <div class="alert alert-success">Producto registrado correctamente</div>
+        <?php endif; ?>
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h2 class="mb-0">Gestión de Productos</h2>
             <button id="btn-abrir-modal-producto" class="btn btn-primary">
@@ -77,10 +63,10 @@ $Modelo = new Productos();
                                     </button>
                                 </td>
                             </tr>
-                    <?php
+                        <?php
                         }
                     } else {
-                    ?>
+                        ?>
                         <tr>
                             <td colspan="7" class="text-center">No hay productos registrados</td>
                         </tr>
@@ -156,4 +142,5 @@ $Modelo = new Productos();
     <!-- Tu archivo JS personalizado -->
     <script src="../../Public2/js/cruds.js"></script>
 </body>
+
 </html>
