@@ -220,7 +220,7 @@ if (!isset($_SESSION["user"]) || $_SESSION["tipo_usuario"] !== "admin") {
                                     </a>
                                 </li>
                                 <li class="sidebar-item">
-                                    <a href="" class="sidebar-link">
+                                    <a href="#" class="sidebar-link" onclick="cargarTipoMascota()">
                                         - Tipo Mascotas
                                     </a>
                                 </li>

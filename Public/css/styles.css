@@ -131,12 +131,6 @@
     min-width: 260px;
 }
 
-#sidebar.expand ~ .main {
-    margin-left: 260px;
-    width: calc(100% - 260px);
-    transition: all 0.4s ease-in-out;
-}
-
 
 #sidebar:not(.expand) .sidebar-logo,
 #sidebar:not(.expand) a.sidebar-link span {
