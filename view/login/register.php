@@ -19,6 +19,7 @@
     <link rel="stylesheet" href="../../Public/css/ud-styles.css" />
     <link rel="stylesheet" href="../../Public/css/animate.css" />
     <link rel="stylesheet" href="../../Public/css/ud-styles.css.map" />
+    <link rel="stylesheet" href="../../Public/css/styles.css">
 
     <title>PetsConnect | Registro de Usuario</title>
 </head>
@@ -78,15 +79,16 @@
                             </div>
                         </div>
 
-                        <div class="form-floating mb-3">
-                            <input type="password" class="form-control" name="contrasena" id="contrasena" placeholder="Password" required>
+                        <div class="form-floating mb-3 position-relative">
+                            <input type="password" class="form-control" name="contrasena" id="contrasena" placeholder="Contraseña" required>
                             <label for="contrasena">Contraseña</label>
+                            <div id="checked-icon2" class="position-absolute end-0 top-0 mt-3 me-3"></div>
                         </div>
 
                         <div class="form-floating mb-3 position-relative">
                             <input type="email" class="form-control" name="email" id="email" placeholder="Email" required>
                             <label for="email">Email</label>
-                            <div id="checked-icon" class="position-absolute end-0 top-0 mt-3 me-3 NoEmail"></div>
+                            <div id="checked-icon" class="position-absolute end-0 top-0 mt-3 me-3"></div>
                         </div>
 
                         <div class="form-floating mb-3">

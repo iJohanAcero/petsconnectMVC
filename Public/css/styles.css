@@ -24,6 +24,35 @@
     --sticky-top-right: -18rem;
 }
 
+#checked-icon2, #checked-icon {
+    font-size: 1.4rem;
+    width: 2rem;
+    height: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 20%;
+    background: #fff;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+    color: #dc3545; /* Rojo por defecto */
+    transition: color 0.2s, background 0.2s, box-shadow 0.2s;
+    pointer-events: none;
+    border: 2px solid #eee;
+}
+
+#checked-icon2.Correcto,
+#checked-icon.Correcto {
+    color: #198754;      /* Verde Bootstrap */
+    background: #e9fbe8; /* Suave verde */
+    border-color: #b6e2c6;
+}
+
+#checked-icon2.Mal,
+#checked-icon.Mal  {
+    color: #dc3545;      /* Rojo Bootstrap */
+    background: #fbeaea; /* Suave rojo */
+    border-color: #f5c2c7;
+}
 
 .wrapper {
     margin-top: 60px; /* Ajusta este valor según la altura de tu navbar */
