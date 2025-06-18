@@ -43,7 +43,7 @@
     top: 0;
     left: 0;
     width: 100%;
-    z-index: 1000; /* Aumenta el z-index para asegurar que esté por encima de otros elementos */
+    z-index: 2100; /* Aumenta el z-index para asegurar que esté por encima de otros elementos */
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
@@ -72,10 +72,23 @@
 .main {
     display: flex;
     flex-direction: column;
-    width: calc(100% - 90px); /* Ajustado: restar el ancho del sidebar */
-    margin-left: 90px; /* Añadido: dejar espacio para el sidebar */
+    width: calc(100% - 90px); 
+    margin-left: 90px; 
     transition: all 0.4s ease-in-out;
+    padding: 2rem 2rem 2rem 2rem;
+    min-height: 80vh;
+    background: transparent;
+    overflow-y: auto;
 }
+
+#main-content {
+    min-height: 60vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
 #sidebar {
     width: 90px;
     min-width: 90px;
@@ -87,21 +100,20 @@
     border-radius: 0.4rem; 
     position: fixed; 
     top: 4rem; 
-    left: 1rem;
+    left: 1.5vh;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     overflow:visible;
-    z-index: 1;
 }
 
 .sidebar-item.has-dropdown {
-  position: relative; /* Necesario para posicionar el submenu */
+    position: relative; 
 }
 
 .sidebar-dropdown {
     position: absolute;
     top: 0;
     left: 100%;
-    display: none; /* Oculto por defecto */
+    display: none; 
     min-width: 250px;
     background-color: #fff;
     padding: 10px;
@@ -117,6 +129,12 @@
 #sidebar.expand {
     width: 260px;
     min-width: 260px;
+}
+
+#sidebar.expand ~ .main {
+    margin-left: 260px;
+    width: calc(100% - 260px);
+    transition: all 0.4s ease-in-out;
 }
 
 
@@ -241,4 +259,106 @@ a.sidebar-link:hover {
     transform: rotate(45deg);
     transition: all .2s ease-out;
     color: var(--color-dark);
+}
+
+/* ...existing code... */
+
+/* Responsive Sidebar */
+@media (max-width: 991px) {
+    #sidebar {
+        position: fixed;
+        left: -260px;
+        top: 4rem;
+        width: 260px;
+        min-width: 260px;
+        height: auto;
+        z-index: 2000;
+        transition: left 0.4s;
+        overflow-y: auto;
+    }
+
+    #sidebar.expand .sidebar-dropdown {
+        position: static !important;
+        left: 0 !important;
+        top: 0 !important;
+        min-width: 100% !important;
+        max-height: 220px; /* Ajusta la altura máxima según tu diseño */
+        overflow-y: auto;
+        box-shadow: none;
+        background: none;
+        padding: 0.5rem 0;
+        border-radius: 0.5rem;
+    }
+#sidebar.expand .sidebar-dropdown::-webkit-scrollbar {
+        width: 6px;
+        background: #eee;
+        border-radius: 4px;
+    }
+    #sidebar.expand .sidebar-dropdown::-webkit-scrollbar-thumb {
+        background: #ccc;
+        border-radius: 4px;
+    }
+    #sidebar.expand {
+        left: 0;
+    }
+    .main {
+        margin-left: 0;
+        width: 100%;
+        transition: all 0.4s;
+    }
+    /* Opcional: oscurecer fondo cuando sidebar está abierto */
+    body.sidebar-open::before {
+        content: "";
+        position: fixed;
+        top: 0; left: 0; right: 0; bottom: 0;
+        background: rgba(0,0,0,0.3);
+        z-index: 1999;
+    }
+
+    #menu_toggle {
+        display: none !important;
+    }
+
+    #sidebar.expand .sidebar-dropdown.collapse.show {
+        display: block !important;
+        transition: all 0.5s ease;
+    }
+    
+}
+
+.toggle-btn-mobile {
+    width: 40px;
+    height: 40px;
+    color: var(--color-white);
+    border-radius: 0.4rem;
+    font-size: 24px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--color-dark);
+    margin-right: 10px;
+    z-index: 2100;
+    position: relative;
+}
+.toggle-btn-mobile i {
+    color: var(--color-white);
+    font-size: 28px;
+}
+@media (min-width: 992px) {
+    .toggle-btn-mobile {
+        display: none !important;
+    }
+}
+
+@media (max-width: 991px) {
+    .sidebar-item.has-dropdown:hover > .sidebar-dropdown {
+        display: none;
+    }
+    .sidebar-item.has-dropdown > .sidebar-dropdown {
+        position: static;
+        min-width: 100%;
+        box-shadow: none;
+        background: none;
+        padding: 0;
+    }
 }

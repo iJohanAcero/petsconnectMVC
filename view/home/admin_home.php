@@ -26,6 +26,7 @@ if (!isset($_SESSION["user"]) || $_SESSION["tipo_usuario"] !== "admin") {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PetsConnect</title>
+    <link href="https://cdn.datatables.net/v/bs5/dt-2.3.2/af-2.7.0/b-3.2.3/b-colvis-3.2.3/b-html5-3.2.3/r-3.0.4/sc-2.4.3/sl-3.0.1/datatables.min.css" rel="stylesheet" integrity="sha384-j4BPNBk0G277EwJZtUzEYC9AIGNhReafA/l0iQiOMGqEsZrex/cOIYwKrZ8WZyQB" crossorigin="anonymous">
 
     <link
         rel="shortcut icon"
@@ -45,6 +46,9 @@ if (!isset($_SESSION["user"]) || $_SESSION["tipo_usuario"] !== "admin") {
     <!-- Navbar Bootstrap -->
     <nav class="navbar navbar-expand-lg sticky" id="navbarAdmin">
         <div class="container-fluid m-2">
+            <button class="toggle-btn-mobile d-lg-none border-0 me-2" type="button">
+                <i class="uil uil-bars"></i>
+            </button>
             <a class="navbar-brand" href="#" onclick="history.go(0);">
                 <img src="Public/images/logo/logo.png" alt="Logo" id="logo" class="d-inline-block align-text-top">
             </a>
@@ -118,10 +122,10 @@ if (!isset($_SESSION["user"]) || $_SESSION["tipo_usuario"] !== "admin") {
     <!--============================================================MAIN=============================================-->
     <div class="wrapper justify-content-between align-items-center">
         <aside id="sidebar">
-            <div class="d-flex justify-content-between" style="padding: 24px 24px 0 24px;">
+            <div class="d-flex justify-content-between" style="padding: 24px 24px 0 24px;" id="menu_toggle">
                 <div class="sidebar-logo">
                     <h4 class="text-muted mx-auto">Menú<h4>
-                    
+
                 </div>
                 <button class="toggle-btn border-0" type="button">
                     <i id="icon" class="uil uil-angle-double-right"></i>
@@ -179,7 +183,7 @@ if (!isset($_SESSION["user"]) || $_SESSION["tipo_usuario"] !== "admin") {
                     <ul id="crud" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
                         <li class="sidebar-item has-dropdown">
                             <a href="" class="sidebar-link" data-bs-toggle="collapse" data-bs-target="#crud-2" aria-expanded="false" aria-controls="crud-2">
-                            ✔ Modulo Usuarios
+                                ✔ Modulo Usuarios
                             </a>
                             <ul id="crud-2" class="sidebar-dropdown list-unstyled collapse">
                                 <li class="sidebar-item">
@@ -207,7 +211,7 @@ if (!isset($_SESSION["user"]) || $_SESSION["tipo_usuario"] !== "admin") {
                         </li>
                         <li class="sidebar-item collapsed has-dropdown">
                             <a href="" class="sidebar-link " data-bs-toggle="collapse" data-bs-target="#crud-3" aria-expanded="false" aria-controls="crud-3">
-                            ✔ Modulo Mascotas
+                                ✔ Modulo Mascotas
                             </a>
                             <ul id="crud-3" class="sidebar-dropdown list-unstyled collapse">
                                 <li class="sidebar-item">
@@ -235,7 +239,7 @@ if (!isset($_SESSION["user"]) || $_SESSION["tipo_usuario"] !== "admin") {
                         </li>
                         <li class="sidebar-item has-dropdown">
                             <a href="" class="sidebar-link has-dropdown" data-bs-toggle="collapse" data-bs-target="#crud-4" aria-expanded="false" aria-controls="crud-4">
-                            ✔ Modulo Productos
+                                ✔ Modulo Productos
                             </a>
                             <ul id="crud-4" class="sidebar-dropdown list-unstyled collapse">
                                 <li class="sidebar-item">
@@ -247,7 +251,7 @@ if (!isset($_SESSION["user"]) || $_SESSION["tipo_usuario"] !== "admin") {
                         </li>
                         <li class="sidebar-item has-dropdown">
                             <a href="" class="sidebar-link has-dropdown" data-bs-toggle="collapse" data-bs-target="#crud-5" aria-expanded="false" aria-controls="crud-5">
-                            ✔ Modulo Donaciones
+                                ✔ Modulo Donaciones
                             </a>
                             <ul id="crud-5" class="sidebar-dropdown list-unstyled collapse">
                                 <li class="sidebar-item">
@@ -284,12 +288,20 @@ if (!isset($_SESSION["user"]) || $_SESSION["tipo_usuario"] !== "admin") {
             </ul>
         </aside>
         <div class="main">
+            <div class="container py-4" id="main-content">
+                <!-- Aquí se cargará el contenido dinámico según la opción del sidebar -->
+                <h2 class="text-center text-muted">Selecciona una opción del menú</h2>
+            </div>
         </div>
+
     </div>
     <!--==============================================CONFIGURACION DE FONDO===========================================-->
     <script src="Public/js/main.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="Public/js/cruds.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js" integrity="sha384-VFQrHzqBh5qiJIU0uGU5CIW3+OWpdGGJM9LBnGbuIH2mkICcFZ7lPd/AAtI7SNf7" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js" integrity="sha384-/RlQG9uf0M2vcTw3CX7fbqgbj/h8wKxw7C3zu9/GxcBPRKOEcESxaxufwRXqzq6n" crossorigin="anonymous"></script>
+    <script src="https://cdn.datatables.net/v/bs5/dt-2.3.2/af-2.7.0/b-3.2.3/b-colvis-3.2.3/b-html5-3.2.3/r-3.0.4/sc-2.4.3/sl-3.0.1/datatables.min.js" integrity="sha384-Piskt1CuYCfD5oyrlxQKYTPtWkhqZ9OJUuvUdhKPJiS25bwLBu5Vn/8vhLb2Ynuk" crossorigin="anonymous"></script>
 </body>
 
 </html>

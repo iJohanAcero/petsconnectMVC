@@ -12,7 +12,16 @@ document.addEventListener('DOMContentLoaded', function() {
             toggler.classList.toggle("uil-angle-double-right");
             toggler.classList.toggle("uil-angle-double-left");
         });
-    } 
+    }
+  
+    const toggleBtnMobile = document.querySelector('.toggle-btn-mobile');
+    if (toggleBtnMobile) {
+        toggleBtnMobile.addEventListener('click', function() {
+            sidebar.classList.toggle('expand');
+            document.body.classList.toggle('sidebar-open');
+        });
+    }
+    // ...resto de tu código...
 });
 (function () {
 
