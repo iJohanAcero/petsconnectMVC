@@ -14,7 +14,8 @@ window.cargarCrudProductos = function () {
 
             if (mainContainer) {
                 mainContainer.innerHTML = data;
-                    inicializarEventosProductos();
+
+                inicializarEventosProductos();
             } else {
                 console.error("No se encontró el contenedor principal para el CRUD");
             }
@@ -131,8 +132,8 @@ function inicializarEventosProductos() {
                 })
                     .then(res => res.text()) // ya no json
                     .then(data => {
-                        mostrarAlerta('success', data);
-                        cargarCrudProductos();
+                        alert(data); // Cambiamos mostrarAlerta por alert simple
+                        cargarCrudProductos(); // Recargar la tabla
                     })
                     .catch(error => {
                         console.error("Error:", error);
