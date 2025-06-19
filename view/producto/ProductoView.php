@@ -26,6 +26,7 @@ $Modelo = new Productos();
             </button>
         </div>
 
+        <!-- Tabla de productos -->
         <div class="table-responsive">
             <table class="table table-striped table-hover table-bordered">
                 <thead class="table-dark">
