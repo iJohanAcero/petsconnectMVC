@@ -17,6 +17,10 @@
             <!-- Simulación de enlace recibido por correo -->
             <a href="./restablecerContraseña.php">¿Ya tienes un token? Restablecer contraseña</a>
         </div>
+        <!-- Botón para volver al login -->
+        <form action="/petsconnectMVC/index.php" method="get" style="margin-top: 1em;">
+            <button type="submit" name="action" value="mostrar_login">Volver a Login</button>
+        </form>
         <?php if (isset($mensaje)) : ?>
             <p class="mensaje"><?= $mensaje ?></p>
         <?php endif; ?>

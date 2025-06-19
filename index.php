@@ -56,7 +56,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["action"])) {
         }
     }
 }
+if (isset($_POST['action'])) {
+    if ($_POST['action'] === 'enviar_recuperacion') {
+        (new AuthController())->enviar_recuperacion();
+        exit;
+    }
+    if ($_POST['action'] === 'guardar_nueva_contrasena') {
+        (new AuthController())->guardar_nueva_contrasena();
+        exit;
+    }
+}
 
+;
 // --- Logout ---
 if (isset($_GET["action"]) && $_GET["action"] == "logout") {
     session_destroy();
@@ -113,17 +124,6 @@ if (isset($routes[$page])) {
     echo "Página no encontrada";
 }
 
-if (isset($_POST['action'])) {
-    if ($_POST['action'] === 'enviar_recuperacion') {
-        (new AuthController())->enviar_recuperacion();
-        exit;
-    }
-    if ($_POST['action'] === 'guardar_nueva_contrasena') {
-        (new AuthController())->guardar_nueva_contrasena();
-        exit;
-    }
-}
 
-;
 
 // Aquí cargas tu landing page u otras vistas normalmente

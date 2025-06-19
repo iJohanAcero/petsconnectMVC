@@ -7,11 +7,6 @@ require_once __DIR__ . '/../vendor/autoload.php'; // Ajusta la ruta si es necesa
 
 class AuthController
 {
-    // Enviar enlace de recuperación de contraseña
-
-
-
-
     // Mostrar formulario de recuperación
     public function mostrarRecuperar()
     {
@@ -64,8 +59,8 @@ class AuthController
                     $mail->Host = 'smtp.gmail.com';
                     $mail->SMTPAuth = true;
                     $mail->Username = 'pablovela.upn@gmail.com'; // Tu correo de Gmail
-                    $mail->Password = 'ezfx nzzz refl boit
-'; // Contraseña de aplicación de Gmail
+                    $mail->Password = 'azky mxkm gqwa awvt'; 
+                    // Contraseña de aplicación de Gmail
                     $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
                     $mail->Port = 587;
 
@@ -104,7 +99,8 @@ class AuthController
             $email = $_POST['email'] ?? '';
             $contrasena = $_POST['contrasena'] ?? '';
             $contrasena2 = $_POST['contrasena2'] ?? '';
-die('Entró a guardar_nueva_contraseña');
+            // Depuración: mostrar datos recibidos
+
             if (empty($token) || empty($email) || empty($contrasena) || empty($contrasena2)) {
                 $error = "Todos los campos son obligatorios.";
                 require __DIR__ . '/../view/login/restablecerContraseña.php';
@@ -128,9 +124,8 @@ die('Entró a guardar_nueva_contraseña');
             $stmt->bind_param("s", $token);
             $stmt->execute();
             $stmt->bind_result($id_usuario, $email_token, $fecha_expiracion);
-            $prueba = $stmt->execute();
-            die(var_dump($prueba));
             if ($stmt->fetch()) {
+                
                 if (strtotime($fecha_expiracion) < strtotime(date('Y-m-d'))) {
                     $error = "El enlace ha expirado.";
                     $stmt->close();
@@ -149,9 +144,20 @@ die('Entró a guardar_nueva_contraseña');
 
                 // Actualizar contraseña
                 $hash = password_hash($contrasena, PASSWORD_DEFAULT);
-                $stmt = $conn->prepare("UPDATE t_usuario SET contrasena = ? WHERE id_usuario = ?");
-                $stmt->bind_param("si", $hash, $id_usuario);
+                // Verifica los valores antes de actualizar
+                var_dump($hash, $id_usuario);
+
+                $stmt = $conn->prepare("UPDATE t_usuario SET contrasena = ? WHERE email = ?");
+                $stmt->bind_param("ss", $hash, $email);
                 $stmt->execute();
+
+                // Verifica si realmente se actualizó alguna fila
+                if ($stmt->affected_rows > 0) {
+                    $mensaje = "¡Contraseña restablecida correctamente!";
+                } else {
+                    $error = "No se pudo actualizar la contraseña. Verifica tus datos.";
+                }
+
                 $stmt->close();
 
                 // Eliminar token usado
@@ -162,6 +168,7 @@ die('Entró a guardar_nueva_contraseña');
 
                 $mensaje = "¡Contraseña restablecida correctamente! Ya puedes iniciar sesión.";
             } else {
+                die("Token NO encontrado o expirado en BD.");
                 $error = "El enlace no es válido o ha expirado.";
             }
             $conn->close();
