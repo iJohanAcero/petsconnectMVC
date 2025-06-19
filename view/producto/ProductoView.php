@@ -1,6 +1,14 @@
 <?php
 require_once("../../Model/producto/ProductoModel.php");
 $Modelo = new Productos();
+// Mostrar mensajes de sesión
+// if (isset($_SESSION['mensaje'])) {
+//     $tipo = $_SESSION['tipo_mensaje'] ?? 'info';
+//     echo '<div class="alert alert-'.$tipo.'">'.$_SESSION['mensaje'].'</div>';
+//     // Limpiar los mensajes después de mostrarlos
+//     unset($_SESSION['mensaje']);
+//     unset($_SESSION['tipo_mensaje']);
+// }
 ?>
 
 <!DOCTYPE html>
@@ -15,9 +23,8 @@ $Modelo = new Productos();
     <!-- Iconos de Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
 </head>
-
 <body>
-    <div class="container crud-container" style="padding: 40px; margin-right: 0px; background-color: #f8f9fa; border-radius: 8px;  justify-content: flex-end; width: 80%;">
+    <div class="container crud-container" style="padding: 40px; margin-right: 0px;">
         <?php if (isset($_GET['success']) && $_GET['success'] == 1): ?>
             <div class="alert alert-success">Producto registrado correctamente</div>
         <?php endif; ?>
@@ -85,7 +92,7 @@ $Modelo = new Productos();
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form id="form-registrar-producto" method="POST" action="controller/producto/ProductoController.php">
+                    <form id="form-registrar-producto" method="POST" action="../../controller/producto/ProductoController.php">
                         <input type="hidden" name="accion" value="registrar">
                         <div class="mb-3">
                             <label for="nombre" class="form-label">Nombre</label>
@@ -140,7 +147,7 @@ $Modelo = new Productos();
     <!-- Bootstrap JS y dependencias -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <!-- Tu archivo JS personalizado -->
-    <script src="../../Public2/js/cruds.js"></script>
+    <script src="../../Public/js/cruds.js"></script>
 </body>
 
 </html>
