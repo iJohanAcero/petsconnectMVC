@@ -1,6 +1,14 @@
 <?php
 require_once("../../Model/producto/ProductoModel.php");
 $Modelo = new Productos();
+// Mostrar mensajes de sesión
+// if (isset($_SESSION['mensaje'])) {
+//     $tipo = $_SESSION['tipo_mensaje'] ?? 'info';
+//     echo '<div class="alert alert-'.$tipo.'">'.$_SESSION['mensaje'].'</div>';
+//     // Limpiar los mensajes después de mostrarlos
+//     unset($_SESSION['mensaje']);
+//     unset($_SESSION['tipo_mensaje']);
+// }
 ?>
 
 <!DOCTYPE html>
@@ -15,8 +23,11 @@ $Modelo = new Productos();
     <!-- Iconos de Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
 </head>
-
 <body>
+    <div class="container crud-container" style="padding: 40px; margin-right: 0px;">
+        <?php if (isset($_GET['success']) && $_GET['success'] == 1): ?>
+            <div class="alert alert-success">Producto registrado correctamente</div>
+        <?php endif; ?>
     <!-- Contenedor principal del CRUD con ID para JS -->
     <div class="container crud-container main-content" id="crud-container" style="padding: 40px;">
         <div class="d-flex justify-content-between align-items-center mb-4">
@@ -84,6 +95,7 @@ $Modelo = new Productos();
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
+                    <form id="form-registrar-producto" method="POST" action="../../controller/producto/ProductoController.php">
                     <!-- ✅ Formulario sin method ni action -->
                     <form id="form-registrar-producto">
                         <input type="hidden" name="accion" value="registrar">
@@ -140,6 +152,7 @@ $Modelo = new Productos();
     <!-- Bootstrap JS y dependencias -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <!-- Tu archivo JS personalizado -->
+    <script src="../../Public/js/cruds.js"></script>
     <script src="../../Public/js/cruds.js"></script>
 </body>
 
