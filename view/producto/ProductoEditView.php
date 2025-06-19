@@ -77,13 +77,13 @@ $producto = $producto[0]; // Tomamos el primer registro si viene en forma de arr
             <!-- Cantidad disponible -->
             <div class="mb-3">
                 <label class="form-label">Cantidad disponible</label>
-                <input type="number" name="cantidad_dosponible" class="form-control" value="<?= $producto['cantidad_disponible']; ?>" required>
+                <input type="number" name="cantidad_disponible" class="form-control" value="<?= $producto['cantidad_disponible']; ?>" required>
             </div>
 
-            <input type="hidden" name="editar" value="editar">
+            <input type="hidden" name="accion" value="editar">
 
             <!-- Botón de acción -->
-            <button type="submit" name="actualizar" class="btn btn-primary">Actualizar</button>
+            <button type="submit"   class="btn btn-primary">Actualizar</button>
 
             <!-- Enlace para regresar -->
             <a href="ProductoView.php" class="btn btn-secondary ms-2">← Volver a la lista</a>

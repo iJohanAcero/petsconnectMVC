@@ -17,10 +17,8 @@ $Modelo = new Productos();
 </head>
 
 <body>
-    <div class="container crud-container" style="padding: 40px; margin-right: 0px; background-color: #f8f9fa; border-radius: 8px;  justify-content: flex-end; width: 80%;">
-        <?php if (isset($_GET['success']) && $_GET['success'] == 1): ?>
-            <div class="alert alert-success">Producto registrado correctamente</div>
-        <?php endif; ?>
+    <!-- Contenedor principal del CRUD con ID para JS -->
+    <div class="container crud-container main-content" id="crud-container" style="padding: 40px;">
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h2 class="mb-0">Gestión de Productos</h2>
             <button id="btn-abrir-modal-producto" class="btn btn-primary">
@@ -47,26 +45,26 @@ $Modelo = new Productos();
                     if ($Productos !== null) {
                         foreach ($Productos as $Producto) {
                     ?>
-                            <tr>
-                                <td><?php echo $Producto['id_producto']; ?></td>
-                                <td><?php echo htmlspecialchars($Producto['nombre']); ?></td>
-                                <td><?php echo htmlspecialchars($Producto['tipo_producto']); ?></td>
-                                <td><?php echo htmlspecialchars($Producto['descripcion']); ?></td>
-                                <td>$<?php echo number_format($Producto['precio'], 2); ?></td>
-                                <td><?php echo $Producto['cantidad_disponible']; ?></td>
-                                <td>
-                                    <button class="btn btn-sm btn-warning btn-editar-producto" data-id="<?php echo $Producto['id_producto']; ?>">
-                                        <i class="bi bi-pencil"></i>
-                                    </button>
-                                    <button class="btn btn-sm btn-danger btn-eliminar-producto" data-id="<?php echo $Producto['id_producto']; ?>">
-                                        <i class="bi bi-trash"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                        <?php
+                        <tr>
+                            <td><?php echo $Producto['id_producto']; ?></td>
+                            <td><?php echo htmlspecialchars($Producto['nombre']); ?></td>
+                            <td><?php echo htmlspecialchars($Producto['tipo_producto']); ?></td>
+                            <td><?php echo htmlspecialchars($Producto['descripcion']); ?></td>
+                            <td>$<?php echo number_format($Producto['precio'], 2); ?></td>
+                            <td><?php echo $Producto['cantidad_disponible']; ?></td>
+                            <td>
+                                <button class="btn btn-sm btn-warning btn-editar-producto" data-id="<?php echo $Producto['id_producto']; ?>">
+                                    <i class="bi bi-pencil"></i>
+                                </button>
+                                <button class="btn btn-sm btn-danger btn-eliminar-producto" data-id="<?php echo $Producto['id_producto']; ?>">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    <?php
                         }
                     } else {
-                        ?>
+                    ?>
                         <tr>
                             <td colspan="7" class="text-center">No hay productos registrados</td>
                         </tr>
@@ -85,7 +83,8 @@ $Modelo = new Productos();
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form id="form-registrar-producto" method="POST" action="controller/producto/ProductoController.php">
+                    <!-- ✅ Formulario sin method ni action -->
+                    <form id="form-registrar-producto">
                         <input type="hidden" name="accion" value="registrar">
                         <div class="mb-3">
                             <label for="nombre" class="form-label">Nombre</label>
@@ -131,7 +130,7 @@ $Modelo = new Productos();
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body" id="contenido-editar">
-                    <!-- Aquí se cargará dinámicamente el formulario de edición -->
+                    <!-- Se carga dinámicamente con JS -->
                 </div>
             </div>
         </div>
