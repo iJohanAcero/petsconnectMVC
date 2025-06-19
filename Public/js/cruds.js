@@ -13,6 +13,16 @@ window.cargarCrudProductos = function () {
 
             if (mainContainer) {
                 mainContainer.innerHTML = data;
+=======
+            const mainContainer = document.querySelector(".main-content #crud-container") ||
+                document.getElementById("crud-container") ||
+                document.getElementById("crud");
+
+
+            if (mainContainer) {
+                mainContainer.innerHTML = data;
+
+>>>>>>> ProductoCrud
                 inicializarEventosProductos();
             } else {
                 console.error("No se encontró el contenedor principal para el CRUD");

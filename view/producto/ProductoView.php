@@ -1,13 +1,36 @@
 <?php
 require_once("../../Model/producto/ProductoModel.php");
 $Modelo = new Productos();
+// Mostrar mensajes de sesión
+// if (isset($_SESSION['mensaje'])) {
+//     $tipo = $_SESSION['tipo_mensaje'] ?? 'info';
+//     echo '<div class="alert alert-'.$tipo.'">'.$_SESSION['mensaje'].'</div>';
+//     // Limpiar los mensajes después de mostrarlos
+//     unset($_SESSION['mensaje']);
+//     unset($_SESSION['tipo_mensaje']);
+// }
 ?>
 
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRUD de Productos</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Iconos de Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+</head>
+
 <body>
-    <div class="container crud-container" style="padding: 40px; margin-right: 0px; background-color: #f8f9fa; border-radius: 8px;  justify-content: flex-end; width: 80%;">
+    <div class="container crud-container" style="padding: 40px; margin-right: 0px;">
         <?php if (isset($_GET['success']) && $_GET['success'] == 1): ?>
             <div class="alert alert-success">Producto registrado correctamente</div>
         <?php endif; ?>
+    <!-- Contenedor principal del CRUD con ID para JS -->
+    <div class="container crud-container main-content" id="crud-container" style="padding: 40px;">
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h2 class="mb-0">Gestión de Productos</h2>
             <button id="btn-abrir-modal-producto" class="btn btn-primary">
@@ -15,6 +38,7 @@ $Modelo = new Productos();
             </button>
         </div>
 
+        <!-- Tabla de productos -->
         <div class="table-responsive">
             <table class="table table-striped table-hover table-bordered">
                 <thead class="table-dark">
@@ -34,26 +58,26 @@ $Modelo = new Productos();
                     if ($Productos !== null) {
                         foreach ($Productos as $Producto) {
                     ?>
-                            <tr>
-                                <td><?php echo $Producto['id_producto']; ?></td>
-                                <td><?php echo htmlspecialchars($Producto['nombre']); ?></td>
-                                <td><?php echo htmlspecialchars($Producto['tipo_producto']); ?></td>
-                                <td><?php echo htmlspecialchars($Producto['descripcion']); ?></td>
-                                <td>$<?php echo number_format($Producto['precio'], 2); ?></td>
-                                <td><?php echo $Producto['cantidad_disponible']; ?></td>
-                                <td>
-                                    <button class="btn btn-sm btn-warning btn-editar-producto" data-id="<?php echo $Producto['id_producto']; ?>">
-                                        <i class="bi bi-pencil"></i>
-                                    </button>
-                                    <button class="btn btn-sm btn-danger btn-eliminar-producto" data-id="<?php echo $Producto['id_producto']; ?>">
-                                        <i class="bi bi-trash"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                        <?php
+                        <tr>
+                            <td><?php echo $Producto['id_producto']; ?></td>
+                            <td><?php echo htmlspecialchars($Producto['nombre']); ?></td>
+                            <td><?php echo htmlspecialchars($Producto['tipo_producto']); ?></td>
+                            <td><?php echo htmlspecialchars($Producto['descripcion']); ?></td>
+                            <td>$<?php echo number_format($Producto['precio'], 2); ?></td>
+                            <td><?php echo $Producto['cantidad_disponible']; ?></td>
+                            <td>
+                                <button class="btn btn-sm btn-warning btn-editar-producto" data-id="<?php echo $Producto['id_producto']; ?>">
+                                    <i class="bi bi-pencil"></i>
+                                </button>
+                                <button class="btn btn-sm btn-danger btn-eliminar-producto" data-id="<?php echo $Producto['id_producto']; ?>">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    <?php
                         }
                     } else {
-                        ?>
+                    ?>
                         <tr>
                             <td colspan="7" class="text-center">No hay productos registrados</td>
                         </tr>
@@ -72,7 +96,9 @@ $Modelo = new Productos();
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form id="form-registrar-producto" method="POST" action="controller/producto/ProductoController.php">
+                    <form id="form-registrar-producto" method="POST" action="../../controller/producto/ProductoController.php">
+                    <!-- ✅ Formulario sin method ni action -->
+                    <form id="form-registrar-producto">
                         <input type="hidden" name="accion" value="registrar">
                         <div class="mb-3">
                             <label for="nombre" class="form-label">Nombre</label>
@@ -118,8 +144,17 @@ $Modelo = new Productos();
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body" id="contenido-editar">
-                    <!-- Aquí se cargará dinámicamente el formulario de edición -->
+                    <!-- Se carga dinámicamente con JS -->
                 </div>
             </div>
         </div>
     </div>
+
+    <!-- Bootstrap JS y dependencias -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Tu archivo JS personalizado -->
+    <script src="../../Public/js/cruds.js"></script>
+    <script src="../../Public/js/cruds.js"></script>
+</body>
+
+</html>

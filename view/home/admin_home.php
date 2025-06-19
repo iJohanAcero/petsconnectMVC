@@ -305,6 +305,15 @@ if (!isset($_SESSION["user"]) || $_SESSION["tipo_usuario"] !== "admin") {
     <script src="Public/js/cruds.js"></script>
 
     
+        <div class="main">
+            <div class="col-md-9 col-lg-10 main-content">
+                <div id="crud-container"></div>
+            </div>
+        </div>
+        <!--==============================================CONFIGURACION DE FONDO===========================================-->
+        <script src="Public/js/main.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="Public/js/cruds.js"></script>
 </body>
 
 </html>
