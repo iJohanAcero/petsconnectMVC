@@ -21,7 +21,10 @@ document.addEventListener('DOMContentLoaded', function() {
             document.body.classList.toggle('sidebar-open');
         });
     }
-    // ...resto de tu código...
+
+    var tabla = document.querySelector("#tipo_mascota_tabla");
+    var tablaMascota = new DataTable(tabla);
+    
 });
 (function () {
 

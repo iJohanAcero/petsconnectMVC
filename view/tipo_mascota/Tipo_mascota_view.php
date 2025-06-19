@@ -3,30 +3,10 @@
 require_once("../../Model/tipo_mascota/TipoMascotaModel.php");
 $Modelo = new TipoMascota();
 
-if (isset($_POST['btnregistrar'])) {
-    $especie = $_POST['especie'];
-    $raza = $_POST['raza'];
-    $Modelo->add($especie, $raza,);
-}
 ?>
-<!DOCTYPE html>
-<html lang="es">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CRUD_Tipo_Mascota</title>
-</head>
 
-<body>
-    <div class="crud">
-        <h2 class="titulo">CRUD de Tipo de Mascota</h2>
-
-        <a class="btn-añadir" id="openModal">
-            <i class=" uil uil-plus-circle"></i> <span>Añadir tipo de mascota</span>
-        </a>
-    </div>
-    <table>
+    <table id="tipo_mascota_tabla">
         <thead>
             <tr>
                 <th>ID</th>
@@ -87,6 +67,3 @@ if (isset($_POST['btnregistrar'])) {
 
         </div>
     </div>
-</body>
-
-</html>

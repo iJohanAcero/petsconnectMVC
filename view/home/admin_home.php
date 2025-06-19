@@ -26,7 +26,8 @@ if (!isset($_SESSION["user"]) || $_SESSION["tipo_usuario"] !== "admin") {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PetsConnect</title>
-    <link href="https://cdn.datatables.net/v/bs5/dt-2.3.2/af-2.7.0/b-3.2.3/b-colvis-3.2.3/b-html5-3.2.3/r-3.0.4/sc-2.4.3/sl-3.0.1/datatables.min.css" rel="stylesheet" integrity="sha384-j4BPNBk0G277EwJZtUzEYC9AIGNhReafA/l0iQiOMGqEsZrex/cOIYwKrZ8WZyQB" crossorigin="anonymous">
+
+    <link href="https://cdn.datatables.net/v/bs5/dt-2.3.2/af-2.7.0/b-3.2.3/b-html5-3.2.3/r-3.0.4/sc-2.4.3/datatables.min.css" rel="stylesheet" integrity="sha384-8tQlkR8djyJUdfrhc0Kd04kh88LIdMNOTD/a8r6mZUTFujZwzUXutJ7xHyQSGer5" crossorigin="anonymous">
 
     <link
         rel="shortcut icon"
@@ -34,6 +35,7 @@ if (!isset($_SESSION["user"]) || $_SESSION["tipo_usuario"] !== "admin") {
         type="image/png" />
     <!-- ===== All CSS files ===== -->
     <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.8/css/line.css">
+    <link rel="stylesheet" href="//cdn.datatables.net/2.3.2/css/dataTables.dataTables.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 
     <link rel="stylesheet" href="Public/css/styles.css" />
@@ -220,7 +222,7 @@ if (!isset($_SESSION["user"]) || $_SESSION["tipo_usuario"] !== "admin") {
                                     </a>
                                 </li>
                                 <li class="sidebar-item">
-                                    <a href="#" class="sidebar-link" onclick="cargarTipoMascota()">
+                                    <a href="#" class="sidebar-link" onclick="cargarCrudTipoMascota()">
                                         - Tipo Mascotas
                                     </a>
                                 </li>
@@ -239,12 +241,12 @@ if (!isset($_SESSION["user"]) || $_SESSION["tipo_usuario"] !== "admin") {
                         </li>
                         <li class="sidebar-item has-dropdown">
                             <a href="" class="sidebar-link has-dropdown" data-bs-toggle="collapse" data-bs-target="#crud-4" aria-expanded="false" aria-controls="crud-4">
-                                Modulo Productos
+                                ✔ Modulo Productos
                             </a>
                             <ul id="crud-4" class="sidebar-dropdown list-unstyled collapse">
                                 <li class="sidebar-item">
                                     <a href="#" class="sidebar-link" onclick="cargarCrudProductos()">
-                                        <i class="fas fa-list"></i> Productos
+                                        <i class="fas fa-list"></i>- Productos
                                     </a>
                                 </li>
                             </ul>
@@ -288,21 +290,21 @@ if (!isset($_SESSION["user"]) || $_SESSION["tipo_usuario"] !== "admin") {
             </ul>
         </aside>
         <!--============================================ MAIN =============================================-->
-        <div class="main">
-            <div class="container py-4" id="main-content">
-                <!-- Aquí se cargará el contenido dinámico según la opción del sidebar -->
-                <h2 class="text-center text-muted">Selecciona una opción del menú</h2>
-            </div>
+        <div class="main" id="main-content">
+            <h2 class="text-center text-muted">Selecciona una opción del menú</h2>
         </div>
-
     </div>
     <!--==============================================CONFIGURACION DE FONDO===========================================-->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js" integrity="sha384-VFQrHzqBh5qiJIU0uGU5CIW3+OWpdGGJM9LBnGbuIH2mkICcFZ7lPd/AAtI7SNf7" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js" integrity="sha384-/RlQG9uf0M2vcTw3CX7fbqgbj/h8wKxw7C3zu9/GxcBPRKOEcESxaxufwRXqzq6n" crossorigin="anonymous"></script>
+    <script src="https://cdn.datatables.net/v/bs5/dt-2.3.2/af-2.7.0/b-3.2.3/b-html5-3.2.3/r-3.0.4/sc-2.4.3/datatables.min.js" integrity="sha384-4VpbDpy9RZDSYGLIgJCxbBN42Ze5hcM/B+OOSuW3hSAukOTfsuar7+79mYTohU6M" crossorigin="anonymous"></script>
+
     <script src="Public/js/main.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="Public/js/cruds.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js" integrity="sha384-VFQrHzqBh5qiJIU0uGU5CIW3+OWpdGGJM9LBnGbuIH2mkICcFZ7lPd/AAtI7SNf7" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js" integrity="sha384-/RlQG9uf0M2vcTw3CX7fbqgbj/h8wKxw7C3zu9/GxcBPRKOEcESxaxufwRXqzq6n" crossorigin="anonymous"></script>
-    <script src="https://cdn.datatables.net/v/bs5/dt-2.3.2/af-2.7.0/b-3.2.3/b-colvis-3.2.3/b-html5-3.2.3/r-3.0.4/sc-2.4.3/sl-3.0.1/datatables.min.js" integrity="sha384-Piskt1CuYCfD5oyrlxQKYTPtWkhqZ9OJUuvUdhKPJiS25bwLBu5Vn/8vhLb2Ynuk" crossorigin="anonymous"></script>
+
+    
 </body>
 
 </html>
