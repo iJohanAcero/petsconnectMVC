@@ -263,7 +263,7 @@ CREATE TABLE `t_publicacion` (
 
 CREATE TABLE `t_recuperar_constrasena` (
   `id_recuperacion` int(11) NOT NULL,
-  `codigo_recuperacion` varchar(20) NOT NULL,
+  `codigo_recuperacion` varchar(32) NOT NULL,
   `email` varchar(100) NOT NULL,
   `fecha_solicitud` date NOT NULL,
   `fecha_expiracion` date NOT NULL,

@@ -55,7 +55,7 @@
 
         <div class="forms-container">
             <div class="signin-signup">
-                <form action="index.php" class="sign-in-form" method="POST">
+                <form action="/petsconnectmvc/index.php" class="sign-in-form" method="POST">
                     <img src="Public/images/logo.png" alt="">
                     <h2 class="title">Iniciar Sesión</h2>
                     <input type="hidden" name="action" value="login">
@@ -160,7 +160,7 @@
                             </ul>
                         </div>
 
-                        <a class="forget-pass" href="javascript:void(0)">
+                        <a class="forget-pass" href="recuperarContraseña.php">
                             ¿Olvidaste tu contraseña?
                         </a>
                         <p class="signup-option">

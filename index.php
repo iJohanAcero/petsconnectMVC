@@ -1,6 +1,7 @@
 <?php
 require_once "controller/usuario/usuarioController.php";
 require_once "config/roles.php";
+require_once "controller/AuthController.php"; // Agrega esta línea arriba
 
 session_start();
 $controller = new UsuarioController();
@@ -55,7 +56,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["action"])) {
         }
     }
 }
+if (isset($_POST['action'])) {
+    if ($_POST['action'] === 'enviar_recuperacion') {
+        (new AuthController())->enviar_recuperacion();
+        exit;
+    }
+    if ($_POST['action'] === 'guardar_nueva_contrasena') {
+        (new AuthController())->guardar_nueva_contrasena();
+        exit;
+    }
+}
 
+;
 // --- Logout ---
 if (isset($_GET["action"]) && $_GET["action"] == "logout") {
     session_destroy();
@@ -111,3 +123,7 @@ if (isset($routes[$page])) {
     http_response_code(404);
     echo "Página no encontrada";
 }
+
+
+
+// Aquí cargas tu landing page u otras vistas normalmente
