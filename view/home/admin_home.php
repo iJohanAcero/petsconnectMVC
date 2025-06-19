@@ -294,7 +294,7 @@ if (!isset($_SESSION["user"]) || $_SESSION["tipo_usuario"] !== "admin") {
         <!--==============================================CONFIGURACION DE FONDO===========================================-->
         <script src="Public/js/main.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
-        <script src="Public2/js/cruds.js"></script>
+        <script src="Public/js/cruds.js"></script>
 </body>
 
 </html>

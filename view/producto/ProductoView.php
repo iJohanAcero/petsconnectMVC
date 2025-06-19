@@ -140,7 +140,7 @@ $Modelo = new Productos();
     <!-- Bootstrap JS y dependencias -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <!-- Tu archivo JS personalizado -->
-    <script src="../../Public2/js/cruds.js"></script>
+    <script src="../../Public/js/cruds.js"></script>
 </body>
 
 </html>
