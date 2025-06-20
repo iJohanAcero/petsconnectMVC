@@ -199,7 +199,7 @@ if (!isset($_SESSION["user"]) || $_SESSION["tipo_usuario"] !== "admin") {
                                     </a>
                                 </li>
                                 <li class="sidebar-item">
-                                    <a href="" class="sidebar-link">
+                                    <a href="#" class="sidebar-link" onclick="cargarCrudFundacion()">
                                         - Fundaciones
                                     </a>
                                 </li>
@@ -231,11 +231,6 @@ if (!isset($_SESSION["user"]) || $_SESSION["tipo_usuario"] !== "admin") {
                                         - Vacunas
                                     </a>
                                 </li>
-                                <li class="sidebar-item">
-                                    <a href="" class="sidebar-link">
-                                        XXXXXX
-                                    </a>
-                                </li>
 
                             </ul>
                         </li>
@@ -259,16 +254,6 @@ if (!isset($_SESSION["user"]) || $_SESSION["tipo_usuario"] !== "admin") {
                                 <li class="sidebar-item">
                                     <a href="" class="sidebar-link">
                                         - Donaciones
-                                    </a>
-                                </li>
-                                <li class="sidebar-item">
-                                    <a href="" class="sidebar-link">
-                                        XXXXXX
-                                    </a>
-                                </li>
-                                <li class="sidebar-item">
-                                    <a href="" class="sidebar-link">
-                                        XXXXXX
                                     </a>
                                 </li>
                             </ul>
@@ -303,6 +288,7 @@ if (!isset($_SESSION["user"]) || $_SESSION["tipo_usuario"] !== "admin") {
     <script src="Public/js/main.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="Public/js/cruds.js"></script>
+    <script src="Public/js/crud/crud_fundacion.js"></script>
 
     
 </body>
