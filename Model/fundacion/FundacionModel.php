@@ -107,10 +107,29 @@ class Fundacion
     }
 
     public function delete($nit)
-    {
-        $statement = $this->db->prepare("DELETE FROM t_fundacion WHERE nit_fundacion = :nit");
-        $statement->bindParam(':nit', $nit);
+{
+    // Obtener el id_usuario relacionado al nit_fundacion
+    $stmt = $this->db->prepare("SELECT id_usuario FROM t_fundacion WHERE nit_fundacion = :nit");
+    $stmt->bindParam(':nit', $nit);
+    $stmt->execute();
+    $usuario = $stmt->fetch();
 
-        return $statement->execute(); // Devuelve true o false
+    if (!$usuario) {
+        return false; // No existe la fundación
     }
+
+    $id_usuario = $usuario['id_usuario'];
+
+    // Eliminar la fundación primero
+    $stmt = $this->db->prepare("DELETE FROM t_fundacion WHERE nit_fundacion = :nit");
+    $stmt->bindParam(':nit', $nit);
+    $result1 = $stmt->execute();
+
+    // Eliminar el usuario relacionado
+    $stmt = $this->db->prepare("DELETE FROM t_usuario WHERE id_usuario = :id_usuario");
+    $stmt->bindParam(':id_usuario', $id_usuario);
+    $result2 = $stmt->execute();
+
+    return $result1 && $result2;
+}
 }
