@@ -261,7 +261,7 @@ if (!isset($_SESSION["user"]) || $_SESSION["tipo_usuario"] !== "admin") {
                     </ul>
                 </li>
                 <li class="sidebar-item">
-                    <a href="" class="sidebar-link">
+                    <a href="#" class="sidebar-link" onclick="cargarDashboard()">
                         <i class="uil uil-dashboard"></i>
                         <span class="sidebar-text">Dashboard</span>
                     </a>
@@ -289,6 +289,7 @@ if (!isset($_SESSION["user"]) || $_SESSION["tipo_usuario"] !== "admin") {
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="Public/js/cruds.js"></script>
     <script src="Public/js/crud/crud_fundacion.js"></script>
+    <script src="Public/js/routes/routes.js"></script>
 
     
 </body>
