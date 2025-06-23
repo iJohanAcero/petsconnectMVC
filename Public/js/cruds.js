@@ -141,8 +141,6 @@ function inicializarEventosProductos() {
             }
         });
     });
-<<<<<<<<< Temporary merge branch 1
-=========
 }
 
 // Función auxiliar para mostrar alertas con SweetAlert o similar
@@ -180,5 +178,4 @@ window.cargarCrudTipoMascota = function () {
             }
         })
         .catch(error => console.error("Error al cargar PHP:", error));
->>>>>>>>> Temporary merge branch 2
 }
