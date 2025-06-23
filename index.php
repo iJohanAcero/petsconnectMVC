@@ -124,6 +124,3 @@ if (isset($routes[$page])) {
     echo "Página no encontrada";
 }
 
-
-
-// Aquí cargas tu landing page u otras vistas normalmente

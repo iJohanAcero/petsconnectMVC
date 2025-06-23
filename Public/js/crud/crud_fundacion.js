@@ -1,19 +1,17 @@
-const BASE_URL = window.location.origin + "/petsconnectMVC";
-window.BASE_URL = window.BASE_URL || '';
+// const BASE_URL = window.location.origin + "/petsconnectMVC";
+// window.BASE_URL = window.BASE_URL || '';
 
-// =========== CRUD DE PRODUCTOS =========== //
-window.cargarCrudProductos = function () {
-    fetch("view/producto/ProductoView.php")
+// =========== CRUD DE FUNDACION =========== //
+window.cargarCrudFundacion = function () {
+    fetch("view/fundacion/FundacionView.php")
         .then(response => response.text())
         .then(data => {
             // Cambia el objetivo al contenedor del main
-            const mainContainer = document.getElementById("main-content") ||
-                document.getElementById("crud-container") ||
-                document.getElementById("crud");
+            const mainContainer = document.getElementById("main-content")
 
             if (mainContainer) {
                 mainContainer.innerHTML = data;
-                inicializarEventosProductos();
+                inicializarEventosFundacion();
             } else {
                 console.error("No se encontró el contenedor principal para el CRUD");
             }
@@ -22,21 +20,21 @@ window.cargarCrudProductos = function () {
 }
 
 
-function abrirModalCrearProducto() {
-    const modalElement = document.getElementById("modal-productos");
+function abrirModalCrearFundacion() {
+    const modalElement = document.getElementById("modal-fundacion");
     const modalBootstrap = new bootstrap.Modal(modalElement);
     modalBootstrap.show();
 }
 
-function inicializarEventosProductos() {
-    // Modal crear producto
-    const btnAbrirModal = document.getElementById("btn-abrir-modal-producto");
+function inicializarEventosFundacion() {
+    // Modal crear Fundacion
+    const btnAbrirModal = document.getElementById("btn-abrir-modal-fundacion");
     if (btnAbrirModal) {
-        btnAbrirModal.addEventListener("click", abrirModalCrearProducto);
+        btnAbrirModal.addEventListener("click", abrirModalCrearFundacion);
     }
 
-    // ✅ REGISTRAR PRODUCTO
-    const formRegistrar = document.getElementById("form-registrar-producto");
+    // ✅ REGISTRAR FUNDACION
+    const formRegistrar = document.getElementById("form-registrar-fundacion");
 
     if (formRegistrar) {
         // Usamos onsubmit en vez de addEventListener, así no se repite el evento
@@ -45,7 +43,7 @@ function inicializarEventosProductos() {
 
             const formData = new FormData(formRegistrar); // Captura los datos del formulario
 
-            fetch(`${BASE_URL}/controller/producto/ProductoController.php`, {
+            fetch(`${BASE_URL}/controller/fundacion/FundacionController.php`, {
                 method: "POST",
                 body: formData
             })
@@ -56,13 +54,13 @@ function inicializarEventosProductos() {
                         alert(data); // Muestra un mensaje (puedes usar sweetalert después)
 
                         // Cierra el modal de Bootstrap
-                        const modalElement = document.getElementById("modal-productos");
+                        const modalElement = document.getElementById("modal-fundacion");
                         const modal = bootstrap.Modal.getInstance(modalElement);
                         if (modal) modal.hide();
 
                         formRegistrar.reset(); // Limpia el formulario
 
-                        cargarCrudProductos(); // Vuelve a cargar la lista actualizada
+                        cargarCrudFundacion(); // Vuelve a cargar la lista actualizada
                     } else {
                         alert("Error: " + data); // Si hubo error, lo muestra
                     }
@@ -75,10 +73,10 @@ function inicializarEventosProductos() {
     }
 
     // ✅ BOTONES EDITAR
-    const botonesEditar = document.querySelectorAll(".btn-editar-producto");
+    const botonesEditar = document.querySelectorAll(".btn-editar-fundacion");
     botonesEditar.forEach(btn => {
         btn.addEventListener("click", function () {
-            const idProducto = this.dataset.id;
+            const idFundacion = this.dataset.id;
             fetch(`view/producto/ProductoEditView.php?id=${idProducto}`)
                 .then(response => response.text())
                 .then(html => {
@@ -116,23 +114,23 @@ function inicializarEventosProductos() {
     });
 
     // ✅ BOTONES ELIMINAR
-    const botonesEliminar = document.querySelectorAll(".btn-eliminar-producto");
+    const botonesEliminar = document.querySelectorAll(".btn-eliminar-fundacion");
     botonesEliminar.forEach(btn => {
         btn.addEventListener("click", function () {
-            const idProducto = this.dataset.id;
-            if (confirm("¿Estás seguro de que deseas eliminar este producto?")) {
+            const nit = this.dataset.id;
+            if (confirm("¿Estás seguro de que deseas eliminar esta fundación?")) {
                 const formData = new FormData();
                 formData.append('eliminar', 'true');
-                formData.append('id', idProducto);
+                formData.append('nit', nit);
 
-                fetch(`${BASE_URL}/controller/producto/ProductoController.php`, {
+                fetch(`${BASE_URL}/controller/fundacion/FundacionController.php`, {
                     method: "POST",
                     body: formData
                 })
                     .then(res => res.text()) // ya no json
                     .then(data => {
                         alert(data); // Cambiamos mostrarAlerta por alert simple
-                        cargarCrudProductos(); // Recargar la tabla
+                        cargarCrudFundacion(); // Recargar la tabla
                     })
                     .catch(error => {
                         console.error("Error:", error);
@@ -141,44 +139,4 @@ function inicializarEventosProductos() {
             }
         });
     });
-<<<<<<<<< Temporary merge branch 1
-=========
-}
-
-// Función auxiliar para mostrar alertas con SweetAlert o similar
-function mostrarAlerta(tipo, mensaje) {
-    // Puedes implementar SweetAlert o usar alertas de Bootstrap
-    if (tipo === 'success') {
-        alert(mensaje); // Reemplaza esto con tu sistema de alertas preferido
-    } else {
-        alert(mensaje); // Reemplaza esto con tu sistema de alertas preferido
-    }
-}
-
-// Inicializar cuando el DOM esté listo
-document.addEventListener("DOMContentLoaded", function () {
-    // Opcional: cargar el CRUD automáticamente al entrar al módulo
-    // cargarCrudProductos();
-});
-
-
-// CRUD TIPO MASCOTA VISTA 
-window.cargarCrudTipoMascota = function () {
-    fetch("view/tipo_mascota/Tipo_mascota_view.php")
-        .then(response => response.text())
-        .then(data => {
-            // Cambia el objetivo al contenedor del main
-            const mainContainer = document.getElementById("main-content")
-                var tabla = document.querySelector("#tipo_mascota");
-                var tablaMascota = new DataTable(tabla);
-
-            if (mainContainer) {
-                mainContainer.innerHTML = data;
-                
-            } else {
-                console.error("No se encontró el contenedor principal para el CRUD");
-            }
-        })
-        .catch(error => console.error("Error al cargar PHP:", error));
->>>>>>>>> Temporary merge branch 2
 }

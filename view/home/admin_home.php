@@ -199,7 +199,7 @@ if (!isset($_SESSION["user"]) || $_SESSION["tipo_usuario"] !== "admin") {
                                     </a>
                                 </li>
                                 <li class="sidebar-item">
-                                    <a href="" class="sidebar-link">
+                                    <a href="#" class="sidebar-link" onclick="cargarCrudFundacion()">
                                         - Fundaciones
                                     </a>
                                 </li>
@@ -231,11 +231,6 @@ if (!isset($_SESSION["user"]) || $_SESSION["tipo_usuario"] !== "admin") {
                                         - Vacunas
                                     </a>
                                 </li>
-                                <li class="sidebar-item">
-                                    <a href="" class="sidebar-link">
-                                        XXXXXX
-                                    </a>
-                                </li>
 
                             </ul>
                         </li>
@@ -261,22 +256,12 @@ if (!isset($_SESSION["user"]) || $_SESSION["tipo_usuario"] !== "admin") {
                                         - Donaciones
                                     </a>
                                 </li>
-                                <li class="sidebar-item">
-                                    <a href="" class="sidebar-link">
-                                        XXXXXX
-                                    </a>
-                                </li>
-                                <li class="sidebar-item">
-                                    <a href="" class="sidebar-link">
-                                        XXXXXX
-                                    </a>
-                                </li>
                             </ul>
                         </li>
                     </ul>
                 </li>
                 <li class="sidebar-item">
-                    <a href="" class="sidebar-link">
+                    <a href="#" class="sidebar-link" onclick="cargarDashboard()">
                         <i class="uil uil-dashboard"></i>
                         <span class="sidebar-text">Dashboard</span>
                     </a>
@@ -293,6 +278,12 @@ if (!isset($_SESSION["user"]) || $_SESSION["tipo_usuario"] !== "admin") {
         <div class="main" id="main-content">
             <h2 class="text-center text-muted">Selecciona una opción del menú</h2>
         </div>
+<<<<<<<<< Temporary merge branch 1
+        <!--==============================================CONFIGURACION DE FONDO===========================================-->
+        <script src="Public/js/main.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="Public/js/cruds.js"></script>
+=========
     </div>
     <!--==============================================CONFIGURACION DE FONDO===========================================-->
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
@@ -303,6 +294,8 @@ if (!isset($_SESSION["user"]) || $_SESSION["tipo_usuario"] !== "admin") {
     <script src="Public/js/main.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="Public/js/cruds.js"></script>
+    <script src="Public/js/crud/crud_fundacion.js"></script>
+    <script src="Public/js/routes/routes.js"></script>
 
     
         <div class="main">

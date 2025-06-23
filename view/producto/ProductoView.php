@@ -39,8 +39,8 @@ $Modelo = new Productos();
         </div>
 
         <!-- Tabla de productos -->
-        <div class="table-responsive">
-            <table class="table table-striped table-hover table-bordered">
+        <div class="table-responsive" >
+            <table class="table table-striped table-hover table-bordered" id="tabla_productos">
                 <thead class="table-dark">
                     <tr>
                         <th>ID</th>
@@ -67,10 +67,10 @@ $Modelo = new Productos();
                             <td><?php echo $Producto['cantidad_disponible']; ?></td>
                             <td>
                                 <button class="btn btn-sm btn-warning btn-editar-producto" data-id="<?php echo $Producto['id_producto']; ?>">
-                                    <i class="bi bi-pencil"></i>
+                                    <i class="uil uil-pen"></i>
                                 </button>
                                 <button class="btn btn-sm btn-danger btn-eliminar-producto" data-id="<?php echo $Producto['id_producto']; ?>">
-                                    <i class="bi bi-trash"></i>
+                                    <i class="uil uil-trash"></i>
                                 </button>
                             </td>
                         </tr>
@@ -148,10 +148,8 @@ $Modelo = new Productos();
                 </div>
             </div>
         </div>
+<<<<<<<<< Temporary merge branch 1
     </div>
-
-    <!-- Bootstrap JS y dependencias -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <!-- Tu archivo JS personalizado -->
     <script src="../../Public/js/cruds.js"></script>
     <script src="../../Public/js/cruds.js"></script>
