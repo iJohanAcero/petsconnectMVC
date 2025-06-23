@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 25-04-2025 a las 06:07:48
+-- Tiempo de generación: 20-06-2025 a las 23:28:47
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -25,6 +25,18 @@ DELIMITER $$
 --
 -- Procedimientos
 --
+CREATE DEFINER=`root`@`localhost` PROCEDURE `crear_fundacion` (IN `p_id_usuario` INT, IN `p_nit` BIGINT)   BEGIN
+  DECLARE v_id_perfil INT;
+
+  INSERT INTO t_perfil (nombre, preferencia, descripcion, imagen)
+  VALUES ('Perfil Fundación', 'Ninguna', 'Auto-generado', 'default.jpg');
+
+  SET v_id_perfil = LAST_INSERT_ID();
+
+  INSERT INTO t_fundacion (nit_fundacion, id_usuario, id_perfil)
+  VALUES (p_nit, p_id_usuario, v_id_perfil);
+END$$
+
 CREATE DEFINER=`root`@`localhost` PROCEDURE `crear_guardian` (IN `p_id_usuario` INT)   BEGIN
   DECLARE v_id_perfil INT;
   DECLARE v_id_registro INT;
@@ -123,6 +135,14 @@ CREATE TABLE `t_fundacion` (
   `id_perfil` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Volcado de datos para la tabla `t_fundacion`
+--
+
+INSERT INTO `t_fundacion` (`nit_fundacion`, `id_usuario`, `id_perfil`) VALUES
+(1200, 10, 8),
+(120010, 11, 9);
+
 -- --------------------------------------------------------
 
 --
@@ -142,7 +162,8 @@ CREATE TABLE `t_guardian` (
 INSERT INTO `t_guardian` (`id_registro`, `id_usuario`, `id_perfil`) VALUES
 (1, 1, 1),
 (2, 2, 2),
-(5, 5, 3);
+(5, 5, 3),
+(6, 12, 10);
 
 -- --------------------------------------------------------
 
@@ -198,7 +219,14 @@ CREATE TABLE `t_perfil` (
 INSERT INTO `t_perfil` (`id_perfil`, `nombre`, `preferencia`, `descripcion`, `imagen`) VALUES
 (1, 'Perfil Guardian', 'Ninguna', 'Auto-generado', 'default.jpg'),
 (2, 'Perfil Guardian', 'Ninguna', 'Auto-generado', 'default.jpg'),
-(3, 'Perfil Guardian', 'Ninguna', 'Auto-generado', 'default.jpg');
+(3, 'Perfil Guardian', 'Ninguna', 'Auto-generado', 'default.jpg'),
+(4, 'Perfil Fundación', 'Ninguna', 'Auto-generado', 'default.jpg'),
+(5, 'Perfil Fundación', 'Ninguna', 'Auto-generado', 'default.jpg'),
+(6, 'Perfil Fundación', 'Ninguna', 'Auto-generado', 'default.jpg'),
+(7, 'Perfil Fundación', 'Ninguna', 'Auto-generado', 'default.jpg'),
+(8, 'Perfil Fundación', 'Ninguna', 'Auto-generado', 'default.jpg'),
+(9, 'Perfil Fundación', 'Ninguna', 'Auto-generado', 'default.jpg'),
+(10, 'Perfil Guardian', 'Ninguna', 'Auto-generado', 'default.jpg');
 
 -- --------------------------------------------------------
 
@@ -238,7 +266,7 @@ CREATE TABLE `t_producto` (
 INSERT INTO `t_producto` (`id_producto`, `nombre`, `tipo_producto`, `descripcion`, `precio`, `cantidad_disponible`) VALUES
 (1, 'dasda', 'ComidaPerro', 'dads', 11.00, 1),
 (2, 'Arena del D1', 'ArenaGato', 'arena de 14kg', 20000.00, 100),
-(3, 'Mirringo', 'ComidaGato', 'comida gato barato ', 1000.00, 1);
+(3, 'Mirringo', 'ComidaGato', 'comida gato barato ', 1000.00, 100);
 
 -- --------------------------------------------------------
 
@@ -304,7 +332,8 @@ INSERT INTO `t_registro` (`id_registro`, `fecha`, `tipo_usuario`) VALUES
 (2, '2025-04-24', 'GUARDIAN'),
 (3, '2025-04-24', 'ADMIN'),
 (4, '2025-04-24', 'ADMIN'),
-(5, '2025-04-24', 'GUARDIAN');
+(5, '2025-04-24', 'GUARDIAN'),
+(6, '2025-06-20', 'GUARDIAN');
 
 -- --------------------------------------------------------
 
@@ -343,7 +372,10 @@ INSERT INTO `t_usuario` (`id_usuario`, `nombre`, `apellido`, `contrasena`, `emai
 (2, 'valentina', 'urrego', '$2y$10$MMxd5OXxXtDZgoyaFxLmGuBrnQleEW3xXFzs5QclD9xMQAUs64S8O', 'valentina@gmail.com', '123', '123'),
 (3, 'Johan', 'Acero', '$2y$10$RsAyTZoih421KWccHGqvu.BDG73AMY6CMTRkitZWd64KTZoBJDrbC', 'johan@gmail.com', 'Bogotá', '123456789'),
 (4, 'Pablo', 'Vela', '$2y$10$OMPvjW0mZJL/0oMXKjMWmOiED1YBP3b4SE9oDNU3Hzhw6/.63NXci', 'pablo@gmail.com', 'Bogotá', '123456789'),
-(5, 'Andres', 'Miranda', '$2y$10$PFkIhQAEOslDTKUMIaEj3.8YN7jx8kNMMFUQ304cOiSP1s8CHZAXi', 'miranda@gmail.com', '123', '123');
+(5, 'Andres', 'Miranda', '$2y$10$PFkIhQAEOslDTKUMIaEj3.8YN7jx8kNMMFUQ304cOiSP1s8CHZAXi', 'miranda@gmail.com', '123', '123'),
+(10, 'Ana', 'carreño', '$2y$10$ah0CU5s/K8KHCZVlrvQeJO3JDhqCkXc9nDX.kZrYLWZLPpc4PVwrq', 'ana@gmail.com', 'calle12', '123123'),
+(11, 'pablo', 'vela', '$2y$10$U85iBk5jRNAhHXZjo1Sbcu5ZqkoZp3V.vBIkeFfdn18HkJUYJzbbq', 'pablo@gmail.com', 'calle12', '123123'),
+(12, 'pablo', 'vela', '$2y$10$3rKOJhQpqmGhOSv5s0G9U.j.VS2hELHLiXHtDHow87/9nerjBw0c.', 'pablovela.upn@gmail.com', 'calle12', '123123');
 
 -- --------------------------------------------------------
 
@@ -533,7 +565,7 @@ ALTER TABLE `t_mascota`
 -- AUTO_INCREMENT de la tabla `t_perfil`
 --
 ALTER TABLE `t_perfil`
-  MODIFY `id_perfil` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id_perfil` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT de la tabla `t_proceso_adopcion`
@@ -545,7 +577,7 @@ ALTER TABLE `t_proceso_adopcion`
 -- AUTO_INCREMENT de la tabla `t_producto`
 --
 ALTER TABLE `t_producto`
-  MODIFY `id_producto` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id_producto` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT de la tabla `t_publicacion`
@@ -557,7 +589,7 @@ ALTER TABLE `t_publicacion`
 -- AUTO_INCREMENT de la tabla `t_recuperar_constrasena`
 --
 ALTER TABLE `t_recuperar_constrasena`
-  MODIFY `id_recuperacion` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_recuperacion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `t_red_social`
@@ -569,7 +601,7 @@ ALTER TABLE `t_red_social`
 -- AUTO_INCREMENT de la tabla `t_registro`
 --
 ALTER TABLE `t_registro`
-  MODIFY `id_registro` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id_registro` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT de la tabla `t_tipo_mascota`
@@ -581,7 +613,7 @@ ALTER TABLE `t_tipo_mascota`
 -- AUTO_INCREMENT de la tabla `t_usuario`
 --
 ALTER TABLE `t_usuario`
-  MODIFY `id_usuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id_usuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- Restricciones para tablas volcadas
@@ -620,8 +652,7 @@ ALTER TABLE `t_estado_adopcion`
 --
 ALTER TABLE `t_fundacion`
   ADD CONSTRAINT `fk_fundacion_id_perfil` FOREIGN KEY (`id_perfil`) REFERENCES `t_perfil` (`id_perfil`),
-  ADD CONSTRAINT `fk_fundacion_id_usuario` FOREIGN KEY (`id_usuario`) REFERENCES `t_usuario` (`id_usuario`),
-  ADD CONSTRAINT `t_fundacion_ibfk_1` FOREIGN KEY (`nit_fundacion`) REFERENCES `t_proceso_adopcion` (`nit_fundacion`);
+  ADD CONSTRAINT `fk_fundacion_id_usuario` FOREIGN KEY (`id_usuario`) REFERENCES `t_usuario` (`id_usuario`);
 
 --
 -- Filtros para la tabla `t_guardian`
@@ -647,6 +678,12 @@ ALTER TABLE `t_mascota`
   ADD CONSTRAINT `fk_id_vacuna` FOREIGN KEY (`num_serie_vacuna`) REFERENCES `t_vacuna` (`num_serie_vacuna`),
   ADD CONSTRAINT `fk_mascota_nit_fundacion` FOREIGN KEY (`nit_fundacion`) REFERENCES `t_fundacion` (`nit_fundacion`),
   ADD CONSTRAINT `t_mascota_ibfk_1` FOREIGN KEY (`id_mascota`) REFERENCES `t_proceso_adopcion` (`id_mascota`);
+
+--
+-- Filtros para la tabla `t_proceso_adopcion`
+--
+ALTER TABLE `t_proceso_adopcion`
+  ADD CONSTRAINT `fk_proceso_fundacion` FOREIGN KEY (`nit_fundacion`) REFERENCES `t_fundacion` (`nit_fundacion`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `t_publicacion`
