@@ -123,7 +123,3 @@ if (isset($routes[$page])) {
     http_response_code(404);
     echo "Página no encontrada";
 }
-
-
-
-// Aquí cargas tu landing page u otras vistas normalmente

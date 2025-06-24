@@ -1,9 +1,34 @@
 <?php
 require_once("../../Model/producto/ProductoModel.php");
 $Modelo = new Productos();
+// Mostrar mensajes de sesión
+// if (isset($_SESSION['mensaje'])) {
+//     $tipo = $_SESSION['tipo_mensaje'] ?? 'info';
+//     echo '<div class="alert alert-'.$tipo.'">'.$_SESSION['mensaje'].'</div>';
+//     // Limpiar los mensajes después de mostrarlos
+//     unset($_SESSION['mensaje']);
+//     unset($_SESSION['tipo_mensaje']);
+// }
 ?>
 
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRUD de Productos</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Iconos de Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+</head>
+
 <body>
+    <div class="container crud-container" style="padding: 40px; margin-right: 0px;">
+        <?php if (isset($_GET['success']) && $_GET['success'] == 1): ?>
+            <div class="alert alert-success">Producto registrado correctamente</div>
+        <?php endif; ?>
     <!-- Contenedor principal del CRUD con ID para JS -->
     <div class="container crud-container main-content" id="crud-container" style="padding: 40px;">
         <div class="d-flex justify-content-between align-items-center mb-4">
@@ -14,8 +39,8 @@ $Modelo = new Productos();
         </div>
 
         <!-- Tabla de productos -->
-        <div class="table-responsive">
-            <table class="table table-striped table-hover table-bordered">
+        <div class="table-responsive" >
+            <table class="table table-striped table-hover table-bordered" id="tabla_productos">
                 <thead class="table-dark">
                     <tr>
                         <th>ID</th>
@@ -42,10 +67,10 @@ $Modelo = new Productos();
                             <td><?php echo $Producto['cantidad_disponible']; ?></td>
                             <td>
                                 <button class="btn btn-sm btn-warning btn-editar-producto" data-id="<?php echo $Producto['id_producto']; ?>">
-                                    <i class="bi bi-pencil"></i>
+                                    <i class="uil uil-pen"></i>
                                 </button>
                                 <button class="btn btn-sm btn-danger btn-eliminar-producto" data-id="<?php echo $Producto['id_producto']; ?>">
-                                    <i class="bi bi-trash"></i>
+                                    <i class="uil uil-trash"></i>
                                 </button>
                             </td>
                         </tr>
@@ -71,6 +96,7 @@ $Modelo = new Productos();
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
+                    <form id="form-registrar-producto" method="POST" action="../../controller/producto/ProductoController.php">
                     <!-- ✅ Formulario sin method ni action -->
                     <form id="form-registrar-producto">
                         <input type="hidden" name="accion" value="registrar">
@@ -122,11 +148,10 @@ $Modelo = new Productos();
                 </div>
             </div>
         </div>
+<<<<<<<<< Temporary merge branch 1
     </div>
-
-    <!-- Bootstrap JS y dependencias -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <!-- Tu archivo JS personalizado -->
+    <script src="../../Public/js/cruds.js"></script>
     <script src="../../Public/js/cruds.js"></script>
 </body>
 

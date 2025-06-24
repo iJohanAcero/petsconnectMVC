@@ -1,93 +1,122 @@
 <?php
 //VALIDAR SESIÓN//
-require_once("../Model/fundacion/FundacionModel.php");
+require_once("../../Model/fundacion/FundacionModel.php");
 $Modelo = new Fundacion();
-?>
-<!DOCTYPE html>
-<html lang="es">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CRUD_Fundacion</title>
-</head>
+?>
 
 <body>
-    <div class="crud">
-        <h2 class="titulo">CRUD de Fundaciones</h2>
-
-        <a class="btn-añadir" id="openModal">
-            <i class=" uil uil-plus-circle"></i> <span>Añadir Fundación</span>
-        </a>
-    </div>
-    <table>
-        <thead>
-            <tr>
-                <th>Nit Fundación</th>
-                <th>id_usuario</th>
-                <th>id_perfil</th>
-                <th>Acciones</th>
-            </tr>
-
-        </thead>
-        <tbody>
-            <?php
-            $Fundacion = $Modelo->getFundacion();
-            if ($Fundacion !== null) {
-                foreach ($Fundacion as $registroFundacion) {
-            ?>
-                    <tr>
-                        <td><?php echo $registroFundacion['nit_fundacion']; ?></td>
-                        <td><?php echo $registroFundacion['id_usuario']; ?></td>
-                        <td><?php echo $registroFundacion['id_perfil']; ?></td>
-                        <td>
-                            <a class="edit">
-                                <i class=" uil uil-pen" style="cursor: pointer;"></i>
-                            </a>
-                            <a  class="delete">
-                                <i class="uil uil-trash-alt" style="cursor: pointer;"></i>
-                            </a>
-                        </td>
-                    </tr>
-            <?php
-                }
-            } else {
-                echo "<tr><td colspan='4'>No hay fundaciones registradas.</td></tr>";
-            }
-            ?>
-        </tbody>
-    </table>
-
-    <!-- ================================= HTML DEL FORMULARIO DE REGISTRO  ======================================= -->
-    <!----------- MODAL DEL BOTON DE AÑADIR REGISTRO -------------->
-
-    <div id="modal-fundacion" class="modal" style="display: none;">
-        <div class="modal-content">
-            <span class="close">&times;</span>
-            <h2 class="titulo-modal">¡ Registro Nueva Fundación !</h2>
-
-            <!-------------- FORMULARIO FUNDACIÓN ------->
-
-            <form action="../../controller/fundacion/FundationController.php" method="POST" class="form-modal">
-
-                <label for="nit_fundacion">Nit Fundación:</label>
-                <input class="input-modal" type="text" id="nit_fundacion" name="nit_fundacion" required>
-
-                <label for="nombre_fundacion">Nombre fundación:</label>
-                <input class="input-modal" type="text" id="nombre_fundacion" name="nombre_fundacion" required>
-
-                <label for="id_usuario">ID Usuario:</label>
-                <input class="input-modal" type="text" id="id_usuario" name="id_usuario" required>
-
-                <label for="id_perfil">ID Perfil:</label>
-                <input class="input-modal" type="text" id="id_perfil" name="id_perfil" required>
-
-                <input type="hidden" name="action" value="add">
-                <button class="btn-añadir" type="submit">Guardar</button>
-            </form>
-
+    <div class="container crud-container main-content" id="crud-container" style="padding: 40px;">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="mb-0">Gestión de Fundaciones</h2>
+            <button id="btn-abrir-modal-fundacion" class="btn btn-primary">
+                <i class="bi bi-plus-circle"></i> Añadir Fundación
+            </button>
         </div>
-    </div>
+
+        <div class="table-responsive">
+            <table class="table table-striped table-hover table-bordered" id="tabla_fundacion">
+                <thead class="table-dark">
+                    <tr>
+                        <th>nit_fundacion</th>
+                        <th>Id usuario</th>
+                        <th>Id perfil</th>
+                        <th>Acciones</th>
+                    </tr>
+
+                </thead>
+                <tbody>
+                    <?php
+                    $Fundacion = $Modelo->getFundacion();
+                    if ($Fundacion !== null) {
+                        foreach ($Fundacion as $Fundacion) {
+                    ?>
+                            <tr>
+                                <td><?php echo $Fundacion['nit_fundacion']; ?></td>
+                                <td><?php echo $Fundacion['id_usuario']; ?></td>
+                                <td><?php echo $Fundacion['id_perfil']; ?></td>
+                                <td>
+                                    <button class="btn btn-sm btn-warning btn-editar-fundacion" data-id="<?php echo $Fundacion['nit_fundacion']; ?>">
+                                        <i class="uil uil-pen"></i>
+                                    </button>
+                                    <button class="btn btn-sm btn-danger btn-eliminar-fundacion" data-id="<?php echo $Fundacion['nit_fundacion']; ?>">
+                                        <i class="uil uil-trash"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        <?php
+                        }
+                    } else {
+                        ?>
+                        <tr>
+                            <td colspan="7" class="text-center">No hay Fundaciones registradas</td>
+                        </tr>
+                    <?php } ?>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- ================================= HTML DEL FORMULARIO DE REGISTRO  ======================================= -->
+        <div class="modal fade" id="modal-fundacion" tabindex="-1" aria-labelledby="modalFundacionLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modalFundacionLabel">Registrar Nueva Fundación</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                    </div>
+
+                    <div class="modal-body">
+                        <!-- Formulario de fundación -->
+                        <form id="form-registrar-fundacion">
+                            <input type="hidden" name="accion" value="registrar_fundacion">
+
+                            <div class="mb-3">
+                                <label for="nombre" class="form-label">Nombre</label>
+                                <input type="text" class="form-control" id="nombre" name="nombre" required>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="apellido" class="form-label">Apellido</label>
+                                <input type="text" class="form-control" id="apellido" name="apellido" required>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="contrasena" class="form-label">Contraseña</label>
+                                <input type="password" class="form-control" id="contrasena" name="contrasena" required>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="email" class="form-label">Correo electrónico</label>
+                                <input type="email" class="form-control" id="email" name="email" required>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="direccion" class="form-label">Dirección</label>
+                                <input type="text" class="form-control" id="direccion" name="direccion" required>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="telefono" class="form-label">Teléfono</label>
+                                <input type="tel" class="form-control" id="telefono" name="telefono" required>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="nit_fundacion" class="form-label">nit_fundacion</label>
+                                <input type="text" class="form-control" id="nit_fundacion" name="nit_fundacion" required>
+                            </div>
+
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                <button type="submit" class="btn btn-primary">Registrar Fundación</button>
+                            </div>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
 </body>
 
 </html>

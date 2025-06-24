@@ -1,13 +1,8 @@
 <?php
-// Se requiere el archivo de conexión con la base de datos
 
 require_once '../../Model/conexion.php';
-// Inicia la sesión del usuario
-// session_start();
 
-// Definición de la clase Producto que hereda de la clase Conexion
 class Fundacion
-
 
 {
     private $db;
@@ -17,31 +12,40 @@ class Fundacion
         $this->db = (new Conexion())->getConexion();
     }
 
-    // Método para agregar un nuevo producto a la base de datos
-    public function add($nit_fundacion, $nombre_fundacion, $id_usuario, $id_perfil)
+    // Método para agregar un nueva fundacion a la base de datos
+    public function registrarFundacion($nombre, $apellido, $contrasena, $email, $direccion, $telefono, $nit_fundacion)
     {
-        // Preparar la consulta SQL para insertar un nuevo producto en la base de datos
-        $statement = $this->db->prepare("INSERT INTO t_fundacion (nit_fundacion, nombre_fundacion, id_usuario, id_perfil)
-                                        VALUES (:nit_fundacion, :nombre_fundacion, :id_usuario, :id_perfil)");
+        // Encriptar la contraseña
+        $hash = password_hash($contrasena, PASSWORD_BCRYPT);
 
-        // Vincular los parámetros con los valores recibidos
-        $statement->bindParam(':nit_fundacion', $nit_fundacion);
-        $statement->bindParam(':nombre_fundacion', $nombre_fundacion);
-        $statement->bindParam(':id_usuario', $id_usuario);
-        $statement->bindParam(':id_perfil', $id_perfil);
+        // Preparar la consulta para insertar en t_usuario
+        $stmt = $this->db->prepare("INSERT INTO t_usuario (nombre, apellido, contrasena, email, direccion, telefono) 
+        VALUES (:nombre, :apellido, :contrasena, :email, :direccion, :telefono)");
 
+        $stmt->bindParam(":nombre", $nombre);
+        $stmt->bindParam(":apellido", $apellido);
+        $stmt->bindParam(":contrasena", $hash);
+        $stmt->bindParam(":email", $email);
+        $stmt->bindParam(":direccion", $direccion);
+        $stmt->bindParam(":telefono", $telefono);
 
-        // Ejecutar la consulta
-        if ($statement->execute()) {
-            // Si la consulta es exitosa, redirige a la página de inicio
-            header("Location: ../../view/fundacion/FundacionView.php");
-        } else {
-            // Si la consulta falla, redirige a la página de agregar producto para intentar nuevamente
-            header("Location: ../../view/fundacion/FundacionView.php");
+        // Si se insertó correctamente el usuario
+        if ($stmt->execute()) {
+            $id_usuario = $this->db->lastInsertId();
+
+            // Llamar al procedimiento para registrar fundación
+            $call = $this->db->prepare("CALL crear_fundacion(:id_usuario, :nit_fundacion)");
+            $call->bindParam(":id_usuario", $id_usuario, PDO::PARAM_INT);
+            $call->bindParam(":nit_fundacion", $nit_fundacion, PDO::PARAM_STR);
+            $call->execute();
+
+            return true;
         }
+
+        return false;
     }
 
-    // Método para obtener todos los productos desde la base de datos
+
     public function getFundacion()
     {
         // Inicializa una variable para almacenar los resultados
@@ -60,16 +64,16 @@ class Fundacion
         return $rows;
     }
 
-    // Método para obtener un producto específico usando su ID
-    public function getNit($nit_fundacion)
+    // Obtener producto por nit
+    public function getId($nit)
     {
         // Inicializa una variable para almacenar el resultado
         $rows = null;
 
-        // Preparar la consulta SQL para seleccionar un producto por ID
-        $statement = $this->db->prepare("SELECT * FROM t_fundacion WHERE nit_fundacion = :nit_fundacion");
-        // Vincular el parámetro :id con el valor recibido
-        $statement->bindParam(':nit_fundacion', $nit_fundacion);
+        // Preparar la consulta SQL para seleccionar un producto por nit
+        $statement = $this->db->prepare("SELECT * FROM t_fundacion WHERE nit_fundacion = :nit");
+        // Vincular el parámetro :nit con el valor recibido
+        $statement->bindParam(':nit', $nit);
         // Ejecutar la consulta
         $statement->execute();
 
@@ -82,46 +86,50 @@ class Fundacion
         return $rows;
     }
 
-    // Método para actualizar un producto usando su ID
-    public function update($nit_fundacion, $nombre_fundacion, $id_usuario, $id_perfil)
+    public function updateFundacion($id, $nombre, $tipo_producto, $descripcion, $precio, $cantidad_disponible)
     {
-        // Preparar la consulta SQL para actualizar el producto con el ID correspondiente
-        $statement = $this->db->prepare("UPDATE t_fundacion 
-                                    SET nit_fundacion = :nit_fundacion, nombre_fundacion = :nombre_fundacion, id_usuario = :id_usuario, id_perfil = :id_perfil
-                                    WHERE nit_fundacion = :nit_fundacion");
+        $statement = $this->db->prepare("UPDATE t_producto 
+            SET nombre = :nombre, 
+                tipo_producto = :tipo_producto, 
+                descripcion = :descripcion, 
+                precio = :precio, 
+                cantidad_disponible = :cantidad_disponible 
+            WHERE id_producto = :id");
 
-        // Vincular los parámetros con los valores recibidos (sin cambiar el nit)
-        $statement->bindParam(':nit_fundacion', $nit_fundacion);
-        $statement->bindParam(':nombre_fundacion', $nombre_fundacion);
-        $statement->bindParam(':id_usuario', $id_usuario);
-        $statement->bindParam(':id_perfil', $id_perfil);
+        $statement->bindParam(':id', $id);
+        $statement->bindParam(':nombre', $nombre);
+        $statement->bindParam(':tipo_producto', $tipo_producto);
+        $statement->bindParam(':descripcion', $descripcion);
+        $statement->bindParam(':precio', $precio);
+        $statement->bindParam(':cantidad_disponible', $cantidad_disponible);
 
-        // Ejecutar la consulta
-        if ($statement->execute()) {
-            // Si la actualización es exitosa, redirige a la página de inicio
-            header("Location: ../../view/fundacion/FundacionView.php");
-        } else {
-            // Si la actualización falla, redirige a la página de editar para intentar de nuevo
-            header("Location: ../../view/fundacion/FundacionEdit.php");
-        }
+        return $statement->execute();
     }
 
-    // Método para eliminar un producto usando su ID
-    public function delete($nit_fundacion)
-    {
-        // Preparar la consulta SQL para eliminar el producto con el ID correspondiente
-        $statement = $this->db->prepare("DELETE FROM t_fundacion WHERE nit_fundacion = :nit_fundacion");
-        // Se usa ':id' como marcador para evitar inyecciones SQL y se enlaza con bindParam() para asignar el valor de forma segura
+    public function delete($nit)
+{
+    // Obtener el id_usuario relacionado al nit_fundacion
+    $stmt = $this->db->prepare("SELECT id_usuario FROM t_fundacion WHERE nit_fundacion = :nit");
+    $stmt->bindParam(':nit', $nit);
+    $stmt->execute();
+    $usuario = $stmt->fetch();
 
-        $statement->bindParam(':nit_fundacion', $nit_fundacion);
-
-        // Ejecutar la consulta
-        if ($statement->execute()) {
-            // Si la eliminación es exitosa, redirige a la página de inicio
-            header("Location: ../../view/fundacion/FundacionView.php");
-        } else {
-            // Si la eliminación falla, redirige a la página de eliminación para intentar de nuevo
-            header("Location: ../../view/fundacion/FundacionDelete.php");
-        }
+    if (!$usuario) {
+        return false; // No existe la fundación
     }
+
+    $id_usuario = $usuario['id_usuario'];
+
+    // Eliminar la fundación primero
+    $stmt = $this->db->prepare("DELETE FROM t_fundacion WHERE nit_fundacion = :nit");
+    $stmt->bindParam(':nit', $nit);
+    $result1 = $stmt->execute();
+
+    // Eliminar el usuario relacionado
+    $stmt = $this->db->prepare("DELETE FROM t_usuario WHERE id_usuario = :id_usuario");
+    $stmt->bindParam(':id_usuario', $id_usuario);
+    $result2 = $stmt->execute();
+
+    return $result1 && $result2;
+}
 }
