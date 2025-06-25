@@ -3,25 +3,54 @@ const BASE_URL = window.location.origin + "/petsconnectMVC";
 window.BASE_URL = window.BASE_URL || BASE_URL;
 
 // =========== CRUD DE FUNDACION =========== //
+// window.cargarCrudFundacion = function () {
+//     fetch("view/fundacion/FundacionView.php")
+//         .then(response => {
+//             if (!response.ok) throw new Error("Error en la red");
+//             return response.text();
+//         })
+//         .then(data => {
+//             const mainContainer = document.getElementById("main-content");
+            
+//             if (mainContainer) {
+//                 mainContainer.innerHTML = data;
+//                 inicializarEventosFundacion();
+//             } else {
+//                 console.error("No se encontró el contenedor principal para el CRUD");
+//                 alert("Error: No se pudo cargar la interfaz");
+//             }
+//         })
+//         .catch(error => {
+//             console.error("Error al cargar PHP:", error);
+//             alert("Error al cargar la página. Por favor recarga.");
+//         });
+// }
 window.cargarCrudFundacion = function () {
+    console.log("📥 Ejecutando fetch a FundacionView.php...");
+
     fetch("view/fundacion/FundacionView.php")
         .then(response => {
+            console.log("📦 Respuesta recibida:", response);
+
             if (!response.ok) throw new Error("Error en la red");
             return response.text();
         })
         .then(data => {
+            console.log("📄 HTML cargado:", data); // Mostramos el contenido
+
             const mainContainer = document.getElementById("main-content");
             
             if (mainContainer) {
                 mainContainer.innerHTML = data;
+                console.log("✅ Contenido insertado en #main-content");
                 inicializarEventosFundacion();
             } else {
-                console.error("No se encontró el contenedor principal para el CRUD");
+                console.error("❌ No se encontró el contenedor principal para el CRUD");
                 alert("Error: No se pudo cargar la interfaz");
             }
         })
         .catch(error => {
-            console.error("Error al cargar PHP:", error);
+            console.error("❌ Error al cargar PHP:", error);
             alert("Error al cargar la página. Por favor recarga.");
         });
 }
@@ -131,12 +160,30 @@ function inicializarEventosFundacion() {
     });
 }
 
+// document.addEventListener("DOMContentLoaded", function () {
+//     const btnFundaciones = document.getElementById("btn-cargar-fundaciones");
+//     if (btnFundaciones) {
+//         btnFundaciones.addEventListener("click", function (e) {
+//             e.preventDefault(); // evita que recargue la página
+//             cargarCrudFundacion(); // llama al CRUD
+//         });
+//     }
+// });
+
 document.addEventListener("DOMContentLoaded", function () {
     const btnFundaciones = document.getElementById("btn-cargar-fundaciones");
+
     if (btnFundaciones) {
+        console.log("✅ Botón Fundaciones encontrado"); // <-- aquí
+
         btnFundaciones.addEventListener("click", function (e) {
-            e.preventDefault(); // evita que recargue la página
+            e.preventDefault();
+
+            console.log("✅ Se hizo clic en el botón Fundaciones"); // <-- y aquí
+
             cargarCrudFundacion(); // llama al CRUD
         });
+    } else {
+        console.error("❌ No se encontró el botón Fundaciones");
     }
 });

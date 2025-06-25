@@ -57,7 +57,8 @@ if (!isset($_SESSION["user"]) || $_SESSION["tipo_usuario"] !== "admin") {
 
             <div class="collapse navbar-collapse">
                 <form class="d-flex justify-content-center flex-grow-1" role="search" style="max-width: 600px; margin: 0 auto;">
-                    <input class="form-control me-2 flex-grow-1 " type="search" placeholder="Busca en publicaciones, perfiles o intereses..." aria-label="Buscar" style="min-width: 300px;">
+                    <input class="form-control me-2 flex-grow-1 " type="search" name="busqueda"
+                        id="busqueda" placeholder="Busca en publicaciones, perfiles o intereses..." aria-label="Buscar" style="min-width: 300px;">
                     <button class="btn btn-outline-dark" type="submit"><i class="uil uil-search"></i></button>
                 </form>
 
@@ -241,7 +242,7 @@ if (!isset($_SESSION["user"]) || $_SESSION["tipo_usuario"] !== "admin") {
                             <ul id="crud-4" class="sidebar-dropdown list-unstyled collapse">
                                 <li class="sidebar-item">
                                     <a href="#" class="sidebar-link" id="btn-cargar-productos">
-                                        <i class="fas fa-list"></i>- Productos
+                                        - Productos
                                     </a>
                                 </li>
                             </ul>
@@ -292,7 +293,6 @@ if (!isset($_SESSION["user"]) || $_SESSION["tipo_usuario"] !== "admin") {
         <script src="https://cdn.datatables.net/v/bs5/dt-2.3.2/af-2.7.0/b-3.2.3/b-html5-3.2.3/r-3.0.4/sc-2.4.3/datatables.min.js" integrity="sha384-4VpbDpy9RZDSYGLIgJCxbBN42Ze5hcM/B+OOSuW3hSAukOTfsuar7+79mYTohU6M" crossorigin="anonymous"></script>
 
         <!-- Scripts locales (ordenados por dependencia) -->
-        <script src="Public/js/config.js"></script>
         <script src="Public/js/main.js"></script>
         <script type="module" src="Public/js/crud/crud_fundacion.js"></script>
         <script type="module" src="Public/js/crud/crud_producto.js"></script>

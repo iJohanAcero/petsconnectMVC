@@ -7,7 +7,6 @@ session_start();
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $modeloFundacion = new Fundacion();
 
-    // REGISTRAR fundación
     if (isset($_POST['accion']) && $_POST['accion'] === 'registrar_fundacion') {
         $nombre = htmlspecialchars($_POST['rep_nombre'] ?? '');
         $apellido = htmlspecialchars($_POST['rep_apellido'] ?? '');
@@ -15,14 +14,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $email = filter_var($_POST['rep_email'] ?? '', FILTER_SANITIZE_EMAIL);
         $direccion = htmlspecialchars($_POST['rep_direccion'] ?? '');
         $telefono = htmlspecialchars($_POST['rep_telefono'] ?? '');
+        $nombre_fundacion = htmlspecialchars($_POST['fund_nombre'] ?? ''); // ← ¡NUEVO!
         $nit_fundacion = htmlspecialchars($_POST['fund_nit'] ?? '');
 
-        if (empty($nombre) || empty($apellido) || empty($contrasena) || empty($email) || empty($nit_fundacion)) {
+        if (empty($nombre) || empty($apellido) || empty($contrasena) || empty($email) || empty($nombre_fundacion) || empty($nit_fundacion)) {
             echo "Todos los campos son obligatorios";
             exit;
         }
 
-        $resultado = $modeloFundacion->registrarFundacion($nombre, $apellido, $contrasena, $email, $direccion, $telefono, $nit_fundacion);
+        $resultado = $modeloFundacion->registrarFundacion($nombre, $apellido, $contrasena, $email, $direccion, $telefono, $nombre_fundacion, $nit_fundacion);
 
         echo $resultado ? "Fundación registrada correctamente" : "Error al registrar fundación";
         exit;
