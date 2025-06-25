@@ -43,12 +43,10 @@ $producto = $producto[0]; // Tomamos el primer registro
         <!-- 1. Cambiado el action para apuntar directamente al controlador -->
         <!-- 2. Reemplazado name="editar" por name="accion" value="editar" para coincidir con el controlador -->
         <!-- 3. Corregido el name="cantidad_dosponible" a "cantidad_disponible" -->
-        <form method="POST" action="../../controller/producto/ProductoController.php" style="margin-top: 20px;">
+        <form method="POST" id="form-editar-producto" style="margin-top: 20px;">
 
             <!-- Campo oculto para el ID del producto -->
             <input type="hidden" name="id" value="<?= $producto['id_producto']; ?>">
-            <!-- Añadido campo accion para que el controlador identifique la acción -->
-            <input type="hidden" name="accion" value="actualizar">
 
             <!-- Nombre del producto -->
             <div class="mb-3" style="margin-bottom: 15px;">
@@ -92,7 +90,7 @@ $producto = $producto[0]; // Tomamos el primer registro
             <input type="hidden" name="accion" value="editar">
 
             <!-- Botón de acción -->
-            <button type="submit"   class="btn btn-primary">Actualizar</button>
+            <button type="submit" class="btn btn-primary">Actualizar</button>
 
             <!-- Enlace para regresar -->
             <a href="ProductoView.php" class="btn btn-secondary ms-2">← Volver a la lista</a>
