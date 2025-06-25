@@ -1,25 +1,32 @@
-<?php
-//////VALIDAR SESIÓN//////////
-$Id=$_GET['Id'];
-?>
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Eliminar productos</title>
+    <title>Eliminar Fundación</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 
 <body>
-    <h1>Eliminar producto</h1>
-    <form method="POST" action="../../controller/fundacion/FundationController.php">
-        <input type="hidden" name="Id" value="<?php echo $Id;?>">
-        <p>¿Estas seguro que deseas eliminar este producto?</p>
-        
-        <input type="hidden" name="action" value="delete">
-        <input type="submit" value="Eliminar producto">
-    </form>
+    <div class="container mt-5">
+        <div class="card border-danger">
+            <div class="card-header bg-danger text-white">
+                <h5 class="card-title">Eliminar Fundación</h5>
+            </div>
+            <div class="card-body">
+                <form method="POST" action="../../controller/fundacion/FundationController.php">
+                    <input type="hidden" name="Id" value="<?php echo $Id; ?>">
+                    <input type="hidden" name="action" value="delete">
+                    
+                    <p class="fs-5">¿Estás seguro que deseas eliminar esta fundación?</p>
+                    <p class="text-muted">Esta acción no se puede deshacer.</p>
+                    
+                    <div class="d-flex justify-content-end gap-2">
+                        <a href="FundacionView.php" class="btn btn-secondary">Cancelar</a>
+                        <button type="submit" class="btn btn-danger">Confirmar Eliminación</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 </body>
-
 </html>
