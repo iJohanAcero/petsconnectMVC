@@ -199,7 +199,7 @@ if (!isset($_SESSION["user"]) || $_SESSION["tipo_usuario"] !== "admin") {
                                     </a>
                                 </li>
                                 <li class="sidebar-item">
-                                    <a href="#" class="sidebar-link" onclick="cargarCrudFundacion()">
+                                    <a href="#" class="sidebar-link" id="btn-cargar-fundaciones">
                                         - Fundaciones
                                     </a>
                                 </li>
@@ -240,7 +240,7 @@ if (!isset($_SESSION["user"]) || $_SESSION["tipo_usuario"] !== "admin") {
                             </a>
                             <ul id="crud-4" class="sidebar-dropdown list-unstyled collapse">
                                 <li class="sidebar-item">
-                                    <a href="#" class="sidebar-link" onclick="cargarCrudProductos()">
+                                    <a href="#" class="sidebar-link" id="btn-cargar-productos">
                                         <i class="fas fa-list"></i>- Productos
                                     </a>
                                 </li>
@@ -274,39 +274,28 @@ if (!isset($_SESSION["user"]) || $_SESSION["tipo_usuario"] !== "admin") {
                 </li>
             </ul>
         </aside>
-        <!--============================================ MAIN =============================================-->
+        <!-- ============================================ MAIN CONTENT ============================================ -->
         <div class="main" id="main-content">
-            <h2 class="text-center text-muted">Selecciona una opción del menú</h2>
-        </div>
-<<<<<<<<< Temporary merge branch 1
-        <!--==============================================CONFIGURACION DE FONDO===========================================-->
-        <script src="Public/js/main.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
-        <script src="Public/js/cruds.js"></script>
-=========
-    </div>
-    <!--==============================================CONFIGURACION DE FONDO===========================================-->
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js" integrity="sha384-VFQrHzqBh5qiJIU0uGU5CIW3+OWpdGGJM9LBnGbuIH2mkICcFZ7lPd/AAtI7SNf7" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js" integrity="sha384-/RlQG9uf0M2vcTw3CX7fbqgbj/h8wKxw7C3zu9/GxcBPRKOEcESxaxufwRXqzq6n" crossorigin="anonymous"></script>
-    <script src="https://cdn.datatables.net/v/bs5/dt-2.3.2/af-2.7.0/b-3.2.3/b-html5-3.2.3/r-3.0.4/sc-2.4.3/datatables.min.js" integrity="sha384-4VpbDpy9RZDSYGLIgJCxbBN42Ze5hcM/B+OOSuW3hSAukOTfsuar7+79mYTohU6M" crossorigin="anonymous"></script>
-
-    <script src="Public/js/main.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="Public/js/cruds.js"></script>
-    <script src="Public/js/crud/crud_fundacion.js"></script>
-    <script src="Public/js/routes/routes.js"></script>
-
-    
-        <div class="main">
-            <div class="col-md-9 col-lg-10 main-content">
-                <div id="crud-container"></div>
+            <div class="container">
+                <h2 class="text-center text-muted">Selecciona una opción del menú</h2>
+                <!-- Contenedor para contenido dinámico -->
+                <div id="crud-container" class="mt-4"></div>
             </div>
         </div>
-        <!--==============================================CONFIGURACION DE FONDO===========================================-->
-        <script src="Public/js/main.js"></script>
+
+        <!-- ============================================ SCRIPTS ============================================ -->
+        <!-- Librerías externas -->
+        <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
-        <script src="Public/js/cruds.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js" integrity="sha384-VFQrHzqBh5qiJIU0uGU5CIW3+OWpdGGJM9LBnGbuIH2mkICcFZ7lPd/AAtI7SNf7" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js" integrity="sha384-/RlQG9uf0M2vcTw3CX7fbqgbj/h8wKxw7C3zu9/GxcBPRKOEcESxaxufwRXqzq6n" crossorigin="anonymous"></script>
+        <script src="https://cdn.datatables.net/v/bs5/dt-2.3.2/af-2.7.0/b-3.2.3/b-html5-3.2.3/r-3.0.4/sc-2.4.3/datatables.min.js" integrity="sha384-4VpbDpy9RZDSYGLIgJCxbBN42Ze5hcM/B+OOSuW3hSAukOTfsuar7+79mYTohU6M" crossorigin="anonymous"></script>
+
+        <!-- Scripts locales (ordenados por dependencia) -->
+        <script src="Public/js/config.js"></script>
+        <script src="Public/js/main.js"></script>
+        <script type="module" src="Public/js/crud/crud_fundacion.js"></script>
+        <script type="module" src="Public/js/crud/crud_producto.js"></script>
 </body>
 
 </html>
