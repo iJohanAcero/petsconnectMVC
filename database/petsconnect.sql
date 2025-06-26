@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 20-06-2025 a las 23:28:47
+-- Tiempo de generación: 26-06-2025 a las 06:20:55
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -73,6 +73,14 @@ CREATE TABLE `t_administrador` (
   `id_usuario` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Volcado de datos para la tabla `t_administrador`
+--
+
+INSERT INTO `t_administrador` (`n_documento`, `id_registro`, `id_usuario`) VALUES
+(10001, 8, 15),
+(10002, 9, 17),
+(1001327862, 7, 13);
 
 -- --------------------------------------------------------
 
@@ -128,8 +136,6 @@ CREATE TABLE `t_fundacion` (
   `id_perfil` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
-
-
 -- --------------------------------------------------------
 
 --
@@ -141,12 +147,6 @@ CREATE TABLE `t_guardian` (
   `id_usuario` int(11) NOT NULL,
   `id_perfil` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Volcado de datos para la tabla `t_guardian`
---
-
-
 
 -- --------------------------------------------------------
 
@@ -195,12 +195,6 @@ CREATE TABLE `t_perfil` (
   `imagen` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Volcado de datos para la tabla `t_perfil`
---
-
-
-
 -- --------------------------------------------------------
 
 --
@@ -231,12 +225,6 @@ CREATE TABLE `t_producto` (
   `precio` decimal(15,2) NOT NULL,
   `cantidad_disponible` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Volcado de datos para la tabla `t_producto`
---
-
-
 
 -- --------------------------------------------------------
 
@@ -297,7 +285,10 @@ CREATE TABLE `t_registro` (
 -- Volcado de datos para la tabla `t_registro`
 --
 
-
+INSERT INTO `t_registro` (`id_registro`, `fecha`, `tipo_usuario`) VALUES
+(7, '2025-06-25', 'ADMIN'),
+(8, '2025-06-25', 'ADMIN'),
+(9, '2025-06-25', 'ADMIN');
 
 -- --------------------------------------------------------
 
@@ -331,7 +322,10 @@ CREATE TABLE `t_usuario` (
 -- Volcado de datos para la tabla `t_usuario`
 --
 
-
+INSERT INTO `t_usuario` (`id_usuario`, `nombre`, `apellido`, `contrasena`, `email`, `direccion`, `telefono`) VALUES
+(13, 'Johan', 'Acero', '$2y$10$ingNyEHneLEj29du7ZH1huiEtlqJtEQR4b/MZHhJjoBQBXkgjpl4K', 'johanacero8@gmail.com', 'Bogotá', '123456789'),
+(15, 'Pablo', 'Vela', '$2y$10$MatNYyQ0I8ylL6zwK/TBT.w2K7ZO7fWVRZKMHdMQ010RMrEt8Vnzq', 'pablovela.upn@gmail.com', 'Bogotá', '12345'),
+(17, 'Kathe', 'Rojas', '$2y$10$retYjkKbdKebyzq6ZlFzHOfRlqsTiFbqTefNOmY65E4hNNmidHBbS', 'katherojas.2805@gmail.com', 'Bogotá', '123456');
 
 -- --------------------------------------------------------
 
@@ -475,7 +469,9 @@ ALTER TABLE `t_tipo_mascota`
 -- Indices de la tabla `t_usuario`
 --
 ALTER TABLE `t_usuario`
-  ADD PRIMARY KEY (`id_usuario`);
+  ADD PRIMARY KEY (`id_usuario`),
+  ADD UNIQUE KEY `telefono` (`telefono`),
+  ADD UNIQUE KEY `email` (`email`);
 
 --
 -- Indices de la tabla `t_vacuna`
@@ -533,7 +529,7 @@ ALTER TABLE `t_proceso_adopcion`
 -- AUTO_INCREMENT de la tabla `t_producto`
 --
 ALTER TABLE `t_producto`
-  MODIFY `id_producto` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id_producto` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT de la tabla `t_publicacion`
@@ -557,7 +553,7 @@ ALTER TABLE `t_red_social`
 -- AUTO_INCREMENT de la tabla `t_registro`
 --
 ALTER TABLE `t_registro`
-  MODIFY `id_registro` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id_registro` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT de la tabla `t_tipo_mascota`
@@ -569,7 +565,7 @@ ALTER TABLE `t_tipo_mascota`
 -- AUTO_INCREMENT de la tabla `t_usuario`
 --
 ALTER TABLE `t_usuario`
-  MODIFY `id_usuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id_usuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- Restricciones para tablas volcadas
