@@ -67,22 +67,30 @@ class Fundacion
 
     // Obtener fundación por NIT (dejé igual porque funciona bien)
     public function getId($nit)
-    {
-        $rows = null;
-        $statement = $this->db->prepare("SELECT * FROM t_fundacion WHERE nit_fundacion = :nit");
-        // Vincular el parámetro :nit con el valor recibido
-        $statement->bindParam(':nit', $nit);
-        // Ejecutar la consulta
-        $statement->execute();
+{
+    $statement = $this->db->prepare("
+        SELECT 
+            f.nit_fundacion,
+            f.nombre AS nombre_fundacion,
+            u.nombre AS nombre_representante,
+            u.apellido AS apellido_representante,
+            u.email,
+            u.direccion,
+            u.telefono
+        FROM t_fundacion f
+        INNER JOIN t_usuario u ON f.id_usuario = u.id_usuario
+        WHERE f.nit_fundacion = :nit
+    ");
+    $statement->bindParam(':nit', $nit);
+    $statement->execute();
 
-        // Iterar sobre los resultados y almacenarlos en el array $rows
-        while ($resultado = $statement->fetch()) {
-            $rows[] = $resultado;
-        }
-
-        // Devuelve el producto encontrado
-        return $rows;
+    $rows = [];
+    while ($resultado = $statement->fetch(PDO::FETCH_ASSOC)) {
+        $rows[] = $resultado;
     }
+
+    return $rows;
+}
 
     // ACTUALIZAR FUNDACIÓN - CORREGIDO (cambié los parámetros y consulta)
     public function updateFundacion($nit, $nombre, $apellido, $email, $direccion, $telefono)

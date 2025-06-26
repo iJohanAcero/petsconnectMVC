@@ -124,7 +124,6 @@ $Fundaciones = $Modelo->getFundacion(); // Suponiendo que tienes este método
                             </div>
                         </div>
                     </fieldset>
-
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
                         <button type="submit" class="btn btn-primary">Registrar Fundación</button>
@@ -137,7 +136,7 @@ $Fundaciones = $Modelo->getFundacion(); // Suponiendo que tienes este método
 
 <!-- Modal editar fundación -->
 <div class="modal fade" id="modal-editar-fundacion" tabindex="-1">
-    <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-dialog modal-dialog-centered modal-lg" style="margin-top: 80px;">
         <div class="modal-content">
             <div class="modal-header bg-warning">
                 <h5 class="modal-title">Editar Fundación</h5>

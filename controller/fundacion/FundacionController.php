@@ -44,8 +44,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         $resultado = $modeloFundacion->updateFundacion($nit, $nombre, $apellido, $email, $direccion, $telefono);
 
-        echo $resultado ? "Fundación actualizada correctamente" : "Error al actualizar fundación";
-        exit;
+        if ($resultado) {
+            // ✅ Redirigir a la vista después de actualizar
+            header("Location: ../../view/fundacion/FundacionView.php");
+            exit;
+        } else {
+            echo "Error al actualizar fundación";
+            exit;
+        }
     }
 
     // Eliminar fundacion

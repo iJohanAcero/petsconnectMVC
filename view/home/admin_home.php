@@ -209,7 +209,6 @@ if (!isset($_SESSION["user"]) || $_SESSION["tipo_usuario"] !== "admin") {
                                         - Administradores
                                     </a>
                                 </li>
-
                             </ul>
                         </li>
                         <li class="sidebar-item collapsed has-dropdown">
