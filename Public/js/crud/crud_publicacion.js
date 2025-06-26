@@ -1,7 +1,6 @@
-
-// =========== CRUD DE FUNDACION =========== //
-window.cargarCrudFundacion = function () {
-    fetch("view/fundacion/FundacionView.php")
+// =========== CRUD DE Publicacion =========== //
+window.cargarCrudPublicacion = function () {
+    fetch("view/publicacion/PublicacionView.php")
         .then(response => response.text())
         .then(data => {
             // Cambia el objetivo al contenedor del main
@@ -9,7 +8,7 @@ window.cargarCrudFundacion = function () {
 
             if (mainContainer) {
                 mainContainer.innerHTML = data;
-                inicializarEventosFundacion();
+                inicializarEventosPublicacion();
             } else {
                 console.error("No se encontró el contenedor principal para el CRUD");
             }
@@ -18,21 +17,21 @@ window.cargarCrudFundacion = function () {
 }
 
 
-function abrirModalCrearFundacion() {
-    const modalElement = document.getElementById("modal-fundacion");
+function abrirModalCrearPublicacion() {
+    const modalElement = document.getElementById("modal-publicacion");
     const modalBootstrap = new bootstrap.Modal(modalElement);
     modalBootstrap.show();
 }
 
-function inicializarEventosFundacion() {
-    // Modal crear Fundacion
-    const btnAbrirModal = document.getElementById("btn-abrir-modal-fundacion");
+function inicializarEventosPublicacion() {
+    // Modal crear Publicacion
+    const btnAbrirModal = document.getElementById("btn-abrir-modal-publicacion");
     if (btnAbrirModal) {
-        btnAbrirModal.addEventListener("click", abrirModalCrearFundacion);
+        btnAbrirModal.addEventListener("click", abrirModalCrearPublicacion);
     }
 
-    // ✅ REGISTRAR FUNDACION
-    const formRegistrar = document.getElementById("form-registrar-fundacion");
+    // ✅ REGISTRAR Publicacion
+    const formRegistrar = document.getElementById("form-registrar-publicacion");
 
     if (formRegistrar) {
         // Usamos onsubmit en vez de addEventListener, así no se repite el evento
@@ -41,7 +40,7 @@ function inicializarEventosFundacion() {
 
             const formData = new FormData(formRegistrar); // Captura los datos del formulario
 
-            fetch(`${BASE_URL}/controller/fundacion/FundacionController.php`, {
+            fetch(`${BASE_URL}/controller/publicacion/PublicacionController.php`, {
                 method: "POST",
                 body: formData
             })
@@ -52,13 +51,13 @@ function inicializarEventosFundacion() {
                         alert(data); // Muestra un mensaje (puedes usar sweetalert después)
 
                         // Cierra el modal de Bootstrap
-                        const modalElement = document.getElementById("modal-fundacion");
+                        const modalElement = document.getElementById("modal-publicacion");
                         const modal = bootstrap.Modal.getInstance(modalElement);
                         if (modal) modal.hide();
 
                         formRegistrar.reset(); // Limpia el formulario
 
-                        cargarCrudFundacion(); // Vuelve a cargar la lista actualizada
+                        cargarCrudPublicacion(); // Vuelve a cargar la lista actualizada
                     } else {
                         alert("Error: " + data); // Si hubo error, lo muestra
                     }
@@ -71,35 +70,35 @@ function inicializarEventosFundacion() {
     }
 
     // ✅ BOTONES EDITAR
-    const botonesEditar = document.querySelectorAll(".btn-editar-fundacion");
+    const botonesEditar = document.querySelectorAll(".btn-editar-publicacion");
     botonesEditar.forEach(btn => {
         btn.addEventListener("click", function () {
-            const idFundacion = this.dataset.id;
-            fetch(`view/producto/ProductoEditView.php?id=${idProducto}`)
+            const idPublicacion = this.dataset.id;
+            fetch(`view/publicacion/PublicacionEditView.php?id=${idPublicacion}`)
                 .then(response => response.text())
                 .then(html => {
                     document.getElementById("contenido-editar").innerHTML = html;
-                    const modalElement = document.getElementById("modal-editar-producto");
+                    const modalElement = document.getElementById("modal-editar-publicacion");
                     const modal = new bootstrap.Modal(modalElement);
                     modal.show();
 
-                    const formEditar = document.getElementById("form-editar-producto");
+                    const formEditar = document.getElementById("form-editar-publicacion");
                     if (formEditar) {
                         formEditar.addEventListener("submit", function (e) {
                             e.preventDefault();
                             const formData = new FormData(formEditar);
 
-                            fetch(`${BASE_URL}/controller/producto/ProductoController.php`, {
+                            fetch(`${BASE_URL}/controller/publicacion/PublicacionController.php`, {
                                 method: "POST",
                                 body: formData
                             })
                                 .then(res => res.text()) // no json
                                 .then(data => {
                                     alert(data);
-                                    const modalElement = document.getElementById("modal-editar-producto");
+                                    const modalElement = document.getElementById("modal-editar-publicacion");
                                     const modal = bootstrap.Modal.getInstance(modalElement);
                                     if (modal) modal.hide();
-                                    cargarCrudProductos();
+                                    cargarCrudPublicacion();
                                 })
                                 .catch(error => {
                                     console.error("Error:", error);
@@ -112,23 +111,23 @@ function inicializarEventosFundacion() {
     });
 
     // ✅ BOTONES ELIMINAR
-    const botonesEliminar = document.querySelectorAll(".btn-eliminar-fundacion");
+    const botonesEliminar = document.querySelectorAll(".btn-eliminar-Publicacion");
     botonesEliminar.forEach(btn => {
         btn.addEventListener("click", function () {
-            const nit = this.dataset.id;
-            if (confirm("¿Estás seguro de que deseas eliminar esta fundación?")) {
+            const idPublicacion = this.dataset.id;
+            if (confirm("¿Estás seguro de que deseas eliminar este Publicacion?")) {
                 const formData = new FormData();
                 formData.append('eliminar', 'true');
-                formData.append('nit', nit);
+                formData.append('id', idPublicacion);
 
-                fetch(`${BASE_URL}/controller/fundacion/FundacionController.php`, {
+                fetch(`${BASE_URL}/controller/Publicacion/PublicacionController.php`, {
                     method: "POST",
                     body: formData
                 })
                     .then(res => res.text()) // ya no json
                     .then(data => {
                         alert(data); // Cambiamos mostrarAlerta por alert simple
-                        cargarCrudFundacion(); // Recargar la tabla
+                        cargarCrudPublicacion(); // Recargar la tabla
                     })
                     .catch(error => {
                         console.error("Error:", error);
