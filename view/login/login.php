@@ -51,63 +51,6 @@
             </div>
         </div>
     </header>
-    <!-- <div class="container">
-
-        <div class="forms-container">
-            <div class="signin-signup">
-                <form action="/petsconnectmvc/index.php" class="sign-in-form" method="POST">
-                    <img src="Public/images/logo.png" alt="">
-                    <h2 class="title">Iniciar Sesión</h2>
-                    <input type="hidden" name="action" value="login">
-                    <div class="input-field">
-                        <i class="uil uil-user-square"></i>
-                        <input type="email" id="email" placeholder="Correo electronico" name="email" required />
-                    </div>
-                    <div class="input-field">
-                        <i class="uil uil-padlock"></i>
-                        <input type="password" placeholder="Contraseña" id="contrasena" name="contrasena" required />
-                    </div>
-                    <input type="submit" value="Entrar" class="btn solid" />
-
-                    <?php if (!empty($mensaje)): ?>
-                        <div class="alert alert-danger"><?php echo $mensaje; ?></div>
-                    <?php endif; ?>
-
-                    <p class="social-text">O inicia sesion con tu cuenta de:</p>
-                    <div class="social-media">
-                        <a href="#" class="social-icon">
-                            <i class="uil uil-facebook"></i>
-                        </a>
-                        <a href="#" class="social-icon">
-                            <i class="uil uil-twitter"></i>
-                        </a>
-                        <a href="#" class="social-icon">
-                            <i class="uil uil-google"></i>
-                        </a>
-                        <a href="#" class="social-icon">
-                            <i class="uil uil-github"></i>
-                        </a>
-                    </div>
-                </form>
-            </div>
-        </div>
-
-        <div class="panels-container">
-            <div class="panel left-panel">
-                <div class="content">
-                    <h3>¿ Nuevo aqui ?</h3>
-                    <p>
-                        Introduce tus datos y comienza tu adopción con nosotros
-                    </p>
-                    <a href="view/login/register.php" class="btn transparent" id="sign-up-btn">
-                        Registrate
-                    </a>
-                </div>
-                <img src="Public/images/login1.png" class="image" alt="" />
-            </div>
-        </div>
-    </div> -->
-
     <!-- ====== Login Start ====== -->
     <section class="ud-login">
         <div class="container">
@@ -143,18 +86,8 @@
 
                             <ul>
                                 <li>
-                                    <a href="javascript:void(0)" class="facebook">
-                                        <i class="uil uil-facebook"></i>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="javascript:void(0)" class="twitter">
-                                        <i class="uil uil-twitter"></i>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="javascript:void(0)" class="google">
-                                        <i class="uil uil-google"></i>
+                                    <a href="javascript:void(0)" class="google" style="color: #fff;">
+                                        <i class="uil uil-google">mail</i>
                                     </a>
                                 </li>
                             </ul>
@@ -166,7 +99,7 @@
                         <p class="signup-option">
                             ¿No eres miembro aún? <a href="register.php"> Registrate </a>
                         </p>
-                    </div> 
+                    </div>
                 </div>
             </div>
         </div>
@@ -309,10 +242,10 @@
             <div class="container">
                 <div class="row">
 
-                    <div class="col-md-5" >
+                    <div class="col-md-5">
                         <p class="ud-footer-bottom-right">
                             Diseñado y desarrollado por
-                             <a href="https://www.linkedin.com/in/johan-acero/" target="no_blank" rel="nofollow" class="autor">Johan Acero |</a>
+                            <a href="https://www.linkedin.com/in/johan-acero/" target="no_blank" rel="nofollow" class="autor">Johan Acero |</a>
                             <a href="#" rel="nofollow" class="autor">Pablo Vela |</a>
                             <a href="#" rel="nofollow" class="autor">Katherine Rojas</a>
                         </p>

@@ -73,13 +73,6 @@ CREATE TABLE `t_administrador` (
   `id_usuario` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Volcado de datos para la tabla `t_administrador`
---
-
-INSERT INTO `t_administrador` (`n_documento`, `id_registro`, `id_usuario`) VALUES
-(1001327862, 3, 3),
-(1111111111, 4, 4);
 
 -- --------------------------------------------------------
 
@@ -135,13 +128,7 @@ CREATE TABLE `t_fundacion` (
   `id_perfil` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Volcado de datos para la tabla `t_fundacion`
---
 
-INSERT INTO `t_fundacion` (`nit_fundacion`, `id_usuario`, `id_perfil`) VALUES
-(1200, 10, 8),
-(120010, 11, 9);
 
 -- --------------------------------------------------------
 
@@ -159,11 +146,7 @@ CREATE TABLE `t_guardian` (
 -- Volcado de datos para la tabla `t_guardian`
 --
 
-INSERT INTO `t_guardian` (`id_registro`, `id_usuario`, `id_perfil`) VALUES
-(1, 1, 1),
-(2, 2, 2),
-(5, 5, 3),
-(6, 12, 10);
+
 
 -- --------------------------------------------------------
 
@@ -216,17 +199,7 @@ CREATE TABLE `t_perfil` (
 -- Volcado de datos para la tabla `t_perfil`
 --
 
-INSERT INTO `t_perfil` (`id_perfil`, `nombre`, `preferencia`, `descripcion`, `imagen`) VALUES
-(1, 'Perfil Guardian', 'Ninguna', 'Auto-generado', 'default.jpg'),
-(2, 'Perfil Guardian', 'Ninguna', 'Auto-generado', 'default.jpg'),
-(3, 'Perfil Guardian', 'Ninguna', 'Auto-generado', 'default.jpg'),
-(4, 'Perfil Fundación', 'Ninguna', 'Auto-generado', 'default.jpg'),
-(5, 'Perfil Fundación', 'Ninguna', 'Auto-generado', 'default.jpg'),
-(6, 'Perfil Fundación', 'Ninguna', 'Auto-generado', 'default.jpg'),
-(7, 'Perfil Fundación', 'Ninguna', 'Auto-generado', 'default.jpg'),
-(8, 'Perfil Fundación', 'Ninguna', 'Auto-generado', 'default.jpg'),
-(9, 'Perfil Fundación', 'Ninguna', 'Auto-generado', 'default.jpg'),
-(10, 'Perfil Guardian', 'Ninguna', 'Auto-generado', 'default.jpg');
+
 
 -- --------------------------------------------------------
 
@@ -263,10 +236,7 @@ CREATE TABLE `t_producto` (
 -- Volcado de datos para la tabla `t_producto`
 --
 
-INSERT INTO `t_producto` (`id_producto`, `nombre`, `tipo_producto`, `descripcion`, `precio`, `cantidad_disponible`) VALUES
-(1, 'dasda', 'ComidaPerro', 'dads', 11.00, 1),
-(2, 'Arena del D1', 'ArenaGato', 'arena de 14kg', 20000.00, 100),
-(3, 'Mirringo', 'ComidaGato', 'comida gato barato ', 1000.00, 100);
+
 
 -- --------------------------------------------------------
 
@@ -327,13 +297,7 @@ CREATE TABLE `t_registro` (
 -- Volcado de datos para la tabla `t_registro`
 --
 
-INSERT INTO `t_registro` (`id_registro`, `fecha`, `tipo_usuario`) VALUES
-(1, '2025-04-23', 'GUARDIAN'),
-(2, '2025-04-24', 'GUARDIAN'),
-(3, '2025-04-24', 'ADMIN'),
-(4, '2025-04-24', 'ADMIN'),
-(5, '2025-04-24', 'GUARDIAN'),
-(6, '2025-06-20', 'GUARDIAN');
+
 
 -- --------------------------------------------------------
 
@@ -367,15 +331,7 @@ CREATE TABLE `t_usuario` (
 -- Volcado de datos para la tabla `t_usuario`
 --
 
-INSERT INTO `t_usuario` (`id_usuario`, `nombre`, `apellido`, `contrasena`, `email`, `direccion`, `telefono`) VALUES
-(1, 'johan', 'acero', '$2y$10$CH4iOqn/H8DN47gIPn4WO.gPWP/wm1waGPBGWN5S06LZwhI1UVbIa', 'jasdj@gmail.com', '123123dasd', '1231412'),
-(2, 'valentina', 'urrego', '$2y$10$MMxd5OXxXtDZgoyaFxLmGuBrnQleEW3xXFzs5QclD9xMQAUs64S8O', 'valentina@gmail.com', '123', '123'),
-(3, 'Johan', 'Acero', '$2y$10$RsAyTZoih421KWccHGqvu.BDG73AMY6CMTRkitZWd64KTZoBJDrbC', 'johan@gmail.com', 'Bogotá', '123456789'),
-(4, 'Pablo', 'Vela', '$2y$10$OMPvjW0mZJL/0oMXKjMWmOiED1YBP3b4SE9oDNU3Hzhw6/.63NXci', 'pablo@gmail.com', 'Bogotá', '123456789'),
-(5, 'Andres', 'Miranda', '$2y$10$PFkIhQAEOslDTKUMIaEj3.8YN7jx8kNMMFUQ304cOiSP1s8CHZAXi', 'miranda@gmail.com', '123', '123'),
-(10, 'Ana', 'carreño', '$2y$10$ah0CU5s/K8KHCZVlrvQeJO3JDhqCkXc9nDX.kZrYLWZLPpc4PVwrq', 'ana@gmail.com', 'calle12', '123123'),
-(11, 'pablo', 'vela', '$2y$10$U85iBk5jRNAhHXZjo1Sbcu5ZqkoZp3V.vBIkeFfdn18HkJUYJzbbq', 'pablo@gmail.com', 'calle12', '123123'),
-(12, 'pablo', 'vela', '$2y$10$3rKOJhQpqmGhOSv5s0G9U.j.VS2hELHLiXHtDHow87/9nerjBw0c.', 'pablovela.upn@gmail.com', 'calle12', '123123');
+
 
 -- --------------------------------------------------------
 

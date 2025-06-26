@@ -16,10 +16,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["action"])) {
         $direccion = $_POST["direccion"];
         $telefono = $_POST["telefono"];
 
-        if ($controller->registrar($nombre, $apellido, $contrasena, $email, $direccion, $telefono)) {
-            $mensajeRegsitroCorrecto = "Usuario registrado correctamente";
+        $resultado = $controller->registrar($nombre, $apellido, $contrasena, $email, $direccion, $telefono);
+
+        if ($resultado['success']) {
+            $mensajeRegsitroCorrecto = $resultado['message'];
         } else {
-            $mensajeRegistroIncorrecto = "Error al registrar el usuario";
+            $mensajeRegistroIncorrecto = $resultado['message'];
         }
     }
 
@@ -40,12 +42,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["action"])) {
                 $_SESSION["tipo_usuario"] = "admin";
                 header("Location: index.php?page=admin_home");
                 exit;
-
             } else if (esGuardian($user["id_usuario"])) {
                 $_SESSION["tipo_usuario"] = "guardian";
                 header("Location: index.php?page=guardian_home");
                 exit;
-
             } else {
                 $_SESSION["tipo_usuario"] = "desconocido";
                 $mensaje = "No se pudo determinar el rol del usuario";
@@ -56,18 +56,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["action"])) {
         }
     }
 }
-if (isset($_POST['action'])) {
-    if ($_POST['action'] === 'enviar_recuperacion') {
-        (new AuthController())->enviar_recuperacion();
-        exit;
-    }
-    if ($_POST['action'] === 'guardar_nueva_contrasena') {
-        (new AuthController())->guardar_nueva_contrasena();
-        exit;
-    }
-}
 
-;
 // --- Logout ---
 if (isset($_GET["action"]) && $_GET["action"] == "logout") {
     session_destroy();
@@ -85,6 +74,7 @@ $routes = [
 
 // --- Si no hay sesión, mostrar landing o registro ---
 $page = $_GET["page"] ?? "";
+
 if (!isset($_SESSION["user"])) {
     if ($page === "registro") {
         require_once $routes["registro"]["file"];
@@ -123,4 +113,3 @@ if (isset($routes[$page])) {
     http_response_code(404);
     echo "Página no encontrada";
 }
-

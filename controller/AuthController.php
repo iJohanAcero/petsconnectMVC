@@ -16,15 +16,12 @@ class AuthController
     // Procesar solicitud de recuperación
     public function enviar_recuperacion()
     {
-        $mensaje = '';
-        $error = '';
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $email = $_POST['email'] ?? '';
 
             $conn = new mysqli("localhost", "root", "", "petsconnect");
             if ($conn->connect_error) {
                 $error = "Error de conexión a la base de datos.";
-                require __DIR__ . '/../view/login/recuperarContraseña.php';
                 return;
             }
 
@@ -47,7 +44,7 @@ class AuthController
                 $stmt->close();
 
                 // Enlace de restablecimiento
-                $url = "http://localhost:8080/petsconnectMVC/view/login/restablecerContraseña.php?token=$token";
+                $url = "http://localhost/petsconnectMVC/view/login/restablecerContraseña.php?token=$token";
                 $mensaje = 'Haz clic en el siguiente enlace para cambiar tu contraseña: <a href="' . $url . '">Cambiar contraseña</a>';
 
                 // Envío de correo (opcional)
@@ -75,12 +72,9 @@ class AuthController
                 } catch (Exception $e) {
                     $mensaje .= "<br><span style='color:red;'>No se pudo enviar el correo. Usa el enlace de arriba.<br>Error: {$mail->ErrorInfo}</span>";
                 }
-            } else {
-                $error = "El correo no está registrado.";
-            }
+            } 
             $conn->close();
         }
-        require __DIR__ . '/../view/login/recuperarContraseña.php';
     }
 
     // Mostrar formulario de restablecimiento
@@ -92,8 +86,7 @@ class AuthController
     // Procesar restablecimiento de contraseña
     public function guardar_nueva_contrasena()
     {
-        $mensaje = '';
-        $error = '';
+        global $mensaje, $error;
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $token = $_POST['token'] ?? '';
             $email = $_POST['email'] ?? '';
@@ -101,21 +94,19 @@ class AuthController
             $contrasena2 = $_POST['contrasena2'] ?? '';
             // Depuración: mostrar datos recibidos
 
-            if (empty($token) || empty($email) || empty($contrasena) || empty($contrasena2)) {
+            if (empty($email) || empty($contrasena) || empty($contrasena2)) {
                 $error = "Todos los campos son obligatorios.";
-                require __DIR__ . '/../view/login/restablecerContraseña.php';
+
                 return;
             }
             if ($contrasena !== $contrasena2) {
                 $error = "Las contraseñas no coinciden.";
-                require __DIR__ . '/../view/login/restablecerContraseña.php';
                 return;
             }
 
             $conn = new mysqli("localhost", "root", "", "petsconnect");
             if ($conn->connect_error) {
                 $error = "Error de conexión a la base de datos.";
-                require __DIR__ . '/../view/login/restablecerContraseña.php';
                 return;
             }
 
@@ -130,14 +121,12 @@ class AuthController
                     $error = "El enlace ha expirado.";
                     $stmt->close();
                     $conn->close();
-                    require __DIR__ . '/../view/login/restablecerContraseña.php';
                     return;
                 }
                 if ($email !== $email_token) {
                     $error = "El correo no coincide con el de la solicitud.";
                     $stmt->close();
                     $conn->close();
-                    require __DIR__ . '/../view/login/restablecerContraseña.php';
                     return;
                 }
                 $stmt->close();
@@ -153,7 +142,7 @@ class AuthController
 
                 // Verifica si realmente se actualizó alguna fila
                 if ($stmt->affected_rows > 0) {
-                    $mensaje = "¡Contraseña restablecida correctamente!";
+                    $mensaje = "¡Contraseña restablecida correctamente! Ya puedes iniciar sesión.";
                 } else {
                     $error = "No se pudo actualizar la contraseña. Verifica tus datos.";
                 }
@@ -165,18 +154,10 @@ class AuthController
                 $stmt->bind_param("s", $token);
                 $stmt->execute();
                 $stmt->close();
-
-                $mensaje = "¡Contraseña restablecida correctamente! Ya puedes iniciar sesión.";
             } else {
-                die("Token NO encontrado o expirado en BD.");
                 $error = "El enlace no es válido o ha expirado.";
             }
             $conn->close();
         }
-        require __DIR__ . '/../view/login/restablecerContraseña.php';
     }
-}
-
-if (isset($_GET['action']) && $_GET['action'] === 'enviar_recuperacion') {
-    (new AuthController())->enviar_recuperacion();
 }
