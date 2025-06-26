@@ -21,16 +21,14 @@ if (!$fundacion) {
 <head>
     <meta charset="UTF-8">
     <title>Editar Fundación</title>
-    <link rel="stylesheet" href="../../Public/Css/edit.css">
+    <!-- <link rel="stylesheet" href="../../Public/Css/edit.css"> -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
     <div class="container mt-4">
-        <h1 class="mb-4">Editar Fundación</h1>
-
         <form id="form-editar-fundacion" method="POST" class="border p-4 rounded bg-light">
             <!-- Indica que esta acción es una edición -->
-            <input type="hidden" name="accion" value="editar_fundacion">
+            <input type="hidden" name="accion" value="editar">
 
             <!-- NIT (identificador único) -->
             <input type="hidden" name="nit" value="<?= $fundacion['nit_fundacion']; ?>">
