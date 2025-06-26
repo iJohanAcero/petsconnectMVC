@@ -1,3 +1,4 @@
+
 // =========== CRUD DE Publicacion =========== //
 window.cargarCrudPublicacion = function () {
     fetch("view/publicacion/PublicacionView.php")
@@ -14,6 +15,7 @@ window.cargarCrudPublicacion = function () {
             }
         })
         .catch(error => console.error("Error al cargar PHP:", error));
+
 }
 
 
@@ -111,7 +113,7 @@ function inicializarEventosPublicacion() {
     });
 
     // ✅ BOTONES ELIMINAR
-    const botonesEliminar = document.querySelectorAll(".btn-eliminar-Publicacion");
+    const botonesEliminar = document.querySelectorAll(".btn-eliminar-publicacion");
     botonesEliminar.forEach(btn => {
         btn.addEventListener("click", function () {
             const idPublicacion = this.dataset.id;
@@ -120,7 +122,7 @@ function inicializarEventosPublicacion() {
                 formData.append('eliminar', 'true');
                 formData.append('id', idPublicacion);
 
-                fetch(`${BASE_URL}/controller/Publicacion/PublicacionController.php`, {
+                fetch(`${BASE_URL}/controller/publicacion/PublicacionController.php`, {
                     method: "POST",
                     body: formData
                 })

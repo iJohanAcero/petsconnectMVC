@@ -6,11 +6,20 @@ session_start(); // Para manejar mensajes entre redirecciones
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $modeloPublicacion = new Publicacion();
 
-    // 1️⃣ REGISTRAR producto
+    // 1️⃣ REGISTRAR Publicacion
     if (isset($_POST['accion']) && $_POST['accion'] === 'registrar') {
         $titulo = $_POST['titulo'];
         $contenido = $_POST['contenido'];
-        $imagen = $_POST['imagen'];
+
+        // Procesar imagen
+        $imagen = null;
+        if (isset($_FILES['imagen']) && $_FILES['imagen']['error'] === UPLOAD_ERR_OK) {
+            $nombreImagen = uniqid() . '_' . $_FILES['imagen']['name'];
+            $rutaDestino = '../../Public/images/eventos_fundacion/' . $nombreImagen;
+            move_uploaded_file($_FILES['imagen']['tmp_name'], $rutaDestino);
+            $imagen = $nombreImagen;
+        }
+
         $fecha = date('Y-m-d H:i:s');
         $nit_fundacion = $_POST['nit_fundacion'];
 
@@ -24,34 +33,31 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
     }
 
-    // 2️⃣ ACTUALIZAR producto
+    // 2️⃣ ACTUALIZAR Publicacion
     if (isset($_POST['accion']) && $_POST['accion'] === 'editar') {
         $id = $_POST['id'];
-        $nombre = $_POST['nombre'];
-        $tipo_producto = $_POST['tipo_producto'];
-        $descripcion = $_POST['descripcion'];
-        $precio = $_POST['precio'];
-        $cantidad_disponible = $_POST['cantidad_disponible'];
+        $titulo = $_POST['titulo'];
+        $contenido = $_POST['contenido'];
 
-        $resultado = $modeloProducto->update($id, $nombre, $tipo_producto, $descripcion, $precio, $cantidad_disponible);
+        $resultado = $modeloPublicacion->update($id, $titulo, $contenido);
 
         if ($resultado) {
-            echo "Producto actualizado correctamente";
+            echo "Publicacion actualizada correctamente";
         } else {
-            echo "Error al actualizar producto";
+            echo "Error al actualizar publicacion";
         }
         exit;
     }
 
-    // 3️⃣ ELIMINAR producto
+    // 3️⃣ ELIMINAR Publicacion
     if (isset($_POST['eliminar']) && isset($_POST['id'])) {
         $id = $_POST['id'];
-        $resultado = $modeloProducto->delete($id);
+        $resultado = $modeloPublicacion->delete($id);
 
         if ($resultado) {
-            echo "Producto eliminado correctamente";
+            echo "Publicacion eliminado correctamente";
         } else {
-            echo "Error al eliminar producto";
+            echo "Error al eliminar Publicacion";
         }
         exit;
     }

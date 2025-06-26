@@ -1,24 +1,24 @@
 <?php
-require_once("../../Model/producto/ProductoModel.php");
+require_once("../../Model/publicacion/PublicacionModel.php");
 
-$Modelo = new Productos();
+$Modelo = new Publicacion();
 
 // Validación: si no se pasa el ID, se muestra un mensaje y se detiene la ejecución
 if (!isset($_GET['id'])) {
-    echo "ID de producto no especificado.";
+    echo "ID de publicacion no especificado.";
     exit;
 }
 
 $id = $_GET['id']; // Ojo: era `$Id`, pero luego se usa `$id` en getId. Uniformamos.
-$producto = $Modelo->getId($id);
+$publicacion = $Modelo->getId($id);
 
-// Si no se encuentra el producto con ese ID, se avisa y se detiene
-if (!$producto || empty($producto)) {
-    echo "Producto no encontrado.";
+// Si no se encuentra el Publicacion con ese ID, se avisa y se detiene
+if (!$publicacion || empty($publicacion)) {
+    echo "publicacion no encontrado.";
     exit;
 }
 
-$producto = $producto[0]; // Tomamos el primer registro si viene en forma de arreglo
+$publicacion = $publicacion[0]; // Tomamos el primer registro si viene en forma de arreglo
 ?>
 
 <!DOCTYPE html>
@@ -26,57 +26,34 @@ $producto = $producto[0]; // Tomamos el primer registro si viene en forma de arr
 
 <head>
     <meta charset="UTF-8">
-    <title>Actualizar producto</title>
+    <title>Actualizar publicacion</title>
 </head>
 
 <body>
     <!-- Contenedor principal de Bootstrap -->
     <div class="container mt-1">
         <!-- Formulario con clases de Bootstrap -->
-        <form  id="form-editar-producto" method="POST" action="../../controller/producto/ProductoController.php">
+        <form id="form-editar-publicacion" method="POST" action="/petsconnectMVC/controller/publicacion/PublicacionController.php">
 
-            <!-- Campo oculto para el ID del producto -->
-            <input type="hidden" name="id" value="<?= $producto['id_producto']; ?>">
+            <!-- Campo oculto para el ID  -->
+            <input type="hidden" name="id" value="<?= $publicacion['id_publicacion']; ?>">
 
-            <!-- Nombre del producto -->
+
             <div class="mb-3">
-                <label class="form-label">Nombre</label>
-                <input type="text" name="nombre" class="form-control" value="<?= $producto['nombre']; ?>" required>
+                <label class="form-label">Titulo</label>
+                <input type="text" name="titulo" class="form-control" value="<?= $publicacion['titulo']; ?>" required>
             </div>
 
-            <!-- Tipo de producto -->
-            <div class="mb-3">
-                <label class="form-label">Tipo de producto</label>
-                <select name="tipo_producto" class="form-select" required>
-                    <option value="">Seleccione</option>
-                    <option value="ComidaGato" <?= $producto['tipo_producto'] == 'ComidaGato' ? 'selected' : '' ?>>Comida para gato</option>
-                    <option value="ComidaPerro" <?= $producto['tipo_producto'] == 'ComidaPerro' ? 'selected' : '' ?>>Comida para perro</option>
-                    <option value="ArenaGato" <?= $producto['tipo_producto'] == 'ArenaGato' ? 'selected' : '' ?>>Arena para gatos</option>
-                </select>
-            </div>
 
-            <!-- Descripción -->
             <div class="mb-3">
-                <label class="form-label">Descripción</label>
-                <input type="text" name="descripcion" class="form-control" value="<?= $producto['descripcion']; ?>" required>
-            </div>
-
-            <!-- Precio -->
-            <div class="mb-3">
-                <label class="form-label">Precio</label>
-                <input type="number" name="precio" class="form-control" value="<?= $producto['precio']; ?>" step="0.01" required>
-            </div>
-
-            <!-- Cantidad disponible -->
-            <div class="mb-3">
-                <label class="form-label">Cantidad disponible</label>
-                <input type="number" name="cantidad_disponible" class="form-control" value="<?= $producto['cantidad_disponible']; ?>" required>
+                <label class="form-label">Contenido</label>
+                <input type="text" name="contenido" class="form-control" value="<?= $publicacion['contenido']; ?>" required>
             </div>
 
             <input type="hidden" name="accion" value="editar">
 
             <!-- Botón de acción -->
-            <button type="submit"   class="btn btn-primary">Actualizar</button>
+            <button type="submit" class="btn btn-primary">Actualizar</button>
 
             <!-- Enlace para regresar -->
             <button type="button" class="btn btn-secondary ms-2" data-bs-dismiss="modal" aria-label="Close">← Volver a la lista</button>

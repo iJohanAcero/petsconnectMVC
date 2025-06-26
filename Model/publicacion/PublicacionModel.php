@@ -12,7 +12,7 @@ class Publicacion
         $this->db = (new Conexion())->getConexion();
     }
 
-    // Registrar nuevo producto
+    // Registrar nuevo Publicacion
     public function add($titulo, $contenido, $imagen, $fecha, $nit_fundacion)
     {
         $statement = $this->db->prepare("INSERT INTO t_publicacion 
@@ -30,12 +30,12 @@ class Publicacion
         return $statement->execute();
     }
 
-    // Método para obtener todos los productos desde la base de datos
+    // Método para obtener todos los Publicacion desde la base de datos
     public function getPublicacion()
     {
         // Inicializa una variable para almacenar los resultados
         $rows = null;
-        // Preparar la consulta SQL para seleccionar todos los productos
+        // Preparar la consulta SQL para seleccionar todos los Publicacion
         $statement = $this->db->prepare("SELECT * FROM t_publicacion");
         // Ejecutar la consulta
         $statement->execute();
@@ -45,17 +45,17 @@ class Publicacion
             $rows[] = $resultado;
         }
 
-        // Devuelve todos los productos obtenidos
+        // Devuelve todos los Publicacion obtenidos
         return $rows;
     }
 
-    // Obtener producto por ID
+    // Obtener Publicacion por ID
     public function getId($id)
     {
         // Inicializa una variable para almacenar el resultado
         $rows = null;
 
-        // Preparar la consulta SQL para seleccionar un producto por ID
+        // Preparar la consulta SQL para seleccionar un Publicacion por ID
         $statement = $this->db->prepare("SELECT * FROM t_publicacion WHERE id_publicacion = :id");
         // Vincular el parámetro :id con el valor recibido
         $statement->bindParam(':id', $id);
@@ -67,30 +67,26 @@ class Publicacion
             $rows[] = $resultado;
         }
 
-        // Devuelve el producto encontrado
+        // Devuelve el Publicacion encontrado
         return $rows;
     }
 
-    // Método para actualizar un producto usando su ID
+    // Método para actualizar un Publicacion usando su ID
     // Reemplaza el método update con este:
-    public function update($id, $nombre, $tipo_producto, $descripcion, $precio, $cantidad_disponible)
+    public function update($id, $titulo, $contenido)
     {
         $statement = $this->db->prepare("UPDATE t_publicacion 
-            (titulo, contenido, imagen, fecha, nit_fundacion)
-            SET (:titulo, :contenido, :imagen, :fecha, :nit_fundacion)
-            WHERE id_publicacion = :id");
+        SET titulo = :titulo, contenido = :contenido
+        WHERE id_publicacion = :id");
 
         $statement->bindParam(':id', $id);
-        $statement->bindParam(':nombre', $nombre);
-        $statement->bindParam(':tipo_producto', $tipo_producto);
-        $statement->bindParam(':descripcion', $descripcion);
-        $statement->bindParam(':precio', $precio);
-        $statement->bindParam(':cantidad_disponible', $cantidad_disponible);
+        $statement->bindParam(':titulo', $titulo);
+        $statement->bindParam(':contenido', $contenido);
 
         return $statement->execute();
     }
 
-    // Eliminar producto
+    // Eliminar Publicacion
     public function delete($id)
     {
         $statement = $this->db->prepare("DELETE FROM t_publicacion WHERE id_publicacion = :id");

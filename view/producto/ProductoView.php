@@ -123,7 +123,5 @@ $Modelo = new Productos();
             </div>
         </div>
     </div>
-    <!-- Tu archivo JS personalizado -->
-    <script src="../../Public/js/cruds.js"></script>
 </body>
 

@@ -2,7 +2,6 @@
 require_once("../../Model/publicacion/PublicacionModel.php");
 $Modelo = new Publicacion();
 ?>
-
 <body>
     <!-- Contenedor principal del CRUD con ID para JS -->
     <div class="container crud-container main-content" id="crud-container" style="padding: 40px;">
@@ -36,9 +35,16 @@ $Modelo = new Publicacion();
                             <tr>
                                 <td><?php echo $Publicacion['id_publicacion']; ?></td>
                                 <td><?php echo htmlspecialchars($Publicacion['titulo']); ?></td>
-                                <td><?php echo htmlspecialchars($Publicacion['cotenido']); ?></td>
-                                <td><?php echo htmlspecialchars($Publicacion['imagen']); ?></td>
-                                <td>$<?php echo number_format($Publicacion['fecha'], 2); ?></td>
+                                <td><?php echo htmlspecialchars($Publicacion['contenido']); ?></td>
+                                <td>
+                                    <img
+                                        src="Public/images/eventos_fundacion/<?php echo htmlspecialchars($Publicacion['imagen']); ?>"
+                                        alt="Imagen"
+                                        class="img-thumbnail img-clickable"
+                                        style="max-width: 200px; max-height: 200px;"
+                                        data-src="Public/images/eventos_fundacion/<?php echo htmlspecialchars($Publicacion['imagen']); ?>">
+                                </td>
+                                <td><?php echo htmlspecialchars($Publicacion['fecha']); ?></td>
                                 <td><?php echo $Publicacion['nit_fundacion']; ?></td>
                                 <td>
                                     <button class="btn btn-sm btn-warning btn-editar-publicacion" data-id="<?php echo $Publicacion['id_publicacion']; ?>">
@@ -114,4 +120,5 @@ $Modelo = new Publicacion();
             </div>
         </div>
     </div>
+        <script src="../../Public/js/main.js"></script>
 </body>
