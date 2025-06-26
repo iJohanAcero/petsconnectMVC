@@ -70,7 +70,7 @@ $Productos = $Modelo->getProducto(); // ¡Esta línea faltaba!
         <div class="modal-content">
             <form id="form-registrar-producto">
                 <input type="hidden" name="accion" value="registrar">
-                
+
                 <div class="modal-header">
                     <h5 class="modal-title">Registrar Nuevo Producto</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
@@ -116,12 +116,12 @@ $Productos = $Modelo->getProducto(); // ¡Esta línea faltaba!
 <!-- Modal para editar producto -->
 <div class="modal fade" id="modal-editar-producto" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
+        <div class="modal-content" style="margin-top:50px">
             <div class="modal-header">
                 <h5 class="modal-title">Editar Producto</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
-            <div class="modal-body" id="contenido-editar">
+            <div class="modal-body" id="contenido-editar" style="margin-top: -15px;">
                 <!-- Contenido dinámico -->
             </div>
         </div>

@@ -1,12 +1,9 @@
-console.log("crud_producto.js se cargó");
-
 const BASE_URL = window.location.origin + "/petsconnectMVC";
 window.BASE_URL = window.BASE_URL || '';
 
 // =========== CRUD DE PRODUCTOS =========== //
 
 function cargarCrudProductos() {
-    console.log("✅ JS cargado correctamente");
     fetch("view/producto/ProductoView.php")
         .then(response => response.text())
         .then(data => {
@@ -22,9 +19,7 @@ function cargarCrudProductos() {
         })
         .catch(error => console.error("Error al cargar PHP:", error));
 }
-window.cargarCrudProductos = cargarCrudProductos; // ✅ ahora sí es válido
-
-
+window.cargarCrudProductos = cargarCrudProductos;
 
 function abrirModalCrearProducto() {
     const modalElement = document.getElementById("modal-productos");
@@ -43,37 +38,31 @@ function inicializarEventosProductos() {
     const formRegistrar = document.getElementById("form-registrar-producto");
 
     if (formRegistrar) {
-        // Usamos onsubmit en vez de addEventListener, así no se repite el evento
         formRegistrar.onsubmit = function (e) {
-            e.preventDefault(); // Evita que se recargue la página
-
-            const formData = new FormData(formRegistrar); // Captura los datos del formulario
+            e.preventDefault();
+            const formData = new FormData(formRegistrar);
 
             fetch(`${BASE_URL}/controller/producto/ProductoController.php`, {
                 method: "POST",
                 body: formData
             })
-                .then(response => response.text()) // Espera respuesta del servidor como texto
+                .then(response => response.text())
                 .then(data => {
-                    // Si el texto dice que todo salió bien...
                     if (data.toLowerCase().includes("correctamente")) {
-                        alert(data); // Muestra un mensaje (puedes usar sweetalert después)
+                        alert(data);
 
-                        // Cierra el modal de Bootstrap
                         const modalElement = document.getElementById("modal-productos");
                         const modal = bootstrap.Modal.getInstance(modalElement);
                         if (modal) modal.hide();
 
-                        formRegistrar.reset(); // Limpia el formulario
-
-                        cargarCrudProductos(); // Vuelve a cargar la lista actualizada
+                        formRegistrar.reset();
+                        cargarCrudProductos();
                     } else {
-                        alert("Error: " + data); // Si hubo error, lo muestra
+                        alert("Error: " + data);
                     }
                 })
                 .catch(error => {
                     console.error("Error:", error);
-                    alert("Error en la comunicación con el servidor");
                 });
         };
     }
@@ -101,7 +90,7 @@ function inicializarEventosProductos() {
                                 method: "POST",
                                 body: formData
                             })
-                                .then(res => res.text()) // no json
+                                .then(res => res.text())
                                 .then(data => {
                                     alert(data);
                                     const modalElement = document.getElementById("modal-editar-producto");
@@ -111,7 +100,6 @@ function inicializarEventosProductos() {
                                 })
                                 .catch(error => {
                                     console.error("Error:", error);
-                                    mostrarAlerta('error', 'Error en la comunicación con el servidor');
                                 });
                         });
                     }
@@ -129,33 +117,21 @@ function inicializarEventosProductos() {
                 formData.append('accion', 'eliminar');
                 formData.append('id_producto', idProducto);
 
-
                 fetch(`${BASE_URL}/controller/producto/ProductoController.php`, {
                     method: "POST",
                     body: formData
                 })
-                    .then(res => res.text()) // ya no json
+                    .then(res => res.text())
                     .then(data => {
-                        alert(data); // Cambiamos mostrarAlerta por alert simple
-                        cargarCrudProductos(); // Recargar la tabla
+                        alert(data);
+                        cargarCrudProductos();
                     })
                     .catch(error => {
                         console.error("Error:", error);
-                        mostrarAlerta('error', 'Error en la comunicación con el servidor');
                     });
             }
         });
     });
-}
-
-// Función auxiliar para mostrar alertas con SweetAlert o similar
-function mostrarAlerta(tipo, mensaje) {
-    // Puedes implementar SweetAlert o usar alertas de Bootstrap
-    if (tipo === 'success') {
-        alert(mensaje); // Reemplaza esto con tu sistema de alertas preferido
-    } else {
-        alert(mensaje); // Reemplaza esto con tu sistema de alertas preferido
-    }
 }
 
 // Inicializar cuando el DOM esté listo
@@ -163,15 +139,13 @@ document.addEventListener("DOMContentLoaded", function () {
     const btnProductos = document.getElementById("btn-cargar-productos");
     if (btnProductos) {
         btnProductos.addEventListener("click", function (e) {
-            e.preventDefault(); // Para que no recargue
-            cargarCrudProductos(); // Ejecuta el CRUD
+            e.preventDefault();
+            cargarCrudProductos();
         });
     }
 });
 
-
 // Solo si estás usando type="module"
 window.cargarCrudProductos = cargarCrudProductos;
-
 
 console.log("📢 Función cargarCrudProductos:", typeof cargarCrudProductos);
