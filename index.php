@@ -18,10 +18,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["action"])) {
 
         $resultado = $controller->registrar($nombre, $apellido, $contrasena, $email, $direccion, $telefono);
 
-        if ($resultado['success']) {
-            $mensajeRegsitroCorrecto = $resultado['message'];
+        if (is_array($resultado) && isset($resultado['success'])) {
+            if ($resultado['success']) {
+                $mensajeRegsitroCorrecto = $resultado['message'];
+            } else {
+                $mensajeRegistroIncorrecto = $resultado['message'];
+            }
         } else {
-            $mensajeRegistroIncorrecto = $resultado['message'];
+            $mensajeRegistroIncorrecto = "Error inesperado en el registro.";
         }
     }
 
