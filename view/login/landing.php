@@ -13,7 +13,7 @@
         type="image/png" />
 
 
-    <!-- ===== All CSS files ===== -->
+    <!-- ===== All CSS files ====== -->
     <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.8/css/line.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 
@@ -321,8 +321,8 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="ud-section-title text-center mx-auto">
-                        <span>Preguntas frecuentes </span>
-                        <h2>¿Tienes preguntas? Aquí respondemos</h2>
+                        <span> ¿Quieres hacer parte de Petsconnect? </span>
+                        <h2>¿Tienes preguntas de como unirte? Aquí respondemos</h2>
                         <p>
                             Existen muchas preguntas comunes sobre nuestra plataforma y cómo funciona. Aquí encontrarás respuestas a las más frecuentes.
                         </p>
@@ -689,8 +689,9 @@
                         <div class="ud-contact-title">
                             <span>CONTACTANOS</span>
                             <h2>
-                                Hablemos de ti <br />
-                                ¡Nos encantaría saber de ti!
+                                ¿Eres parte de una fundación? <br />
+                            
+                                Únete a nuestra plataforma para visibilizar tus mascotas y conectar con adoptantes.
                             </h2>
                         </div>
                         <div class="ud-contact-info-wrapper">
@@ -721,40 +722,29 @@
                         class="ud-contact-form-wrapper wow fadeInUp"
                         data-wow-delay=".2s">
                         <h3 class="ud-contact-form-title">Envíanos un mensaje</h3>
-                        <form class="ud-contact-form">
+                        <form class="ud-contact-form" id="contactForm">
                             <div class="ud-form-group">
                                 <label for="fullName">Nombre completo*</label>
-                                <input
-                                    type="text"
-                                    name="fullName"
-                                    placeholder="Juan Pérez" />
+                                <input type="text" name="fullName" placeholder="Juan Pérez" required />
                             </div>
                             <div class="ud-form-group">
                                 <label for="email">Correo electrónico*</label>
-                                <input
-                                    type="email"
-                                    name="email"
-                                    placeholder="ejemplo@tucorreo.com" />
+                                <input type="email" name="email" placeholder="ejemplo@tucorreo.com" required />
                             </div>
                             <div class="ud-form-group">
                                 <label for="phone">Teléfono*</label>
-                                <input
-                                    type="text"
-                                    name="phone"
-                                    placeholder="+57 300 123 4567" />
+                                <input type="text" name="phone" placeholder="+57 300 123 4567" required />
                             </div>
                             <div class="ud-form-group">
                                 <label for="message">Mensaje*</label>
-                                <textarea
-                                    name="message"
-                                    rows="1"
-                                    placeholder="Escribe tu mensaje aquí"></textarea>
+                                <textarea name="message" rows="1" placeholder="Escribe tu mensaje aquí" required></textarea>
                             </div>
                             <div class="ud-form-group mb-0">
                                 <button type="submit" class="ud-main-btn">
                                     Enviar mensaje
                                 </button>
                             </div>
+                            <div id="formResponse" style="margin-top:10px;"></div>
                         </form>
                     </div>
                 </div>
@@ -967,6 +957,28 @@
 
         window.document.addEventListener("scroll", onScroll);
     </script>
+    <script>
+document.getElementById('contactForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const form = e.target;
+    const formData = new FormData(form);
+
+    fetch('controller/AuthController.php?action=enviar_tutorial', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.text())
+    .then(data => {
+        document.getElementById('formResponse').innerHTML = '<span style="color:green;">' + data + '</span>';
+        if (data.includes('correctamente')) {
+            form.reset();
+        }
+    })
+    .catch(error => {
+        document.getElementById('formResponse').innerHTML = '<span style="color:red;">Hubo un error al enviar el mensaje.</span>';
+    });
+});
+</script>
 </body>
 
 </html>

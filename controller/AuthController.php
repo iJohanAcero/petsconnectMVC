@@ -175,8 +175,68 @@ class AuthController
         }
         require __DIR__ . '/../view/login/restablecerContraseña.php';
     }
+    
+    public function enviar_tutorial()
+    {
+        $mensaje = '';
+        $error = '';
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $fullname = $_POST['fullName'] ?? '';
+            $email = $_POST['email'] ?? '';
+            $phone = $_POST['phone'] ?? '';
+            $message = $_POST['message'] ?? '';
+
+            // Validaciones
+            if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                $error .= "El correo no es válido.<br>";
+            }
+            if (empty($fullname) || empty($phone) || empty($message)) {
+                $error .= "Todos los campos son obligatorios.<br>";
+            }
+
+            if ($error === '') {
+                $mail = new PHPMailer(true);
+                try {
+                    $mail->isSMTP();
+                    $mail->Host = 'smtp.gmail.com';
+                    $mail->SMTPAuth = true;
+                    $mail->Username = 'pablovela.upn@gmail.com';
+                    $mail->Password = 'azky mxkm gqwa awvt';
+                    $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+                    $mail->Port = 587;
+
+                    // Mejor práctica: setFrom seguro y addReplyTo para el usuario
+                    $mail->setFrom('pablovela.upn@gmail.com', 'Notificaciones PetsConnect');
+                    $mail->addReplyTo($email, $fullname);
+                    $mail->addAddress("pablovela.upn@gmail.com");
+
+                    $mail->isHTML(true);
+                    $mail->Subject = 'Solicitud para pertenecer a PetsConnect';
+                    $mail->Body = "
+                        <h3>Solicitud de Tutorial</h3>
+                        <p><strong>Nombre:</strong> $fullname</p>
+                        <p><strong>Email:</strong> $email</p>
+                        <p><strong>Teléfono:</strong> $phone</p>
+                        <p><strong>Mensaje:</strong><br>$message</p>
+                    ";
+
+                    $mail->send();
+                    $mensaje .= "<br>El mensaje ha sido enviado correctamente. Nos pondremos en contacto contigo pronto.";
+                } catch (Exception $e) {
+                    $mensaje .= "<br><span style='color:red;'>No se pudo enviar el correo. Usa el enlace de arriba.<br>Error: {$mail->ErrorInfo}</span>";
+                }
+            }
+        }
+        print_r($mensaje);
+    }
 }
 
 if (isset($_GET['action']) && $_GET['action'] === 'enviar_recuperacion') {
     (new AuthController())->enviar_recuperacion();
 }
+if (isset($_GET['action']) && $_GET['action'] === 'enviar_tutorial') {
+    $controller = new AuthController();
+    $controller->enviar_tutorial();
+    exit;
+}
+
