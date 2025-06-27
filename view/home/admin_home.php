@@ -121,7 +121,7 @@ if (!isset($_SESSION["user"]) || $_SESSION["tipo_usuario"] !== "admin") {
     <!-- Fin Navbar Bootstrap -->
 
     <!--============================================================MAIN=============================================-->
-    <div class="wrapper justify-content-between align-items-center">
+    <div class="wrapper align-items-center">
         <aside id="sidebar">
             <div class="d-flex justify-content-between" style="padding: 24px 24px 0 24px;" id="menu_toggle">
                 <div class="sidebar-logo">
@@ -287,7 +287,10 @@ if (!isset($_SESSION["user"]) || $_SESSION["tipo_usuario"] !== "admin") {
         </aside>
         <!--============================================ MAIN =============================================-->
         <div class="main" id="main-content">
-            <h2 class="text-center text-muted">Selecciona una opción del menú</h2>
+            <div id="publicaciones-container"></div>
+            <div id="loader" class="text-center my-3" style="display:none;">
+                <div class="spinner-border text-primary"></div>
+            </div>
         </div>
     </div>
     <!--==============================================CONFIGURACION DE FONDO===========================================-->
@@ -299,11 +302,80 @@ if (!isset($_SESSION["user"]) || $_SESSION["tipo_usuario"] !== "admin") {
 
     <!-- SCRIPTS DE JS CRUDS Y RUTAS -->
     <script src="Public/js/main.js"></script>
-    <script src="Public/js/cruds.js"></script>
+    <script src="Public/js/crud/crud_producto.js"></script>
     <script src="Public/js/crud/crud_fundacion.js"></script>
     <script src="Public/js/crud/crud_publicacion.js"></script>
     <script src="Public/js/routes/routes.js"></script>
 
+    <script>
+        let page = 1;
+        let loading = false;
+        let finished = false;
+
+        function cargarPublicaciones() {
+            if (loading || finished) return;
+            loading = true;
+            $('#loader').show();
+
+            $.ajax({
+                url: 'index.php?action=publicaciones_recientes&accion=recientes', // Ajusta la ruta a tu endpoint
+                method: 'GET',
+                data: {
+                    page: page
+                },
+                dataType: 'json',
+                success: function(res) {
+                    if (res && res.length > 0) {
+                        res.forEach(pub => {
+                            $('#publicaciones-container').append(`
+  <div class="card mb-4 shadow-sm border-0 rounded-4 bg-white">
+    <div class="card-body">
+      <div class="d-flex justify-content-between align-items-center mb-2 flex-wrap">
+        <small class="text-primary fw-semibold">NIT Fundación: ${pub.nit_fundacion}</small>
+        <h5 class="card-title mb-0 fw-bold">${pub.titulo}</h5>
+      </div>
+      
+      ${pub.imagen ? `
+        <div class="text-center mb-3">
+          <img src="Public/images/eventos_fundacion/${pub.imagen}" 
+            class="img-fluid rounded-3" 
+            alt="Imagen publicación" 
+            style="max-height:500px; object-fit:cover; width:100%;">
+        </div>
+      ` : ''}
+      
+      <p class="card-text">${pub.contenido}</p>
+      
+      <div class="text-end">
+        <small class="text-muted">📅 ${pub.fecha}</small>
+      </div>
+    </div>
+  </div>
+`);
+                        });
+                        page++;
+                    } else {
+                        finished = true;
+                    }
+                },
+                complete: function() {
+                    loading = false;
+                    $('#loader').hide();
+                }
+            });
+        }
+
+        // Cargar publicaciones al inicio
+        $(document).ready(function() {
+            cargarPublicaciones();
+
+            $(window).on('scroll', function() {
+                if ($(window).scrollTop() + $(window).height() >= $(document).height() - 100) {
+                    cargarPublicaciones();
+                }
+            });
+        });
+    </script>
 
 </body>
 

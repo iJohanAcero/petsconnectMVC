@@ -1,7 +1,25 @@
 <?php
-require_once('../../Model/publicacion/PublicacionModel.php');
+require_once (__DIR__ . '/../../Model/publicacion/PublicacionModel.php');
 
-session_start(); // Para manejar mensajes entre redirecciones
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+// MOSTRAR PUBLICACIONES RECIENTES EN EL INICIO
+
+if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['accion']) && $_GET['accion'] === 'recientes') {
+    $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+    $limit = 5; // Puedes ajustar la cantidad por página
+    $offset = ($page - 1) * $limit;
+
+    $modeloPublicacion = new Publicacion();
+    $publicaciones = $modeloPublicacion->getPublicacionesRecientes($limit, $offset);
+
+    header('Content-Type: application/json');
+    echo json_encode($publicaciones);
+    exit;
+}
+
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $modeloPublicacion = new Publicacion();
@@ -66,3 +84,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 // Si no es POST o no hay acción válida
 echo "Acción no válida o método no permitido";
 exit;
+

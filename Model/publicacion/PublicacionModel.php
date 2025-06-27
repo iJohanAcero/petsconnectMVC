@@ -1,7 +1,7 @@
 <?php
 // Se requiere el archivo de conexión con la base de datos
 
-require_once '../../Model/conexion.php';
+require_once(__DIR__ . '/../conexion.php');
 
 class Publicacion
 {
@@ -93,5 +93,20 @@ class Publicacion
         $statement->bindParam(':id', $id);
 
         return $statement->execute(); // Devuelve true o false
+    }
+
+    // MOSTRAR PUBLICACIONES RECIENTES EN EL INICIO
+    public function getPublicacionesRecientes($limit, $offset)
+    {
+        $statement = $this->db->prepare("SELECT * FROM t_publicacion ORDER BY fecha DESC LIMIT :limit OFFSET :offset");
+        $statement->bindValue(':limit', (int)$limit, PDO::PARAM_INT);
+        $statement->bindValue(':offset', (int)$offset, PDO::PARAM_INT);
+        $statement->execute();
+
+        $rows = [];
+        while ($resultado = $statement->fetch(PDO::FETCH_ASSOC)) {
+            $rows[] = $resultado;
+        }
+        return $rows;
     }
 }

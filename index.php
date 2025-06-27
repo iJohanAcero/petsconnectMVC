@@ -68,6 +68,13 @@ if (isset($_GET["action"]) && $_GET["action"] == "logout") {
     exit;
 }
 
+// MOSTRAR PUBLICACIONES EN EL INICIO
+
+if (isset($_GET['action']) && $_GET['action'] === 'publicaciones_recientes') {
+    require_once "controller/publicacion/PublicacionController.php";
+    exit;
+}
+
 // --- Definición de rutas protegidas ---
 $routes = [
     "admin_home"    => ["role" => "admin",    "file" => "view/home/admin_home.php"],
@@ -117,3 +124,4 @@ if (isset($routes[$page])) {
     http_response_code(404);
     echo "Página no encontrada";
 }
+

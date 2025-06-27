@@ -104,10 +104,12 @@
     width: 100%;
     transition: all 0.4s ease-in-out;
     padding: 2rem 2rem 2rem 2rem;
-    min-height: 90vh;
+    min-height: 100vh;
     background: transparent;
     overflow-y: auto;
+    overflow-x: hidden;
     align-items: center;
+    z-index: auto;
 }
 
 
@@ -125,6 +127,7 @@
     left: 1.5vh;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     overflow:visible;
+    z-index: 2099;
 }
 
 .sidebar-item.has-dropdown {
@@ -361,6 +364,7 @@ a.sidebar-link:hover {
     font-size: 28px;
 }
 @media (min-width: 992px) {
+    
     .toggle-btn-mobile {
         display: none !important;
     }
