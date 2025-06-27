@@ -50,7 +50,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["action"])) {
                 $_SESSION["tipo_usuario"] = "guardian";
                 header("Location: index.php?page=guardian_home");
                 exit;
-            } else {
+                
+            } else if (esFundacion($user["id_usuario"])) {
+                $_SESSION["tipo_usuario"] = "fundacion";
+                header("Location: index.php?page=fundacion_home");
+                exit;
+                
+            } 
+            else {
                 $_SESSION["tipo_usuario"] = "desconocido";
                 $mensaje = "No se pudo determinar el rol del usuario";
                 exit;
@@ -79,7 +86,7 @@ if (isset($_GET['action']) && $_GET['action'] === 'publicaciones_recientes') {
 $routes = [
     "admin_home"    => ["role" => "admin",    "file" => "view/home/admin_home.php"],
     "guardian_home" => ["role" => "guardian", "file" => "view/home/guardian_home.php"],
-    "registro"      => ["role" => "guest",    "file" => "view/login/register.php"],
+    "fundacion_home" => ["role" => "fundacion", "file" => "view/home/fundacion_home.php"],
     // Puedes agregar más rutas aquí
 ];
 
@@ -101,6 +108,8 @@ if (!$page) {
         header("Location: index.php?page=admin_home");
     } elseif ($_SESSION["tipo_usuario"] === "guardian") {
         header("Location: index.php?page=guardian_home");
+    } elseif ($_SESSION["tipo_usuario"] === "fundacion") {
+        header("Location: index.php?page=fundacion_home");
     } else {
         session_destroy();
         header("Location: view/login/login.php");
