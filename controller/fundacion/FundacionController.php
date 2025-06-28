@@ -7,56 +7,66 @@ session_start();
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $modeloFundacion = new Fundacion();
 
-    // REGISTRAR fundación
     if (isset($_POST['accion']) && $_POST['accion'] === 'registrar_fundacion') {
-        $nombre = $_POST['nombre'];
-        $apellido = $_POST['apellido'];
-        $contrasena = $_POST['contrasena'];
-        $email = $_POST['email'];
-        $direccion = $_POST['direccion'];
-        $telefono = $_POST['telefono'];
-        $nit_fundacion = $_POST['nit_fundacion'];
+        $nombre = htmlspecialchars($_POST['rep_nombre'] ?? '');
+        $apellido = htmlspecialchars($_POST['rep_apellido'] ?? '');
+        $contrasena = $_POST['rep_contrasena'] ?? '';
+        $email = filter_var($_POST['rep_email'] ?? '', FILTER_SANITIZE_EMAIL);
+        $direccion = htmlspecialchars($_POST['rep_direccion'] ?? '');
+        $telefono = htmlspecialchars($_POST['rep_telefono'] ?? '');
+        $nombre_fundacion = htmlspecialchars($_POST['fund_nombre'] ?? ''); // ← ¡NUEVO!
+        $nit_fundacion = htmlspecialchars($_POST['fund_nit'] ?? '');
 
-        $resultado = $modeloFundacion->registrarFundacion($nombre, $apellido, $contrasena, $email, $direccion, $telefono, $nit_fundacion);
-
-        if ($resultado) {
-            echo "Fundación registrada correctamente";
-        } else {
-            echo "Error al registrar fundación";
+        if (empty($nombre) || empty($apellido) || empty($contrasena) || empty($email) || empty($nombre_fundacion) || empty($nit_fundacion)) {
+            echo "Todos los campos son obligatorios";
+            exit;
         }
+
+        $resultado = $modeloFundacion->registrarFundacion($nombre, $apellido, $contrasena, $email, $direccion, $telefono, $nombre_fundacion, $nit_fundacion);
+
+        echo $resultado ? "Fundación registrada correctamente" : "Error al registrar fundación";
         exit;
     }
 
     //  ACTUALIZAR fundacion
     if (isset($_POST['accion']) && $_POST['accion'] === 'editar') {
-        $nombre = $_POST['nombre'];
-        $apellido = $_POST['apellido'];
-        $contrasena = $_POST['contrasena'];
-        $email = $_POST['email'];
-        $direccion = $_POST['direccion'];
-        $telefono = $_POST['telefono'];
-        $nit_fundacion = $_POST['nit_fundacion'];
+        $nit = htmlspecialchars($_POST['nit'] ?? '');
+        $nombre = htmlspecialchars($_POST['nombre'] ?? '');
+        $apellido = htmlspecialchars($_POST['apellido'] ?? '');
+        $email = filter_var($_POST['email'] ?? '', FILTER_SANITIZE_EMAIL);
+        $direccion = htmlspecialchars($_POST['direccion'] ?? '');
+        $telefono = htmlspecialchars($_POST['telefono'] ?? '');
 
-        $resultado = $modeloFundacion->updateFundacion($nombre, $apellido, $contrasena, $email, $direccion, $telefono, $nit_fundacion);
+        if (empty($nit) || empty($nombre) || empty($apellido) || empty($email)) {
+            echo "Todos los campos son obligatorios";
+            exit;
+        }
+
+        $resultado = $modeloFundacion->updateFundacion($nit, $nombre, $apellido, $email, $direccion, $telefono);
 
         if ($resultado) {
-            echo "Producto actualizado correctamente";
-        } else {
-            echo "Error al actualizar producto";
-        }
+        echo "Fundación actualizada correctamente";
         exit;
+        } else {
+            echo "Error al actualizar fundación";
+            exit;
+        }
     }
 
     // Eliminar fundacion
     if (isset($_POST['eliminar']) && isset($_POST['nit'])) {
-        $nit = $_POST['nit'];
-        $resultado = $modeloFundacion->delete($nit);
+        $nit = htmlspecialchars($_POST['nit'] ?? '');
 
-        if ($resultado) {
-            echo "Fundacion eliminada correctamente";
-        } else {
-            echo "Error al eliminar Fundacion";
+        if (empty($nit)) {
+            echo "NIT de fundación no proporcionado";
+            exit;
         }
+
+        $resultado = $modeloFundacion->delete($nit);
+        echo $resultado ? "Fundación eliminada correctamente" : "Error al eliminar Fundación";
         exit;
     }
 }
+
+// Si no es POST o no tiene acciones válidas
+echo "Acción no válida";

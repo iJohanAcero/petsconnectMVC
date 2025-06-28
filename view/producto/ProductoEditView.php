@@ -3,32 +3,27 @@ require_once("../../Model/producto/ProductoModel.php");
 
 $Modelo = new Productos();
 
-// Validación: si no se pasa el ID, se muestra un mensaje y se detiene la ejecución
 if (!isset($_GET['id'])) {
     echo "ID de producto no especificado.";
     exit;
 }
 
-$id = $_GET['id']; // Ojo: era `$Id`, pero luego se usa `$id` en getId. Uniformamos.
+$id = $_GET['id'];
 $producto = $Modelo->getId($id);
-
-// Si no se encuentra el producto con ese ID, se avisa y se detiene
 if (!$producto || empty($producto)) {
     echo "Producto no encontrado.";
     exit;
 }
 
-$producto = $producto[0]; // Tomamos el primer registro si viene en forma de arreglo
+$producto = $producto[0];
 ?>
 
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
     <meta charset="UTF-8">
     <title>Actualizar producto</title>
 </head>
-
 <body>
     <!-- Contenedor principal de Bootstrap -->
     <div class="container mt-1">
@@ -37,40 +32,52 @@ $producto = $producto[0]; // Tomamos el primer registro si viene en forma de arr
 
             <!-- Campo oculto para el ID del producto -->
             <input type="hidden" name="id" value="<?= $producto['id_producto']; ?>">
+            <input type="hidden" name="accion" value="editar">
 
-            <!-- Nombre del producto -->
-            <div class="mb-3">
-                <label class="form-label">Nombre</label>
-                <input type="text" name="nombre" class="form-control" value="<?= $producto['nombre']; ?>" required>
-            </div>
+            <!-- Sección de Datos del Producto -->
+            <fieldset class="mb-4 p-3 border rounded bg-light">
+                <legend class="w-auto px-2 fs-6">Datos del Producto</legend>
 
-            <!-- Tipo de producto -->
-            <div class="mb-3">
-                <label class="form-label">Tipo de producto</label>
-                <select name="tipo_producto" class="form-select" required>
-                    <option value="">Seleccione</option>
-                    <option value="ComidaGato" <?= $producto['tipo_producto'] == 'ComidaGato' ? 'selected' : '' ?>>Comida para gato</option>
-                    <option value="ComidaPerro" <?= $producto['tipo_producto'] == 'ComidaPerro' ? 'selected' : '' ?>>Comida para perro</option>
-                    <option value="ArenaGato" <?= $producto['tipo_producto'] == 'ArenaGato' ? 'selected' : '' ?>>Arena para gatos</option>
-                </select>
-            </div>
+                <!-- Nombre -->
+                <div class="mb-3">
+                    <label class="form-label">Nombre:</label>
+                    <input type="text" name="nombre" class="form-control" value="<?= htmlspecialchars($producto['nombre']); ?>" required>
+                </div>
 
-            <!-- Descripción -->
-            <div class="mb-3">
-                <label class="form-label">Descripción</label>
-                <input type="text" name="descripcion" class="form-control" value="<?= $producto['descripcion']; ?>" required>
-            </div>
+                <!-- Tipo de producto -->
+                <div class="mb-3">
+                    <label class="form-label">Tipo de producto:</label>
+                    <select name="tipo_producto" class="form-select" required>
+                        <option value="">Seleccione</option>
+                        <option value="ComidaGato" <?= $producto['tipo_producto'] == 'ComidaGato' ? 'selected' : '' ?>>Comida para gato</option>
+                        <option value="ComidaPerro" <?= $producto['tipo_producto'] == 'ComidaPerro' ? 'selected' : '' ?>>Comida para perro</option>
+                        <option value="ArenaGato" <?= $producto['tipo_producto'] == 'ArenaGato' ? 'selected' : '' ?>>Arena para gatos</option>
+                    </select>
+                </div>
 
-            <!-- Precio -->
-            <div class="mb-3">
-                <label class="form-label">Precio</label>
-                <input type="number" name="precio" class="form-control" value="<?= $producto['precio']; ?>" step="0.01" required>
-            </div>
+                <!-- Descripción -->
+                <div class="mb-3">
+                    <label class="form-label">Descripción:</label>
+                    <input type="text" name="descripcion" class="form-control" value="<?= htmlspecialchars($producto['descripcion']); ?>" required>
+                </div>
 
-            <!-- Cantidad disponible -->
-            <div class="mb-3">
-                <label class="form-label">Cantidad disponible</label>
-                <input type="number" name="cantidad_disponible" class="form-control" value="<?= $producto['cantidad_disponible']; ?>" required>
+                <!-- Precio -->
+                <div class="mb-3">
+                    <label class="form-label">Precio:</label>
+                    <input type="number" name="precio" step="0.01" class="form-control" value="<?= $producto['precio']; ?>" required>
+                </div>
+
+                <!-- Cantidad -->
+                <div class="mb-3">
+                    <label class="form-label">Cantidad disponible:</label>
+                    <input type="number" name="cantidad_disponible" class="form-control" value="<?= $producto['cantidad_disponible']; ?>" required>
+                </div>
+            </fieldset>
+
+            <!-- Botones -->
+            <div class="d-flex justify-content-between">
+                <a href="ProductoView.php" class="btn btn-secondary">← Volver a la lista</a>
+                <button type="submit" class="btn btn-primary">Actualizar</button>
             </div>
 
             <input type="hidden" name="accion" value="editar">
@@ -83,5 +90,4 @@ $producto = $producto[0]; // Tomamos el primer registro si viene en forma de arr
         </form>
     </div>
 </body>
-
 </html>

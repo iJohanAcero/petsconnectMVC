@@ -1,140 +1,159 @@
+// ===================== CONFIGURACIÓN BASE ===================== //
+// Definir la URL base para todas las peticiones
+const BASE_URL = window.location.origin + "/petsconnectMVC";
+window.BASE_URL = window.BASE_URL || BASE_URL;
 
-// =========== CRUD DE FUNDACION =========== //
+// ===================== FUNCIÓN PRINCIPAL PARA CARGAR CRUD ===================== //
 window.cargarCrudFundacion = function () {
     fetch("view/fundacion/FundacionView.php")
-        .then(response => response.text())
+        .then(response => {
+            if (!response.ok) throw new Error("Error en la red");
+            return response.text();
+        })
         .then(data => {
-            // Cambia el objetivo al contenedor del main
-            const mainContainer = document.getElementById("main-content")
+            const mainContainer = document.getElementById("main-content");
 
             if (mainContainer) {
                 mainContainer.innerHTML = data;
-                inicializarEventosFundacion();
-            } else {
-                console.error("No se encontró el contenedor principal para el CRUD");
+
+                setTimeout(() => {
+                    inicializarEventosFundacion();
+                }, 100);
             }
         })
-        .catch(error => console.error("Error al cargar PHP:", error));
-}
+        .catch(error => {
+            console.error("❌ Error al cargar PHP:", error);
+        });
+};
 
-
+// ===================== MODAL DE REGISTRO ===================== //
 function abrirModalCrearFundacion() {
     const modalElement = document.getElementById("modal-fundacion");
-    const modalBootstrap = new bootstrap.Modal(modalElement);
-    modalBootstrap.show();
+    if (modalElement) {
+        const modalBootstrap = new bootstrap.Modal(modalElement);
+        modalBootstrap.show();
+    }
 }
 
+// ===================== EVENTOS DEL CRUD ===================== //
 function inicializarEventosFundacion() {
-    // Modal crear Fundacion
+    // ➕ Abrir modal de registro
     const btnAbrirModal = document.getElementById("btn-abrir-modal-fundacion");
     if (btnAbrirModal) {
         btnAbrirModal.addEventListener("click", abrirModalCrearFundacion);
     }
 
-    // ✅ REGISTRAR FUNDACION
+    // ✅ FORMULARIO DE REGISTRO
     const formRegistrar = document.getElementById("form-registrar-fundacion");
 
     if (formRegistrar) {
-        // Usamos onsubmit en vez de addEventListener, así no se repite el evento
         formRegistrar.onsubmit = function (e) {
-            e.preventDefault(); // Evita que se recargue la página
-
-            const formData = new FormData(formRegistrar); // Captura los datos del formulario
+            e.preventDefault();
+            const formData = new FormData(formRegistrar);
 
             fetch(`${BASE_URL}/controller/fundacion/FundacionController.php`, {
                 method: "POST",
                 body: formData
             })
-                .then(response => response.text()) // Espera respuesta del servidor como texto
+                .then(response => response.text())
                 .then(data => {
-                    // Si el texto dice que todo salió bien...
-                    if (data.toLowerCase().includes("correctamente")) {
-                        alert(data); // Muestra un mensaje (puedes usar sweetalert después)
-
-                        // Cierra el modal de Bootstrap
-                        const modalElement = document.getElementById("modal-fundacion");
-                        const modal = bootstrap.Modal.getInstance(modalElement);
-                        if (modal) modal.hide();
-
-                        formRegistrar.reset(); // Limpia el formulario
-
-                        cargarCrudFundacion(); // Vuelve a cargar la lista actualizada
-                    } else {
-                        alert("Error: " + data); // Si hubo error, lo muestra
-                    }
+                    alert(data);
+                    const modalElement = document.getElementById("modal-fundacion");
+                    const modal = bootstrap.Modal.getInstance(modalElement);
+                    if (modal) modal.hide();
+                    formRegistrar.reset();
+                    cargarCrudFundacion();
                 })
                 .catch(error => {
-                    console.error("Error:", error);
-                    alert("Error en la comunicación con el servidor");
+                    console.error("❌ Error:", error);
                 });
         };
     }
 
-    // ✅ BOTONES EDITAR
+    // ✏️ BOTONES DE EDITAR
     const botonesEditar = document.querySelectorAll(".btn-editar-fundacion");
-    botonesEditar.forEach(btn => {
-        btn.addEventListener("click", function () {
-            const idFundacion = this.dataset.id;
-            fetch(`view/producto/ProductoEditView.php?id=${idProducto}`)
-                .then(response => response.text())
+
+    botonesEditar.forEach(boton => {
+        boton.addEventListener("click", function () {
+            const nit = this.dataset.id;
+
+            fetch(`view/fundacion/FundacionEdit.php?id=${encodeURIComponent(nit)}`)
+                .then(response => {
+                    if (!response.ok) throw new Error("No se pudo cargar el formulario de edición");
+                    return response.text();
+                })
                 .then(html => {
-                    document.getElementById("contenido-editar").innerHTML = html;
-                    const modalElement = document.getElementById("modal-editar-producto");
-                    const modal = new bootstrap.Modal(modalElement);
+                    const contenedor = document.getElementById("contenido-editar");
+                    contenedor.innerHTML = html;
+
+                    const modal = new bootstrap.Modal(document.getElementById("modal-editar-fundacion"));
                     modal.show();
 
-                    const formEditar = document.getElementById("form-editar-producto");
+                    const formEditar = document.getElementById("form-editar-fundacion");
+
                     if (formEditar) {
-                        formEditar.addEventListener("submit", function (e) {
+                        formEditar.onsubmit = function (e) {
                             e.preventDefault();
                             const formData = new FormData(formEditar);
 
-                            fetch(`${BASE_URL}/controller/producto/ProductoController.php`, {
+                            fetch(`${BASE_URL}/controller/fundacion/FundacionController.php`, {
                                 method: "POST",
                                 body: formData
                             })
-                                .then(res => res.text()) // no json
+                                .then(response => response.text())
                                 .then(data => {
-                                    alert(data);
-                                    const modalElement = document.getElementById("modal-editar-producto");
-                                    const modal = bootstrap.Modal.getInstance(modalElement);
-                                    if (modal) modal.hide();
-                                    cargarCrudProductos();
-                                })
-                                .catch(error => {
-                                    console.error("Error:", error);
-                                    mostrarAlerta('error', 'Error en la comunicación con el servidor');
+                                    if (data.trim()) {
+                                        alert(data);
+                                    }
+                                    modal.hide();
+                                    cargarCrudFundacion();
                                 });
-                        });
+                        };
                     }
+                })
+                .catch(error => {
+                    console.error("❌ Error al cargar FundacionEdit.php:", error);
                 });
         });
     });
 
-    // ✅ BOTONES ELIMINAR
+    // 🗑️ BOTONES DE ELIMINAR
     const botonesEliminar = document.querySelectorAll(".btn-eliminar-fundacion");
+
     botonesEliminar.forEach(btn => {
         btn.addEventListener("click", function () {
             const nit = this.dataset.id;
+
             if (confirm("¿Estás seguro de que deseas eliminar esta fundación?")) {
                 const formData = new FormData();
-                formData.append('eliminar', 'true');
-                formData.append('nit', nit);
+                formData.append("eliminar", "true");
+                formData.append("nit", nit);
 
                 fetch(`${BASE_URL}/controller/fundacion/FundacionController.php`, {
                     method: "POST",
                     body: formData
                 })
-                    .then(res => res.text()) // ya no json
+                    .then(res => res.text())
                     .then(data => {
-                        alert(data); // Cambiamos mostrarAlerta por alert simple
-                        cargarCrudFundacion(); // Recargar la tabla
+                        alert(data);
+                        cargarCrudFundacion();
                     })
                     .catch(error => {
-                        console.error("Error:", error);
-                        mostrarAlerta('error', 'Error en la comunicación con el servidor');
+                        console.error("❌ Error al eliminar:", error);
                     });
             }
         });
     });
 }
+
+// ===================== INICIALIZAR BOTÓN DE MENÚ ===================== //
+document.addEventListener("DOMContentLoaded", () => {
+    const btnCargarFundaciones = document.getElementById("btn-cargar-fundaciones");
+
+    if (btnCargarFundaciones) {
+        btnCargarFundaciones.addEventListener("click", function (e) {
+            e.preventDefault();
+            cargarCrudFundacion();
+        });
+    }
+});

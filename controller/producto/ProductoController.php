@@ -44,8 +44,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     // 3️⃣ ELIMINAR producto
-    if (isset($_POST['eliminar']) && isset($_POST['id'])) {
-        $id = $_POST['id'];
+    if (isset($_POST['accion']) && $_POST['accion'] === 'eliminar' && isset($_POST['id_producto'])) {
+        $id = $_POST['id_producto'];
         $resultado = $modeloProducto->delete($id);
 
         if ($resultado) {

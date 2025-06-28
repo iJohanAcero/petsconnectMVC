@@ -56,7 +56,8 @@ if (!isset($_SESSION["user"]) || $_SESSION["tipo_usuario"] !== "admin") {
 
             <div class="collapse navbar-collapse">
                 <form class="d-flex justify-content-center flex-grow-1" role="search" style="max-width: 600px; margin: 0 auto;">
-                    <input class="form-control me-2 flex-grow-1 " type="search" placeholder="Busca en publicaciones, perfiles o intereses..." aria-label="Buscar" style="min-width: 300px;">
+                    <input class="form-control me-2 flex-grow-1 " type="search" name="busqueda"
+                        id="busqueda" placeholder="Busca en publicaciones, perfiles o intereses..." aria-label="Buscar" style="min-width: 300px;">
                     <button class="btn btn-outline-dark" type="submit"><i class="uil uil-search"></i></button>
                 </form>
 
@@ -198,7 +199,7 @@ if (!isset($_SESSION["user"]) || $_SESSION["tipo_usuario"] !== "admin") {
                                     </a>
                                 </li>
                                 <li class="sidebar-item">
-                                    <a href="#" class="sidebar-link" onclick="cargarCrudFundacion()">
+                                    <a href="#" class="sidebar-link" id="btn-cargar-fundaciones">
                                         - Fundaciones
                                     </a>
                                 </li>
@@ -207,7 +208,6 @@ if (!isset($_SESSION["user"]) || $_SESSION["tipo_usuario"] !== "admin") {
                                         - Administradores
                                     </a>
                                 </li>
-
                             </ul>
                         </li>
                         <li class="sidebar-item collapsed has-dropdown">
@@ -239,8 +239,8 @@ if (!isset($_SESSION["user"]) || $_SESSION["tipo_usuario"] !== "admin") {
                             </a>
                             <ul id="crud-4" class="sidebar-dropdown list-unstyled collapse">
                                 <li class="sidebar-item">
-                                    <a href="#" class="sidebar-link" onclick="cargarCrudProductos()">
-                                        <i class="fas fa-list"></i>- Productos
+                                    <a href="#" class="sidebar-link" id="btn-cargar-productos">
+                                        - Productos
                                     </a>
                                 </li>
                             </ul>
@@ -285,7 +285,7 @@ if (!isset($_SESSION["user"]) || $_SESSION["tipo_usuario"] !== "admin") {
                 </li>
             </ul>
         </aside>
-        <!--============================================ MAIN =============================================-->
+        <!-- ============================================ MAIN CONTENT ============================================ -->
         <div class="main" id="main-content">
             <div id="publicaciones-container"></div>
             <div id="loader" class="text-center my-3" style="display:none;">

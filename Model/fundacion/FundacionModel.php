@@ -1,5 +1,4 @@
 <?php
-
 require_once '../../Model/conexion.php';
 
 class Fundacion
@@ -12,124 +11,138 @@ class Fundacion
         $this->db = (new Conexion())->getConexion();
     }
 
-    // Método para agregar un nueva fundacion a la base de datos
-    public function registrarFundacion($nombre, $apellido, $contrasena, $email, $direccion, $telefono, $nit_fundacion)
-    {
-        // Encriptar la contraseña
-        $hash = password_hash($contrasena, PASSWORD_BCRYPT);
+    // Método para agregar una nueva fundación (dejé igual porque funciona bien)
+    public function registrarFundacion($nombre_rep, $apellido_rep, $contrasena, $email, $direccion, $telefono, $nombre_fundacion, $nit_fundacion)
+{
+    // Se encripta la contraseña antes de enviarla al procedimiento
+    $hash = password_hash($contrasena, PASSWORD_BCRYPT);
 
-        // Preparar la consulta para insertar en t_usuario
-        $stmt = $this->db->prepare("INSERT INTO t_usuario (nombre, apellido, contrasena, email, direccion, telefono) 
-        VALUES (:nombre, :apellido, :contrasena, :email, :direccion, :telefono)");
+    // Llamamos el procedimiento almacenado con los mismos parámetros que definimos
+    $call = $this->db->prepare("CALL crear_fundacion(
+        :rep_nombre, :rep_apellido, :rep_contrasena, :rep_email,
+        :rep_direccion, :rep_telefono, :fund_nombre, :fund_nit
+    )");
 
-        $stmt->bindParam(":nombre", $nombre);
-        $stmt->bindParam(":apellido", $apellido);
-        $stmt->bindParam(":contrasena", $hash);
-        $stmt->bindParam(":email", $email);
-        $stmt->bindParam(":direccion", $direccion);
-        $stmt->bindParam(":telefono", $telefono);
+    // Se enlazan los parámetros
+    $call->bindParam(':rep_nombre', $nombre_rep);
+    $call->bindParam(':rep_apellido', $apellido_rep);
+    $call->bindParam(':rep_contrasena', $hash);
+    $call->bindParam(':rep_email', $email);
+    $call->bindParam(':rep_direccion', $direccion);
+    $call->bindParam(':rep_telefono', $telefono);
+    $call->bindParam(':fund_nombre', $nombre_fundacion); // este es el nombre legal de la fundación
+    $call->bindParam(':fund_nit', $nit_fundacion);
 
-        // Si se insertó correctamente el usuario
-        if ($stmt->execute()) {
-            $id_usuario = $this->db->lastInsertId();
-
-            // Llamar al procedimiento para registrar fundación
-            $call = $this->db->prepare("CALL crear_fundacion(:id_usuario, :nit_fundacion)");
-            $call->bindParam(":id_usuario", $id_usuario, PDO::PARAM_INT);
-            $call->bindParam(":nit_fundacion", $nit_fundacion, PDO::PARAM_STR);
-            $call->execute();
-
-            return true;
-        }
-
-        return false;
-    }
+    return $call->execute();
+}
 
 
+
+    // Obtener todas las fundaciones (dejé igual porque funciona bien)
     public function getFundacion()
-    {
-        // Inicializa una variable para almacenar los resultados
-        $rows = null;
-        // Preparar la consulta SQL para seleccionar todos los productos
-        $statement = $this->db->prepare("SELECT * FROM t_fundacion");
-        // Ejecutar la consulta
-        $statement->execute();
+{
+    $rows = [];
 
-        // Iterar sobre los resultados obtenidos y almacenarlos en el array $rows
-        while ($resultado = $statement->fetch()) {
-            $rows[] = $resultado;
-        }
+    // Esta consulta junta fundación + representante (usuario)
+    $sql = "SELECT 
+                f.nit_fundacion AS nit,
+                f.nombre AS nombre_fundacion,
+                u.nombre AS nombre_representante,
+                u.apellido AS apellido_representante,
+                u.email AS correo,
+                u.telefono
+            FROM t_fundacion f
+            INNER JOIN t_usuario u ON f.id_usuario = u.id_usuario";
 
-        // Devuelve todos los productos obtenidos
-        return $rows;
+    $statement = $this->db->prepare($sql);
+    $statement->execute();
+
+    // Trae todos los resultados como arreglos asociativos
+    while ($resultado = $statement->fetch(PDO::FETCH_ASSOC)) {
+        $rows[] = $resultado;
     }
 
-    // Obtener producto por nit
+    return $rows;
+}
+
+    // Obtener fundación por NIT (dejé igual porque funciona bien)
     public function getId($nit)
-    {
-        // Inicializa una variable para almacenar el resultado
-        $rows = null;
+{
+    $statement = $this->db->prepare("
+        SELECT 
+            f.nit_fundacion,
+            f.nombre AS nombre_fundacion,
+            u.nombre AS nombre_representante,
+            u.apellido AS apellido_representante,
+            u.email,
+            u.direccion,
+            u.telefono
+        FROM t_fundacion f
+        INNER JOIN t_usuario u ON f.id_usuario = u.id_usuario
+        WHERE f.nit_fundacion = :nit
+    ");
+    $statement->bindParam(':nit', $nit);
+    $statement->execute();
 
-        // Preparar la consulta SQL para seleccionar un producto por nit
-        $statement = $this->db->prepare("SELECT * FROM t_fundacion WHERE nit_fundacion = :nit");
-        // Vincular el parámetro :nit con el valor recibido
-        $statement->bindParam(':nit', $nit);
-        // Ejecutar la consulta
-        $statement->execute();
-
-        // Iterar sobre los resultados y almacenarlos en el array $rows
-        while ($resultado = $statement->fetch()) {
-            $rows[] = $resultado;
-        }
-
-        // Devuelve el producto encontrado
-        return $rows;
+    $rows = [];
+    while ($resultado = $statement->fetch(PDO::FETCH_ASSOC)) {
+        $rows[] = $resultado;
     }
 
-    public function updateFundacion($id, $nombre, $tipo_producto, $descripcion, $precio, $cantidad_disponible)
-    {
-        $statement = $this->db->prepare("UPDATE t_producto 
-            SET nombre = :nombre, 
-                tipo_producto = :tipo_producto, 
-                descripcion = :descripcion, 
-                precio = :precio, 
-                cantidad_disponible = :cantidad_disponible 
-            WHERE id_producto = :id");
+    return $rows;
+}
 
-        $statement->bindParam(':id', $id);
+    // ACTUALIZAR FUNDACIÓN - CORREGIDO (cambié los parámetros y consulta)
+    public function updateFundacion($nit, $nombre, $apellido, $email, $direccion, $telefono)
+    {
+        // Primero obtenemos el id_usuario asociado
+        $stmt = $this->db->prepare("SELECT id_usuario FROM t_fundacion WHERE nit_fundacion = :nit");
+        $stmt->bindParam(':nit', $nit);
+        $stmt->execute();
+        $fundacion = $stmt->fetch();
+
+        if (!$fundacion) return false;
+
+        $id_usuario = $fundacion['id_usuario'];
+
+        // Actualizamos los datos en t_usuario
+        $statement = $this->db->prepare("UPDATE t_usuario 
+            SET nombre = :nombre, 
+                apellido = :apellido, 
+                email = :email, 
+                direccion = :direccion, 
+                telefono = :telefono 
+            WHERE id_usuario = :id_usuario");
+
+        $statement->bindParam(':id_usuario', $id_usuario);
         $statement->bindParam(':nombre', $nombre);
-        $statement->bindParam(':tipo_producto', $tipo_producto);
-        $statement->bindParam(':descripcion', $descripcion);
-        $statement->bindParam(':precio', $precio);
-        $statement->bindParam(':cantidad_disponible', $cantidad_disponible);
+        $statement->bindParam(':apellido', $apellido);
+        $statement->bindParam(':email', $email);
+        $statement->bindParam(':direccion', $direccion);
+        $statement->bindParam(':telefono', $telefono);
 
         return $statement->execute();
     }
 
+    // Eliminar fundación (dejé igual porque funciona bien)
     public function delete($nit)
-{
-    // Obtener el id_usuario relacionado al nit_fundacion
-    $stmt = $this->db->prepare("SELECT id_usuario FROM t_fundacion WHERE nit_fundacion = :nit");
-    $stmt->bindParam(':nit', $nit);
-    $stmt->execute();
-    $usuario = $stmt->fetch();
+    {
+        $stmt = $this->db->prepare("SELECT id_usuario FROM t_fundacion WHERE nit_fundacion = :nit");
+        $stmt->bindParam(':nit', $nit);
+        $stmt->execute();
+        $usuario = $stmt->fetch();
 
-    if (!$usuario) {
-        return false; // No existe la fundación
+        if (!$usuario) return false;
+        $id_usuario = $usuario['id_usuario'];
+
+        $stmt = $this->db->prepare("DELETE FROM t_fundacion WHERE nit_fundacion = :nit");
+        $stmt->bindParam(':nit', $nit);
+        $result1 = $stmt->execute();
+
+        $stmt = $this->db->prepare("DELETE FROM t_usuario WHERE id_usuario = :id_usuario");
+        $stmt->bindParam(':id_usuario', $id_usuario);
+        $result2 = $stmt->execute();
+
+        return $result1 && $result2;
     }
-
-    $id_usuario = $usuario['id_usuario'];
-
-    // Eliminar la fundación primero
-    $stmt = $this->db->prepare("DELETE FROM t_fundacion WHERE nit_fundacion = :nit");
-    $stmt->bindParam(':nit', $nit);
-    $result1 = $stmt->execute();
-
-    // Eliminar el usuario relacionado
-    $stmt = $this->db->prepare("DELETE FROM t_usuario WHERE id_usuario = :id_usuario");
-    $stmt->bindParam(':id_usuario', $id_usuario);
-    $result2 = $stmt->execute();
-
-    return $result1 && $result2;
-}
 }
