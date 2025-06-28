@@ -1,15 +1,8 @@
 <?php
 require_once("../../Model/producto/ProductoModel.php");
 $Modelo = new Productos();
-$Productos = $Modelo->getProducto(); // ¡Esta línea faltaba!
-// Mostrar mensajes de sesión
-// if (isset($_SESSION['mensaje'])) {
-//     $tipo = $_SESSION['tipo_mensaje'] ?? 'info';
-//     echo '<div class="alert alert-'.$tipo.'">'.$_SESSION['mensaje'].'</div>';
-//     // Limpiar los mensajes después de mostrarlos
-//     unset($_SESSION['mensaje']);
-//     unset($_SESSION['tipo_mensaje']);
-// }
+$Productos = $Modelo->getProducto();
+
 ?>
 
 <!-- Solo el contenido necesario: sin head, html, ni body -->

@@ -18,12 +18,6 @@ if (!$producto || empty($producto)) {
 $producto = $producto[0];
 ?>
 
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <title>Actualizar producto</title>
-</head>
 <body>
     <!-- Contenedor principal de Bootstrap -->
     <div class="container mt-1">
@@ -74,20 +68,13 @@ $producto = $producto[0];
                 </div>
             </fieldset>
 
-            <!-- Botones -->
-            <div class="d-flex justify-content-between">
-                <a href="ProductoView.php" class="btn btn-secondary">← Volver a la lista</a>
-                <button type="submit" class="btn btn-primary">Actualizar</button>
-            </div>
 
             <input type="hidden" name="accion" value="editar">
 
-            <!-- Botón de acción -->
-            <button type="submit"   class="btn btn-primary">Actualizar</button>
-
-            <!-- Enlace para regresar -->
-            <button type="button" class="btn btn-secondary ms-2" data-bs-dismiss="modal" aria-label="Close">← Volver a la lista</button>
+            <div class="d-flex justify-content-between">
+                <button type="button" class="btn btn-secondary ms-2" data-bs-dismiss="modal" aria-label="Close">← Volver a la lista</button>
+                <button type="submit" class="btn btn-primary">Actualizar Producto</button>
+            </div>
         </form>
     </div>
 </body>
-</html>

@@ -95,6 +95,9 @@ class Publicacion
         return $statement->execute(); // Devuelve true o false
     }
 
+
+
+    
     // MOSTRAR PUBLICACIONES RECIENTES EN EL INICIO
     public function getPublicacionesRecientes($limit, $offset)
     {

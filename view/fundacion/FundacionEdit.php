@@ -15,15 +15,6 @@ if (!$fundacion) {
     exit;
 }
 ?>
-
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <title>Editar Fundación</title>
-    <!-- <link rel="stylesheet" href="../../Public/Css/edit.css"> -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-</head>
 <body>
     <div class="container mt-4">
         <form id="form-editar-fundacion" method="POST" class="border p-4 rounded bg-light">
@@ -82,10 +73,10 @@ if (!$fundacion) {
             </fieldset>
 
             <div class="d-flex justify-content-between">
-                <a href="FundacionView.php" class="btn btn-secondary">← Volver</a>
+                <button type="button" class="btn btn-secondary ms-2" data-bs-dismiss="modal" aria-label="Close">← Volver a la lista</button>
                 <button type="submit" class="btn btn-primary">Actualizar Fundación</button>
             </div>
         </form>
     </div>
 </body>
-</html>
+

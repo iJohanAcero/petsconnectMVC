@@ -185,7 +185,7 @@ if (!isset($_SESSION["user"]) || $_SESSION["tipo_usuario"] !== "fundacion") {
                             <a href="#" class="sidebar-link" onclick="cargarCrearPublicacion()">✔ Crear publicación</a>
                         </li>
                         <li class="sidebar-item">
-                            <a href="#" class="sidebar-link" onclick="cargarCrudPublicacion()">✔ Mis publicaciones</a>
+                            <a href="#" class="sidebar-link" id="btn-cargar-publicacion">✔ Mis publicaciones</a>
                         </li>
 
                     </ul>

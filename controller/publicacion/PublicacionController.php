@@ -66,22 +66,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
         exit;
     }
-
-    // 3️⃣ ELIMINAR Publicacion
+// Eliminar Publicacion
     if (isset($_POST['eliminar']) && isset($_POST['id'])) {
-        $id = $_POST['id'];
-        $resultado = $modeloPublicacion->delete($id);
+        $nit = htmlspecialchars($_POST['id'] ?? '');
 
-        if ($resultado) {
-            echo "Publicacion eliminado correctamente";
-        } else {
-            echo "Error al eliminar Publicacion";
+        if (empty($nit)) {
+            echo "ID de publicacion no proporcionado";
+            exit;
         }
+
+        $resultado = $modeloPublicacion->delete($nit);
+        echo $resultado ? "Publicacion eliminada correctamente" : "Error al eliminar Publicacion";
         exit;
     }
 }
-
-// Si no es POST o no hay acción válida
-echo "Acción no válida o método no permitido";
-exit;
-

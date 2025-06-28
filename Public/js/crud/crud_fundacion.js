@@ -1,7 +1,3 @@
-// ===================== CONFIGURACIÓN BASE ===================== //
-// Definir la URL base para todas las peticiones
-const BASE_URL = window.location.origin + "/petsconnectMVC";
-window.BASE_URL = window.BASE_URL || BASE_URL;
 
 // ===================== FUNCIÓN PRINCIPAL PARA CARGAR CRUD ===================== //
 window.cargarCrudFundacion = function () {

@@ -68,5 +68,3 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-// Si no es POST o no tiene acciones válidas
-echo "Acción no válida";

@@ -263,7 +263,7 @@ if (!isset($_SESSION["user"]) || $_SESSION["tipo_usuario"] !== "admin") {
                             </a>
                             <ul id="crud-4" class="sidebar-dropdown list-unstyled collapse">
                                 <li class="sidebar-item">
-                                    <a href="#" class="sidebar-link" onclick="cargarCrudPublicacion()">
+                                    <a href="#" class="sidebar-link" id="btn-cargar-publicacion"
                                         <i class="fas fa-list"></i>- Publicaciones
                                     </a>
                                 </li>
@@ -331,7 +331,7 @@ if (!isset($_SESSION["user"]) || $_SESSION["tipo_usuario"] !== "admin") {
   <div class="card mb-4 shadow-sm border-0 rounded-4 bg-white">
     <div class="card-body">
       <div class="d-flex justify-content-between align-items-center mb-2 flex-wrap">
-        <small class="text-primary fw-semibold">NIT Fundación: ${pub.nit_fundacion}</small>
+        <small class="text-primary fw-semibold">NIT Fundación: ${pub.nombre}</small>
         <h5 class="card-title mb-0 fw-bold">${pub.titulo}</h5>
       </div>
       
