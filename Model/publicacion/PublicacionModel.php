@@ -33,19 +33,16 @@ class Publicacion
     // Método para obtener todos los Publicacion desde la base de datos
     public function getPublicacion()
     {
-        // Inicializa una variable para almacenar los resultados
         $rows = null;
-        // Preparar la consulta SQL para seleccionar todos los Publicacion
-        $statement = $this->db->prepare("SELECT * FROM t_publicacion");
-        // Ejecutar la consulta
+        $statement = $this->db->prepare(
+            "SELECT p.*, f.nombre AS nombre_fundacion 
+         FROM t_publicacion p
+         INNER JOIN t_fundacion f ON p.nit_fundacion = f.nit_fundacion"
+        );
         $statement->execute();
-
-        // Iterar sobre los resultados obtenidos y almacenarlos en el array $rows
         while ($resultado = $statement->fetch()) {
             $rows[] = $resultado;
         }
-
-        // Devuelve todos los Publicacion obtenidos
         return $rows;
     }
 
@@ -97,11 +94,16 @@ class Publicacion
 
 
 
-    
+
     // MOSTRAR PUBLICACIONES RECIENTES EN EL INICIO
     public function getPublicacionesRecientes($limit, $offset)
     {
-        $statement = $this->db->prepare("SELECT * FROM t_publicacion ORDER BY fecha DESC LIMIT :limit OFFSET :offset");
+        $statement = $this->db->prepare(
+            "SELECT p.*, f.nombre AS nombre_fundacion 
+         FROM t_publicacion p
+         INNER JOIN t_fundacion f ON p.nit_fundacion = f.nit_fundacion
+         ORDER BY p.fecha DESC LIMIT :limit OFFSET :offset"
+        );
         $statement->bindValue(':limit', (int)$limit, PDO::PARAM_INT);
         $statement->bindValue(':offset', (int)$offset, PDO::PARAM_INT);
         $statement->execute();

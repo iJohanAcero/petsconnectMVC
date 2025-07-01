@@ -224,8 +224,8 @@ if (!isset($_SESSION["user"]) || $_SESSION["tipo_usuario"] !== "guardian") {
   <div class="card mb-4 shadow-sm border-0 rounded-4 bg-white">
     <div class="card-body">
       <div class="d-flex justify-content-between align-items-center mb-2 flex-wrap">
-        <small class="text-primary fw-semibold">Fundación: ${pub.nit_fundacion}</small>
-        <h4 class="card-title mb-0 fw-bold">${pub.titulo}</h4>
+      <h4 class="card-title mb-0 fw-bold">${pub.titulo}</h4>
+        <small class="text-primary fw-semibold">Fundación: ${pub.nombre_fundacion}</small>
       </div>
       
       ${pub.imagen ? `

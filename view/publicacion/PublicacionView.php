@@ -1,15 +1,24 @@
 <?php
+session_start();
 require_once("../../Model/publicacion/PublicacionModel.php");
+require_once("../../Model/fundacion/FundacionModel.php");
 $Modelo = new Publicacion();
+
+$nit_fundacion = null;
+if (isset($_SESSION["user"]["id_usuario"])) {
+    $nit_fundacion = Fundacion::obtenerNitPorUsuario($_SESSION["user"]["id_usuario"]);
+}
 ?>
 <body>
     <!-- Contenedor principal del CRUD con ID para JS -->
     <div class="container crud-container main-content" id="crud-container" style="padding: 40px;">
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h2 class="mb-0">Gestión de Publicaciones</h2>
-            <button id="btn-abrir-modal-publicacion" class="btn btn-primary">
-                <i class="bi bi-plus-circle"></i> Añadir Publicacion
-            </button>
+            <?php if (isset($_SESSION["tipo_usuario"]) && $_SESSION["tipo_usuario"] === "fundacion"): ?>
+    <button id="btn-abrir-modal-publicacion" class="btn btn-primary">
+        <i class="bi bi-plus-circle"></i> Añadir Publicacion
+    </button>
+<?php endif; ?>
         </div>
 
         <!-- Tabla de publicacion -->
@@ -93,8 +102,8 @@ $Modelo = new Publicacion();
                             <input type="file" class="form-control" id="imagen" name="imagen" accept="image/*" required>
                         </div>
                         <div class="mb-3">
-                            <label for="cantidad_disponible" class="form-label">Nit fundacion</label>
-                            <input type="text" class="form-control" id="nit_fundacion" name="nit_fundacion" required>
+            
+                            <input type="hidden" class="form-control" id="nit_fundacion" name="nit_fundacion" value="<?php echo htmlspecialchars($nit_fundacion); ?>" required>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>

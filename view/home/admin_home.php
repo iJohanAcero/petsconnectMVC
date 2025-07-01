@@ -307,7 +307,7 @@ if (!isset($_SESSION["user"]) || $_SESSION["tipo_usuario"] !== "admin") {
     <script src="Public/js/crud/crud_publicacion.js"></script>
     <script src="Public/js/routes/routes.js"></script>
 
-    <script>
+   <script>
         let page = 1;
         let loading = false;
         let finished = false;
@@ -331,8 +331,8 @@ if (!isset($_SESSION["user"]) || $_SESSION["tipo_usuario"] !== "admin") {
   <div class="card mb-4 shadow-sm border-0 rounded-4 bg-white">
     <div class="card-body">
       <div class="d-flex justify-content-between align-items-center mb-2 flex-wrap">
-        <small class="text-primary fw-semibold">NIT Fundación: ${pub.nombre}</small>
-        <h5 class="card-title mb-0 fw-bold">${pub.titulo}</h5>
+      <h4 class="card-title mb-0 fw-bold">${pub.titulo}</h4>
+        <small class="text-primary fw-semibold">Fundación: ${pub.nombre_fundacion}</small>
       </div>
       
       ${pub.imagen ? `
@@ -343,11 +343,11 @@ if (!isset($_SESSION["user"]) || $_SESSION["tipo_usuario"] !== "admin") {
             style="max-height:500px; object-fit:cover; width:100%;">
         </div>
       ` : ''}
-      
+      <p class="text-muted">Descripción:</p>
       <p class="card-text">${pub.contenido}</p>
       
       <div class="text-end">
-        <small class="text-muted">📅 ${pub.fecha}</small>
+        <small class="text-muted">📅fecha publicación: ${pub.fecha}</small>
       </div>
     </div>
   </div>

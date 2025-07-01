@@ -10,10 +10,10 @@ $db = (new Conexion())->getConexion();
 
 try {
     // Datos del nuevo admin
-    $nombre = "Kathe";
-    $apellido = "Rojas";
-    $email = "katherojas.2805@gmail.com";
-    $passwordPlano = "kathe";
+    $nombre = "Johan";
+    $apellido = "Acero";
+    $email = "johanacero8@gmail.com";
+    $passwordPlano = "johan";
     $direccion = "Bogotá";
     $telefono = "123456";
 
@@ -33,7 +33,7 @@ try {
     $id_registro = $db->lastInsertId();
 
     // Insertar en tabla de administrador
-    $stmt = $db->prepare("INSERT INTO t_administrador (n_documento,id_usuario, id_registro) VALUES (10002,?, ?)");
+    $stmt = $db->prepare("INSERT INTO t_administrador (n_documento,id_usuario, id_registro) VALUES (1001,?, ?)");
     $stmt->execute([$id_usuario, $id_registro]);
 
     echo "<h3 style='color:green;'>✅ Administrador '$nombre' creado con éxito.</h3>";
