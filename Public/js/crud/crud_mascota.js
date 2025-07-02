@@ -1,6 +1,3 @@
-// ================= BASE_URL seguro =================
-window.BASE_URL = window.BASE_URL || (window.location.origin + "/petsconnectMVC");
-
 // =========== CRUD DE MASCOTAS =========== //
 function cargarCrudMascotas() {
     fetch("view/mascota/MascotaView.php")
@@ -40,7 +37,7 @@ function inicializarEventosMascotas() {
             e.preventDefault();
             const formData = new FormData(formRegistrar);
 
-            fetch(`${BASE_URL}/controller/mascota/MascotaController.php`, {
+            fetch(`${window.BASE_URL}/controller/mascota/MascotaController.php`, {
                 method: "POST",
                 body: formData
             })
@@ -82,7 +79,7 @@ function inicializarEventosMascotas() {
                         formEditar.addEventListener("submit", function (e) {
                             e.preventDefault();
                             const formData = new FormData(this);
-                            fetch(`${BASE_URL}/controller/mascota/MascotaController.php`, {
+                            fetch(`${window.BASE_URL}/controller/mascota/MascotaController.php`, {
                                 method: "POST",
                                 body: formData
                             })

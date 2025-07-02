@@ -1,6 +1,3 @@
-const BASE_URL = window.location.origin + "/petsconnectMVC";
-window.BASE_URL = window.BASE_URL || '';
-
 // =========== CRUD DE PRODUCTOS =========== //
 
 function cargarCrudProductos() {
@@ -42,7 +39,7 @@ function inicializarEventosProductos() {
             e.preventDefault();
             const formData = new FormData(formRegistrar);
 
-            fetch(`${BASE_URL}/controller/producto/ProductoController.php`, {
+            fetch(`${window.BASE_URL}/controller/producto/ProductoController.php`, {
                 method: "POST",
                 body: formData
             })
@@ -86,7 +83,7 @@ function inicializarEventosProductos() {
                             e.preventDefault();
                             const formData = new FormData(formEditar);
 
-                            fetch(`${BASE_URL}/controller/producto/ProductoController.php`, {
+                            fetch(`${window.BASE_URL}/controller/producto/ProductoController.php`, {
                                 method: "POST",
                                 body: formData
                             })
@@ -117,7 +114,7 @@ function inicializarEventosProductos() {
                 formData.append('accion', 'eliminar');
                 formData.append('id_producto', idProducto);
 
-                fetch(`${BASE_URL}/controller/producto/ProductoController.php`, {
+                fetch(`${window.BASE_URL}/controller/producto/ProductoController.php`, {
                     method: "POST",
                     body: formData
                 })

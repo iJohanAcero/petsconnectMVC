@@ -47,7 +47,7 @@ function inicializarEventosFundacion() {
             e.preventDefault();
             const formData = new FormData(formRegistrar);
 
-            fetch(`${BASE_URL}/controller/fundacion/FundacionController.php`, {
+            fetch(`${window.BASE_URL}/controller/fundacion/FundacionController.php`, {
                 method: "POST",
                 body: formData
             })
@@ -92,7 +92,7 @@ function inicializarEventosFundacion() {
                             e.preventDefault();
                             const formData = new FormData(formEditar);
 
-                            fetch(`${BASE_URL}/controller/fundacion/FundacionController.php`, {
+                            fetch(`${window.BASE_URL}/controller/fundacion/FundacionController.php`, {
                                 method: "POST",
                                 body: formData
                             })
@@ -125,7 +125,7 @@ function inicializarEventosFundacion() {
                 formData.append("eliminar", "true");
                 formData.append("nit", nit);
 
-                fetch(`${BASE_URL}/controller/fundacion/FundacionController.php`, {
+                fetch(`${window.BASE_URL}/controller/fundacion/FundacionController.php`, {
                     method: "POST",
                     body: formData
                 })
