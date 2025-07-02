@@ -115,15 +115,13 @@ function inicializarEventosFundacion() {
 
     // 🗑️ BOTONES DE ELIMINAR
     const botonesEliminar = document.querySelectorAll(".btn-eliminar-fundacion");
-
     botonesEliminar.forEach(btn => {
         btn.addEventListener("click", function () {
             const nit = this.dataset.id;
-
             if (confirm("¿Estás seguro de que deseas eliminar esta fundación?")) {
                 const formData = new FormData();
-                formData.append("eliminar", "true");
-                formData.append("nit", nit);
+                formData.append('accion', 'eliminar');
+                formData.append('nit', nit);
 
                 fetch(`${window.BASE_URL}/controller/fundacion/FundacionController.php`, {
                     method: "POST",
