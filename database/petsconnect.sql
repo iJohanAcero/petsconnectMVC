@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 02-07-2025 a las 07:34:45
+-- Tiempo de generación: 03-07-2025 a las 00:31:09
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -245,7 +245,8 @@ CREATE TABLE `t_fundacion` (
 --
 
 INSERT INTO `t_fundacion` (`nit_fundacion`, `nombre`, `id_usuario`, `id_perfil`) VALUES
-(1234567890, 'TRE', 23, 15);
+(1234567890, 'TRE', 23, 15),
+(8493820102, 'Peluditos', 24, 16);
 
 -- --------------------------------------------------------
 
@@ -309,7 +310,7 @@ CREATE TABLE `t_mascota` (
 --
 
 INSERT INTO `t_mascota` (`id_mascota`, `nombre`, `edad_meses`, `sexo`, `imagen`, `id_tipo_mascota`, `nit_fundacion`, `id_estado_adopcion`) VALUES
-(98765, 'hjwefinj', 19, 'hembra', 'petsconnect2.jpg', 5, 1234567890, 3),
+(98765, 'Mota', 19, 'hembra', '', 5, 1234567890, 3),
 (123567, 'Mico', 22, 'hembra', '', 5, 1234567890, 2);
 
 -- --------------------------------------------------------
@@ -345,7 +346,8 @@ INSERT INTO `t_perfil` (`id_perfil`, `nombre`, `preferencia`, `descripcion`, `im
 (12, 'Perfil Fundación', '', '', 'fundacion_default.jpg'),
 (13, 'Perfil Fundación', '', '', 'fundacion_default.jpg'),
 (14, 'Perfil Fundación', '', '', 'fundacion_default.jpg'),
-(15, 'Perfil Fundación', '', '', 'fundacion_default.jpg');
+(15, 'Perfil Fundación', '', '', 'fundacion_default.jpg'),
+(16, 'Perfil Fundación', '', '', 'fundacion_default.jpg');
 
 -- --------------------------------------------------------
 
@@ -461,7 +463,8 @@ INSERT INTO `t_registro` (`id_registro`, `fecha`, `tipo_usuario`) VALUES
 (14, '2025-06-24', 'FUNDACION'),
 (15, '2025-06-24', 'FUNDACION'),
 (16, '2025-06-25', 'FUNDACION'),
-(17, '2025-06-26', 'FUNDACION');
+(17, '2025-06-26', 'FUNDACION'),
+(18, '2025-07-02', 'FUNDACION');
 
 -- --------------------------------------------------------
 
@@ -528,7 +531,8 @@ INSERT INTO `t_usuario` (`id_usuario`, `nombre`, `apellido`, `contrasena`, `emai
 (17, 'kt', 'rojas', '$2y$10$zOfC5bk8r7I0617lCW6a8OFIrOfNVm9SIX4lpx8ZztThA63eu2xI.', 'kt@rojas.com', 'injsfs', '876123'),
 (18, 'kt', 'rojas', '$2y$10$A2GEVLu/uuzam1A02qfhkuMJJJqVtDvfy52r2ccytM.qPeOssVvka', 'kt@rojas.com', 'injsfs', '876123'),
 (19, 'kt', 'rojas', '$2y$10$yT6sstoHhEPRuBWB8Zxe2./YFC34i5BMznEy6jxDZEKaK5MRF.2xa', 'kt@rojas.com', 'injsfs', '876123'),
-(23, 'kt', 'rojas', '$2y$10$IOjA/Cw5JDr6/zp7A4PMkOqzrRxdTI1M5cyNrPxrzNU5bnmf74Am6', 'kt@rojas.com', 'ftbkmls', '0987654321');
+(23, 'kt', 'rojas', '$2y$10$IOjA/Cw5JDr6/zp7A4PMkOqzrRxdTI1M5cyNrPxrzNU5bnmf74Am6', 'kt@rojas.com', 'ftbkmls', '986398132'),
+(24, 'Daniel', 'Reyes', '$2y$10$GsH0fEsxh2MRiWwjtHqFzOnCBDN05F9MAZFm5ft5UFz/.TLbkjIF2', 'dr@gmail.com', 'cra4#56-38', '3160538456');
 
 -- --------------------------------------------------------
 
@@ -712,7 +716,7 @@ ALTER TABLE `t_informe`
 -- AUTO_INCREMENT de la tabla `t_perfil`
 --
 ALTER TABLE `t_perfil`
-  MODIFY `id_perfil` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id_perfil` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT de la tabla `t_proceso_adopcion`
@@ -748,7 +752,7 @@ ALTER TABLE `t_red_social`
 -- AUTO_INCREMENT de la tabla `t_registro`
 --
 ALTER TABLE `t_registro`
-  MODIFY `id_registro` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `id_registro` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT de la tabla `t_tipo_mascota`
@@ -760,7 +764,7 @@ ALTER TABLE `t_tipo_mascota`
 -- AUTO_INCREMENT de la tabla `t_usuario`
 --
 ALTER TABLE `t_usuario`
-  MODIFY `id_usuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `id_usuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
 -- Restricciones para tablas volcadas
@@ -843,7 +847,7 @@ ALTER TABLE `t_recuperar_constrasena`
 -- Filtros para la tabla `t_red_social`
 --
 ALTER TABLE `t_red_social`
-  ADD CONSTRAINT `fk_red_nit_fundacion` FOREIGN KEY (`nit_fundacion`) REFERENCES `t_fundacion` (`nit_fundacion`);
+  ADD CONSTRAINT `fk_red_nit_fundacion` FOREIGN KEY (`nit_fundacion`) REFERENCES `t_fundacion` (`nit_fundacion`) ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
