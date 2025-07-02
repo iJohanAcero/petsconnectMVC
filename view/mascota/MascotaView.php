@@ -27,7 +27,7 @@ $nit_sesion = $_SESSION['user']['nit_fundacion'] ?? null;
         <h2 class="mb-0">Gestión de Mascotas</h2>
         <?php if ($esAdmin || $esFundacion): ?>
             <button id="btn-abrir-modal-mascota" class="btn btn-primary">
-                <i class=" bi bi-plus-circle"></i> Registrar Mascota
+                <i class=" bi bi-plus-circle"></i> Registrar mascota
             </button>
         <?php endif; ?>
     </div>
@@ -102,7 +102,7 @@ $nit_sesion = $_SESSION['user']['nit_fundacion'] ?? null;
                 <input type="hidden" name="accion" value="registrar">
 
                 <div class="modal-header">
-                    <h5 class="modal-title">Registrar Nueva Mascota</h5>
+                    <h5 class="modal-title">Registrar nueva mascota</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
 
@@ -118,7 +118,7 @@ $nit_sesion = $_SESSION['user']['nit_fundacion'] ?? null;
 
                     <div class="mb-2">
                         <label>Edad (meses):</label>
-                        <input type="number" name="edad_meses" class="form-control" required>
+                        <input type="number" name="edad_meses" class="form-control" min="0" required>
                     </div>
 
                     <div class="mb-2">
@@ -133,7 +133,7 @@ $nit_sesion = $_SESSION['user']['nit_fundacion'] ?? null;
                     <div class="mb-3">
                         <label class="form-label">Imagen:</label>
                         <input type="file" name="imagen" accept="image/*" class="form-control">
-                        <div class="form-text">Formato recomendado: JPG, PNG. Tamaño máximo: 2MB.</div>
+                        <div class="form-text">Formato recomendado: JPG, PNG.</div>
                     </div>
 
                     <div class="mb-2">

@@ -53,7 +53,7 @@ $nits = $esAdmin ? $Modelo->getNitsFundacion() : [];
 
             <div class="mb-3">
                 <label class="form-label">Edad (en meses):</label>
-                <input type="number" name="edad_meses" class="form-control" value="<?= $mascota['edad_meses'] ?>" required>
+                <input type="number" name="edad_meses" class="form-control" min="0" value="<?= $mascota['edad_meses'] ?>" required>
             </div>
 
             <div class="mb-3">
@@ -108,6 +108,7 @@ $nits = $esAdmin ? $Modelo->getNitsFundacion() : [];
                     <div class="mt-2">
                         <img src="/petsconnectMVC/public/images/mascotas/<?= htmlspecialchars($mascota['imagen']) ?>" alt="Imagen actual" style="max-width: 150px; border-radius: 8px;">
                         <div><small class="text-muted">Imagen actual: <?= htmlspecialchars($mascota['imagen']) ?></small></div>
+                        <div class="form-text">Formato recomendado: JPG, PNG.</div>
                     </div>
                 <?php endif; ?>
 
