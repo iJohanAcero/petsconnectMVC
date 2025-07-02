@@ -59,10 +59,10 @@
                         </div>
 
                         <div class="navbar-btn d-none d-sm-inline-block ud-hero-buttons">
-                            <a href="view/login/login.php" class="ud-main-btn ud-login-btn">
+                            <a href="index.php?page=login" class="ud-main-btn ud-login-btn">
                                 Iniciar Sesión
                             </a>
-                            <a class="ud-main-btn ud-white-btn" href="view/login/register.php">
+                            <a class="ud-main-btn ud-white-btn" href="index.php?page=registro">
                                 Registrarse
                             </a>
                         </div>
@@ -87,7 +87,7 @@
                         </p>
                         <ul class="ud-hero-buttons">
                             <li>
-                                <a href="view/login/login.php" rel="nofollow noopener" class="ud-main-btn ud-white-btn">
+                                <a href="index.php?page=login" rel="nofollow noopener" class="ud-main-btn ud-white-btn">
                                     ¡ Adopta ahora !
                                 </a>
                             </li>
@@ -219,7 +219,7 @@
                         <p>
                             Nuestra comunidad crece con cada historia de adopción, cada guardián registrado y cada sonrisa compartida. No solo es una red social, es un movimiento por el bienestar animal.
                         </p>
-                        <a href="view/login/login.php" class="ud-main-btn">Descubre!</a>
+                        <a href="index.php?page=login" class="ud-main-btn">Descubre!</a>
                     </div>
                 </div>
                 <div class="ud-about-image">
@@ -669,7 +669,7 @@
                 </div>
                 <ul class="ud-hero-buttons">
                     <li>
-                        <a href="view/login/login.php" rel="nofollow noopener" target="_blank" class="ud-main-btn ud-white-btn">
+                        <a href="index.php?page=login" rel="nofollow noopener" target="_blank" class="ud-main-btn ud-white-btn">
                             ¡ Ver mas productos !
                         </a>
                     </li>

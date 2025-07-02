@@ -28,6 +28,46 @@ class Usuario
         return false;
     }
 
+    public function findOrCreateGoogleUser($google_id, $nombre, $apellido, $email, $picture)
+    {
+        // Buscar usuario por google_id
+        $stmt = $this->db->prepare("SELECT * FROM t_usuario WHERE google_id = :google_id");
+        $stmt->bindParam(':google_id', $google_id);
+        $stmt->execute();
+        $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if (!$user) {
+            // Si no existe, crear usuario (ajusta los campos según tu lógica)
+            $query = "INSERT INTO t_usuario (nombre, apellido, email, google_id) VALUES (:nombre, :apellido, :email, :google_id)";
+            $stmt = $this->db->prepare($query);
+            $stmt->bindParam(':nombre', $nombre);
+            $stmt->bindParam(':apellido', $apellido);
+            $stmt->bindParam(':email', $email);
+            $stmt->bindParam(':google_id', $google_id);
+            $stmt->execute();
+
+            // Obtener el ID del nuevo usuario
+            $id_usuario = $this->db->lastInsertId();
+
+            // Llamar al procedimiento almacenado para crear guardian + perfil + registro
+            $call = $this->db->prepare("CALL crear_guardian(:id_usuario)");
+            $call->bindParam(":id_usuario", $id_usuario, PDO::PARAM_INT);
+            $call->execute();
+
+            return $this->findByGoogleId($google_id);
+        }
+
+        return $user;
+    }
+
+    public function findByGoogleId($google_id)
+    {
+        $stmt = $this->db->prepare("SELECT * FROM t_usuario WHERE google_id = :google_id");
+        $stmt->bindParam(':google_id', $google_id);
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
     public function registrar($nombre, $apellido, $contrasena, $email, $direccion, $telefono)
     {
         $hash = password_hash($contrasena, PASSWORD_BCRYPT);

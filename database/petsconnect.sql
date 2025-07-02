@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 27-06-2025 a las 06:20:16
+-- Tiempo de generación: 02-07-2025 a las 05:56:45
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -170,8 +170,7 @@ CREATE TABLE `t_administrador` (
 --
 
 INSERT INTO `t_administrador` (`n_documento`, `id_registro`, `id_usuario`) VALUES
-(1001327862, 3, 3),
-(1111111111, 4, 4);
+(10002, 18, 24);
 
 -- --------------------------------------------------------
 
@@ -233,7 +232,7 @@ CREATE TABLE `t_fundacion` (
 --
 
 INSERT INTO `t_fundacion` (`nit_fundacion`, `nombre`, `id_usuario`, `id_perfil`) VALUES
-(1234567890, 'TRE', 23, 15);
+(1001, 'Huellitas', 25, 16);
 
 -- --------------------------------------------------------
 
@@ -252,12 +251,7 @@ CREATE TABLE `t_guardian` (
 --
 
 INSERT INTO `t_guardian` (`id_registro`, `id_usuario`, `id_perfil`) VALUES
-(1, 1, 1),
-(2, 2, 2),
-(5, 5, 3),
-(6, 6, 4),
-(7, 7, 5),
-(8, 8, 6);
+(20, 26, 17);
 
 -- --------------------------------------------------------
 
@@ -310,21 +304,8 @@ CREATE TABLE `t_perfil` (
 --
 
 INSERT INTO `t_perfil` (`id_perfil`, `nombre`, `preferencia`, `descripcion`, `imagen`) VALUES
-(1, 'Perfil Guardian', 'Ninguna', 'Auto-generado', 'default.jpg'),
-(2, 'Perfil Guardian', 'Ninguna', 'Auto-generado', 'default.jpg'),
-(3, 'Perfil Guardian', 'Ninguna', 'Auto-generado', 'default.jpg'),
-(4, 'Perfil Guardian', 'Ninguna', 'Auto-generado', 'default.jpg'),
-(5, 'Perfil Guardian', 'Ninguna', 'Auto-generado', 'default.jpg'),
-(6, 'Perfil Guardian', 'Ninguna', 'Auto-generado', 'default.jpg'),
-(7, 'Perfil Fundación', '', '', 'fundacion_default.jpg'),
-(8, 'Perfil Fundación', '', '', 'fundacion_default.jpg'),
-(9, 'Perfil Fundación', '', '', 'fundacion_default.jpg'),
-(10, 'Perfil Fundación', '', '', 'fundacion_default.jpg'),
-(11, 'Perfil Fundación', '', '', 'fundacion_default.jpg'),
-(12, 'Perfil Fundación', '', '', 'fundacion_default.jpg'),
-(13, 'Perfil Fundación', '', '', 'fundacion_default.jpg'),
-(14, 'Perfil Fundación', '', '', 'fundacion_default.jpg'),
-(15, 'Perfil Fundación', '', '', 'fundacion_default.jpg');
+(16, 'Perfil Fundación', '', '', 'fundacion_default.jpg'),
+(17, 'Valentina', 'Caracoles', 'me gustan los gatos', 'default.jpg');
 
 -- --------------------------------------------------------
 
@@ -379,6 +360,14 @@ CREATE TABLE `t_publicacion` (
   `nit_fundacion` bigint(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Volcado de datos para la tabla `t_publicacion`
+--
+
+INSERT INTO `t_publicacion` (`id_publicacion`, `titulo`, `contenido`, `imagen`, `fecha`, `nit_fundacion`) VALUES
+(3, 'gato lindo', 'gato lindo en bogota', '6860a8d8d2e2d_gato.jpg', '2025-06-29', 1001),
+(4, 'adasd', 'adasd', '6860a9ab29ceb_adopciones.jpg', '2025-06-29', 1001);
+
 -- --------------------------------------------------------
 
 --
@@ -424,23 +413,9 @@ CREATE TABLE `t_registro` (
 --
 
 INSERT INTO `t_registro` (`id_registro`, `fecha`, `tipo_usuario`) VALUES
-(1, '2025-04-23', 'GUARDIAN'),
-(2, '2025-04-24', 'GUARDIAN'),
-(3, '2025-04-24', 'ADMIN'),
-(4, '2025-04-24', 'ADMIN'),
-(5, '2025-04-24', 'GUARDIAN'),
-(6, '2025-05-15', 'GUARDIAN'),
-(7, '2025-06-03', 'GUARDIAN'),
-(8, '2025-06-05', 'GUARDIAN'),
-(9, '2025-06-24', 'FUNDACION'),
-(10, '2025-06-24', 'FUNDACION'),
-(11, '2025-06-24', 'FUNDACION'),
-(12, '2025-06-24', 'FUNDACION'),
-(13, '2025-06-24', 'FUNDACION'),
-(14, '2025-06-24', 'FUNDACION'),
-(15, '2025-06-24', 'FUNDACION'),
-(16, '2025-06-25', 'FUNDACION'),
-(17, '2025-06-26', 'FUNDACION');
+(18, '2025-06-28', 'ADMIN'),
+(19, '2025-06-28', 'FUNDACION'),
+(20, '2025-06-28', 'GUARDIAN');
 
 -- --------------------------------------------------------
 
@@ -477,37 +452,21 @@ CREATE TABLE `t_usuario` (
   `id_usuario` int(11) NOT NULL,
   `nombre` varchar(100) NOT NULL,
   `apellido` varchar(100) NOT NULL,
-  `contrasena` varchar(200) NOT NULL,
+  `contrasena` varchar(200) DEFAULT NULL,
   `email` varchar(100) NOT NULL,
   `direccion` varchar(100) NOT NULL,
-  `telefono` varchar(15) NOT NULL
+  `telefono` varchar(15) NOT NULL,
+  `google_id` varchar(50) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `t_usuario`
 --
 
-INSERT INTO `t_usuario` (`id_usuario`, `nombre`, `apellido`, `contrasena`, `email`, `direccion`, `telefono`) VALUES
-(1, 'johan', 'acero', '$2y$10$CH4iOqn/H8DN47gIPn4WO.gPWP/wm1waGPBGWN5S06LZwhI1UVbIa', 'jasdj@gmail.com', '123123dasd', '1231412'),
-(2, 'valentina', 'urrego', '$2y$10$MMxd5OXxXtDZgoyaFxLmGuBrnQleEW3xXFzs5QclD9xMQAUs64S8O', 'valentina@gmail.com', '123', '123'),
-(3, 'Johan', 'Acero', '$2y$10$RsAyTZoih421KWccHGqvu.BDG73AMY6CMTRkitZWd64KTZoBJDrbC', 'johan@gmail.com', 'Bogotá', '123456789'),
-(4, 'Pablo', 'Vela', '$2y$10$OMPvjW0mZJL/0oMXKjMWmOiED1YBP3b4SE9oDNU3Hzhw6/.63NXci', 'pablo@gmail.com', 'Bogotá', '123456789'),
-(5, 'Andres', 'Miranda', '$2y$10$PFkIhQAEOslDTKUMIaEj3.8YN7jx8kNMMFUQ304cOiSP1s8CHZAXi', 'miranda@gmail.com', '123', '123'),
-(6, 'Kathe', 'Rojas', '$2y$10$u7mOBJMay737QKkGi7TmTOJq8nhc4BEh3iOvaNTcGXe9Xazgsyry2', 'katherojas.2805@hotmail.com', 'hgad', '78162344'),
-(7, 'Kathe', 'Rojas', '$2y$10$g3XvGGIfvEhw4g3teLGbDegTbAbH7DYXzUnvAIA.XffAY3j40TaDa', 'katherojas.2805@hotmail.com', 'jhaf', '786218731'),
-(8, 'Lina ', 'Bohorquez', '$2y$10$lukvLA6yr73Ibdl5wCbWZuKRiqIvfAFA2Zdy4hIFq3aUdETwvi9lS', 'bhrqzln@gmail.com', 'cra1 #43b - 47 sur', '3219192801'),
-(9, 'Ana', 'Carreño', '$2y$10$8xSeuZd2Swz7u2p6LUYVMOgZXZQ647Qhjyme1.uEPxCH16YGglHhq', 'a@gmail.com', 'wjnidc9824', '7658439'),
-(10, 'Ana', 'Carreño', '$2y$10$mkEh6sLEFjSTFcsQDws0eeS5ZVFZKMPx0GYsBhn./ouLaD2cAyp0u', 'a@gmail.com', 'wjnidc9824', '7658439'),
-(11, 'Ana', 'Carreño', '$2y$10$6qGOOu9M7xuQTb6dg4RsWuHt1o.IIzHPKi9cJMKfcebD94D4xHn5C', 'wz@dfh.com', 'wjnidc9824', '981729812'),
-(12, 'Ana', 'Carreño', '$2y$10$l39wAkDAis4DVvRv54rfq.OMj9c.JYJGjOyB295ulsi51VLThi.Pm', 'wz@dfh.com', 'wjnidc9824', '981729812'),
-(13, 'Ana', 'Carreño', '$2y$10$/PrfJ335DoCtwGh9Lw.IIu4.VUp4.q48ZBPF0VAt3mo16Ys2J8EAy', 'wz@dfh.com', 'wjnidc9824', '981729812'),
-(14, 'kt', 'rojas', '$2y$10$qF0zd7rQ4QhJ/iW0bq.SDO11ixjkQzguyws30XqLWMw0945pR8YYm', 'kt@rojas.com', 'injsfs', '876123'),
-(15, 'kt', 'rojas', '$2y$10$i/c9K.VYvf9gEtB/wqOEJ.utkrtdaJ.RpRAoTKefMs2oFkx2MLUui', 'kt@rojas.com', 'ftbkmls', '1234567890'),
-(16, 'kt', 'rojas', '$2y$10$XrwWSwzPxZVQqOLCaXuwz.W.7HetdDH3yI08uYDFqtO5JvHpHhchC', 'kt@rojas.com', 'injsfs', '876123'),
-(17, 'kt', 'rojas', '$2y$10$zOfC5bk8r7I0617lCW6a8OFIrOfNVm9SIX4lpx8ZztThA63eu2xI.', 'kt@rojas.com', 'injsfs', '876123'),
-(18, 'kt', 'rojas', '$2y$10$A2GEVLu/uuzam1A02qfhkuMJJJqVtDvfy52r2ccytM.qPeOssVvka', 'kt@rojas.com', 'injsfs', '876123'),
-(19, 'kt', 'rojas', '$2y$10$yT6sstoHhEPRuBWB8Zxe2./YFC34i5BMznEy6jxDZEKaK5MRF.2xa', 'kt@rojas.com', 'injsfs', '876123'),
-(23, 'kt', 'rojas', '$2y$10$IOjA/Cw5JDr6/zp7A4PMkOqzrRxdTI1M5cyNrPxrzNU5bnmf74Am6', 'kt@rojas.com', 'ftbkmls', '0987654321');
+INSERT INTO `t_usuario` (`id_usuario`, `nombre`, `apellido`, `contrasena`, `email`, `direccion`, `telefono`, `google_id`) VALUES
+(24, 'Kathe', 'Rojas', '$2y$10$BUvym0nWSpiTFi14WZN7Pudai5lMsO.R2bTDK1jyafrKVg1BxU0JW', 'katherojas.2805@gmail.com', 'Bogotá', '123456', NULL),
+(25, 'Andres', 'Ortiz', '$2y$10$jiRpLpwfb/yu/P9ynZI4cOSe2xx3KD/416YB0uV59x8gvmLxH0KdC', 'andres@gmail.com', 'calle12', '12313123', NULL),
+(26, 'Valen', 'Urrego', '$2y$10$Ovdt6RJ8ug0mOavHE8zQYeZNJpYvfI3AMSvmxDwYaSzjRGq52oOee', 'valen@gmail.com', 'sadas', '1231222', NULL);
 
 -- --------------------------------------------------------
 
@@ -562,6 +521,7 @@ ALTER TABLE `t_estado_adopcion`
 --
 ALTER TABLE `t_fundacion`
   ADD PRIMARY KEY (`nit_fundacion`),
+  ADD UNIQUE KEY `nombre` (`nombre`),
   ADD KEY `fk_fundacion_id_usuario` (`id_usuario`),
   ADD KEY `fk_fundacion_id_perfil` (`id_perfil`);
 
@@ -611,7 +571,8 @@ ALTER TABLE `t_proceso_adopcion`
 -- Indices de la tabla `t_producto`
 --
 ALTER TABLE `t_producto`
-  ADD PRIMARY KEY (`id_producto`);
+  ADD PRIMARY KEY (`id_producto`),
+  ADD UNIQUE KEY `nombre` (`nombre`);
 
 --
 -- Indices de la tabla `t_publicacion`
@@ -650,7 +611,9 @@ ALTER TABLE `t_tipo_mascota`
 -- Indices de la tabla `t_usuario`
 --
 ALTER TABLE `t_usuario`
-  ADD PRIMARY KEY (`id_usuario`);
+  ADD PRIMARY KEY (`id_usuario`),
+  ADD UNIQUE KEY `email` (`email`),
+  ADD UNIQUE KEY `telefono` (`telefono`);
 
 --
 -- Indices de la tabla `t_vacuna`
@@ -690,7 +653,7 @@ ALTER TABLE `t_informe`
 -- AUTO_INCREMENT de la tabla `t_perfil`
 --
 ALTER TABLE `t_perfil`
-  MODIFY `id_perfil` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id_perfil` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT de la tabla `t_proceso_adopcion`
@@ -708,7 +671,7 @@ ALTER TABLE `t_producto`
 -- AUTO_INCREMENT de la tabla `t_publicacion`
 --
 ALTER TABLE `t_publicacion`
-  MODIFY `id_publicacion` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_publicacion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT de la tabla `t_recuperar_constrasena`
@@ -726,7 +689,7 @@ ALTER TABLE `t_red_social`
 -- AUTO_INCREMENT de la tabla `t_registro`
 --
 ALTER TABLE `t_registro`
-  MODIFY `id_registro` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `id_registro` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT de la tabla `t_tipo_mascota`
@@ -738,7 +701,7 @@ ALTER TABLE `t_tipo_mascota`
 -- AUTO_INCREMENT de la tabla `t_usuario`
 --
 ALTER TABLE `t_usuario`
-  MODIFY `id_usuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `id_usuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
 -- Restricciones para tablas volcadas

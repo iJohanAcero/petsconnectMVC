@@ -4,6 +4,7 @@ use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
 require_once __DIR__ . '/../vendor/autoload.php'; // Ajusta la ruta si es necesario
+require_once "config/roles.php";
 
 class AuthController
 {
@@ -56,7 +57,7 @@ class AuthController
                     $mail->Host = 'smtp.gmail.com';
                     $mail->SMTPAuth = true;
                     $mail->Username = 'pablovela.upn@gmail.com'; // Tu correo de Gmail
-                    $mail->Password = 'azky mxkm gqwa awvt'; 
+                    $mail->Password = 'azky mxkm gqwa awvt';
                     // Contraseña de aplicación de Gmail
                     $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
                     $mail->Port = 587;
@@ -72,7 +73,7 @@ class AuthController
                 } catch (Exception $e) {
                     $mensaje .= "<br><span style='color:red;'>No se pudo enviar el correo. Usa el enlace de arriba.<br>Error: {$mail->ErrorInfo}</span>";
                 }
-            } 
+            }
             $conn->close();
         }
     }
@@ -116,7 +117,7 @@ class AuthController
             $stmt->execute();
             $stmt->bind_result($id_usuario, $email_token, $fecha_expiracion);
             if ($stmt->fetch()) {
-                
+
                 if (strtotime($fecha_expiracion) < strtotime(date('Y-m-d'))) {
                     $error = "El enlace ha expirado.";
                     $stmt->close();
@@ -161,7 +162,7 @@ class AuthController
         }
         require __DIR__ . '/../view/login/restablecerContraseña.php';
     }
-    
+
     public function enviar_tutorial()
     {
         $mensaje = '';
@@ -215,6 +216,85 @@ class AuthController
         }
         print_r($mensaje);
     }
+
+    public function loginGoogle()
+    {
+        $client = new Google_Client();
+        $client->setClientId('637931459042-873opva17515qd99c4dj51i6202jdqlf.apps.googleusercontent.com');
+        $client->setClientSecret('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');
+        $client->setRedirectUri('http://localhost/petsconnectmvc/index.php?action=google_callback');
+        $client->addScope('email');
+        $client->addScope('profile');
+
+        $login_url = $client->createAuthUrl();
+        header('Location: ' . $login_url);
+        exit;
+    }
+
+    // Callback de Google
+    public function googleCallback()
+    {
+        $client = new Google_Client();
+        $client->setClientId('637931459042-873opva17515qd99c4dj51i6202jdqlf.apps.googleusercontent.com');
+        $client->setClientSecret('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');
+        $client->setRedirectUri('http://localhost/petsconnectmvc/index.php?action=google_callback');
+
+        if (isset($_GET['code'])) {
+            $token = $client->fetchAccessTokenWithAuthCode($_GET['code']);
+
+            if (isset($token['error'])) {
+                echo "<h3>Error al obtener el token de Google:</h3>";
+                echo "<p><strong>Código:</strong> " . htmlspecialchars($token['error']) . "</p>";
+                echo "<p><strong>Descripción:</strong> " . htmlspecialchars($token['error_description'] ?? 'Sin descripción') . "</p>";
+                exit;
+            }
+
+            $client->setAccessToken($token['access_token']);
+
+            // Obtener información del usuario
+            $oauth2 = new Google_Service_Oauth2($client);
+            $google_user = $oauth2->userinfo->get();
+
+            if (isset($google_user->id)) {
+                $usuarioModel = new Usuario();
+                // Usamos el método findOrCreateGoogleUser que ya tienes en tu modelo
+                $user = $usuarioModel->findOrCreateGoogleUser(
+                    $google_user->id,
+                    $google_user->givenName ?? '',
+                    $google_user->familyName ?? '',
+                    $google_user->email,
+                    $google_user->picture ?? null
+                );
+
+                session_start();
+                $_SESSION['user'] = $user;
+
+                if (esAdmin($user["id_usuario"])) {
+                    $_SESSION["tipo_usuario"] = "admin";
+                    header("Location: index.php?page=admin_home");
+                    exit;
+                } else if (esGuardian($user["id_usuario"])) {
+                    $_SESSION["tipo_usuario"] = "guardian";
+                    header("Location: index.php?page=guardian_home");
+                    exit;
+                } else if (esFundacion($user["id_usuario"])) {
+                    $_SESSION["tipo_usuario"] = "fundacion";
+                    header("Location: index.php?page=fundacion_home");
+                    exit;
+                } else {
+                    $_SESSION["tipo_usuario"] = "desconocido";
+                    session_destroy();
+                    header("Location: index.php?page=login");
+                    exit;
+                }
+                header('Location: index.php?page=guardian_home');
+                exit;
+            } else {
+                echo "<h3>No se pudo obtener información del usuario.</h3>";
+                exit;
+            }
+        }
+    }
 }
 
 if (isset($_GET['action']) && $_GET['action'] === 'enviar_recuperacion') {
@@ -225,4 +305,3 @@ if (isset($_GET['action']) && $_GET['action'] === 'enviar_tutorial') {
     $controller->enviar_tutorial();
     exit;
 }
-

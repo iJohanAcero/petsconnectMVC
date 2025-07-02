@@ -1,0 +1,5 @@
+ID de cliente: 
+637931459042-873opva17515qd99c4dj51i6202jdqlf.apps.googleusercontent.com
+
+Secreto del cliente:
+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

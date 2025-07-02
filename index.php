@@ -1,7 +1,9 @@
 <?php
+require_once __DIR__ . '/vendor/autoload.php';
 require_once "controller/usuario/usuarioController.php";
 require_once "config/roles.php";
 require_once "controller/AuthController.php"; // Agrega esta línea arriba
+
 
 session_start();
 $controller = new UsuarioController();
@@ -71,8 +73,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["action"])) {
 // --- Logout ---
 if (isset($_GET["action"]) && $_GET["action"] == "logout") {
     session_destroy();
-    header("Location: view/login/login.php");
+    header("Location: index.php?page=landing");
     exit;
+}
+// --- Login con Google ---
+if (isset($_GET['action']) && $_GET['action'] === 'login_google') {
+    (new AuthController())->loginGoogle();
+}
+if (isset($_GET['action']) && $_GET['action'] === 'google_callback') {
+    (new AuthController())->googleCallback();
 }
 
 // MOSTRAR PUBLICACIONES EN EL INICIO
@@ -87,7 +96,8 @@ $routes = [
     "admin_home"    => ["role" => "admin",    "file" => "view/home/admin_home.php"],
     "guardian_home" => ["role" => "guardian", "file" => "view/home/guardian_home.php"],
     "fundacion_home" => ["role" => "fundacion", "file" => "view/home/fundacion_home.php"],
-    // Puedes agregar más rutas aquí
+    "login"        => ["role" => "guest",   "file" => "view/login/login.php"],
+    "registro"     => ["role" => "guest",   "file" => "view/login/register.php"],
 ];
 
 // --- Si no hay sesión, mostrar landing o registro ---
@@ -96,6 +106,8 @@ $page = $_GET["page"] ?? "";
 if (!isset($_SESSION["user"])) {
     if ($page === "registro") {
         require_once $routes["registro"]["file"];
+    } elseif ($page === "login") {
+        require_once $routes["login"]["file"];
     } else {
         require_once "view/login/landing.php";
     }
