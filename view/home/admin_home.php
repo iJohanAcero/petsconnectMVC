@@ -120,7 +120,6 @@ if (!isset($_SESSION["user"]) || $_SESSION["tipo_usuario"] !== "admin") {
         </div>
     </nav>
     <!-- Fin Navbar Bootstrap -->
-
     <!--============================================================MAIN=============================================-->
     <div class="wrapper align-items-center">
         <aside id="sidebar">
@@ -216,7 +215,7 @@ if (!isset($_SESSION["user"]) || $_SESSION["tipo_usuario"] !== "admin") {
                             </a>
                             <ul id="crud-3" class="sidebar-dropdown list-unstyled collapse">
                                 <li class="sidebar-item">
-                                    <a href="" class="sidebar-link">
+                                    <a href="#" class="sidebar-link" id="btn-cargar-mascotas">
                                         - Mascotas
                                     </a>
                                 </li>
@@ -286,6 +285,7 @@ if (!isset($_SESSION["user"]) || $_SESSION["tipo_usuario"] !== "admin") {
             </ul>
         </aside>
         <!-- ============================================ MAIN CONTENT ============================================ -->
+        
         <div class="main" id="main-content">
             <div id="publicaciones-container"></div>
             <div id="loader" class="text-center my-3" style="display:none;">
@@ -301,11 +301,13 @@ if (!isset($_SESSION["user"]) || $_SESSION["tipo_usuario"] !== "admin") {
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
 
     <!-- SCRIPTS DE JS CRUDS Y RUTAS -->
+    <script src="Public/js/config.js"></script>
     <script src="Public/js/main.js"></script>
     <script src="Public/js/crud/crud_producto.js"></script>
     <script src="Public/js/crud/crud_fundacion.js"></script>
     <script src="Public/js/crud/crud_publicacion.js"></script>
     <script src="Public/js/routes/routes.js"></script>
+    <script src="Public/js/crud/crud_mascota.js"></script>
 
     <script>
         let page = 1;
