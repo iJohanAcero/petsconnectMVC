@@ -13,38 +13,38 @@ class Fundacion
 
     // Método para agregar una nueva fundación (dejé igual porque funciona bien)
     public function registrarFundacion($nombre_rep, $apellido_rep, $contrasena, $email, $direccion, $telefono, $nombre_fundacion, $nit_fundacion)
-{
-    // Se encripta la contraseña antes de enviarla al procedimiento
-    $hash = password_hash($contrasena, PASSWORD_BCRYPT);
+    {
+        // Se encripta la contraseña antes de enviarla al procedimiento
+        $hash = password_hash($contrasena, PASSWORD_BCRYPT);
 
-    // Llamamos el procedimiento almacenado con los mismos parámetros que definimos
-    $call = $this->db->prepare("CALL crear_fundacion(
+        // Llamamos el procedimiento almacenado con los mismos parámetros que definimos
+        $call = $this->db->prepare("CALL crear_fundacion(
         :rep_nombre, :rep_apellido, :rep_contrasena, :rep_email,
         :rep_direccion, :rep_telefono, :fund_nombre, :fund_nit
     )");
 
-    // Se enlazan los parámetros
-    $call->bindParam(':rep_nombre', $nombre_rep);
-    $call->bindParam(':rep_apellido', $apellido_rep);
-    $call->bindParam(':rep_contrasena', $hash);
-    $call->bindParam(':rep_email', $email);
-    $call->bindParam(':rep_direccion', $direccion);
-    $call->bindParam(':rep_telefono', $telefono);
-    $call->bindParam(':fund_nombre', $nombre_fundacion); // este es el nombre legal de la fundación
-    $call->bindParam(':fund_nit', $nit_fundacion);
+        // Se enlazan los parámetros
+        $call->bindParam(':rep_nombre', $nombre_rep);
+        $call->bindParam(':rep_apellido', $apellido_rep);
+        $call->bindParam(':rep_contrasena', $hash);
+        $call->bindParam(':rep_email', $email);
+        $call->bindParam(':rep_direccion', $direccion);
+        $call->bindParam(':rep_telefono', $telefono);
+        $call->bindParam(':fund_nombre', $nombre_fundacion); // este es el nombre legal de la fundación
+        $call->bindParam(':fund_nit', $nit_fundacion);
 
-    return $call->execute();
-}
+        return $call->execute();
+    }
 
 
 
     // Obtener todas las fundaciones (dejé igual porque funciona bien)
     public function getFundacion()
-{
-    $rows = [];
+    {
+        $rows = [];
 
-    // Esta consulta junta fundación + representante (usuario)
-    $sql = "SELECT 
+        // Esta consulta junta fundación + representante (usuario)
+        $sql = "SELECT 
                 f.nit_fundacion AS nit,
                 f.nombre AS nombre_fundacion,
                 u.nombre AS nombre_representante,
@@ -54,21 +54,21 @@ class Fundacion
             FROM t_fundacion f
             INNER JOIN t_usuario u ON f.id_usuario = u.id_usuario";
 
-    $statement = $this->db->prepare($sql);
-    $statement->execute();
+        $statement = $this->db->prepare($sql);
+        $statement->execute();
 
-    // Trae todos los resultados como arreglos asociativos
-    while ($resultado = $statement->fetch(PDO::FETCH_ASSOC)) {
-        $rows[] = $resultado;
+        // Trae todos los resultados como arreglos asociativos
+        while ($resultado = $statement->fetch(PDO::FETCH_ASSOC)) {
+            $rows[] = $resultado;
+        }
+
+        return $rows;
     }
-
-    return $rows;
-}
 
     // Obtener fundación por NIT (dejé igual porque funciona bien)
     public function getId($nit)
-{
-    $statement = $this->db->prepare("
+    {
+        $statement = $this->db->prepare("
         SELECT 
             f.nit_fundacion,
             f.nombre AS nombre_fundacion,
@@ -81,16 +81,16 @@ class Fundacion
         INNER JOIN t_usuario u ON f.id_usuario = u.id_usuario
         WHERE f.nit_fundacion = :nit
     ");
-    $statement->bindParam(':nit', $nit);
-    $statement->execute();
+        $statement->bindParam(':nit', $nit);
+        $statement->execute();
 
-    $rows = [];
-    while ($resultado = $statement->fetch(PDO::FETCH_ASSOC)) {
-        $rows[] = $resultado;
+        $rows = [];
+        while ($resultado = $statement->fetch(PDO::FETCH_ASSOC)) {
+            $rows[] = $resultado;
+        }
+
+        return $rows;
     }
-
-    return $rows;
-}
 
     // ACTUALIZAR FUNDACIÓN - CORREGIDO (cambié los parámetros y consulta)
     public function updateFundacion($nit, $nombre, $apellido, $email, $direccion, $telefono)
@@ -144,5 +144,19 @@ class Fundacion
         $result2 = $stmt->execute();
 
         return $result1 && $result2;
+    }
+
+    public function getNitsFundacion()
+    {
+        $nits = [];
+
+        $stmt = $this->db->prepare("SELECT nit_fundacion FROM t_fundacion");
+        $stmt->execute();
+
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $nits[] = $row;
+        }
+
+        return $nits;
     }
 }
