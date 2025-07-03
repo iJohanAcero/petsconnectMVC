@@ -7,6 +7,16 @@ require_once "controller/AuthController.php"; // Agrega esta línea arriba
 
 session_start();
 $controller = new UsuarioController();
+// --- Definición de rutas protegidas ---
+$routes = [
+    "admin_home"    => ["role" => "admin",    "file" => "view/home/admin_home.php"],
+    "guardian_home" => ["role" => "guardian", "file" => "view/home/guardian_home.php"],
+    "fundacion_home" => ["role" => "fundacion", "file" => "view/home/fundacion_home.php"],
+    "login"        => ["role" => "guest","file" => "view/login/login.php"],
+    "registro"     => ["role" => "guest","file" => "view/login/register.php"],
+    "recuperar_contrasena" => ["role" => "guest","file" => "view/login/recuperarContraseña.php"],
+    "restablecer_contrasena" => ["role" => "guest", "file" => "view/login/restablecerContraseña.php"],
+];
 
 // --- Manejo de formularios POST ---
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["action"])) {
@@ -52,20 +62,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["action"])) {
                 $_SESSION["tipo_usuario"] = "guardian";
                 header("Location: index.php?page=guardian_home");
                 exit;
-                
             } else if (esFundacion($user["id_usuario"])) {
                 $_SESSION["tipo_usuario"] = "fundacion";
                 header("Location: index.php?page=fundacion_home");
                 exit;
-                
-            } 
-            else {
+            } else {
                 $_SESSION["tipo_usuario"] = "desconocido";
                 $mensaje = "No se pudo determinar el rol del usuario";
                 exit;
             }
         } else {
             $mensaje = "Usuario o contraseña incorrecta";
+            require_once $routes["login"]["file"]; 
+            exit;
         }
     }
 }
@@ -91,14 +100,6 @@ if (isset($_GET['action']) && $_GET['action'] === 'publicaciones_recientes') {
     exit;
 }
 
-// --- Definición de rutas protegidas ---
-$routes = [
-    "admin_home"    => ["role" => "admin",    "file" => "view/home/admin_home.php"],
-    "guardian_home" => ["role" => "guardian", "file" => "view/home/guardian_home.php"],
-    "fundacion_home" => ["role" => "fundacion", "file" => "view/home/fundacion_home.php"],
-    "login"        => ["role" => "guest",   "file" => "view/login/login.php"],
-    "registro"     => ["role" => "guest",   "file" => "view/login/register.php"],
-];
 
 // --- Si no hay sesión, mostrar landing o registro ---
 $page = $_GET["page"] ?? "";
@@ -108,6 +109,11 @@ if (!isset($_SESSION["user"])) {
         require_once $routes["registro"]["file"];
     } elseif ($page === "login") {
         require_once $routes["login"]["file"];
+    } elseif ($page === "recuperar_contrasena") {
+        require_once $routes["recuperar_contrasena"]["file"];
+    } elseif ($page === "restablecer_contrasena") {
+        require_once "view/login/restablecerContraseña.php";
+
     } else {
         require_once "view/login/landing.php";
     }

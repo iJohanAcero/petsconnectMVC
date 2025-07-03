@@ -68,8 +68,8 @@
                                 <input type="password" placeholder="Contraseña" id="contrasena" name="contrasena" required />
                             </div>
                             <?php if (isset($mensaje)): ?>
-                                <div class="ud-form-group error-message">
-                                    <?php echo $mensaje; ?>
+                                <div class="alert alert-danger">
+                                    <?php echo htmlspecialchars($mensaje); ?>
                                 </div>
                             <?php endif; ?>
                             <div class="ud-form-group">
@@ -92,7 +92,7 @@
                             </ul>
                         </div>
 
-                        <a class="forget-pass" href="recuperarContraseña.php">
+                        <a class="forget-pass" href="index.php?page=recuperar_contrasena">
                             ¿Olvidaste tu contraseña?
                         </a>
                         <p class="signup-option">

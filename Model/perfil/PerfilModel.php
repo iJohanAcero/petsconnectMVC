@@ -22,6 +22,21 @@ class PerfilModel
         ");
         $stmt->bindParam(':id_usuario', $id_usuario, PDO::PARAM_INT);
         $stmt->execute();
-        return $stmt->fetch(PDO::FETCH_ASSOC);
+        $perfil = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    if ($perfil) {
+        return $perfil;
+    }
+    // Buscar en fundacion si no es guardian
+    $stmt = $this->db->prepare("
+        SELECT p.*
+        FROM t_fundacion f
+        INNER JOIN t_perfil p ON f.id_perfil = p.id_perfil
+        WHERE f.id_usuario = :id_usuario
+        LIMIT 1
+    ");
+    $stmt->bindParam(':id_usuario', $id_usuario, PDO::PARAM_INT);
+    $stmt->execute();
+    return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 }

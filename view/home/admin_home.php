@@ -328,29 +328,29 @@ if (!isset($_SESSION["user"]) || $_SESSION["tipo_usuario"] !== "admin") {
                     if (res && res.length > 0) {
                         res.forEach(pub => {
                             $('#publicaciones-container').append(`
-  <div class="card mb-4 shadow-sm border-0 rounded-4 bg-white">
-    <div class="card-body">
-      <div class="d-flex justify-content-between align-items-center mb-2 flex-wrap">
-      <h4 class="card-title mb-0 fw-bold">${pub.titulo}</h4>
-        <small class="text-primary fw-semibold">Fundación: ${pub.nombre_fundacion}</small>
+    <div class="card post-card mb-4 shadow-sm border-0">
+  <div class="card-body">
+    <div class="d-flex justify-content-between align-items-center mb-2 flex-wrap">
+      <h4 class="card-title fw-bold mb-0">${pub.titulo}</h4>
+      <small class="text-primary fw-semibold">Fundación: ${pub.nombre_fundacion}</small>
+    </div>
+
+    ${pub.imagen ? `
+      <div class="post-image-container mb-3">
+        <img src="Public/images/eventos_fundacion/${pub.imagen}"
+             class="img-fluid rounded-3 post-image"
+             alt="Imagen publicación">
       </div>
-      
-      ${pub.imagen ? `
-        <div class="text-center mb-3">
-          <img src="Public/images/eventos_fundacion/${pub.imagen}" 
-            class="img-fluid rounded-3" 
-            alt="Imagen publicación" 
-            style="max-height:500px; object-fit:cover; width:100%;">
-        </div>
-      ` : ''}
-      <p class="text-muted">Descripción:</p>
-      <p class="card-text">${pub.contenido}</p>
-      
-      <div class="text-end">
-        <small class="text-muted">📅fecha publicación: ${pub.fecha}</small>
-      </div>
+    ` : ''}
+
+    <p class="text-muted mb-1">Descripción:</p>
+    <p class="card-text">${pub.contenido}</p>
+
+    <div class="text-end mt-3">
+      <small class="text-muted">${pub.fecha}</small>
     </div>
   </div>
+</div>
 `);
                         });
                         page++;

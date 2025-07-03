@@ -1,5 +1,5 @@
 <?php
-require_once '../../controller/AuthController.php';
+require_once 'controller/AuthController.php';
 $mensaje = $error = null;
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['email'])) {
@@ -21,7 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['email'])) {
     <!--====== Favicon Icon ======-->
     <link
         rel="shortcut icon"
-        href="../../Public/images/icono2.png"
+        href="Public/images/icono2.png"
         type="image/png" />
 
 
@@ -29,11 +29,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['email'])) {
     <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.8/css/line.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 
-    <link rel="stylesheet" href=../../Public/css/animate.css" />
-    <link rel="stylesheet" href="../../Public/css/ud-styles.css" />
+    <link rel="stylesheet" href=Public/css/animate.css" />
+    <link rel="stylesheet" href="Public/css/ud-styles.css" />
 </head>
 
-<body style="background-color: f3f4fe; background-image: url('../../Public/images/login/background.jpg'); background-size:contain;">
+<body style="background-color: f3f4fe; background-image: url('Public/images/login/background.jpg'); background-size:contain;">
 
     <section class="ud-login">
         <div class="container">
@@ -42,7 +42,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['email'])) {
                     <div class="ud-login-wrapper">
                         <!-- Logo -->
                         <div class="ud-login-logo">
-                            <img src="../../Public/images/icono.png" alt="logo" />
+                            <img src="Public/images/icono.png" alt="logo" />
                         </div>
 
                         <!-- Formulario para recuperar contraseña -->
@@ -55,10 +55,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['email'])) {
                             </div>
                         </form>
                         <p class="signup-option">
-                            ¿Ya tienes un token? <a href="./restablecerContraseña.php"> Restablecer contraseña </a>
+                            ¿Ya tienes un token? <a href="index.php?page=restablecer_contrasena"> Restablecer contraseña </a>
                         </p>
                         <!-- Volver al login -->
-                        <form action="/petsconnectMVC/index.php" method="get">
+                        <form action="index.php" method="get">
                             <div class="ud-form-group">
                                 <button type="submit" name="action" value="mostrar_login" class="ud-main-btn w-100 btn-secondary">
                                     Volver al Login
@@ -83,8 +83,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['email'])) {
         </div>
     </section>
 
-    <script src="../../Public/js/bootstrap.bundle.min.js"></script>
-    <script src="../../Public/js/wow.min.js"></script>
+    <script src="Public/js/bootstrap.bundle.min.js"></script>
+    <script src="Public/js/wow.min.js"></script>
 </body>
 
 </html>

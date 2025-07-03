@@ -37,7 +37,7 @@ if (!isset($_SESSION["user"]) || $_SESSION["tipo_usuario"] !== "guardian") {
     <link rel="stylesheet" href="//cdn.datatables.net/2.3.2/css/dataTables.dataTables.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 
-    <link rel="stylesheet" href="Public/css/styles.css" />
+<link rel="stylesheet" href="Public/css/styles.css" />
     <link rel="stylesheet" href="Public/css/animate.css" />
     <link rel="stylesheet" href="Public/css/ud-styles.css" /> <!-- Llamamos a la librería de iconos -->
 
@@ -140,7 +140,7 @@ if (!isset($_SESSION["user"]) || $_SESSION["tipo_usuario"] !== "guardian") {
                     </a>
                 </li>
                 <li class="sidebar-item">
-                    <a href="#" class="sidebar-link" onclick="cargarPerfil()">
+                    <a href="#" class="sidebar-link"  id="btn-cargar-perfilGuardian">
                         <i class="uil uil-user"></i>
                         <span class="sidebar-text">Perfil</span>
                     </a>
@@ -199,6 +199,7 @@ if (!isset($_SESSION["user"]) || $_SESSION["tipo_usuario"] !== "guardian") {
     <script src="Public/js/main.js"></script>
 
     <script src="Public/js/routes/routes.js"></script>
+    <script src="Public/js/routes/perfilGuardian.js"></script>
 
     <script>
         let page = 1;
@@ -221,29 +222,30 @@ if (!isset($_SESSION["user"]) || $_SESSION["tipo_usuario"] !== "guardian") {
                     if (res && res.length > 0) {
                         res.forEach(pub => {
                             $('#publicaciones-container').append(`
-  <div class="card mb-4 shadow-sm border-0 rounded-4 bg-white">
-    <div class="card-body">
-      <div class="d-flex justify-content-between align-items-center mb-2 flex-wrap">
-      <h4 class="card-title mb-0 fw-bold">${pub.titulo}</h4>
-        <small class="text-primary fw-semibold">Fundación: ${pub.nombre_fundacion}</small>
+                            
+   <div class="card post-card mb-4 shadow-sm border-0">
+  <div class="card-body">
+    <div class="d-flex justify-content-between align-items-center mb-2 flex-wrap">
+      <h4 class="card-title fw-bold mb-0">${pub.titulo}</h4>
+      <small class="text-primary fw-semibold">Fundación: ${pub.nombre_fundacion}</small>
+    </div>
+
+    ${pub.imagen ? `
+      <div class="post-image-container mb-3">
+        <img src="Public/images/eventos_fundacion/${pub.imagen}"
+             class="img-fluid rounded-3 post-image"
+             alt="Imagen publicación">
       </div>
-      
-      ${pub.imagen ? `
-        <div class="text-center mb-3">
-          <img src="Public/images/eventos_fundacion/${pub.imagen}" 
-            class="img-fluid rounded-3" 
-            alt="Imagen publicación" 
-            style="max-height:500px; object-fit:cover; width:100%;">
-        </div>
-      ` : ''}
-      <p class="text-muted">Descripción:</p>
-      <p class="card-text">${pub.contenido}</p>
-      
-      <div class="text-end">
-        <small class="text-muted">📅fecha publicación: ${pub.fecha}</small>
-      </div>
+    ` : ''}
+
+    <p class="text-muted mb-1">Descripción:</p>
+    <p class="card-text">${pub.contenido}</p>
+
+    <div class="text-end mt-3">
+      <small class="text-muted">${pub.fecha}</small>
     </div>
   </div>
+</div>
 `);
                         });
                         page++;
