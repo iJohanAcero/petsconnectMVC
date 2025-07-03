@@ -33,8 +33,8 @@ $nit_sesion = $_SESSION['user']['nit_fundacion'] ?? null;
     </div>
 
     <div class="table-responsive">
-        <table class="table table-striped table-hover table-bordered" id="tabla_mascotas">
-            <thead class="table-dark">
+        <table class="table table-striped table-hover table-bordered text-center" id="tabla_mascotas">
+            <thead class="table" style="background-color: #1a1333; color: white;">
                 <tr>
                     <th>ID</th>
                     <th>Nombre</th>
@@ -96,13 +96,13 @@ $nit_sesion = $_SESSION['user']['nit_fundacion'] ?? null;
 
 <!-- Modal Registrar Mascota -->
 <div class="modal fade" id="modal-mascotas" tabindex="-1">
-    <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-dialog modal-dialog-centered" style="margin-top: 70px;">
         <div class="modal-content">
             <form id="form-registrar-mascota" method="post" enctype="multipart/form-data">
                 <input type="hidden" name="accion" value="registrar">
 
-                <div class="modal-header">
-                    <h5 class="modal-title">Registrar nueva mascota</h5>
+                <div class="modal-header" style="background-color: #1a1333; color: white;">
+                    <h5 class="modal-title" style="color: white;">Registrar nueva mascota</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
 
@@ -192,7 +192,7 @@ $nit_sesion = $_SESSION['user']['nit_fundacion'] ?? null;
 <div class="modal fade" id="modal-editar-mascota" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
-            <div class="modal-header">
+            <div class="modal-header" style="background-color: #fdaac4;">
                 <h5 class="modal-title">Editar Mascota</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>

@@ -13,8 +13,8 @@ $Fundaciones = $Modelo->getFundacion(); // Suponiendo que tienes este método
     </div>
 
     <div class="table-responsive">
-        <table class="table table-striped table-hover table-bordered" id="tabla_fundaciones">
-            <thead class="table-dark">
+        <table class="table table-striped table-hover table-bordered text-center" id="tabla_fundaciones">
+            <thead class= "table" style="background-color: #1a1333; color: white;">
                 <tr>
                     <th>NIT</th>
                     <th>Nombre Fundación</th>
@@ -138,7 +138,7 @@ $Fundaciones = $Modelo->getFundacion(); // Suponiendo que tienes este método
 <div class="modal fade" id="modal-editar-fundacion" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered modal-lg" style="margin-top: 80px;">
         <div class="modal-content">
-            <div class="modal-header bg-warning">
+            <div class="modal-header" style="background-color: #fdaac4;">
                 <h5 class="modal-title">Editar Fundación</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
