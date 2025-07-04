@@ -92,6 +92,13 @@ class Fundacion
         return $rows;
     }
 
+public static function obtenerNitPorUsuario($id_usuario) {
+    $db = new PDO("mysql:host=localhost;dbname=petsconnect", "root", ""); // Ajusta usuario/contraseña si es necesario
+    $stmt = $db->prepare("SELECT nit_fundacion FROM t_fundacion WHERE id_usuario = ?");
+    $stmt->execute([$id_usuario]);
+    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+    return $row ? $row["nit_fundacion"] : null;
+}
     // ACTUALIZAR FUNDACIÓN - CORREGIDO (cambié los parámetros y consulta)
     public function updateFundacion($nit, $nombre, $apellido, $email, $direccion, $telefono)
     {

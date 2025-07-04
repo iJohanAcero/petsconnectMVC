@@ -4,7 +4,7 @@ use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
 require_once __DIR__ . '/../vendor/autoload.php'; // Ajusta la ruta si es necesario
-require_once "config/roles.php";
+require_once __DIR__ . '/../config/roles.php';
 
 class AuthController
 {
@@ -45,7 +45,7 @@ class AuthController
                 $stmt->close();
 
                 // Enlace de restablecimiento
-                $url = "http://localhost/petsconnectMVC/view/login/restablecerContraseña.php?token=$token";
+                $url = "http://localhost/petsconnectMVC/index.php?page=restablecer_contrasena&token=$token";
                 $mensaje = 'Haz clic en el siguiente enlace para cambiar tu contraseña: <a href="' . $url . '">Cambiar contraseña</a>';
 
                 // Envío de correo (opcional)
@@ -93,73 +93,51 @@ class AuthController
             $email = $_POST['email'] ?? '';
             $contrasena = $_POST['contrasena'] ?? '';
             $contrasena2 = $_POST['contrasena2'] ?? '';
-            // Depuración: mostrar datos recibidos
 
             if (empty($email) || empty($contrasena) || empty($contrasena2)) {
                 $error = "Todos los campos son obligatorios.";
-
-                return;
-            }
-            if ($contrasena !== $contrasena2) {
+            } elseif ($contrasena !== $contrasena2) {
                 $error = "Las contraseñas no coinciden.";
-                return;
-            }
-
-            $conn = new mysqli("localhost", "root", "", "petsconnect");
-            if ($conn->connect_error) {
-                $error = "Error de conexión a la base de datos.";
-                return;
-            }
-
-            // Validar token y obtener usuario
-            $stmt = $conn->prepare("SELECT id_usuario, email, fecha_expiracion FROM t_recuperar_constrasena WHERE codigo_recuperacion = ?");
-            $stmt->bind_param("s", $token);
-            $stmt->execute();
-            $stmt->bind_result($id_usuario, $email_token, $fecha_expiracion);
-            if ($stmt->fetch()) {
-
-                if (strtotime($fecha_expiracion) < strtotime(date('Y-m-d'))) {
-                    $error = "El enlace ha expirado.";
-                    $stmt->close();
-                    $conn->close();
-                    return;
-                }
-                if ($email !== $email_token) {
-                    $error = "El correo no coincide con el de la solicitud.";
-                    $stmt->close();
-                    $conn->close();
-                    return;
-                }
-                $stmt->close();
-
-                // Actualizar contraseña
-                $hash = password_hash($contrasena, PASSWORD_DEFAULT);
-                // Verifica los valores antes de actualizar
-                var_dump($hash, $id_usuario);
-
-                $stmt = $conn->prepare("UPDATE t_usuario SET contrasena = ? WHERE email = ?");
-                $stmt->bind_param("ss", $hash, $email);
-                $stmt->execute();
-
-                // Verifica si realmente se actualizó alguna fila
-                if ($stmt->affected_rows > 0) {
-                    $mensaje = "¡Contraseña restablecida correctamente! Ya puedes iniciar sesión.";
-                } else {
-                    $error = "No se pudo actualizar la contraseña. Verifica tus datos.";
-                }
-
-                $stmt->close();
-
-                // Eliminar token usado
-                $stmt = $conn->prepare("DELETE FROM t_recuperar_constrasena WHERE codigo_recuperacion = ?");
-                $stmt->bind_param("s", $token);
-                $stmt->execute();
-                $stmt->close();
             } else {
-                $error = "El enlace no es válido o ha expirado.";
+                $conn = new mysqli("localhost", "root", "", "petsconnect");
+                if ($conn->connect_error) {
+                    $error = "Error de conexión a la base de datos.";
+                } else {
+                    $stmt = $conn->prepare("SELECT id_usuario, email, fecha_expiracion FROM t_recuperar_constrasena WHERE codigo_recuperacion = ?");
+                    $stmt->bind_param("s", $token);
+                    $stmt->execute();
+                    $stmt->bind_result($id_usuario, $email_token, $fecha_expiracion);
+                    if ($stmt->fetch()) {
+                        if (strtotime($fecha_expiracion) < strtotime(date('Y-m-d'))) {
+                            $error = "El enlace ha expirado.";
+                        } elseif ($email !== $email_token) {
+                            $error = "El correo no coincide con el de la solicitud.";
+                        } else {
+                            $stmt->close();
+                            $hash = password_hash($contrasena, PASSWORD_DEFAULT);
+                            $stmt = $conn->prepare("UPDATE t_usuario SET contrasena = ? WHERE email = ?");
+                            $stmt->bind_param("ss", $hash, $email);
+                            $stmt->execute();
+                            if ($stmt->affected_rows > 0) {
+                                $mensaje = "¡Contraseña restablecida correctamente! Ya puedes iniciar sesión.";
+                            } else {
+                                $error = "No se pudo actualizar la contraseña. Verifica tus datos.";
+                            }
+                            $stmt->close();
+                            // Eliminar token usado
+                            $stmt = $conn->prepare("DELETE FROM t_recuperar_constrasena WHERE codigo_recuperacion = ?");
+                            $stmt->bind_param("s", $token);
+                            $stmt->execute();
+                            $stmt->close();
+                        }
+                    } else {
+                        $error = "El enlace no es válido o ha expirado.";
+                    }
+                    $conn->close();
+                }
             }
-            $conn->close();
         }
+        // SIEMPRE muestra la vista al final, así los mensajes se ven
         require __DIR__ . '/../view/login/restablecerContraseña.php';
     }
 

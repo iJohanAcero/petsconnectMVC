@@ -10,10 +10,10 @@ $db = (new Conexion())->getConexion();
 
 try {
     // Datos del nuevo admin
-    $nombre = "Johan";
-    $apellido = "Acero";
-    $email = "johanacero8@gmail.com";
-    $passwordPlano = "johan";
+    $nombre = "Admin";
+    $apellido = "pets";
+    $email = "admin@gmail.com";
+    $passwordPlano = "admin";
     $direccion = "Bogotá";
     $telefono = "123456";
 

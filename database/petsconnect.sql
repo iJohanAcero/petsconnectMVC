@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 03-07-2025 a las 00:31:09
+-- Tiempo de generación: 04-07-2025 a las 08:10:38
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -172,8 +172,7 @@ CREATE TABLE `t_administrador` (
 --
 
 INSERT INTO `t_administrador` (`n_documento`, `id_registro`, `id_usuario`) VALUES
-(1001327862, 3, 3),
-(1111111111, 4, 4);
+(1001, 23, 31);
 
 -- --------------------------------------------------------
 
@@ -245,8 +244,7 @@ CREATE TABLE `t_fundacion` (
 --
 
 INSERT INTO `t_fundacion` (`nit_fundacion`, `nombre`, `id_usuario`, `id_perfil`) VALUES
-(1234567890, 'TRE', 23, 15),
-(8493820102, 'Peluditos', 24, 16);
+(11111, 'Fundacion1', 33, 21);
 
 -- --------------------------------------------------------
 
@@ -265,12 +263,7 @@ CREATE TABLE `t_guardian` (
 --
 
 INSERT INTO `t_guardian` (`id_registro`, `id_usuario`, `id_perfil`) VALUES
-(1, 1, 1),
-(2, 2, 2),
-(5, 5, 3),
-(6, 6, 4),
-(7, 7, 5),
-(8, 8, 6);
+(24, 32, 20);
 
 -- --------------------------------------------------------
 
@@ -305,14 +298,6 @@ CREATE TABLE `t_mascota` (
   `id_estado_adopcion` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Volcado de datos para la tabla `t_mascota`
---
-
-INSERT INTO `t_mascota` (`id_mascota`, `nombre`, `edad_meses`, `sexo`, `imagen`, `id_tipo_mascota`, `nit_fundacion`, `id_estado_adopcion`) VALUES
-(98765, 'Mota', 19, 'hembra', '', 5, 1234567890, 3),
-(123567, 'Mico', 22, 'hembra', '', 5, 1234567890, 2);
-
 -- --------------------------------------------------------
 
 --
@@ -332,22 +317,8 @@ CREATE TABLE `t_perfil` (
 --
 
 INSERT INTO `t_perfil` (`id_perfil`, `nombre`, `preferencia`, `descripcion`, `imagen`) VALUES
-(1, 'Perfil Guardian', 'Ninguna', 'Auto-generado', 'default.jpg'),
-(2, 'Perfil Guardian', 'Ninguna', 'Auto-generado', 'default.jpg'),
-(3, 'Perfil Guardian', 'Ninguna', 'Auto-generado', 'default.jpg'),
-(4, 'Perfil Guardian', 'Ninguna', 'Auto-generado', 'default.jpg'),
-(5, 'Perfil Guardian', 'Ninguna', 'Auto-generado', 'default.jpg'),
-(6, 'Perfil Guardian', 'Ninguna', 'Auto-generado', 'default.jpg'),
-(7, 'Perfil Fundación', '', '', 'fundacion_default.jpg'),
-(8, 'Perfil Fundación', '', '', 'fundacion_default.jpg'),
-(9, 'Perfil Fundación', '', '', 'fundacion_default.jpg'),
-(10, 'Perfil Fundación', '', '', 'fundacion_default.jpg'),
-(11, 'Perfil Fundación', '', '', 'fundacion_default.jpg'),
-(12, 'Perfil Fundación', '', '', 'fundacion_default.jpg'),
-(13, 'Perfil Fundación', '', '', 'fundacion_default.jpg'),
-(14, 'Perfil Fundación', '', '', 'fundacion_default.jpg'),
-(15, 'Perfil Fundación', '', '', 'fundacion_default.jpg'),
-(16, 'Perfil Fundación', '', '', 'fundacion_default.jpg');
+(20, 'Perfil Guardian', 'Ninguna', 'Auto-generado', 'default.jpg'),
+(21, 'Perfil Fundación', '', '', 'fundacion_default.jpg');
 
 -- --------------------------------------------------------
 
@@ -380,13 +351,6 @@ CREATE TABLE `t_producto` (
   `cantidad_disponible` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Volcado de datos para la tabla `t_producto`
---
-
-INSERT INTO `t_producto` (`id_producto`, `nombre`, `tipo_producto`, `descripcion`, `precio`, `cantidad_disponible`) VALUES
-(58, 'Arena Ara', 'ArenaGato', 'ytvewa', 123456789.00, 234567);
-
 -- --------------------------------------------------------
 
 --
@@ -398,7 +362,7 @@ CREATE TABLE `t_publicacion` (
   `titulo` varchar(100) NOT NULL,
   `contenido` varchar(100) NOT NULL,
   `imagen` varchar(255) NOT NULL,
-  `fecha` date DEFAULT NULL,
+  `fecha` datetime DEFAULT NULL,
   `nit_fundacion` bigint(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -407,8 +371,7 @@ CREATE TABLE `t_publicacion` (
 --
 
 INSERT INTO `t_publicacion` (`id_publicacion`, `titulo`, `contenido`, `imagen`, `fecha`, `nit_fundacion`) VALUES
-(3, 'gato lindo', 'gato lindo en bogota', '6860a8d8d2e2d_gato.jpg', '2025-06-29', 1001),
-(4, 'adasd', 'adasd', '6860a9ab29ceb_adopciones.jpg', '2025-06-29', 1001);
+(6, 'Nueva publicacion', 'perros en adopcion', '68676fcdda998_adopciones.jpg', '2025-07-04 00:00:00', 11111);
 
 -- --------------------------------------------------------
 
@@ -418,7 +381,7 @@ INSERT INTO `t_publicacion` (`id_publicacion`, `titulo`, `contenido`, `imagen`, 
 
 CREATE TABLE `t_recuperar_constrasena` (
   `id_recuperacion` int(11) NOT NULL,
-  `codigo_recuperacion` varchar(20) NOT NULL,
+  `codigo_recuperacion` varchar(100) NOT NULL,
   `email` varchar(100) NOT NULL,
   `fecha_solicitud` date NOT NULL,
   `fecha_expiracion` date NOT NULL,
@@ -455,24 +418,9 @@ CREATE TABLE `t_registro` (
 --
 
 INSERT INTO `t_registro` (`id_registro`, `fecha`, `tipo_usuario`) VALUES
-(1, '2025-04-23', 'GUARDIAN'),
-(2, '2025-04-24', 'GUARDIAN'),
-(3, '2025-04-24', 'ADMIN'),
-(4, '2025-04-24', 'ADMIN'),
-(5, '2025-04-24', 'GUARDIAN'),
-(6, '2025-05-15', 'GUARDIAN'),
-(7, '2025-06-03', 'GUARDIAN'),
-(8, '2025-06-05', 'GUARDIAN'),
-(9, '2025-06-24', 'FUNDACION'),
-(10, '2025-06-24', 'FUNDACION'),
-(11, '2025-06-24', 'FUNDACION'),
-(12, '2025-06-24', 'FUNDACION'),
-(13, '2025-06-24', 'FUNDACION'),
-(14, '2025-06-24', 'FUNDACION'),
-(15, '2025-06-24', 'FUNDACION'),
-(16, '2025-06-25', 'FUNDACION'),
-(17, '2025-06-26', 'FUNDACION'),
-(18, '2025-07-02', 'FUNDACION');
+(23, '2025-07-04', 'ADMIN'),
+(24, '2025-07-04', 'GUARDIAN'),
+(25, '2025-07-04', 'FUNDACION');
 
 -- --------------------------------------------------------
 
@@ -520,28 +468,10 @@ CREATE TABLE `t_usuario` (
 -- Volcado de datos para la tabla `t_usuario`
 --
 
-INSERT INTO `t_usuario` (`id_usuario`, `nombre`, `apellido`, `contrasena`, `email`, `direccion`, `telefono`) VALUES
-(1, 'johan', 'acero', '$2y$10$CH4iOqn/H8DN47gIPn4WO.gPWP/wm1waGPBGWN5S06LZwhI1UVbIa', 'jasdj@gmail.com', '123123dasd', '1231412'),
-(2, 'valentina', 'urrego', '$2y$10$MMxd5OXxXtDZgoyaFxLmGuBrnQleEW3xXFzs5QclD9xMQAUs64S8O', 'valentina@gmail.com', '123', '123'),
-(3, 'Johan', 'Acero', '$2y$10$RsAyTZoih421KWccHGqvu.BDG73AMY6CMTRkitZWd64KTZoBJDrbC', 'johan@gmail.com', 'Bogotá', '123456789'),
-(4, 'Pablo', 'Vela', '$2y$10$OMPvjW0mZJL/0oMXKjMWmOiED1YBP3b4SE9oDNU3Hzhw6/.63NXci', 'pablo@gmail.com', 'Bogotá', '123456789'),
-(5, 'Andres', 'Miranda', '$2y$10$PFkIhQAEOslDTKUMIaEj3.8YN7jx8kNMMFUQ304cOiSP1s8CHZAXi', 'miranda@gmail.com', '123', '123'),
-(6, 'Kathe', 'Rojas', '$2y$10$u7mOBJMay737QKkGi7TmTOJq8nhc4BEh3iOvaNTcGXe9Xazgsyry2', 'katherojas.2805@hotmail.com', 'hgad', '78162344'),
-(7, 'Kathe', 'Rojas', '$2y$10$g3XvGGIfvEhw4g3teLGbDegTbAbH7DYXzUnvAIA.XffAY3j40TaDa', 'katherojas.2805@hotmail.com', 'jhaf', '786218731'),
-(8, 'Lina ', 'Bohorquez', '$2y$10$lukvLA6yr73Ibdl5wCbWZuKRiqIvfAFA2Zdy4hIFq3aUdETwvi9lS', 'bhrqzln@gmail.com', 'cra1 #43b - 47 sur', '3219192801'),
-(9, 'Ana', 'Carreño', '$2y$10$8xSeuZd2Swz7u2p6LUYVMOgZXZQ647Qhjyme1.uEPxCH16YGglHhq', 'a@gmail.com', 'wjnidc9824', '7658439'),
-(10, 'Ana', 'Carreño', '$2y$10$mkEh6sLEFjSTFcsQDws0eeS5ZVFZKMPx0GYsBhn./ouLaD2cAyp0u', 'a@gmail.com', 'wjnidc9824', '7658439'),
-(11, 'Ana', 'Carreño', '$2y$10$6qGOOu9M7xuQTb6dg4RsWuHt1o.IIzHPKi9cJMKfcebD94D4xHn5C', 'wz@dfh.com', 'wjnidc9824', '981729812'),
-(12, 'Ana', 'Carreño', '$2y$10$l39wAkDAis4DVvRv54rfq.OMj9c.JYJGjOyB295ulsi51VLThi.Pm', 'wz@dfh.com', 'wjnidc9824', '981729812'),
-(13, 'Ana', 'Carreño', '$2y$10$/PrfJ335DoCtwGh9Lw.IIu4.VUp4.q48ZBPF0VAt3mo16Ys2J8EAy', 'wz@dfh.com', 'wjnidc9824', '981729812'),
-(14, 'kt', 'rojas', '$2y$10$qF0zd7rQ4QhJ/iW0bq.SDO11ixjkQzguyws30XqLWMw0945pR8YYm', 'kt@rojas.com', 'injsfs', '876123'),
-(15, 'kt', 'rojas', '$2y$10$i/c9K.VYvf9gEtB/wqOEJ.utkrtdaJ.RpRAoTKefMs2oFkx2MLUui', 'kt@rojas.com', 'ftbkmls', '1234567890'),
-(16, 'kt', 'rojas', '$2y$10$XrwWSwzPxZVQqOLCaXuwz.W.7HetdDH3yI08uYDFqtO5JvHpHhchC', 'kt@rojas.com', 'injsfs', '876123'),
-(17, 'kt', 'rojas', '$2y$10$zOfC5bk8r7I0617lCW6a8OFIrOfNVm9SIX4lpx8ZztThA63eu2xI.', 'kt@rojas.com', 'injsfs', '876123'),
-(18, 'kt', 'rojas', '$2y$10$A2GEVLu/uuzam1A02qfhkuMJJJqVtDvfy52r2ccytM.qPeOssVvka', 'kt@rojas.com', 'injsfs', '876123'),
-(19, 'kt', 'rojas', '$2y$10$yT6sstoHhEPRuBWB8Zxe2./YFC34i5BMznEy6jxDZEKaK5MRF.2xa', 'kt@rojas.com', 'injsfs', '876123'),
-(23, 'kt', 'rojas', '$2y$10$IOjA/Cw5JDr6/zp7A4PMkOqzrRxdTI1M5cyNrPxrzNU5bnmf74Am6', 'kt@rojas.com', 'ftbkmls', '986398132'),
-(24, 'Daniel', 'Reyes', '$2y$10$GsH0fEsxh2MRiWwjtHqFzOnCBDN05F9MAZFm5ft5UFz/.TLbkjIF2', 'dr@gmail.com', 'cra4#56-38', '3160538456');
+INSERT INTO `t_usuario` (`id_usuario`, `nombre`, `apellido`, `contrasena`, `email`, `direccion`, `telefono`, `google_id`) VALUES
+(31, 'Admin', 'pets', '$2y$10$kpFsZAIko71tAkZIlPRhvegAe./rAO1/8TPpK0cGZWngfvkwh8Ls.', 'admin@gmail.com', 'Bogotá', '123456', NULL),
+(32, 'Johan David', 'Acero', NULL, 'johanacero8@gmail.com', '', '', '110443786294827582324'),
+(33, 'Jhon', 'Doe', '$2y$10$hd0SPDHn1f5Ob312a.Es..tylEKiK55r22FWaHNae57s4TYGomfe6', 'fundacion@gmail.com', 'Bogotá', '111111', NULL);
 
 -- --------------------------------------------------------
 
@@ -687,7 +617,8 @@ ALTER TABLE `t_tipo_mascota`
 -- Indices de la tabla `t_usuario`
 --
 ALTER TABLE `t_usuario`
-  ADD PRIMARY KEY (`id_usuario`);
+  ADD PRIMARY KEY (`id_usuario`),
+  ADD UNIQUE KEY `email` (`email`);
 
 --
 -- Indices de la tabla `t_vacuna`
@@ -727,7 +658,7 @@ ALTER TABLE `t_informe`
 -- AUTO_INCREMENT de la tabla `t_perfil`
 --
 ALTER TABLE `t_perfil`
-  MODIFY `id_perfil` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id_perfil` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- AUTO_INCREMENT de la tabla `t_proceso_adopcion`
@@ -745,13 +676,13 @@ ALTER TABLE `t_producto`
 -- AUTO_INCREMENT de la tabla `t_publicacion`
 --
 ALTER TABLE `t_publicacion`
-  MODIFY `id_publicacion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id_publicacion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT de la tabla `t_recuperar_constrasena`
 --
 ALTER TABLE `t_recuperar_constrasena`
-  MODIFY `id_recuperacion` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_recuperacion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT de la tabla `t_red_social`
@@ -763,7 +694,7 @@ ALTER TABLE `t_red_social`
 -- AUTO_INCREMENT de la tabla `t_registro`
 --
 ALTER TABLE `t_registro`
-  MODIFY `id_registro` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `id_registro` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
 -- AUTO_INCREMENT de la tabla `t_tipo_mascota`
@@ -775,7 +706,7 @@ ALTER TABLE `t_tipo_mascota`
 -- AUTO_INCREMENT de la tabla `t_usuario`
 --
 ALTER TABLE `t_usuario`
-  MODIFY `id_usuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+  MODIFY `id_usuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
 
 --
 -- Restricciones para tablas volcadas
@@ -843,22 +774,10 @@ ALTER TABLE `t_proceso_adopcion`
   ADD CONSTRAINT `fk_proceso_mascota` FOREIGN KEY (`id_mascota`) REFERENCES `t_mascota` (`id_mascota`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Filtros para la tabla `t_publicacion`
---
-ALTER TABLE `t_publicacion`
-  ADD CONSTRAINT `fk_publi_nit_fundacion` FOREIGN KEY (`nit_fundacion`) REFERENCES `t_fundacion` (`nit_fundacion`);
-
---
 -- Filtros para la tabla `t_recuperar_constrasena`
 --
 ALTER TABLE `t_recuperar_constrasena`
   ADD CONSTRAINT `fk_recuperar_usuario` FOREIGN KEY (`id_usuario`) REFERENCES `t_usuario` (`id_usuario`);
-
---
--- Filtros para la tabla `t_red_social`
---
-ALTER TABLE `t_red_social`
-  ADD CONSTRAINT `fk_red_nit_fundacion` FOREIGN KEY (`nit_fundacion`) REFERENCES `t_fundacion` (`nit_fundacion`) ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

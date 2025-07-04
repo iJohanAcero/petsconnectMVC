@@ -1,13 +1,3 @@
-<?php
-require_once 'controller/AuthController.php';
-$mensaje = $error = null;
-
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    ob_start();
-    (new AuthController())->guardar_nueva_contrasena();
-    ob_end_clean();
-}
-?>
 
 <!DOCTYPE html>
 <html lang="es">
@@ -46,7 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <h2 class="text-center mb-4">Restablecer contraseña</h2>
 
                     <!-- Formulario de restablecimiento -->
-                    <form class="ud-login-form" action="restablecerContraseña.php" method="post">
+                    <form class="ud-login-form" action="index.php?page=restablecer_contrasena" method="post">
                         <input type="hidden" name="action" value="guardar_nueva_contrasena">
                         <input type="hidden" name="token" value="<?= htmlspecialchars($_GET['token'] ?? $_POST['token'] ?? '') ?>">
 

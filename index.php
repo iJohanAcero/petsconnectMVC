@@ -1,20 +1,32 @@
 <?php
+
+
+
 require_once __DIR__ . '/vendor/autoload.php';
 require_once "controller/usuario/usuarioController.php";
 require_once "config/roles.php";
 require_once "controller/AuthController.php"; // Agrega esta línea arriba
 
 
+
 session_start();
 $controller = new UsuarioController();
+
+// --- Manejo de restablecimiento de contraseña ---
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'guardar_nueva_contrasena') {
+    error_log("Entró al bloque de restablecimiento");
+    $auth = new AuthController();
+    $auth->guardar_nueva_contrasena(); // Este método debe incluir la vista al final
+    exit;
+}
 // --- Definición de rutas protegidas ---
 $routes = [
     "admin_home"    => ["role" => "admin",    "file" => "view/home/admin_home.php"],
     "guardian_home" => ["role" => "guardian", "file" => "view/home/guardian_home.php"],
     "fundacion_home" => ["role" => "fundacion", "file" => "view/home/fundacion_home.php"],
-    "login"        => ["role" => "guest","file" => "view/login/login.php"],
-    "registro"     => ["role" => "guest","file" => "view/login/register.php"],
-    "recuperar_contrasena" => ["role" => "guest","file" => "view/login/recuperarContraseña.php"],
+    "login"        => ["role" => "guest", "file" => "view/login/login.php"],
+    "registro"     => ["role" => "guest", "file" => "view/login/register.php"],
+    "recuperar_contrasena" => ["role" => "guest", "file" => "view/login/recuperarContraseña.php"],
     "restablecer_contrasena" => ["role" => "guest", "file" => "view/login/restablecerContraseña.php"],
 ];
 
@@ -73,7 +85,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["action"])) {
             }
         } else {
             $mensaje = "Usuario o contraseña incorrecta";
-            require_once $routes["login"]["file"]; 
+            require_once $routes["login"]["file"];
             exit;
         }
     }
@@ -81,8 +93,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["action"])) {
 
 // --- Logout ---
 if (isset($_GET["action"]) && $_GET["action"] == "logout") {
+    session_start();
     session_destroy();
-    header("Location: index.php?page=landing");
+    
+    $redirect = urlencode('http://localhost/petsconnectmvc/index.php');
+    $googleLogoutUrl = "https://accounts.google.com/Logout?continue=https://appengine.google.com/_ah/logout?continue={$redirect}";
+    header("Location: $googleLogoutUrl");
     exit;
 }
 // --- Login con Google ---
@@ -113,7 +129,6 @@ if (!isset($_SESSION["user"])) {
         require_once $routes["recuperar_contrasena"]["file"];
     } elseif ($page === "restablecer_contrasena") {
         require_once "view/login/restablecerContraseña.php";
-
     } else {
         require_once "view/login/landing.php";
     }

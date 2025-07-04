@@ -202,11 +202,6 @@ if (!isset($_SESSION["user"]) || $_SESSION["tipo_usuario"] !== "admin") {
                                         - Fundaciones
                                     </a>
                                 </li>
-                                <li class="sidebar-item">
-                                    <a href="" class="sidebar-link">
-                                        - Administradores
-                                    </a>
-                                </li>
                             </ul>
                         </li>
                         <li class="sidebar-item collapsed has-dropdown">
@@ -218,28 +213,17 @@ if (!isset($_SESSION["user"]) || $_SESSION["tipo_usuario"] !== "admin") {
                                     <a href="#" class="sidebar-link" id="btn-cargar-mascotas">
                                         - Mascotas
                                     </a>
-                                </li>
-                                <li class="sidebar-item">
-                                    <a href="#" class="sidebar-link" onclick="cargarCrudTipoMascota()">
-                                        - Tipo Mascotas
-                                    </a>
-                                </li>
-                                <li class="sidebar-item">
-                                    <a href="" class="sidebar-link">
-                                        - Vacunas
-                                    </a>
-                                </li>
-
+                                </li>                  
                             </ul>
                         </li>
                         <li class="sidebar-item has-dropdown">
                             <a href="" class="sidebar-link has-dropdown" data-bs-toggle="collapse" data-bs-target="#crud-4" aria-expanded="false" aria-controls="crud-4">
-                                ✔ Modulo Productos
+                                ✔ Modulo Causas
                             </a>
                             <ul id="crud-4" class="sidebar-dropdown list-unstyled collapse">
                                 <li class="sidebar-item">
                                     <a href="#" class="sidebar-link" id="btn-cargar-productos">
-                                        - Productos
+                                        - Causas
                                     </a>
                                 </li>
                             </ul>
@@ -262,7 +246,7 @@ if (!isset($_SESSION["user"]) || $_SESSION["tipo_usuario"] !== "admin") {
                             </a>
                             <ul id="crud-4" class="sidebar-dropdown list-unstyled collapse">
                                 <li class="sidebar-item">
-                                    <a href="#" class="sidebar-link" id="btn-cargar-publicacion"
+                                    <a href="#" class="sidebar-link" id="btn-cargar-publicacion">
                                         <i class="fas fa-list"></i>- Publicaciones
                                     </a>
                                 </li>

@@ -46,7 +46,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['email'])) {
                         </div>
 
                         <!-- Formulario para recuperar contraseña -->
-                        <form class="ud-login-form" action="recuperarContraseña.php" method="post">
+                        <form class="ud-login-form" action="index.php?page=recuperar_contrasena" method="post">
                             <div class="ud-form-group">
                                 <input type="email" id="email" name="email" placeholder="Ingresa tu correo electrónico" required />
                             </div>
