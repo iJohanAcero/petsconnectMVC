@@ -48,7 +48,7 @@ function inicializarEventosPublicacion() {
             e.preventDefault(); // Evita que se recargue la página
             const formData = new FormData(formRegistrar); // Captura los datos del formulario
 
-            fetch(`${BASE_URL}/controller/publicacion/PublicacionController.php`, {
+            fetch(`${window.BASE_URL}/controller/publicacion/PublicacionController.php`, {
                 method: "POST",
                 body: formData
             })
@@ -92,7 +92,7 @@ function inicializarEventosPublicacion() {
                             e.preventDefault();
                             const formData = new FormData(formEditar);
 
-                            fetch(`${BASE_URL}/controller/publicacion/PublicacionController.php`, {
+                            fetch(`${window.BASE_URL}/controller/publicacion/PublicacionController.php`, {
                                 method: "POST",
                                 body: formData
                             })
@@ -126,7 +126,7 @@ function inicializarEventosPublicacion() {
                 formData.append("eliminar", "true");
                 formData.append("id", id);
 
-                fetch(`${BASE_URL}/controller/publicacion/PublicacionController.php`, {
+                fetch(`${window.BASE_URL}/controller/publicacion/PublicacionController.php`, {
                     method: "POST",
                     body: formData
                 })

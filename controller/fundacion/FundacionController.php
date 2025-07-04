@@ -45,8 +45,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $resultado = $modeloFundacion->updateFundacion($nit, $nombre, $apellido, $email, $direccion, $telefono);
 
         if ($resultado) {
-        echo "Fundación actualizada correctamente";
-        exit;
+            echo "Fundación actualizada correctamente";
+            exit;
         } else {
             echo "Error al actualizar fundación";
             exit;
@@ -54,17 +54,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     // Eliminar fundacion
-    if (isset($_POST['eliminar']) && isset($_POST['nit'])) {
-        $nit = htmlspecialchars($_POST['nit'] ?? '');
-
-        if (empty($nit)) {
-            echo "NIT de fundación no proporcionado";
-            exit;
-        }
-
+    if (isset($_POST['accion']) && $_POST['accion'] === 'eliminar' && isset($_POST['nit'])) {
+        $nit = $_POST['nit'];
         $resultado = $modeloFundacion->delete($nit);
-        echo $resultado ? "Fundación eliminada correctamente" : "Error al eliminar Fundación";
+
+        if ($resultado) {
+            echo "Fundación eliminada correctamente";
+        } else {
+            echo "Error al eliminar fundación";
+        }
         exit;
     }
 }
-

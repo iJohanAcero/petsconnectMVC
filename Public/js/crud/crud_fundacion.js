@@ -47,7 +47,7 @@ function inicializarEventosFundacion() {
             e.preventDefault();
             const formData = new FormData(formRegistrar);
 
-            fetch(`${BASE_URL}/controller/fundacion/FundacionController.php`, {
+            fetch(`${window.BASE_URL}/controller/fundacion/FundacionController.php`, {
                 method: "POST",
                 body: formData
             })
@@ -92,7 +92,7 @@ function inicializarEventosFundacion() {
                             e.preventDefault();
                             const formData = new FormData(formEditar);
 
-                            fetch(`${BASE_URL}/controller/fundacion/FundacionController.php`, {
+                            fetch(`${window.BASE_URL}/controller/fundacion/FundacionController.php`, {
                                 method: "POST",
                                 body: formData
                             })
@@ -115,17 +115,15 @@ function inicializarEventosFundacion() {
 
     // 🗑️ BOTONES DE ELIMINAR
     const botonesEliminar = document.querySelectorAll(".btn-eliminar-fundacion");
-
     botonesEliminar.forEach(btn => {
         btn.addEventListener("click", function () {
             const nit = this.dataset.id;
-
             if (confirm("¿Estás seguro de que deseas eliminar esta fundación?")) {
                 const formData = new FormData();
-                formData.append("eliminar", "true");
-                formData.append("nit", nit);
+                formData.append('accion', 'eliminar');
+                formData.append('nit', nit);
 
-                fetch(`${BASE_URL}/controller/fundacion/FundacionController.php`, {
+                fetch(`${window.BASE_URL}/controller/fundacion/FundacionController.php`, {
                     method: "POST",
                     body: formData
                 })
