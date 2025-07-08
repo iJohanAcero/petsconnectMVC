@@ -54,9 +54,6 @@ $Fundaciones = $Modelo->getFundacion(); // Suponiendo que tienes este método
 </div>
 
 <!-- Modal para registrar fundación -->
-<?=
-/** Aquí puedes pegar directamente tu formulario completo de la fundación */
-"" ?>
 <div class="modal fade" id="modal-fundacion" tabindex="-1" aria-labelledby="modalFundacionLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg" style="margin-top: 70px;">
         <div class="modal-content">

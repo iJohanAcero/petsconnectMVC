@@ -11,32 +11,33 @@ class PerfilModel
     }
 
     // Obtener todos los datos del perfil de un guardian por su id_usuario
-    public function getPerfilPorUsuario($id_usuario)
+    public function getPerfilPorUsuario($id)
     {
+        // Buscar en guardian y traer también el id_usuario
         $stmt = $this->db->prepare("
-            SELECT p.*
+            SELECT p.*, g.id_usuario
             FROM t_guardian g
             INNER JOIN t_perfil p ON g.id_perfil = p.id_perfil
             WHERE g.id_usuario = :id_usuario
             LIMIT 1
         ");
-        $stmt->bindParam(':id_usuario', $id_usuario, PDO::PARAM_INT);
+        $stmt->bindParam(':id_usuario', $id, PDO::PARAM_INT);
         $stmt->execute();
         $perfil = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    if ($perfil) {
-        return $perfil;
-    }
-    // Buscar en fundacion si no es guardian
-    $stmt = $this->db->prepare("
-        SELECT p.*
-        FROM t_fundacion f
-        INNER JOIN t_perfil p ON f.id_perfil = p.id_perfil
-        WHERE f.id_usuario = :id_usuario
-        LIMIT 1
-    ");
-    $stmt->bindParam(':id_usuario', $id_usuario, PDO::PARAM_INT);
-    $stmt->execute();
-    return $stmt->fetch(PDO::FETCH_ASSOC);
+        if ($perfil) {
+            return $perfil;
+        }
+        // Buscar en fundacion si no es guardian y traer también el id_usuario
+        $stmt = $this->db->prepare("
+            SELECT p.*, f.id_usuario
+            FROM t_fundacion f
+            INNER JOIN t_perfil p ON f.id_perfil = p.id_perfil
+            WHERE f.id_usuario = :id_usuario
+            LIMIT 1
+        ");
+        $stmt->bindParam(':id_usuario', $id, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 }

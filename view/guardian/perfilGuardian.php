@@ -1,5 +1,5 @@
 <?php
-require_once (__DIR__ . '/../../controller/perfil/PerfilController.php');
+require_once(__DIR__ . '/../../controller/perfil/PerfilController.php');
 
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
@@ -37,7 +37,7 @@ if (session_status() === PHP_SESSION_NONE) {
                         <div class="mb-3">
                             <h6 class="text-primary">Preferencia de mascotas</h6>
                             <p class="text-muted mb-3">
-                                <?php echo htmlspecialchars($perfil['preferencia']); ?> 
+                                <?php echo htmlspecialchars($perfil['preferencia']); ?>
                             </p>
                         </div>
 
@@ -45,6 +45,25 @@ if (session_status() === PHP_SESSION_NONE) {
                 </div>
             </div>
         </div>
+        
+        <button class="btn btn-sm btn-warning btn-editar-perfilGuardian" data-id="<?php echo htmlspecialchars($perfil['id_usuario']); ?>">
+            <i class="uil uil-pen"></i>
+        </button>
+        <!-- Modal para editar Perfil guardian -->
+        <div class="modal fade" id="modal-editar-perfilGuardian" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Editar Perfil</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body" id="contenido-editar">
+                        <!-- Se carga dinámicamente con JS -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script src="../../Public/js/main.js"></script>
     </div>
 
 </body>

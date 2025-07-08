@@ -104,7 +104,7 @@ if (!isset($_SESSION["user"]) || $_SESSION["tipo_usuario"] !== "guardian") {
                             <?php endif; ?>
                         </li>
                         <li>
-                            <a class="dropdown-item" href="index.php?action=perfil">
+                            <a class="dropdown-item btn-cargar-perfilGuardian" href="#">
                                 <i class="uil uil-user"></i> Perfil
                             </a>
                         </li>
@@ -140,7 +140,7 @@ if (!isset($_SESSION["user"]) || $_SESSION["tipo_usuario"] !== "guardian") {
                     </a>
                 </li>
                 <li class="sidebar-item">
-                    <a href="#" class="sidebar-link"  id="btn-cargar-perfilGuardian">
+                    <a href="#" class="sidebar-link btn-cargar-perfilGuardian">
                         <i class="uil uil-user"></i>
                         <span class="sidebar-text">Perfil</span>
                     </a>

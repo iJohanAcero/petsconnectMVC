@@ -7,8 +7,8 @@ require_once(__DIR__ . '/../../Model/perfil/PerfilModel.php');
 
 
 $perfilModel = new PerfilModel();
-$id_usuario = $_SESSION["user"]["id_usuario"];
+$id = $_SESSION["user"]["id_usuario"];
 
-$perfil = $perfilModel->getPerfilPorUsuario($id_usuario);
+$perfil = $perfilModel->getPerfilPorUsuario($id);
 
 ?>
