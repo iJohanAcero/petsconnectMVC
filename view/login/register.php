@@ -23,7 +23,18 @@
     <title>PetsConnect | Registro de Usuario</title>
 </head>
 
-<body style="background-color: f3f4fe; background-image: url('Public/images/login/background.jpg'); background-size:contain;">
+<!-- <body style="background-color: f3f4fe; background-image: url('Public/images/login/background.jpg'); background-size:contain;"> -->
+
+<body id="hero">
+    <video class="video-desktop" muted autoplay loop>
+        <source src="Public/images/login/videobg4.mp4"
+            type="video/mp4">
+    </video>
+
+    <video class="video-mobile" muted autoplay loop>
+        <source src="Public/images/login/videobg3.mp4"
+            type="video/mp4">
+    </video>
     <!-- ====== Header Section Start ====== -->
     <header class="ud-header" style="padding-top: 0.5rem; position: sticky; background-color: hsl(252, 30%, 10%);">
         <div class="container">
@@ -193,7 +204,7 @@
                                 <li>
                                     <a href="index.php #about">¿Cómo funciona?</a>
                                 </li>
-                                
+
                                 <li>
                                     <a href="view/terms_privacy/Politica_de_Privacidad_PetsConnect.pdf" target="_blank">Política de privacidad</a>
                                 </li>

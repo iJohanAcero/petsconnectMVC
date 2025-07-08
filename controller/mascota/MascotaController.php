@@ -18,9 +18,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $edad_meses = $_POST['edad_meses'];
         $sexo = $_POST['sexo'];
         $imagen = null;
-        if (isset($_FILES["imagen"]) && $_FILES["imagen"]["error"] === 0) {
-            $imagen = $_FILES["imagen"]["name"];
-            move_uploaded_file($_FILES["imagen"]["tmp_name"], __DIR__ . "/../../public/images/mascotas/" . $imagen);
+
+        if (isset($_FILES["imagen"]) && $_FILES["imagen"]["error"] === UPLOAD_ERR_OK) {
+            $nombreImagen = uniqid() . '_' . $_FILES['imagen']['name'];
+            $rutaDestino = '../../Public/images/mascotas/' . $nombreImagen;
+            move_uploaded_file($_FILES["imagen"]["tmp_name"], $rutaDestino);
+            $imagen = $nombreImagen;
         }
         $id_tipo_mascota = $_POST['id_tipo_mascota'];
         $id_estado_adopcion = $_POST['id_estado_adopcion'] ?? 2; // EN ADOPCIÓN por defecto

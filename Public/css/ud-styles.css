@@ -1231,17 +1231,21 @@ p {
 .ud-single-team .ud-team-image-wrapper {
   width: 170px;
   height: 170px;
-  position: relative;
+  position:relative;
   margin: 0px auto 25px;
+  justify-content: center
 }
 
 .ud-single-team .ud-team-image {
   border-radius: 50%;
+  justify-content: center;
+  display: flex;
 }
 
 .ud-single-team .ud-team-image img {
-  width: 100%;
-  border-radius: 50%;
+  width: 67%;
+  border-radius: 1rem;
+  box-shadow: 0px 14px 28px rgba(0, 0, 0, 0.05);
 }
 
 .ud-single-team .shape {
@@ -1662,6 +1666,30 @@ p {
 }
 
 /* ====== Login CSS ====== */
+#hero {
+  min-height: 80vh;
+  position: relative;
+  background-image: none; /* valor por defecto */
+  background-size: cover;
+  background-position: center;
+}
+
+video {
+  position: absolute;
+  top: 0;
+  left: 0;
+width: 100%;
+height: 100%;
+  object-fit: cover;
+  z-index: -1;
+  filter: brightness(40%);
+}
+
+/* Por defecto, ocultar el video móvil */
+.video-mobile {
+  display: none;
+}
+
 .ud-login {
   padding-top: 80px;
   padding-bottom: 80px;
@@ -1676,7 +1704,7 @@ p {
   border-radius: 0.6rem;
   -webkit-box-shadow: 0px 10px 35px rgba(0, 0, 0, 0.05);
           box-shadow: 0px 10px 35px rgba(0, 0, 0, 0.05);
-  
+  opacity: 0.93;
 }
 
 .ud-login-wrapper .ud-login-logo {
@@ -1804,7 +1832,28 @@ p {
     padding-top: 80px;
     padding-bottom: 40px;
   }
+
+
+  .video-desktop {
+    display: none;
+  }
+
+  .video-mobile {
+    display: block;
+    position: absolute;
+    height: 40%;
+    top: 0;
+    left: 0;
+    object-fit: cover;
+    z-index: -1;
+  }
+
+  .ud-login-wrapper {
+    padding: 40px 30px;
+    opacity: 0.93; /* Aumenta la opacidad */
+  }
 }
+
 
 .ud-single-blog {
   margin-bottom: 40px;

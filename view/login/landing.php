@@ -251,13 +251,13 @@
                         class="ud-single-pricing first-item wow fadeInUp"
                         data-wow-delay=".15s">
                         <div class="ud-pricing-header">
-                            <h4>Donar Alimentos y Accesorios</h4>
+                            <h4>Donaciones por causa</h4>
 
                         </div>
 
                         <div class="ud-pricing-body">
                             <ul>
-                                <li>Comparte lo que tienes con quienes más lo necesitan. Dona croquetas, arena o accesorios a refugios y hogares temporales cercanos.</li>
+                                <li>Comparte lo que tienes con quienes más lo necesitan. Dona comida, medicinas o accesorios a refugios afiliados de tu elección.</li>
 
                             </ul>
                         </div>
@@ -401,7 +401,7 @@
                             </button>
                             <div id="collapseFour" class="accordion-collapse collapse">
                                 <div class="ud-faq-body">
-                                    Aceptamos donaciones de alimentos, arena, juguetes y accesorios. Puedes coordinar la entrega directamente con los refugios a través de nuestro sistema.
+                                    Aceptamos donaciones de alimentos, medicina o accesorios, depende la causa seleccionada. Puedes coordinar la entrega directamente con los refugios a través de nuestro sistema.
                                 </div>
                             </div>
                         </div>
@@ -564,10 +564,10 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="ud-section-title mx-auto text-center">
-                        <span>Nuestros productos</span>
-                        <h2>Conoce todas las formas de ayudar</h2>
+                        <span>Nuestras ayudas</span>
+                        <h2>Tú eliges la fundación. Nosotros conectamos la ayuda.</h2>
                         <p>
-                            En Petsconnect, tenemos una variedad de productos y servicios diseñados para facilitar la adopción, el cuidado y el bienestar de las mascotas. Alimentos y accesorios cada producto está pensado para mejorar la vida de los animales y sus adoptantes.
+                            Con cada donación, puedes elegir una causa específica como <strong> alimentación </strong>  , <strong>esterilización</strong> o  <strong>medicamentos</strong> y decidir a qué fundación quieres apoyar. Este modelo transparente motiva a las organizaciones a sumarse a nuestro proyecto, sabiendo que sus esfuerzos pueden ser respaldados directamente por personas como tú.
                         </p>
                     </div>
                 </div>
@@ -578,7 +578,7 @@
                     <div class="ud-single-team wow fadeInUp" data-wow-delay=".1s">
                         <div class="ud-team-image-wrapper">
                             <div class="ud-team-image">
-                                <img src="Public/images/team/atun.jpg" alt="team" />
+                                <img src="Public/images/team/comida.webp"  />
                             </div>
 
                             <img
@@ -591,8 +591,8 @@
                                 class="shape shape-2" />
                         </div>
                         <div class="ud-team-info">
-                            <h5>Alimento humedo</h5>
-                            <h6>Comida</h6>
+                            <h5>Causa Alimentación</h5>
+                            <h6>Tú donación será comida para una mascota rescatada.</h6>
                         </div>
 
                     </div>
@@ -601,7 +601,7 @@
                     <div class="ud-single-team wow fadeInUp" data-wow-delay=".1s">
                         <div class="ud-team-image-wrapper">
                             <div class="ud-team-image">
-                                <img src="Public/images/team/comida-perro.jpg" alt="pablo" />
+                                <img src="Public/images/team/doctor.webp"  />
                             </div>
 
                             <img
@@ -614,8 +614,8 @@
                                 class="shape shape-2" />
                         </div>
                         <div class="ud-team-info">
-                            <h5>Concentrado</h5>
-                            <h6>Comida</h6>
+                            <h5>Causa Medicamentos</h5>
+                            <h6>Tú donación será medicina para un animal rescatado.</h6>
                         </div>
 
                     </div>
@@ -624,7 +624,7 @@
                     <div class="ud-single-team wow fadeInUp" data-wow-delay=".1s">
                         <div class="ud-team-image-wrapper">
                             <div class="ud-team-image">
-                                <img src="Public/images/team/arena.jpg" alt="pablo" />
+                                <img src="Public/images/team/esterilizacion.jpg"  />
                             </div>
 
                             <img
@@ -637,8 +637,8 @@
                                 class="shape shape-2" />
                         </div>
                         <div class="ud-team-info">
-                            <h5>Arena gato</h5>
-                            <h6>Higiene</h6>
+                            <h5>Causa Esterilización</h5>
+                            <h6>Tú donación será para la esterilización de un animal rescatado.</h6>
                         </div>
 
                     </div>
@@ -648,7 +648,7 @@
                     <div class="ud-single-team wow fadeInUp" data-wow-delay=".1s">
                         <div class="ud-team-image-wrapper">
                             <div class="ud-team-image">
-                                <img src="Public/images/team/gimnasio.jpg" alt="pablo" />
+                                <img src="Public/images/team/otros.webp"  />
                             </div>
 
                             <img
@@ -661,8 +661,8 @@
                                 class="shape shape-2" />
                         </div>
                         <div class="ud-team-info">
-                            <h5>Gimnasio</h5>
-                            <h6>Accesorios</h6>
+                            <h5>Otras Causas...</h5>
+                            <h6>Explora más sobre nuestras iniciativas y cómo puedes ayudar.</h6>
                         </div>
 
                     </div>
@@ -670,7 +670,7 @@
                 <ul class="ud-hero-buttons">
                     <li>
                         <a href="index.php?page=login" rel="nofollow noopener" target="_blank" class="ud-main-btn ud-white-btn">
-                            ¡ Ver mas productos !
+                            ¡ Dona aqui !
                         </a>
                     </li>
 
@@ -690,7 +690,7 @@
                             <span>CONTACTANOS</span>
                             <h2>
                                 ¿Eres parte de una fundación? <br />
-                            
+
                                 Únete a nuestra plataforma para visibilizar tus mascotas y conectar con adoptantes.
                             </h2>
                         </div>
@@ -958,27 +958,27 @@
         window.document.addEventListener("scroll", onScroll);
     </script>
     <script>
-document.getElementById('contactForm').addEventListener('submit', function(e) {
-    e.preventDefault();
-    const form = e.target;
-    const formData = new FormData(form);
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const form = e.target;
+            const formData = new FormData(form);
 
-    fetch('controller/AuthController.php?action=enviar_tutorial', {
-        method: 'POST',
-        body: formData
-    })
-    .then(response => response.text())
-    .then(data => {
-        document.getElementById('formResponse').innerHTML = '<span style="color:green;">' + data + '</span>';
-        if (data.includes('correctamente')) {
-            form.reset();
-        }
-    })
-    .catch(error => {
-        document.getElementById('formResponse').innerHTML = '<span style="color:red;">Hubo un error al enviar el mensaje.</span>';
-    });
-});
-</script>
+            fetch('controller/AuthController.php?action=enviar_tutorial', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById('formResponse').innerHTML = '<span style="color:green;">' + data + '</span>';
+                    if (data.includes('correctamente')) {
+                        form.reset();
+                    }
+                })
+                .catch(error => {
+                    document.getElementById('formResponse').innerHTML = '<span style="color:red;">Hubo un error al enviar el mensaje.</span>';
+                });
+        });
+    </script>
 </body>
 
 </html>
