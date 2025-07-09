@@ -3,6 +3,7 @@ require_once(__DIR__ . '/../../controller/perfil/PerfilController.php');
 
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
+    
 
     // No cachear esta página
     header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
@@ -20,11 +21,16 @@ if (session_status() === PHP_SESSION_NONE) {
                     <div class="card-body text-center">
 
                         <!-- Foto de Perfil -->
-                        <img src="Public/images/perfil/perfil2.jpg"
+                        <?php
+
+                        $nombreImagen = !empty($perfil['imagen']) ? $perfil['imagen'] : 'default.png';
+                        $rutaImagen = "/petsconnectMVC/Public/images/perfil/" . htmlspecialchars($nombreImagen);
+                        ?>
+
+                        <img src="<?= $rutaImagen ?>"
                             class="rounded-circle mb-3 img-fluid"
                             alt="Foto de perfil"
                             style="width: 150px; height: 150px; object-fit: cover;">
-
                         <!-- Nombre -->
                         <h3 class="card-title mb-2"><?php echo htmlspecialchars($perfil['nombre']); ?></h3>
 
@@ -45,7 +51,7 @@ if (session_status() === PHP_SESSION_NONE) {
                 </div>
             </div>
         </div>
-        
+
         <button class="btn btn-sm btn-warning btn-editar-perfilGuardian" data-id="<?php echo htmlspecialchars($perfil['id_usuario']); ?>">
             <i class="uil uil-pen"></i>
         </button>

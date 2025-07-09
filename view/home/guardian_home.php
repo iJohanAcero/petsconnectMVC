@@ -14,7 +14,12 @@ if (!isset($_SESSION["user"]) || $_SESSION["tipo_usuario"] !== "guardian") {
 
     exit;
 }
+// Cargar perfil del usuario
+require_once "model/perfil/PerfilModel.php"; // Ajustar si la ruta varía
 
+$perfilModel = new PerfilModel();
+$id = $_SESSION["user"]["id_usuario"];
+$perfil = $perfilModel->getPerfilPorUsuario($id);
 
 ?>
 
@@ -75,8 +80,14 @@ if (!isset($_SESSION["user"]) || $_SESSION["tipo_usuario"] !== "guardian") {
                         aria-expanded="false"
                         style="text-decoration: none;">
                         <p class="m-1 "> Guardian </p>
+                        <!-- Foto de Perfil -->
+                        <?php
+
+                        $nombreImagen = !empty($perfil['imagen']) ? $perfil['imagen'] : 'default.png';
+                        $rutaImagen = "/petsconnectMVC/Public/images/perfil/" . htmlspecialchars($nombreImagen);
+                        ?>
                         <img
-                            src="Public/images/perfil/perfil2.jpg"
+                            src="<?= $rutaImagen ?>"
                             class="rounded-circle"
                             height="40"
                             width="40"
@@ -196,10 +207,10 @@ if (!isset($_SESSION["user"]) || $_SESSION["tipo_usuario"] !== "guardian") {
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
 
     <!-- SCRIPTS DE JS CRUDS Y RUTAS -->
+    <script src="Public/js/config.js"></script>
     <script src="Public/js/main.js"></script>
-
-    <script src="Public/js/routes/routes.js"></script>
     <script src="Public/js/routes/perfilGuardian.js"></script>
+    <script src="Public/js/routes/routes.js"></script>
 
     <script>
         let page = 1;

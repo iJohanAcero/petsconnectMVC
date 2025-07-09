@@ -21,14 +21,6 @@ if (!$publicacion || empty($publicacion)) {
 $publicacion = $publicacion[0]; // Tomamos el primer registro si viene en forma de arreglo
 ?>
 
-<!DOCTYPE html>
-<html lang="es">
-
-<head>
-    <meta charset="UTF-8">
-    <title>Actualizar publicacion</title>
-</head>
-
 <body>
     <!-- Contenedor principal de Bootstrap -->
     <div class="container mt-1">
@@ -61,4 +53,3 @@ $publicacion = $publicacion[0]; // Tomamos el primer registro si viene en forma 
     </div>
 </body>
 
-</html>

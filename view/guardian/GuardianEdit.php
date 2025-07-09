@@ -31,35 +31,45 @@ if (!$perfil || empty($perfil)) {
     <!-- Contenedor principal de Bootstrap -->
     <div class="container mt-1">
         <!-- Formulario con clases de Bootstrap -->
-        <form id="form-editar-perfilGuardian" method="POST" action="/petsconnectMVC/controller/perfil/PerfilController.php">
-
-            <!-- Campo oculto para el ID  -->
+        <form id="form-editar-perfilGuardian" method="POST">
             <input type="hidden" name="id" value="<?= $perfil['id_usuario']; ?>">
+            <input type="hidden" name="accion" value="editar">
 
+            <div class="mb-3 text-center">
+                <img id="preview-imagen"
+                    src="/petsconnectMVC/Public/images/perfil/<?= htmlspecialchars($perfil['imagen'] ?? 'default.jpg'); ?>"
+                    alt="Imagen de perfil"
+                    class="rounded-circle img-fluid"
+                    style="width: 150px; height: 150px; object-fit: cover;">
+            </div>
+
+            <!-- Input de imagen -->
+            <div class="mb-3">
+                <label class="form-label">Actualizar imagen de perfil</label>
+                <input type="file" name="imagen" id="input-imagen" class="form-control">
+            </div>
 
             <div class="mb-3">
                 <label class="form-label">Nombre</label>
-                <input type="text" name="nombre" class="form-control" value="<?= $perfil['nombre']; ?>" required>
+                <input type="text" name="nombre" class="form-control text-center"
+                    value="<?= htmlspecialchars($perfil['nombre']); ?>" required>
             </div>
-
 
             <div class="mb-3">
                 <label class="form-label">Descripción</label>
-                <input type="text" name="descripcion" class="form-control" value="<?= $perfil['descripcion']; ?>" required>
+                <textarea name="descripcion" class="form-control text-center" rows="3" required><?= htmlspecialchars($perfil['descripcion']); ?></textarea>
             </div>
 
             <div class="mb-3">
-                <label for="form-label">Preferencia</label>
-                <input type="text" name="preferencia" class="form-control" value="<?= $perfil['preferencia']; ?>" required>
+                <label class="form-label">Preferencia de mascotas</label>
+                <input type="text" name="preferencia" class="form-control text-center"
+                    value="<?= htmlspecialchars($perfil['preferencia']); ?>" required>
             </div>
 
-            <input type="hidden" name="accion" value="editar">
-
-            <!-- Botón de acción -->
-            <button type="submit" class="btn btn-primary">Actualizar</button>
-
-            <!-- Enlace para regresar -->
-            <button type="button" class="btn btn-secondary ms-2" data-bs-dismiss="modal" aria-label="Close">← Volver a la lista</button>
+            <div class="d-flex justify-content-center">
+                <button type="submit" class="btn btn-primary me-2">Guardar cambios</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+            </div>
         </form>
     </div>
 </body>

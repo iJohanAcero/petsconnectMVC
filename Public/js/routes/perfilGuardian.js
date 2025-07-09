@@ -20,7 +20,7 @@ window.cargarPerfilGuardian = function () {
         });
 };
 
-function abrirModalCrearGuardian() {
+function abrirModalGuardian() {
     const modalElement = document.getElementById("modal-guardian");
     if (modalElement) {
         const modalBootstrap = new bootstrap.Modal(modalElement);
@@ -43,41 +43,54 @@ function inicializarEventosPerfilGuardian() {
                     return response.text();
                 })
                 .then(html => {
-                    const contenedor = document.getElementById("contenido-editar");
-                    contenedor.innerHTML = html;
+                    document.getElementById("contenido-editar").innerHTML = html;
+                        const modalElement = document.getElementById("modal-editar-perfilGuardian");
+                        const modal = new bootstrap.Modal(modalElement);
+                        modal.show();
 
-                    const modal = new bootstrap.Modal(document.getElementById("modal-editar-perfilGuardian"));
-                    modal.show();
+                        const inputImagen = document.getElementById("input-imagen");
+const previewImagen = document.getElementById("preview-imagen");
 
-                    const formEditar = document.getElementById("form-editar-perfilGuardian");
-
+if (inputImagen && previewImagen) {
+    inputImagen.addEventListener("change", function () {
+        const archivo = this.files[0];
+        if (archivo) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                previewImagen.src = e.target.result;
+            };
+            reader.readAsDataURL(archivo);
+        }
+    });
+}
+                        const formEditar = document.getElementById("form-editar-perfilGuardian");
                     if (formEditar) {
-                        formEditar.onsubmit = function (e) {
+                        formEditar.addEventListener("submit", function (e) {
                             e.preventDefault();
                             const formData = new FormData(formEditar);
 
-                            fetch(`${window.BASE_URL}/controller/guardian/GuardianController.php`, {
-                                method: "POST",
-                                body: formData
-                            })
-                                .then(response => response.text())
-                                .then(data => {
-                                    if (data.trim()) {
-                                        alert(data);
-                                    }
-                                    modal.hide();
-                                    cargarPerfilGuardian();
-                                });
-                        };
+                                    fetch(`${window.BASE_URL}/controller/perfil/PerfilController.php`, {
+                                        method: "POST",
+                                        body: formData
+                                    })
+                                        .then(res => res.text()) 
+                                        .then(data => {
+                                            alert(data);
+                                            const modalElement = document.getElementById("modal-editar-perfilGuardian");
+                                            const modal = bootstrap.Modal.getInstance(modalElement);
+                                            if (modal) modal.hide();
+                                            cargarPerfilGuardian();
+                                        })
+                                        .catch(error => {
+                                        console.error("Error:", error);
+                                        mostrarAlerta('error', 'Error en la comunicación con el servidor');
+                            });
+                        });
                     }
-                })
-                .catch(error => {
-                    console.error("❌ Error al cargar perfil guardian:", error);
                 });
         });
     });
 }
-
 
     document.addEventListener("DOMContentLoaded", () => {
     const botones = document.querySelectorAll(".btn-cargar-perfilGuardian");
