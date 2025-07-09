@@ -1,27 +1,52 @@
-document.addEventListener('DOMContentLoaded', function() {
-    
-    const hamburger = document.querySelector(".toggle-btn");
-    
-    const toggler = document.querySelector("#icon");
-    
-    const sidebar = document.querySelector("#sidebar");
+document.addEventListener('DOMContentLoaded', function () {
 
-    if(hamburger && toggler && sidebar) {
-        hamburger.addEventListener("click", function() {
-            sidebar.classList.toggle("expand");
-            toggler.classList.toggle("uil-angle-double-right");
-            toggler.classList.toggle("uil-angle-double-left");
-        });
-    }
+  const hamburger = document.querySelector(".toggle-btn");
+
+  const toggler = document.querySelector("#icon");
+
+  const sidebar = document.querySelector("#sidebar");
+
+  if (hamburger && toggler && sidebar) {
+    hamburger.addEventListener("click", function () {
+      sidebar.classList.toggle("expand");
+      toggler.classList.toggle("uil-angle-double-right");
+      toggler.classList.toggle("uil-angle-double-left");
+    });
+  }
+
+  const toggleBtnMobile = document.querySelector('.toggle-btn-mobile');
+  if (toggleBtnMobile) {
+    toggleBtnMobile.addEventListener('click', function () {
+      sidebar.classList.toggle('expand');
+      document.body.classList.toggle('sidebar-open');
+    });
+  }
+
+
+  // ✅ Carga dinámica del portafolio de mascotas al cargar la página
   
-    const toggleBtnMobile = document.querySelector('.toggle-btn-mobile');
-    if (toggleBtnMobile) {
-        toggleBtnMobile.addEventListener('click', function() {
-            sidebar.classList.toggle('expand');
-            document.body.classList.toggle('sidebar-open');
+  const btnTodos = document.getElementById('btn-ver-todos');
+  if (btnTodos) {
+    btnTodos.addEventListener('click', function (e) {
+      e.preventDefault();
+
+      // ✅ Carga dinámica del portafolio de mascotas
+      fetch('view/portafolio/PortafoleoView.php')
+        .then(res => res.text())
+        .then(html => {
+          // 🔄 Reemplaza el contenido del área principal
+          const mainContent = document.getElementById('main-content');
+          if (mainContent) {
+            mainContent.innerHTML = html;
+
+            // 📦 Vuelve a cargar el JS del modal de mascotas
+            const script = document.createElement('script');
+            script.src = 'Public/js/PortafoleoMascota.js';
+            document.body.appendChild(script);
+          }
         });
-    }
-    
+    });
+  }
 });
 (function () {
 
@@ -107,7 +132,7 @@ document.addEventListener('DOMContentLoaded', function() {
     animateScroll();
   }
 
-  function changeLogo(){
+  function changeLogo() {
     if (ud_header.classList.contains("sticky")) {
       logo.src = "../../Public/images/logo/logo.png";
     } else {

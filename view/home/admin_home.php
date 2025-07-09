@@ -164,16 +164,16 @@ if (!isset($_SESSION["user"]) || $_SESSION["tipo_usuario"] !== "admin") {
                     </a>
                     <ul id="mascota" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
                         <li class="sidebar-item">
-                            <a href="" class="sidebar-link">✔ Perros</a>
+                            <a href="#" class="sidebar-link btn-ver-mascotas" data-tipo="perro">✔ Perros</a>
                         </li>
                         <li class="sidebar-item">
-                            <a href="" class="sidebar-link">✔ Gatos</a>
+                            <a href="#" class="sidebar-link btn-ver-mascotas" data-tipo="gato">✔ Gatos</a>
                         </li>
                         <li class="sidebar-item">
-                            <a href="" class="sidebar-link">✔ Todos</a>
+                            <a href="#" class="sidebar-link btn-ver-mascotas" data-tipo="todos">✔ Todos</a>
                         </li>
-
                     </ul>
+
                 </li>
                 <li class="sidebar-item has-dropdown">
                     <a href="" class="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse" data-bs-target="#crud" aria-expanded="false" aria-controls="crud">
@@ -213,7 +213,7 @@ if (!isset($_SESSION["user"]) || $_SESSION["tipo_usuario"] !== "admin") {
                                     <a href="#" class="sidebar-link" id="btn-cargar-mascotas">
                                         - Mascotas
                                     </a>
-                                </li>                  
+                                </li>
                             </ul>
                         </li>
                         <li class="sidebar-item has-dropdown">
@@ -269,7 +269,7 @@ if (!isset($_SESSION["user"]) || $_SESSION["tipo_usuario"] !== "admin") {
             </ul>
         </aside>
         <!-- ============================================ MAIN CONTENT ============================================ -->
-        
+
         <div class="main" id="main-content">
             <div id="publicaciones-container"></div>
             <div id="loader" class="text-center my-3" style="display:none;">
@@ -291,9 +291,9 @@ if (!isset($_SESSION["user"]) || $_SESSION["tipo_usuario"] !== "admin") {
     <script src="Public/js/crud/crud_fundacion.js"></script>
     <script src="Public/js/crud/crud_publicacion.js"></script>
     <script src="Public/js/routes/routes.js"></script>
-    <script src="Public/js/crud/crud_mascota.js"></script>
+    <script type="module" src="Public/js/crud/crud_mascota.js"></script>
 
-   <script>
+    <script>
         let page = 1;
         let loading = false;
         let finished = false;
@@ -315,27 +315,27 @@ if (!isset($_SESSION["user"]) || $_SESSION["tipo_usuario"] !== "admin") {
                         res.forEach(pub => {
                             $('#publicaciones-container').append(`
     <div class="card post-card mb-4 shadow-sm border-0">
-  <div class="card-body">
+    <div class="card-body">
     <div class="d-flex justify-content-between align-items-center mb-2 flex-wrap">
-      <h4 class="card-title fw-bold mb-0">${pub.titulo}</h4>
-      <small class="text-primary fw-semibold">Fundación: ${pub.nombre_fundacion}</small>
+        <h4 class="card-title fw-bold mb-0">${pub.titulo}</h4>
+        <small class="text-primary fw-semibold">Fundación: ${pub.nombre_fundacion}</small>
     </div>
 
     ${pub.imagen ? `
-      <div class="post-image-container mb-3">
-        <img src="Public/images/eventos_fundacion/${pub.imagen}"
-             class="img-fluid rounded-3 post-image"
-             alt="Imagen publicación">
-      </div>
+        <div class="post-image-container mb-3">
+            <img src="Public/images/eventos_fundacion/${pub.imagen}"
+                class="img-fluid rounded-3 post-image"
+                alt="Imagen publicación">
+        </div>
     ` : ''}
 
     <p class="text-muted mb-1">Descripción:</p>
     <p class="card-text">${pub.contenido}</p>
 
     <div class="text-end mt-3">
-      <small class="text-muted">${pub.fecha}</small>
+        <small class="text-muted">${pub.fecha}</small>
     </div>
-  </div>
+    </div>
 </div>
 `);
                         });
@@ -362,7 +362,7 @@ if (!isset($_SESSION["user"]) || $_SESSION["tipo_usuario"] !== "admin") {
             });
         });
     </script>
-
+    </div>
 </body>
 
 </html>

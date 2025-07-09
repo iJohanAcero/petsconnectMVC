@@ -1,0 +1,26 @@
+/* Estilos para las tarjetas */
+.pet-card {
+    cursor: pointer;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.pet-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* Ajustes del carrusel */
+.carousel-inner {
+    padding: 20px 0;
+}
+
+.carousel-control-prev,
+.carousel-control-next {
+    width: 5%;
+}
+
+/* Modal personalizado */
+.modal-body img {
+    max-width: 100%;
+    border-radius: 8px;
+}

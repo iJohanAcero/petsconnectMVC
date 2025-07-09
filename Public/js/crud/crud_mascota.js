@@ -1,3 +1,4 @@
+import { inicializarDataTable } from "../../js/crud/datatableConfig.js";
 // =========== CRUD DE MASCOTAS =========== //
 function cargarCrudMascotas() {
     fetch("view/mascota/MascotaView.php")
@@ -8,6 +9,9 @@ function cargarCrudMascotas() {
 
             if (mainContainer) {
                 mainContainer.innerHTML = data;
+                // 👇 Recién se cargó el HTML con la tabla, ahora sí la inicializamos
+                inicializarTodasLasTablas();
+                // ⚙️ Y luego inicializamos eventos
                 inicializarEventosMascotas();
             } else {
                 console.error("❌ No se encontró el contenedor principal para el CRUD de mascotas");
@@ -16,7 +20,7 @@ function cargarCrudMascotas() {
         .catch(error => console.error("Error al cargar MascotaView.php:", error));
 }
 window.cargarCrudMascotas = cargarCrudMascotas;
-document
+
 function abrirModalCrearMascota() {
     const modalElement = document.getElementById("modal-mascotas");
     const modalBootstrap = new bootstrap.Modal(modalElement);

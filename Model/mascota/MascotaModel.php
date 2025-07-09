@@ -36,7 +36,7 @@ class Mascota
     // 🟡 Obtener todas las mascotas con JOINs para mostrar datos legibles
     public function getMascotas()
     {
-        $rows = null;
+        $rows = [];
 
         $sql = "SELECT 
                     m.id_mascota,
@@ -169,4 +169,35 @@ class Mascota
 
         return $rows;
     }
+
+    // 🟢 Obtener mascotas para el portafolio (en adopción, en trámite o en tránsito)
+    public function getMascotasPortafolio()
+{
+    $rows = null;
+
+    $sql = "SELECT 
+                m.id_mascota,
+                m.nombre,
+                m.edad_meses,
+                m.sexo,
+                m.imagen,
+                tm.especie,
+                tm.raza,
+                tm.tipo_pelaje,
+                ea.tipo_estado
+            FROM t_mascota m
+            INNER JOIN t_tipo_mascota tm ON m.id_tipo_mascota = tm.id_tipo_mascota
+            INNER JOIN t_estado_adopcion ea ON m.id_estado_adopcion = ea.id_estado_adopcion
+            WHERE ea.tipo_estado IN ('EN ADOPCION', 'EN TRAMITE', 'TRANSITO')";
+
+    $stmt = $this->db->prepare($sql);
+    $stmt->execute();
+
+    while ($resultado = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        $rows[] = $resultado;
+    }
+
+    return $rows;
+}
+
 }
