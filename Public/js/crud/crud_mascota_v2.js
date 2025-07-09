@@ -1,4 +1,4 @@
-import { inicializarDataTable } from "../../js/crud/datatableConfig.js";
+import { inicializarTodasLasTablas } from "./datatableConfig.js";
 // =========== CRUD DE MASCOTAS =========== //
 function cargarCrudMascotas() {
     fetch("view/mascota/MascotaView.php")

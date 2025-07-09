@@ -291,7 +291,7 @@ if (!isset($_SESSION["user"]) || $_SESSION["tipo_usuario"] !== "admin") {
     <script src="Public/js/crud/crud_fundacion.js"></script>
     <script src="Public/js/crud/crud_publicacion.js"></script>
     <script src="Public/js/routes/routes.js"></script>
-    <script type="module" src="Public/js/crud/crud_mascota.js"></script>
+    <script type="module" src="Public/js/crud/crud_mascota_v2.js"></script>
 
     <script>
         let page = 1;
