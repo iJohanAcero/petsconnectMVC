@@ -23,7 +23,7 @@ if (session_status() === PHP_SESSION_NONE) {
                         <!-- Foto de Perfil -->
                         <?php
 
-                        $nombreImagen = !empty($perfil['imagen']) ? $perfil['imagen'] : 'default.png';
+                        $nombreImagen = !empty($perfil['imagen']) ? $perfil['imagen'] : 'default.jpg';
                         $rutaImagen = "/petsconnectMVC/Public/images/perfil/" . htmlspecialchars($nombreImagen);
                         ?>
 

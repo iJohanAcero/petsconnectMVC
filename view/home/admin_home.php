@@ -77,7 +77,7 @@ if (!isset($_SESSION["user"]) || $_SESSION["tipo_usuario"] !== "admin") {
                         style="text-decoration: none;">
                         <p class="m-1 "> Administrador </p>
                         <img
-                            src="Public/images/perfil/perfil2.jpg"
+                            src="Public/images/perfil/admin_default.jpg"
                             class="rounded-circle"
                             height="40"
                             width="40"
@@ -103,11 +103,6 @@ if (!isset($_SESSION["user"]) || $_SESSION["tipo_usuario"] !== "admin") {
                                     <?php echo htmlspecialchars($_SESSION["user"]["email"]); ?>
                                 </p>
                             <?php endif; ?>
-                        </li>
-                        <li>
-                            <a class="dropdown-item" href="index.php?action=perfil">
-                                <i class="uil uil-user"></i> Perfil
-                            </a>
                         </li>
                         <li class="nav-item">
                             <a class="bg-body rounded text-muted dropdown-item" href="index.php?action=logout">
@@ -137,12 +132,6 @@ if (!isset($_SESSION["user"]) || $_SESSION["tipo_usuario"] !== "admin") {
                     <a href="" class="sidebar-link">
                         <i class="uil uil-home"></i>
                         <span class="sidebar-text">Inicio</span>
-                    </a>
-                </li>
-                <li class="sidebar-item">
-                    <a href="" class="sidebar-link">
-                        <i class="uil uil-user"></i>
-                        <span class="sidebar-text">Perfil</span>
                     </a>
                 </li>
                 <li class="sidebar-item">

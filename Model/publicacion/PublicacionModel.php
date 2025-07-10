@@ -35,9 +35,9 @@ class Publicacion
     {
         $rows = null;
         $statement = $this->db->prepare(
-            "SELECT p.*, f.nombre AS nombre_fundacion 
-         FROM t_publicacion p
-         INNER JOIN t_fundacion f ON p.nit_fundacion = f.nit_fundacion"
+                "SELECT p.*, f.nombre AS nombre_fundacion 
+            FROM t_publicacion p
+            INNER JOIN t_fundacion f ON p.nit_fundacion = f.nit_fundacion"
         );
         $statement->execute();
         while ($resultado = $statement->fetch()) {
@@ -114,4 +114,12 @@ class Publicacion
         }
         return $rows;
     }
+
+    public function getPublicacionesPorFundacion($nit_fundacion) {
+    $sql = "SELECT * FROM t_publicacion WHERE nit_fundacion = :nit";
+    $statement = $this->db->prepare($sql);
+    $statement->bindParam(':nit', $nit_fundacion);
+    $statement->execute();
+    return $statement->fetchAll(PDO::FETCH_ASSOC);
+}
 }

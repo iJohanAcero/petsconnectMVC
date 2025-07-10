@@ -9,17 +9,16 @@ if (isset($_SESSION["user"]["id_usuario"])) {
     $nit_fundacion = Fundacion::obtenerNitPorUsuario($_SESSION["user"]["id_usuario"]);
 }
 ?>
-
 <body>
     <!-- Contenedor principal del CRUD con ID para JS -->
     <div class="container crud-container main-content" id="crud-container" style="padding: 40px;">
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h2 class="mb-0">Gestión de Publicaciones</h2>
             <?php if (isset($_SESSION["tipo_usuario"]) && $_SESSION["tipo_usuario"] === "fundacion"): ?>
-                <button id="btn-abrir-modal-publicacion" class="btn btn-primary">
-                    <i class="bi bi-plus-circle"></i> Añadir Publicacion
-                </button>
-            <?php endif; ?>
+    <button id="btn-abrir-modal-publicacion" class="btn btn-primary">
+        <i class="bi bi-plus-circle"></i> Añadir Publicacion
+    </button>
+<?php endif; ?>
         </div>
 
         <!-- Tabla de publicacion -->
@@ -38,13 +37,7 @@ if (isset($_SESSION["user"]["id_usuario"])) {
                 </thead>
                 <tbody>
                     <?php
-                    $tipo_usuario = $_SESSION["tipo_usuario"] ?? null;
-
-                    if ($tipo_usuario === "fundacion" && $nit_fundacion !== null) {
-                        $Publicacion = $Modelo->getPublicacionesPorFundacion($nit_fundacion);
-                    } else {
-                        $Publicacion = $Modelo->getPublicacion(); // Admin ve todo
-                    }
+                    $Publicacion = $Modelo->getPublicacion();
                     if ($Publicacion !== null) {
                         foreach ($Publicacion as $Publicacion) {
                     ?>
@@ -109,7 +102,7 @@ if (isset($_SESSION["user"]["id_usuario"])) {
                             <input type="file" class="form-control" id="imagen" name="imagen" accept="image/*" required>
                         </div>
                         <div class="mb-3">
-
+            
                             <input type="hidden" class="form-control" id="nit_fundacion" name="nit_fundacion" value="<?php echo htmlspecialchars($nit_fundacion); ?>" required>
                         </div>
                         <div class="modal-footer">
@@ -136,5 +129,5 @@ if (isset($_SESSION["user"]["id_usuario"])) {
             </div>
         </div>
     </div>
-    <script src="../../Public/js/main.js"></script>
+        <script src="../../Public/js/main.js"></script>
 </body>

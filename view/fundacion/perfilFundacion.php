@@ -20,11 +20,16 @@ if (session_status() === PHP_SESSION_NONE) {
                     <div class="card-body text-center">
 
                         <!-- Foto de Perfil -->
-                        <img src="Public/images/perfil/perfil2.jpg"
+                        <?php
+
+                        $nombreImagen = !empty($perfil['imagen']) ? $perfil['imagen'] : 'fundacion_default.jpg';
+                        $rutaImagen = "/petsconnectMVC/Public/images/perfil/" . htmlspecialchars($nombreImagen);
+                        ?>
+
+                        <img src="<?= $rutaImagen ?>"
                             class="rounded-circle mb-3 img-fluid"
                             alt="Foto de perfil"
                             style="width: 150px; height: 150px; object-fit: cover;">
-
                         <!-- Nombre -->
                         <h3 class="card-title mb-2"><?php echo htmlspecialchars($perfil['nombre']); ?></h3>
 
@@ -37,7 +42,7 @@ if (session_status() === PHP_SESSION_NONE) {
                         <div class="mb-3">
                             <h6 class="text-primary">Preferencia de mascotas</h6>
                             <p class="text-muted mb-3">
-                                <?php echo htmlspecialchars($perfil['preferencia']); ?> 
+                                <?php echo htmlspecialchars($perfil['preferencia']); ?>
                             </p>
                         </div>
 
@@ -45,6 +50,25 @@ if (session_status() === PHP_SESSION_NONE) {
                 </div>
             </div>
         </div>
+
+        <button class="btn btn-sm btn-warning btn-editar-perfilFundacion" data-id="<?php echo htmlspecialchars($perfil['id_usuario']); ?>">
+            <i class="uil uil-pen"></i>
+        </button>
+        <!-- Modal para editar Perfil Fundacion -->
+        <div class="modal fade" id="modal-editar-perfilFundacion" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Editar Perfil</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body" id="contenido-editar">
+                        <!-- Se carga dinámicamente con JS -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script src="../../Public/js/main.js"></script>
     </div>
 
 </body>

@@ -15,6 +15,14 @@ if (!isset($_SESSION["user"]) || $_SESSION["tipo_usuario"] !== "fundacion") {
     exit;
 }
 
+require_once "model/perfil/PerfilModel.php"; // Ajustar si la ruta varía
+
+$perfilModel = new PerfilModel();
+$id = $_SESSION["user"]["id_usuario"];
+$perfil = $perfilModel->getPerfilPorUsuario($id);
+
+
+
 
 ?>
 
@@ -75,8 +83,14 @@ if (!isset($_SESSION["user"]) || $_SESSION["tipo_usuario"] !== "fundacion") {
                         aria-expanded="false"
                         style="text-decoration: none;">
                         <p class="m-1 "> Fundación </p>
+                        <!-- Foto de Perfil -->
+                        <?php
+
+                        $nombreImagen = !empty($perfil['imagen']) ? $perfil['imagen'] : 'default.png';
+                        $rutaImagen = "/petsconnectMVC/Public/images/perfil/" . htmlspecialchars($nombreImagen);
+                        ?>
                         <img
-                            src="Public/images/perfil/perfil2.jpg"
+                            src="<?= $rutaImagen ?>"
                             class="rounded-circle"
                             height="40"
                             width="40"
@@ -104,7 +118,7 @@ if (!isset($_SESSION["user"]) || $_SESSION["tipo_usuario"] !== "fundacion") {
                             <?php endif; ?>
                         </li>
                         <li>
-                            <a class="dropdown-item" href="index.php?action=perfil">
+                            <a class="dropdown-item btn-cargar-perfilFundacion" href="#">
                                 <i class="uil uil-user"></i> Perfil
                             </a>
                         </li>
@@ -140,7 +154,7 @@ if (!isset($_SESSION["user"]) || $_SESSION["tipo_usuario"] !== "fundacion") {
                     </a>
                 </li>
                 <li class="sidebar-item">
-                    <a href="#" class="sidebar-link" id="btn-cargar-perfilFundacion">
+                    <a href="#" class="sidebar-link btn-cargar-perfilFundacion">
                         <i class="uil uil-user"></i>
                         <span class="sidebar-text">Perfil</span>
                     </a>
@@ -210,9 +224,6 @@ if (!isset($_SESSION["user"]) || $_SESSION["tipo_usuario"] !== "fundacion") {
     </div>
     <!--==============================================CONFIGURACION DE FONDO===========================================-->
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js" integrity="sha384-VFQrHzqBh5qiJIU0uGU5CIW3+OWpdGGJM9LBnGbuIH2mkICcFZ7lPd/AAtI7SNf7" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js" integrity="sha384-/RlQG9uf0M2vcTw3CX7fbqgbj/h8wKxw7C3zu9/GxcBPRKOEcESxaxufwRXqzq6n" crossorigin="anonymous"></script>
-    <script src="https://cdn.datatables.net/v/bs5/dt-2.3.2/af-2.7.0/b-3.2.3/b-html5-3.2.3/r-3.0.4/sc-2.4.3/datatables.min.js" integrity="sha384-4VpbDpy9RZDSYGLIgJCxbBN42Ze5hcM/B+OOSuW3hSAukOTfsuar7+79mYTohU6M" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
 
     <!-- SCRIPTS DE JS CRUDS Y RUTAS -->

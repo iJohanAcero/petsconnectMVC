@@ -101,6 +101,7 @@ if (isset($_GET["action"]) && $_GET["action"] == "logout") {
     header("Location: $googleLogoutUrl");
     exit;
 }
+
 // --- Login con Google ---
 if (isset($_GET['action']) && $_GET['action'] === 'login_google') {
     (new AuthController())->loginGoogle();

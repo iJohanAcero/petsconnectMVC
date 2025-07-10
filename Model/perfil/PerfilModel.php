@@ -58,4 +58,22 @@ class PerfilModel
         
         return $stmt->execute();
     }
+
+    public function actualizarPerfilFundacion($id, $nombre, $descripcion, $preferencia, $imagen)
+    {
+        $stmt = $this->db->prepare("
+            UPDATE t_perfil 
+            SET nombre = :nombre, descripcion = :descripcion, preferencia = :preferencia, imagen = :imagen
+            WHERE id_perfil = (
+                SELECT id_perfil FROM t_fundacion WHERE id_usuario = :id_usuario
+            )
+        ");
+        $stmt->bindParam(':id_usuario', $id, PDO::PARAM_INT);
+        $stmt->bindParam(':nombre', $nombre, PDO::PARAM_STR);
+        $stmt->bindParam(':descripcion', $descripcion, PDO::PARAM_STR);
+        $stmt->bindParam(':preferencia', $preferencia, PDO::PARAM_STR);
+        $stmt->bindParam(':imagen', $imagen, PDO::PARAM_STR);
+        
+        return $stmt->execute();
+    }
 }

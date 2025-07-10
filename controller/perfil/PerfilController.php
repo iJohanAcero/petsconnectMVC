@@ -13,7 +13,7 @@ $id = $_SESSION["user"]["id_usuario"];
     $perfil = $perfilModel->getPerfilPorUsuario($id);
     $imagen = $perfil['imagen'];
 
-// Actualizar perfil de guardian
+// Actualizar perfil de guardian y fundación
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['accion']) && $_POST['accion'] === 'editar') {
     $id = $_POST['id'];
     $nombre = $_POST['nombre'];
@@ -42,8 +42,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['accion']) && $_POST['
 
     // Actualizar el perfil
     $resultado = $perfilModel->actualizarPerfilGuardian($id, $nombre, $descripcion, $preferencia, $imagen);
+    $resultado2 = $perfilModel->actualizarPerfilFundacion($id, $nombre, $descripcion, $preferencia, $imagen);
 
-    if ($resultado) {
+    if ($resultado || $resultado2) {
         echo "Perfil actualizado correctamente.";
         exit;
     } else {
