@@ -28,50 +28,81 @@ if (!$perfil || empty($perfil)) {
 </head>
 
 <body>
-    <!-- Contenedor principal de Bootstrap -->
-    <div class="container mt-1">
-        <!-- Formulario con clases de Bootstrap -->
-        <form id="form-editar-perfilFundacion" method="POST">
-            <input type="hidden" name="id" value="<?= $perfil['id_usuario']; ?>">
-            <input type="hidden" name="accion" value="editar">
+    <section id="about-section-modal" class="pt-5 pb-5">
+    <div class="custom-wrapper">
+        <div class="container-fluid px-5 wrapabout">
+            <div class="red"></div>
+            <form id="form-editar-perfilFundacion" method="POST" enctype="multipart/form-data">
+                <input type="hidden" name="id" value="<?= htmlspecialchars($perfil['id_usuario']); ?>">
+                <input type="hidden" name="accion" value="editar">
 
-            <div class="mb-3 text-center">
-                <img id="preview-imagen"
-                    src="/petsconnectMVC/Public/images/perfil/<?= htmlspecialchars($perfil['imagen'] ?? 'default.jpg'); ?>"
-                    alt="Imagen de perfil"
-                    class="rounded-circle img-fluid"
-                    style="width: 150px; height: 150px; object-fit: cover;">
-            </div>
+                <div class="row">
+                    <!-- Columna de datos -->
+                    <div class="col-lg-6 align-items-center justify-content-center d-flex mb-5 mb-lg-0">
+                        <div class="blockabout">
+                            <div class="blockabout-inner text-center text-sm-start">
 
-            <!-- Input de imagen -->
-            <div class="mb-3">
-                <label class="form-label">Actualizar imagen de perfil</label>
-                <input type="file" name="imagen" id="input-imagen" class="form-control">
-            </div>
+                                <!-- Nombre -->
+                                <div class="title-big pb-3 mb-3">
+                                    <label for="nombre" class="form-label">Nombre</label>
+                                    <input type="text" class="form-control" name="nombre" id="nombre" value="<?= htmlspecialchars($perfil['nombre']); ?>" required>
+                                </div>
 
-            <div class="mb-3">
-                <label class="form-label">Nombre</label>
-                <input type="text" name="nombre" class="form-control text-center"
-                    value="<?= htmlspecialchars($perfil['nombre']); ?>" required>
-            </div>
+                                <!-- Descripción -->
+                                <div class="mb-3">
+                                    <label for="descripcion" class="form-label text-muted">Descripción <small class="text-secondary d-block">máx. 1000 caracteres</small></label>
+                                    <textarea class="form-control" style="width: 30vw;"  name="descripcion" id="descripcion" rows="4" maxlength="1000" required><?= htmlspecialchars($perfil['descripcion']); ?></textarea>
+                                </div>
 
-            <div class="mb-3">
-                <label class="form-label">Descripción</label>
-                <textarea name="descripcion" class="form-control text-center" rows="3" required><?= htmlspecialchars($perfil['descripcion']); ?></textarea>
-            </div>
+                                <!-- Preferencia -->
+                                <div class="mb-3">
+                                    <label for="preferencia" class="form-label text-primary pt-3">Mascotas más buscadas</label>
+                                    <select name="preferencia" id="preferencia" class="form-select" required>
+                                        <option value="Perros" <?= $perfil['preferencia'] == 'Perros' ? 'selected' : '' ?>>Perros</option>
+                                        <option value="Gatos" <?= $perfil['preferencia'] == 'Gatos' ? 'selected' : '' ?>>Gatos</option>
+                                        <option value="Todos los animales" <?= $perfil['preferencia'] == 'Todos los animales' ? 'selected' : '' ?>>Todos los animales</option>
+                                    </select>
+                                </div>
 
-            <div class="mb-3">
-                <label class="form-label">Preferencia de mascotas</label>
-                <input type="text" name="preferencia" class="form-control text-center"
-                    value="<?= htmlspecialchars($perfil['preferencia']); ?>" required>
-            </div>
+                                <!-- Redes sociales (puedes convertir esto en inputs también si deseas) -->
+                                <div class="sosmed-horizontal pt-3 pb-3">
+                                    <a href="#"><i class="uil uil-facebook-f"></i></a>
+                                    <a href="#"><i class="uil uil-instagram-alt"></i></a>
+                                    <a href="#"><i class="uil uil-twitter"></i></a>
+                                </div>
 
-            <div class="d-flex justify-content-center">
-                <button type="submit" class="btn btn-primary me-2">Guardar cambios</button>
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-            </div>
-        </form>
+                                <button type="submit" class="btn rey-btn mt-3">
+                                    <i class="uil uil-save"> Guardar cambios</i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Columna de imagen -->
+                    <div class="col-lg-6 mt-5 mt-lg-0 align-items-center justify-content-center d-flex">
+                        <figure class="perfil-img-container text-center">
+                            <?php
+                            $nombreImagen = !empty($perfil['imagen']) ? $perfil['imagen'] : 'default.jpg';
+                            $rutaImagen = "/petsconnectMVC/Public/images/perfil/" . htmlspecialchars($nombreImagen);
+                            ?>
+                            <img id="preview-imagen"
+                                src="<?= $rutaImagen ?>"
+                                alt="Foto de perfil"
+                                style="object-fit: cover; max-height: 60vh;"
+                                class="img-fluid perfil-img-preview">
+
+                            <div class="mt-3">
+                                <label for="input-imagen" class="form-label">Actualizar imagen</label>
+                                <input type="file" name="imagen" id="input-imagen" class="form-control">
+                            </div>
+                        </figure>
+                    </div>
+                </div>
+            </form>
+        </div>
     </div>
+</section>
+
 </body>
 
 </html>

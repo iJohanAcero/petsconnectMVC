@@ -326,6 +326,91 @@ a.sidebar-link:hover {
   color: #888888;
 }
 
+
+/* ESTILOS DEL LAS VISTAS DE PERFIL*/
+
+
+
+#about-section {
+    background: var(--color-dark);
+    padding: 50px 0;
+    border-radius: 0.7rem;
+    position: relative;
+    box-shadow: 0 10px 10px rgba(0, 0, 0, 0.1);
+    width: 80vw; /* 🔥 ancho completo de la pantalla */
+    margin-left: calc(-50vw + 50%); /* Centrado real en la pantalla */
+}
+
+#about-section-modal {
+    background: var(--color-dark);
+    padding: 50px 0;
+    border-radius: 0.7rem;
+    position: relative;
+    box-shadow: 0 10px 10px rgba(0, 0, 0, 0.1);
+    width: 80vw; 
+}
+
+.blockabout {
+    padding: 20px;
+    background: var(--color-white);
+    border-radius: 0.7rem;
+}
+
+.blockabout-inner {
+    padding: 30px;
+    border: 2px solid var(--color-dark);
+    border-radius: 0.7rem;
+
+}
+
+.sosmed-horizontal a i {
+    border: 1px solid #070707;
+    border-radius: 50%;
+    color: #070707;
+    display: inline-block;
+    height: 30px;
+    width: 30px;
+    line-height: 30px;
+    margin: auto 3px;
+    font-size: 15px;
+    text-align: center;
+    transition: all 0.3s;
+}
+
+.rey-btn {
+    border: 2px solid #070707;
+    padding: 10px 40px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-size: 13px;
+    font-weight: 700;
+    border-radius: 50px;
+    transition: all 0.3s;
+}
+
+.perfil-img-container {
+    width: 500px;
+    height: 500px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: #f0f0f0;
+}
+
+.perfil-img-preview {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; 
+    object-position: center;
+}
+
+.modal-sin-limite {
+    max-width: none !important;
+    width: 85vw;
+}
+
 /* Responsive Sidebar */
 @media (max-width: 991px) {
     #sidebar {
