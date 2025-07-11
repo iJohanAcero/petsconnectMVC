@@ -222,7 +222,7 @@ if (!isset($_SESSION["user"]) || $_SESSION["tipo_usuario"] !== "admin") {
                             </a>
                             <ul id="crud-4" class="sidebar-dropdown list-unstyled collapse">
                                 <li class="sidebar-item">
-                                    <a href="#" class="sidebar-link" id="btn-cargar-productos">
+                                    <a href="" class="sidebar-link" id="btn-cargar-causa">
                                         - Causas
                                     </a>
                                 </li>
@@ -287,7 +287,7 @@ if (!isset($_SESSION["user"]) || $_SESSION["tipo_usuario"] !== "admin") {
     <!-- SCRIPTS DE JS CRUDS Y RUTAS -->
     <script src="Public/js/config.js"></script>
     <script src="Public/js/main.js"></script>
-    <script src="Public/js/crud/crud_producto.js"></script>
+    <script src="Public/js/crud/crud_causa.js"></script>
     <script src="Public/js/crud/crud_fundacion.js"></script>
     <script src="Public/js/crud/crud_publicacion.js"></script>
     <script src="Public/js/routes/routes.js"></script>
