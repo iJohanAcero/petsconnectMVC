@@ -93,7 +93,7 @@ if (!$perfil || empty($perfil)) {
 
                             <div class="mt-3">
                                 <label for="input-imagen" class="form-label">Actualizar imagen</label>
-                                <input type="file" name="imagen" id="input-imagen" class="form-control">
+                                <input type="file" name="imagen" id="input-imagen" class="form-control" accept="image/*">
                             </div>
                         </figure>
                     </div>

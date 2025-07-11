@@ -24,60 +24,62 @@ if (session_status() === PHP_SESSION_NONE) {
 
 
 <body>
-    <section id="about-section" class="pt-4 pb-4">
-        <div class="container wrapabout">
-            <div class="red"></div>
-            <div class="row">
-                <div class="col-lg-6 align-items-center justify-content-center d-flex mb-5 mb-lg-0">
-                    <div class="blockabout">
-                        <div class="blockabout-inner text-center text-sm-start">
-                            <div class="title-big pb-3 mb-3">
-                                <!-- Nombre -->
-                                <h3 class="card-title mb-2"><?php echo htmlspecialchars($perfil['nombre']); ?></h3>
-                            </div>
-                            <!-- Descripción -->
-                            <h6 class="text-muted">Descripción</h6>
-                            <p class="description-p text-muted pe-0 pe-lg-0">
-                                <?php echo htmlspecialchars($perfil['descripcion']); ?>
-                            </p>
-                            <h6 class="text-primary pt-5">Preferencia de mascotas</h6>
-                            <p class="text-muted mb-3">
-                                <?php echo htmlspecialchars($perfil['preferencia']); ?>
-                            </p>
-                            <div class="sosmed-horizontal pt-3 pb-3">
-                                <a href="#"><i class="uil uil-facebook-f"></i></a>
-                                <a href="#"><i class="uil uil-instagram-alt"></i></a>
-                                <a href="#"><i class="uil uil-twitter"></i></a>
-                            </div>
+    <section id="about-section" class="pt-5 pb-5">
+        <div class="custom-wrapper">
+            <div class="container-fluid px-5 wrapabout">
+                <div class="red"></div>
+                <div class="row">
+                    <div class="col-lg-6 align-items-center justify-content-center d-flex mb-5 mb-lg-0">
+                        <div class="blockabout">
+                            <div class="blockabout-inner text-center text-sm-start">
+                                <div class="title-big pb-3 mb-3">
+                                    <!-- Nombre -->
+                                    <h3 class="card-title mb-2"><?php echo htmlspecialchars($perfil['nombre']); ?></h3>
+                                </div>
+                                <!-- Descripción -->
+                                <h6 class="text-muted">Descripción</h6>
+                                <p class="description-p text-muted pe-0 pe-lg-0">
+                                    <?php echo htmlspecialchars($perfil['descripcion']); ?>
+                                </p>
+                                <h6 class="text-primary pt-5">Mascotas mas buscadas</h6>
+                                <p class="text-muted mb-3">
+                                    <?php echo htmlspecialchars($perfil['preferencia']); ?>
+                                </p>
+                                <div class="sosmed-horizontal pt-3 pb-3">
+                                    <a href="#"><i class="uil uil-facebook-f"></i></a>
+                                    <a href="#"><i class="uil uil-instagram-alt"></i></a>
+                                    <a href="#"><i class="uil uil-twitter"></i></a>
+                                </div>
 
-                            <button class="btn rey-btn mt-3 btn-editar-perfilGuardian" data-id="<?php echo htmlspecialchars($perfil['id_usuario']); ?>">
-                                <i class="uil uil-pen">Editar perfil</i>
-                            </button>
+                                <button class="btn rey-btn mt-3 btn-editar-perfilGuardian" data-id="<?php echo htmlspecialchars($perfil['id_usuario']); ?>">
+                                    <i class="uil uil-pen">Editar perfil</i>
+                                </button>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-lg-6 mt-5 mt-lg-0 align-items-center justify-content-center d-flex">
-                    <figure class="perfil-img-container">
-                        <!-- Foto de Perfil -->
-                        <?php
+                    <div class="col-lg-6 mt-5 mt-lg-0 align-items-center justify-content-center d-flex">
+                        <figure class="perfil-img-container">
+                            <!-- Foto de Perfil -->
+                            <?php
 
-                        $nombreImagen = !empty($perfil['imagen']) ? $perfil['imagen'] : 'default.jpg';
-                        $rutaImagen = "/petsconnectMVC/Public/images/perfil/" . htmlspecialchars($nombreImagen);
-                        ?>
+                            $nombreImagen = !empty($perfil['imagen']) ? $perfil['imagen'] : 'default.jpg';
+                            $rutaImagen = "/petsconnectMVC/Public/images/perfil/" . htmlspecialchars($nombreImagen);
+                            ?>
 
-                        <img src="<?= $rutaImagen ?>"
-                            alt="Foto de perfil"
-                            style="object-fit: cover; max-height: 60vh; "
-                            class="img-fluid perfil-img-preview">
+                            <img src="<?= $rutaImagen ?>"
+                                alt="Foto de perfil"
+                                style="object-fit: cover; max-height: 60vh; "
+                                class="img-fluid perfil-img-preview">
 
-                    </figure>
+                        </figure>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
     <div class="modal fade" id="modal-editar-perfilGuardian" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-dialog modal-sin-limite  modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">Editar Perfil</h5>
