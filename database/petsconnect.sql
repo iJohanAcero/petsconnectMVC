@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 04-07-2025 a las 08:10:38
+-- Tiempo de generación: 22-07-2025 a las 03:41:26
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -192,6 +192,31 @@ CREATE TABLE `t_calificacion` (
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `t_causa`
+--
+
+CREATE TABLE `t_causa` (
+  `id_causa` int(11) NOT NULL,
+  `nombre` varchar(100) NOT NULL,
+  `descripcion` text DEFAULT NULL,
+  `meta` decimal(12,2) DEFAULT NULL,
+  `estado_causa` varchar(50) DEFAULT NULL,
+  `fecha_creacion` datetime DEFAULT current_timestamp(),
+  `nit_fundacion` varchar(20) DEFAULT NULL,
+  `imagen_url` varchar(255) DEFAULT NULL,
+  `tipo_causa` varchar(50) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `t_causa`
+--
+
+INSERT INTO `t_causa` (`id_causa`, `nombre`, `descripcion`, `meta`, `estado_causa`, `fecha_creacion`, `nit_fundacion`, `imagen_url`, `tipo_causa`) VALUES
+(9, 'Alimento ', 'es urgente', 600.00, 'activa', '2025-07-11 20:45:45', '11111', '68715bd9a1642_gatos.jpg', 'alimentación');
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `t_donacion`
 --
 
@@ -244,6 +269,7 @@ CREATE TABLE `t_fundacion` (
 --
 
 INSERT INTO `t_fundacion` (`nit_fundacion`, `nombre`, `id_usuario`, `id_perfil`) VALUES
+(2222, 'Huellitas', 35, 23),
 (11111, 'Fundacion1', 33, 21);
 
 -- --------------------------------------------------------
@@ -263,7 +289,8 @@ CREATE TABLE `t_guardian` (
 --
 
 INSERT INTO `t_guardian` (`id_registro`, `id_usuario`, `id_perfil`) VALUES
-(24, 32, 20);
+(24, 32, 20),
+(26, 34, 22);
 
 -- --------------------------------------------------------
 
@@ -298,6 +325,13 @@ CREATE TABLE `t_mascota` (
   `id_estado_adopcion` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Volcado de datos para la tabla `t_mascota`
+--
+
+INSERT INTO `t_mascota` (`id_mascota`, `nombre`, `edad_meses`, `sexo`, `imagen`, `id_tipo_mascota`, `nit_fundacion`, `id_estado_adopcion`) VALUES
+(999, 'negrita', 9, 'hembra', '686ee8623f6fb_gatos.jpg', 8, 2222, 1);
+
 -- --------------------------------------------------------
 
 --
@@ -317,8 +351,10 @@ CREATE TABLE `t_perfil` (
 --
 
 INSERT INTO `t_perfil` (`id_perfil`, `nombre`, `preferencia`, `descripcion`, `imagen`) VALUES
-(20, 'Perfil Guardian', 'Ninguna', 'Auto-generado', 'default.jpg'),
-(21, 'Perfil Fundación', '', '', 'fundacion_default.jpg');
+(20, 'Johan Acero', 'gatos negris', 'me gustaria adoptar gatos en bogota', '686ee90709137_perfil.jpg'),
+(21, 'Perfil Fundación', '', '', 'fundacion_default.jpg'),
+(22, 'Perfil Guardian', 'Ninguna', 'Auto-generado', 'default.jpg'),
+(23, 'Perfil Fundación', '', '', 'fundacion_default.jpg');
 
 -- --------------------------------------------------------
 
@@ -371,7 +407,9 @@ CREATE TABLE `t_publicacion` (
 --
 
 INSERT INTO `t_publicacion` (`id_publicacion`, `titulo`, `contenido`, `imagen`, `fecha`, `nit_fundacion`) VALUES
-(6, 'Nueva publicacion', 'perros en adopcion', '68676fcdda998_adopciones.jpg', '2025-07-04 00:00:00', 11111);
+(6, 'Nueva publicacion', 'perros en adopcion', '68676fcdda998_adopciones.jpg', '2025-07-04 00:00:00', 11111),
+(7, 'gatos en adopcion', 'gatos lindos en kennedy', '686ec1a875fba_gatos.jpg', '2025-07-09 21:23:20', 11111),
+(8, 'jornada de adopcion', 'jornada', '686ee9c57a15c_Captura de pantalla_28-6-2025_192431_photos.google.com.jpeg', '2025-07-10 00:14:29', 11111);
 
 -- --------------------------------------------------------
 
@@ -420,7 +458,9 @@ CREATE TABLE `t_registro` (
 INSERT INTO `t_registro` (`id_registro`, `fecha`, `tipo_usuario`) VALUES
 (23, '2025-07-04', 'ADMIN'),
 (24, '2025-07-04', 'GUARDIAN'),
-(25, '2025-07-04', 'FUNDACION');
+(25, '2025-07-04', 'FUNDACION'),
+(26, '2025-07-09', 'GUARDIAN'),
+(27, '2025-07-09', 'FUNDACION');
 
 -- --------------------------------------------------------
 
@@ -471,7 +511,9 @@ CREATE TABLE `t_usuario` (
 INSERT INTO `t_usuario` (`id_usuario`, `nombre`, `apellido`, `contrasena`, `email`, `direccion`, `telefono`, `google_id`) VALUES
 (31, 'Admin', 'pets', '$2y$10$kpFsZAIko71tAkZIlPRhvegAe./rAO1/8TPpK0cGZWngfvkwh8Ls.', 'admin@gmail.com', 'Bogotá', '123456', NULL),
 (32, 'Johan David', 'Acero', NULL, 'johanacero8@gmail.com', '', '', '110443786294827582324'),
-(33, 'Jhon', 'Doe', '$2y$10$hd0SPDHn1f5Ob312a.Es..tylEKiK55r22FWaHNae57s4TYGomfe6', 'fundacion@gmail.com', 'Bogotá', '111111', NULL);
+(33, 'Jhon', 'Doe', '$2y$10$hd0SPDHn1f5Ob312a.Es..tylEKiK55r22FWaHNae57s4TYGomfe6', 'fundacion@gmail.com', 'Bogotá', '111111', NULL),
+(34, 'jon', 'doe', '$2y$10$43jhNAA48Ak3NJJpHso0KudWVlZt4o44XeA6vc/wR8HUHzdJLCTSG', 'jon@gmail.com', 'bogota', '1312321', NULL),
+(35, 'andres', 'miranda', '$2y$10$D3iTjQQmNbyUgK9IC2yh0.zN.XR8FN256ac4vQGta0yvXzbxtdLum', 'miranda@gmail.com', 'bogota', '1233121', NULL);
 
 -- --------------------------------------------------------
 
@@ -505,6 +547,12 @@ ALTER TABLE `t_calificacion`
   ADD PRIMARY KEY (`id_calificacion`),
   ADD KEY `fk_n_documento` (`n_documento`),
   ADD KEY `fk_nit_fundacion` (`nit_fundacion`);
+
+--
+-- Indices de la tabla `t_causa`
+--
+ALTER TABLE `t_causa`
+  ADD PRIMARY KEY (`id_causa`);
 
 --
 -- Indices de la tabla `t_donacion`
@@ -637,6 +685,12 @@ ALTER TABLE `t_calificacion`
   MODIFY `id_calificacion` int(11) NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT de la tabla `t_causa`
+--
+ALTER TABLE `t_causa`
+  MODIFY `id_causa` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+
+--
 -- AUTO_INCREMENT de la tabla `t_donacion`
 --
 ALTER TABLE `t_donacion`
@@ -658,7 +712,7 @@ ALTER TABLE `t_informe`
 -- AUTO_INCREMENT de la tabla `t_perfil`
 --
 ALTER TABLE `t_perfil`
-  MODIFY `id_perfil` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `id_perfil` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
 -- AUTO_INCREMENT de la tabla `t_proceso_adopcion`
@@ -676,7 +730,7 @@ ALTER TABLE `t_producto`
 -- AUTO_INCREMENT de la tabla `t_publicacion`
 --
 ALTER TABLE `t_publicacion`
-  MODIFY `id_publicacion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id_publicacion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT de la tabla `t_recuperar_constrasena`
@@ -694,7 +748,7 @@ ALTER TABLE `t_red_social`
 -- AUTO_INCREMENT de la tabla `t_registro`
 --
 ALTER TABLE `t_registro`
-  MODIFY `id_registro` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+  MODIFY `id_registro` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 
 --
 -- AUTO_INCREMENT de la tabla `t_tipo_mascota`
@@ -706,7 +760,7 @@ ALTER TABLE `t_tipo_mascota`
 -- AUTO_INCREMENT de la tabla `t_usuario`
 --
 ALTER TABLE `t_usuario`
-  MODIFY `id_usuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
+  MODIFY `id_usuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
 
 --
 -- Restricciones para tablas volcadas
