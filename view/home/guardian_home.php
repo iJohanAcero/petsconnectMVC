@@ -42,7 +42,7 @@ $perfil = $perfilModel->getPerfilPorUsuario($id);
     <link rel="stylesheet" href="//cdn.datatables.net/2.3.2/css/dataTables.dataTables.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 
-<link rel="stylesheet" href="Public/css/styles.css" />
+    <link rel="stylesheet" href="Public/css/styles.css" />
     <link rel="stylesheet" href="Public/css/animate.css" />
     <link rel="stylesheet" href="Public/css/ud-styles.css" /> <!-- Llamamos a la librería de iconos -->
 
@@ -181,7 +181,7 @@ $perfil = $perfilModel->getPerfilPorUsuario($id);
                             <a href="" class="sidebar-link">✔ Gatos</a>
                         </li>
                         <li class="sidebar-item">
-                            <a href="" class="sidebar-link">✔ Todos</a>
+                            <a href="#" class="sidebar-link btn-cargar-cartelera">✔ Todos</a>
                         </li>
 
                     </ul>
@@ -211,6 +211,7 @@ $perfil = $perfilModel->getPerfilPorUsuario($id);
     <script src="Public/js/main.js"></script>
     <script src="Public/js/routes/perfilGuardian.js"></script>
     <script src="Public/js/routes/routes.js"></script>
+    <script src="Public/js/routes/cartelera.js"></script>
 
     <script>
         let page = 1;
