@@ -1,11 +1,12 @@
 <?php
+
+use App\Model\Conexion;
 // 🔒 Protección inicial
 if (file_exists(__FILE__) && basename($_SERVER['PHP_SELF']) === 'admin_setup.php') {
     echo "<h3>⚠️ Ejecutando script de creación de administrador...</h3>";
 }
 
 // Conexión a la BD
-require_once "Model/conexion.php";
 $db = (new Conexion())->getConexion();
 
 try {

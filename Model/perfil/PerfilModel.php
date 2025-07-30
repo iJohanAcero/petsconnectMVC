@@ -1,5 +1,9 @@
 <?php
-require_once(__DIR__ . '/../conexion.php');
+
+namespace App\Model\perfil;
+use App\Model\Conexion;
+use PDO;
+
 
 class PerfilModel
 {

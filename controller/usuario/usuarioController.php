@@ -1,6 +1,6 @@
 <?php
-
-require_once "Model/usuario/Usuario.php";
+namespace App\Controller\usuario;
+use App\Model\usuario\Usuario;
 
 class UsuarioController {
     private $usuarioModel;

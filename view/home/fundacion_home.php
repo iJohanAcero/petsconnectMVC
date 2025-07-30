@@ -1,5 +1,6 @@
 <?php
-require_once "config/roles.php";
+
+use App\Model\Perfil\PerfilModel;
 
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
@@ -14,8 +15,6 @@ if (!isset($_SESSION["user"]) || $_SESSION["tipo_usuario"] !== "fundacion") {
 
     exit;
 }
-
-require_once "model/perfil/PerfilModel.php"; // Ajustar si la ruta varía
 
 $perfilModel = new PerfilModel();
 $id = $_SESSION["user"]["id_usuario"];

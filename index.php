@@ -1,11 +1,11 @@
 <?php
-
-
-
+namespace App;
 require_once __DIR__ . '/vendor/autoload.php';
-require_once "controller/usuario/usuarioController.php";
-require_once "config/roles.php";
-require_once "controller/AuthController.php"; // Agrega esta línea arriba
+
+use App\Controller\usuario\UsuarioController;
+use App\Controller\AuthController;
+use App\config\Roles;
+
 
 
 
@@ -66,15 +66,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["action"])) {
             $tipo_usuario = "";
 
             // DETECTAR ROL
-            if (esAdmin($user["id_usuario"])) {
+            if (Roles::esAdmin($user["id_usuario"])) {
                 $_SESSION["tipo_usuario"] = "admin";
                 header("Location: index.php?page=admin_home");
                 exit;
-            } else if (esGuardian($user["id_usuario"])) {
+            } else if (Roles::esGuardian($user["id_usuario"])) {
                 $_SESSION["tipo_usuario"] = "guardian";
                 header("Location: index.php?page=guardian_home");
                 exit;
-            } else if (esFundacion($user["id_usuario"])) {
+            } else if (Roles::esFundacion($user["id_usuario"])) {
                 $_SESSION["tipo_usuario"] = "fundacion";
                 header("Location: index.php?page=fundacion_home");
                 exit;

@@ -1,7 +1,8 @@
 <?php
 // Se requiere el archivo de conexión con la base de datos
-
-require_once(__DIR__ . '/../conexion.php');
+namespace App\Model\Publicacion;
+use App\Model\Conexion;
+use PDO;
 
 class Publicacion
 {

@@ -1,5 +1,7 @@
 <?php
-require_once (__DIR__ . '/../../Model/publicacion/PublicacionModel.php');
+namespace App\controller\publicacion;
+use App\Model\Publicacion\Publicacion;
+
 
 if (session_status() === PHP_SESSION_NONE) {
     session_start();

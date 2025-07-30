@@ -1,11 +1,14 @@
 <?php
 
+namespace App\Controller;
+
+use App\Model\usuario\Usuario;
+use Google\Service\Oauth2;
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
+use App\config\Roles;
 
-require_once __DIR__ . '/../vendor/autoload.php'; // Ajusta la ruta si es necesario
-require_once __DIR__ . '/../config/roles.php';
-
+require_once __DIR__ . '/../vendor/autoload.php';
 class AuthController
 {
     // Mostrar formulario de recuperación
@@ -20,7 +23,7 @@ class AuthController
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $email = $_POST['email'] ?? '';
 
-            $conn = new mysqli("localhost", "root", "", "petsconnect");
+            $conn = new \mysqli("localhost", "root", "", "petsconnect");
             if ($conn->connect_error) {
                 $error = "Error de conexión a la base de datos.";
                 return;
@@ -99,7 +102,7 @@ class AuthController
             } elseif ($contrasena !== $contrasena2) {
                 $error = "Las contraseñas no coinciden.";
             } else {
-                $conn = new mysqli("localhost", "root", "", "petsconnect");
+                $conn = new \mysqli("localhost", "root", "", "petsconnect");
                 if ($conn->connect_error) {
                     $error = "Error de conexión a la base de datos.";
                 } else {
@@ -197,7 +200,7 @@ class AuthController
 
     public function loginGoogle()
     {
-        $client = new Google_Client();
+        $client = new \Google_Client();
         $client->setClientId('637931459042-873opva17515qd99c4dj51i6202jdqlf.apps.googleusercontent.com');
         $client->setClientSecret('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');
         $client->setRedirectUri('http://localhost/petsconnectmvc/index.php?action=google_callback');
@@ -212,7 +215,7 @@ class AuthController
     // Callback de Google
     public function googleCallback()
     {
-        $client = new Google_Client();
+        $client = new \Google_Client();
         $client->setClientId('637931459042-873opva17515qd99c4dj51i6202jdqlf.apps.googleusercontent.com');
         $client->setClientSecret('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');
         $client->setRedirectUri('http://localhost/petsconnectmvc/index.php?action=google_callback');
@@ -230,7 +233,7 @@ class AuthController
             $client->setAccessToken($token['access_token']);
 
             // Obtener información del usuario
-            $oauth2 = new Google_Service_Oauth2($client);
+            $oauth2 = new Oauth2($client);
             $google_user = $oauth2->userinfo->get();
 
             if (isset($google_user->id)) {
@@ -247,15 +250,15 @@ class AuthController
                 session_start();
                 $_SESSION['user'] = $user;
 
-                if (esAdmin($user["id_usuario"])) {
+                if (Roles::esAdmin($user["id_usuario"])) {
                     $_SESSION["tipo_usuario"] = "admin";
                     header("Location: index.php?page=admin_home");
                     exit;
-                } else if (esGuardian($user["id_usuario"])) {
+                } else if (Roles::esGuardian($user["id_usuario"])) {
                     $_SESSION["tipo_usuario"] = "guardian";
                     header("Location: index.php?page=guardian_home");
                     exit;
-                } else if (esFundacion($user["id_usuario"])) {
+                } else if (Roles::esFundacion($user["id_usuario"])) {
                     $_SESSION["tipo_usuario"] = "fundacion";
                     header("Location: index.php?page=fundacion_home");
                     exit;

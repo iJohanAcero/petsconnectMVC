@@ -1,5 +1,9 @@
 <?php
 
+namespace App\Model;
+use PDO;
+use PDOException;
+
 class Conexion {
     protected $db;     // Propiedad protegida para usar la conexión en clases hijas
 

@@ -1,7 +1,10 @@
 <?php
 // Se requiere el archivo de conexión con la base de datos
 
-require_once(__DIR__ . '/../conexion.php');
+namespace App\Model\Causa;
+
+use App\Model\conexion; 
+use PDO;
 
 class Causa
 {

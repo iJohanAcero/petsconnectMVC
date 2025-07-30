@@ -22,4 +22,6 @@ return array(
     'Google\\Auth\\' => array($vendorDir . '/google/auth/src'),
     'Google\\' => array($vendorDir . '/google/apiclient/src'),
     'Firebase\\JWT\\' => array($vendorDir . '/firebase/php-jwt/src'),
+    'App\\Model\\' => array($baseDir . '/Model'),
+    'App\\Controller\\' => array($baseDir . '/controller'),
 );

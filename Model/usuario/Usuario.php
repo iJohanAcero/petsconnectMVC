@@ -1,6 +1,8 @@
 <?php
 
-require_once "Model/conexion.php";
+namespace App\Model\usuario;
+use App\Model\Conexion;
+use PDO;
 
 
 class Usuario

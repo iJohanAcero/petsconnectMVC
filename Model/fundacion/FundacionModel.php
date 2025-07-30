@@ -1,5 +1,7 @@
 <?php
-require_once '../../Model/conexion.php';
+namespace App\Model\Fundacion;
+use App\Model\Conexion;
+use PDO;
 
 class Fundacion
 

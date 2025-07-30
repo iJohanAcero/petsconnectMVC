@@ -1,6 +1,9 @@
 <?php
 // Requiere la conexión a la base de datos
-require_once '../../Model/conexion.php';
+namespace App\Model\Mascota;
+use App\Model\Conexion;
+use PDO;
+use PDOException;
 
 class Mascota
 {

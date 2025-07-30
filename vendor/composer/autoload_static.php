@@ -13,6 +13,7 @@ class ComposerStaticInit2185d2f99bcd56787481d9357a5972d3
         '1f87db08236948d07391152dccb70f04' => __DIR__ . '/..' . '/google/apiclient-services/autoload.php',
         'decc78cc4436b1292c6c0d151b19445c' => __DIR__ . '/..' . '/phpseclib/phpseclib/phpseclib/bootstrap.php',
         'a8d3953fd9959404dd22d3dfcd0a79f0' => __DIR__ . '/..' . '/google/apiclient/src/aliases.php',
+        '7efac7bf512b7e130fcf2a9d623c2175' => __DIR__ . '/../..' . '/config/roles.php',
     );
 
     public static $prefixLengthsPsr4 = array (
@@ -49,6 +50,11 @@ class ComposerStaticInit2185d2f99bcd56787481d9357a5972d3
         'F' => 
         array (
             'Firebase\\JWT\\' => 13,
+        ),
+        'A' => 
+        array (
+            'App\\Model\\' => 10,
+            'App\\Controller\\' => 15,
         ),
     );
 
@@ -118,6 +124,14 @@ class ComposerStaticInit2185d2f99bcd56787481d9357a5972d3
         'Firebase\\JWT\\' => 
         array (
             0 => __DIR__ . '/..' . '/firebase/php-jwt/src',
+        ),
+        'App\\Model\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/Model',
+        ),
+        'App\\Controller\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/controller',
         ),
     );
 

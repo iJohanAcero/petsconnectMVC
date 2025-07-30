@@ -1,5 +1,6 @@
 <?php
-require_once('../../Model/mascota/MascotaModel.php');
+namespace App\controller\mascota;
+use App\Model\Mascota\Mascota;
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $modeloMascota = new Mascota();

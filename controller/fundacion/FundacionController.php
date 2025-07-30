@@ -1,6 +1,6 @@
 <?php
-
-require_once "../../Model/fundacion/FundacionModel.php";
+namespace App\controller\Fundacion;
+use App\Model\Fundacion\Fundacion;
 
 session_start();
 

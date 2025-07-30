@@ -1,5 +1,6 @@
 <?php
-require_once (__DIR__ . '/../../Model/Causa/CausaModel.php');
+namespace App\controller\causa;
+use App\Model\Causa\Causa;
 
 if (session_status() === PHP_SESSION_NONE) {
     session_start();

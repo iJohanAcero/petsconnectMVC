@@ -1,4 +1,10 @@
 <?php
+namespace App\controller\mascota;
+
+use App\Model\Mascota\Mascota;
+use App\config\Roles;
+use Google\Service\Directory\Role;
+
 require_once('../../Model/mascota/MascotaModel.php');
 require_once('../../config/roles.php');
 if (session_status() === PHP_SESSION_NONE) {
@@ -29,9 +35,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $id_estado_adopcion = $_POST['id_estado_adopcion'] ?? 2; // EN ADOPCIÓN por defecto
 
         // Fundaciones: su NIT viene por la sesión
-        if (esFundacion($id_usuario)) {
+        if (Roles::esFundacion($id_usuario)) {
             $nit_fundacion = $_SESSION['nit_fundacion'] ?? null;
-        } elseif (esAdmin($id_usuario)) {
+        } elseif (Roles::esAdmin($id_usuario)) {
             $nit_fundacion = $_POST['nit_fundacion'];
         } else {
             echo "Error: no autorizado";
@@ -68,7 +74,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $id_estado_adopcion = $_POST['id_estado_adopcion'];
 
         // Fundaciones y administradores pueden editar
-        if (!esAdmin($id_usuario) && !esFundacion($id_usuario)) {
+        if (!Roles::esAdmin($id_usuario) && !Roles::esFundacion($id_usuario)) {
             echo "Error: no autorizado para editar";
             exit;
         }
@@ -89,7 +95,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // 3️⃣ ELIMINAR mascota (solo administrador)
     if (isset($_POST['accion']) && $_POST['accion'] === 'eliminar' && isset($_POST['id_mascota'])) {
-        if (!esAdmin($id_usuario)) {
+        if (!Roles::esAdmin($id_usuario)) {
             echo "Error: solo el administrador puede eliminar";
             exit;
         }
