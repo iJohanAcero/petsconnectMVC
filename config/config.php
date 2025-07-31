@@ -24,4 +24,5 @@ define('JS_URL', BASE_URL . '/Public/js');
 define('IMG_URL', BASE_URL . '/Public/images');
 
 
+
 ?>

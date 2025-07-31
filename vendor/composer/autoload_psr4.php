@@ -24,4 +24,5 @@ return array(
     'Firebase\\JWT\\' => array($vendorDir . '/firebase/php-jwt/src'),
     'App\\Model\\' => array($baseDir . '/Model'),
     'App\\Controller\\' => array($baseDir . '/controller'),
+    'App\\' => array($baseDir . '/App'),
 );

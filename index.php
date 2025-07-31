@@ -1,15 +1,19 @@
 <?php
+
+
 namespace App;
+
 require_once __DIR__ . '/vendor/autoload.php';
+require_once __DIR__ . '/config/config.php';
 
 use App\Controller\usuario\UsuarioController;
+use App\Controller\publicacion\PublicacionController;
 use App\Controller\AuthController;
-use App\config\Roles;
-
-
-
+use App\Config\Roles;
 
 session_start();
+
+$action = $_GET['action'] ?? null;
 $controller = new UsuarioController();
 
 // --- Manejo de restablecimiento de contraseña ---
@@ -111,9 +115,11 @@ if (isset($_GET['action']) && $_GET['action'] === 'google_callback') {
 }
 
 // MOSTRAR PUBLICACIONES EN EL INICIO
+$action = $_GET['action'] ?? null;
 
-if (isset($_GET['action']) && $_GET['action'] === 'publicaciones_recientes') {
-    require_once "controller/publicacion/PublicacionController.php";
+if ($action === 'recientes' && $_SERVER['REQUEST_METHOD'] === 'GET') {
+    $controller = new PublicacionController();
+    $controller->recientes();
     exit;
 }
 
@@ -129,9 +135,9 @@ if (!isset($_SESSION["user"])) {
     } elseif ($page === "recuperar_contrasena") {
         require_once $routes["recuperar_contrasena"]["file"];
     } elseif ($page === "restablecer_contrasena") {
-        require_once "view/login/restablecerContraseña.php";
+        require_once VIEW_PATH . "/login/restablecerContraseña.php";
     } else {
-        require_once "view/login/landing.php";
+        require_once VIEW_PATH . "/login/landing.php";
     }
     exit;
 }

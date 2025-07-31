@@ -37,16 +37,16 @@ $perfil = $perfilModel->getPerfilPorUsuario($id);
 
     <link
         rel="shortcut icon"
-        href="Public/images/icono2.png"
+        href="<?= IMG_URL ?>/icono2.png"
         type="image/png" />
     <!-- ===== All CSS files ===== -->
     <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.8/css/line.css">
     <link rel="stylesheet" href="//cdn.datatables.net/2.3.2/css/dataTables.dataTables.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 
-    <link rel="stylesheet" href="Public/css/styles.css" />
-    <link rel="stylesheet" href="Public/css/animate.css" />
-    <link rel="stylesheet" href="Public/css/ud-styles.css" /> <!-- Llamamos a la librería de iconos -->
+    <link rel="stylesheet" href="<?= CSS_URL ?>/styles.css" />
+    <link rel="stylesheet" href="<?= CSS_URL ?>/animate.css" />
+    <link rel="stylesheet" href="<?= CSS_URL ?>/ud-styles.css" /> <!-- Llamamos a la librería de iconos -->
 
 </head>
 
@@ -58,7 +58,7 @@ $perfil = $perfilModel->getPerfilPorUsuario($id);
                 <i class="uil uil-bars"></i>
             </button>
             <a class="navbar-brand" href="#" onclick="history.go(0);">
-                <img src="Public/images/logo/logo.png" alt="Logo" id="logo" class="d-inline-block align-text-top">
+                <img src="<?= IMG_URL ?>/logo/logo.png" alt="Logo" id="logo" class="d-inline-block align-text-top">
             </a>
 
             <div class="collapse navbar-collapse">
@@ -229,65 +229,66 @@ $perfil = $perfilModel->getPerfilPorUsuario($id);
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
 
     <!-- SCRIPTS DE JS CRUDS Y RUTAS -->
-    <script src="Public/js/main.js"></script>
-    <script src="Public/js/config.js"></script>
-    <script src="Public/js/crud/crud_causa.js"></script>
-    <script src="Public/js/crud/crud_fundacion.js"></script>
-    
-    <script src="Public/js/crud/crud_publicacion.js"></script>
-    <script src="Public/js/routes/routes.js"></script>
-    <script src="Public/js/routes/perfilFundacion.js"></script>
+    <script src="<?= JS_URL ?>/main.js"></script>
+    <script src="<?= JS_URL ?>/config.js"></script>
+    <script src="<?= JS_URL ?>/crud/crud_causa.js"></script>
+    <script src="<?= JS_URL ?>/crud/crud_fundacion.js"></script>
 
-    <script>
+    <script src="<?= JS_URL ?>/crud/crud_publicacion.js"></script>
+    <script src="<?= JS_URL ?>/routes/routes.js"></script>
+    <script src="<?= JS_URL ?>/routes/perfilFundacion.js"></script>
+
+   <script>
         let page = 1;
         let loading = false;
         let finished = false;
 
         function cargarPublicaciones() {
             if (loading || finished) return;
+
             loading = true;
             $('#loader').show();
 
             $.ajax({
-                url: 'index.php?action=publicaciones_recientes&accion=recientes', // Ajusta la ruta a tu endpoint
+                url: '/petsconnectmvc/index.php?action=recientes&page=' + page,
                 method: 'GET',
-                data: {
-                    page: page
-                },
                 dataType: 'json',
                 success: function(res) {
-                    if (res && res.length > 0) {
+                    if (Array.isArray(res) && res.length > 0) {
                         res.forEach(pub => {
                             $('#publicaciones-container').append(`
-  <div class="card post-card mb-4 shadow-sm border-0">
-  <div class="card-body">
-    <div class="d-flex justify-content-between align-items-center mb-2 flex-wrap">
-      <h4 class="card-title fw-bold mb-0">${pub.titulo}</h4>
-      <small class="text-primary fw-semibold">Fundación: ${pub.nombre_fundacion}</small>
-    </div>
+                            <div class="card post-card mb-4 shadow-sm border-0">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between align-items-center mb-2 flex-wrap">
+                                        <h4 class="card-title fw-bold mb-0">${pub.titulo}</h4>
+                                        <small class="text-primary fw-semibold">Fundación: ${pub.nombre_fundacion}</small>
+                                    </div>
 
-    ${pub.imagen ? `
-      <div class="post-image-container mb-3">
-        <img src="Public/images/eventos_fundacion/${pub.imagen}"
-             class="img-fluid rounded-3 post-image"
-             alt="Imagen publicación">
-      </div>
-    ` : ''}
+                                    ${pub.imagen ? `
+                                        <div class="post-image-container mb-3">
+                                            <img src="<?= IMG_URL ?>/eventos_fundacion/${pub.imagen}"
+                                                 class="img-fluid rounded-3 post-image"
+                                                 alt="Imagen publicación">
+                                        </div>` : ''}
 
-    <p class="text-muted mb-1">Descripción:</p>
-    <p class="card-text">${pub.contenido}</p>
+                                    <p class="text-muted mb-1">Descripción:</p>
+                                    <p class="card-text">${pub.contenido}</p>
 
-    <div class="text-end mt-3">
-      <small class="text-muted">${pub.fecha}</small>
-    </div>
-  </div>
-</div>
-`);
+                                    <div class="text-end mt-3">
+                                        <small class="text-muted">${pub.fecha}</small>
+                                    </div>
+                                </div>
+                            </div>
+                        `);
                         });
                         page++;
                     } else {
                         finished = true;
                     }
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error al cargar publicaciones:', status, error);
+                    console.warn('Detalles:', xhr.responseText);
                 },
                 complete: function() {
                     loading = false;
@@ -296,12 +297,12 @@ $perfil = $perfilModel->getPerfilPorUsuario($id);
             });
         }
 
-        // Cargar publicaciones al inicio
+        // Inicializar carga y scroll infinito
         $(document).ready(function() {
             cargarPublicaciones();
 
             $(window).on('scroll', function() {
-                if ($(window).scrollTop() + $(window).height() >= $(document).height() - 100) {
+                if ($(window).scrollTop() + $(window).height() >= $(document).height() - 150) {
                     cargarPublicaciones();
                 }
             });

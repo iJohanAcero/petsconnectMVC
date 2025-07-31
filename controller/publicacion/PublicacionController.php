@@ -1,84 +1,83 @@
 <?php
-namespace App\controller\publicacion;
+
+namespace App\Controller\publicacion;
+
 use App\Model\Publicacion\Publicacion;
 
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+class PublicacionController
+{
+    public function recientes()
+    {
+        // Validar y asignar página
+        $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+        $limit = 5;
+        $offset = ($page - 1) * $limit;
 
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
+        // Instanciar modelo
+        $modeloPublicacion = new Publicacion();
 
-// MOSTRAR PUBLICACIONES RECIENTES EN EL INICIO
+        // Obtener publicaciones recientes con paginación
+        $publicaciones = $modeloPublicacion->getPublicacionesRecientes($limit, $offset);
 
-if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['accion']) && $_GET['accion'] === 'recientes') {
-    $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
-    $limit = 5; // Puedes ajustar la cantidad por página
-    $offset = ($page - 1) * $limit;
+        // Enviar resultado
+        echo json_encode($publicaciones);
+    }
 
-    $modeloPublicacion = new Publicacion();
-    $publicaciones = $modeloPublicacion->getPublicacionesRecientes($limit, $offset);
-
-    header('Content-Type: application/json');
-    echo json_encode($publicaciones);
-    exit;
-}
-
-
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $modeloPublicacion = new Publicacion();
-
-    // 1️⃣ REGISTRAR Publicacion
-    if (isset($_POST['accion']) && $_POST['accion'] === 'registrar') {
-        $titulo = $_POST['titulo'];
-        $contenido = $_POST['contenido'];
-
-        // Procesar imagen
+    public function registrar()
+    {
+        $titulo = $_POST['titulo'] ?? '';
+        $contenido = $_POST['contenido'] ?? '';
         $imagen = null;
+
+        // Procesar imagen si viene
         if (isset($_FILES['imagen']) && $_FILES['imagen']['error'] === UPLOAD_ERR_OK) {
             $nombreImagen = uniqid() . '_' . $_FILES['imagen']['name'];
-            $rutaDestino = '../../Public/images/eventos_fundacion/' . $nombreImagen;
+            $rutaDestino = __DIR__ . '/../../../Public/images/eventos_fundacion/' . $nombreImagen;
             move_uploaded_file($_FILES['imagen']['tmp_name'], $rutaDestino);
             $imagen = $nombreImagen;
         }
 
         $fecha = date('Y-m-d H:i:s');
-        $nit_fundacion = $_POST['nit_fundacion'];
+        $nit_fundacion = $_POST['nit_fundacion'] ?? '';
 
+        $modeloPublicacion = new Publicacion();
         $resultado = $modeloPublicacion->add($titulo, $contenido, $imagen, $fecha, $nit_fundacion);
 
-        if ($resultado) {
-            echo "Publicacion registrada correctamente";
-        } else {
-            echo "Error al registrar publicacion";
-        }
-        exit;
+        echo $resultado ? "Publicacion registrada correctamente" : "Error al registrar publicacion";
     }
 
-    // 2️⃣ ACTUALIZAR Publicacion
-    if (isset($_POST['accion']) && $_POST['accion'] === 'editar') {
-        $id = $_POST['id'];
-        $titulo = $_POST['titulo'];
-        $contenido = $_POST['contenido'];
+    public function editar()
+    {
+        $id = $_POST['id'] ?? null;
+        $titulo = $_POST['titulo'] ?? '';
+        $contenido = $_POST['contenido'] ?? '';
 
+        if (!$id) {
+            echo "ID no proporcionado";
+            return;
+        }
+
+        $modeloPublicacion = new Publicacion();
         $resultado = $modeloPublicacion->update($id, $titulo, $contenido);
 
-        if ($resultado) {
-            echo "Publicacion actualizada correctamente";
-        } else {
-            echo "Error al actualizar publicacion";
-        }
-        exit;
+        echo $resultado ? "Publicacion actualizada correctamente" : "Error al actualizar publicacion";
     }
-// Eliminar Publicacion
-    if (isset($_POST['eliminar']) && isset($_POST['id'])) {
-        $nit = htmlspecialchars($_POST['id'] ?? '');
 
-        if (empty($nit)) {
-            echo "ID de publicacion no proporcionado";
-            exit;
+    public function eliminar()
+    {
+        $id = htmlspecialchars($_POST['id'] ?? '');
+
+        if (empty($id)) {
+            echo "ID de publicación no proporcionado";
+            return;
         }
 
-        $resultado = $modeloPublicacion->delete($nit);
-        echo $resultado ? "Publicacion eliminada correctamente" : "Error al eliminar Publicacion";
-        exit;
+        $modeloPublicacion = new Publicacion();
+        $resultado = $modeloPublicacion->delete($id);
+
+        echo $resultado ? "Publicación eliminada correctamente" : "Error al eliminar publicación";
     }
 }
