@@ -32,7 +32,10 @@ $routes = [
     "registro"     => ["role" => "guest", "file" => "view/login/register.php"],
     "recuperar_contrasena" => ["role" => "guest", "file" => "view/login/recuperarContraseña.php"],
     "restablecer_contrasena" => ["role" => "guest", "file" => "view/login/restablecerContraseña.php"],
-];
+
+    "Publicacion " => ["role" => "fundacion", "file" => "view/publicacion/PublicacionView.php"],
+    "PublicacionEdit" => ["role" => "fundacion", "file" => "view/publicacion/PublicacionEditView.php"]
+]; 
 
 // --- Manejo de formularios POST ---
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["action"])) {

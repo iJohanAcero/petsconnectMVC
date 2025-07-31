@@ -1,5 +1,7 @@
 <?php
-require_once("../../Model/publicacion/PublicacionModel.php");
+require_once realpath(__DIR__ . '/../../vendor/autoload.php');
+use App\Model\Publicacion\Publicacion;
+use App\Model\Fundacion\Fundacion;
 
 $Modelo = new Publicacion();
 

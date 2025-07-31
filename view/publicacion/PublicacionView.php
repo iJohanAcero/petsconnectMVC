@@ -1,7 +1,11 @@
 <?php
 session_start();
-require_once("../../Model/publicacion/PublicacionModel.php");
-require_once("../../Model/fundacion/FundacionModel.php");
+
+require_once $_SERVER['DOCUMENT_ROOT'] . '/petsconnectMVC/config/bootstrap.php';
+
+use App\Model\Publicacion\Publicacion;
+use App\Model\Fundacion\Fundacion;
+
 $Modelo = new Publicacion();
 
 $nit_fundacion = null;
@@ -136,5 +140,5 @@ if (isset($_SESSION["user"]["id_usuario"])) {
             </div>
         </div>
     </div>
-    <script src="../../Public/js/main.js"></script>
+    <script src="<?= JS_URL ?>/main.js"></script>
 </body>
