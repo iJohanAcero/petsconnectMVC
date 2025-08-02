@@ -1,7 +1,7 @@
 
 // =========== CRUD DE Publicacion =========== //
 window.cargarCrudPublicacion = function () {
-    fetch("view/publicacion/PublicacionView.php")
+    fetch(`/view/publicacion/PublicacionView.php?id=${idPublicacion}`)
         .then(response => {
             if (!response.ok) throw new Error("Error en la red");
             return response.text();

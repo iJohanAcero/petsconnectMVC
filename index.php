@@ -4,7 +4,6 @@
 namespace App;
 
 require_once __DIR__ . '/vendor/autoload.php';
-require_once __DIR__ . '/config/config.php';
 
 use App\Controller\usuario\UsuarioController;
 use App\Controller\publicacion\PublicacionController;
@@ -32,9 +31,7 @@ $routes = [
     "registro"     => ["role" => "guest", "file" => "view/login/register.php"],
     "recuperar_contrasena" => ["role" => "guest", "file" => "view/login/recuperarContraseña.php"],
     "restablecer_contrasena" => ["role" => "guest", "file" => "view/login/restablecerContraseña.php"],
-
-    "Publicacion " => ["role" => "fundacion", "file" => "view/publicacion/PublicacionView.php"],
-    "PublicacionEdit" => ["role" => "fundacion", "file" => "view/publicacion/PublicacionEditView.php"]
+    "landing" => ["role" => "guest", "file" => "view/login/landing.php"]
 ]; 
 
 // --- Manejo de formularios POST ---
@@ -138,9 +135,9 @@ if (!isset($_SESSION["user"])) {
     } elseif ($page === "recuperar_contrasena") {
         require_once $routes["recuperar_contrasena"]["file"];
     } elseif ($page === "restablecer_contrasena") {
-        require_once VIEW_PATH . "/login/restablecerContraseña.php";
+        require_once $routes["restablecer_contrasena"]["file"];
     } else {
-        require_once VIEW_PATH . "/login/landing.php";
+        require_once $routes["landing"]["file"];
     }
     exit;
 }

@@ -1,28 +1,41 @@
 <?php
-namespace App\config;
+namespace App\Config;
 
-// -------------------------------------
-// CONFIGURACIÓN GENERAL DEL PROYECTO
-// -------------------------------------
+class Config {
+    private static $instance = null;
+    private $config = [];
 
-// Ruta absoluta a la raíz del proyecto (desde el sistema de archivos)
-define('BASE_PATH', realpath(__DIR__ . '/../'));
+    private function __construct() {
+        // Ruta absoluta a la raíz del proyecto
+        $this->config['BASE_PATH'] = realpath(__DIR__ . '/../');
 
-// Carpetas comunes (backend)
-define('MODEL_PATH', BASE_PATH . '/Model');
-define('CONTROLLER_PATH', BASE_PATH . '/controller');
-define('VIEW_PATH', BASE_PATH . '/view');
-define('PUBLIC_PATH', BASE_PATH . '/Public');
+        // Carpetas comunes (backend)
+        $this->config['MODEL_PATH'] = $this->config['BASE_PATH'] . '/Model';
+        $this->config['CONTROLLER_PATH'] = $this->config['BASE_PATH'] . '/controller';
+        $this->config['VIEW_PATH'] = $this->config['BASE_PATH'] . '/view';
+        $this->config['PUBLIC_PATH'] = $this->config['BASE_PATH'] . '/Public';
 
-// Opcional: Ruta base para acceder vía navegador (frontend)
-// Asegurar que coincide con el nombre del proyecto en tu hosting o localhost
-define('BASE_URL', '/petsconnectmvc');
+        // Ruta base para el navegador
+        $this->config['BASE_URL'] = '/petsconnectmvc';
 
-// Carpetas públicas para CSS, JS e imágenes
-define('CSS_URL', BASE_URL . '/Public/css');
-define('JS_URL', BASE_URL . '/Public/js');
-define('IMG_URL', BASE_URL . '/Public/images');
+        // Carpetas públicas
+        $this->config['CSS_URL'] = $this->config['BASE_URL'] . '/Public/css';
+        $this->config['JS_URL'] = $this->config['BASE_URL'] . '/Public/js';
+        $this->config['IMG_URL'] = $this->config['BASE_URL'] . '/Public/images';
+    }
 
+    public static function getInstance() {
+        if (self::$instance === null) {
+            self::$instance = new self();
+        }
+        return self::$instance;
+    }
 
+    public static function get($key) {
+        $instance = self::getInstance();
+        return $instance->config[$key] ?? null;
+    }
 
-?>
+    // Evitar clonación del singleton
+    private function __clone() {}
+}

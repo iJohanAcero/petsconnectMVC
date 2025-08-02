@@ -1,10 +1,9 @@
 <?php
 session_start();
-
-require_once $_SERVER['DOCUMENT_ROOT'] . '/petsconnectMVC/config/bootstrap.php';
-
+require_once __DIR__ . '/../../vendor/autoload.php';
 use App\Model\Publicacion\Publicacion;
 use App\Model\Fundacion\Fundacion;
+use App\Config\Config;
 
 $Modelo = new Publicacion();
 
@@ -140,5 +139,5 @@ if (isset($_SESSION["user"]["id_usuario"])) {
             </div>
         </div>
     </div>
-    <script src="<?= JS_URL ?>/main.js"></script>
+    <script src="<?= Config::get('JS_URL') ?>/main.js"></script>
 </body>

@@ -2,6 +2,7 @@
 
 namespace App\Controller\publicacion;
 
+
 use App\Model\Publicacion\Publicacion;
 
 ini_set('display_errors', 1);

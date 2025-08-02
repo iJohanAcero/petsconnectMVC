@@ -1,5 +1,6 @@
 <?php
-require_once 'controller/AuthController.php';
+use App\Controller\AuthController;
+
 $mensaje = $error = null;
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['email'])) {
