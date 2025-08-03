@@ -1,5 +1,7 @@
 <?php
-require_once("../../Model/mascota/MascotaModel.php");
+require_once __DIR__ . '/../../vendor/autoload.php';
+
+use App\Model\Mascota\Mascota;
 
 $Modelo = new Mascota();
 
@@ -41,7 +43,7 @@ $nits = $esAdmin ? $Modelo->getNitsFundacion() : [];
 
 <!-- Contenido principal -->
 <div class="container mt-1">
-    <form id="form-editar-mascota" method="POST" action="../../controller/mascota/MascotaController.php" enctype="multipart/form-data">
+    <form id="form-editar-mascota" method="POST">
         <input type="hidden" name="accion" value="editar">
         <input type="hidden" name="id_mascota" value="<?= $mascota['id_mascota'] ?>">
 
@@ -104,6 +106,7 @@ $nits = $esAdmin ? $Modelo->getNitsFundacion() : [];
             <div class="mb-3">
                 <label class="form-label">Imagen:</label>
                 <input type="file" name="imagen" accept="image/*" class="form-control">
+                <input type="hidden" name="imagen_actual" value="<?= htmlspecialchars($mascota['imagen'] ?? '') ?>">
                 <?php if (!empty($mascota['imagen'])): ?>
                     <div class="mt-2">
                         <img src="/petsconnectMVC/public/images/mascotas/<?= htmlspecialchars($mascota['imagen']) ?>" alt="Imagen actual" style="max-width: 150px; border-radius: 8px;">
@@ -111,7 +114,6 @@ $nits = $esAdmin ? $Modelo->getNitsFundacion() : [];
                         <div class="form-text">Formato recomendado: JPG, PNG.</div>
                     </div>
                 <?php endif; ?>
-
             </div>
         </fieldset>
 

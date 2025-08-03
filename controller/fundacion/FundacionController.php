@@ -1,5 +1,7 @@
 <?php
 namespace App\controller\Fundacion;
+
+require_once __DIR__ . '/../../vendor/autoload.php';
 use App\Model\Fundacion\Fundacion;
 
 session_start();

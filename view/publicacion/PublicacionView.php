@@ -1,9 +1,9 @@
 <?php
-session_start();
+
 require_once __DIR__ . '/../../vendor/autoload.php';
 use App\Model\Publicacion\Publicacion;
 use App\Model\Fundacion\Fundacion;
-use App\Config\Config;
+
 
 $Modelo = new Publicacion();
 
@@ -13,7 +13,7 @@ if (isset($_SESSION["user"]["id_usuario"])) {
 }
 ?>
 
-<body>
+
     <!-- Contenedor principal del CRUD con ID para JS -->
     <div class="container crud-container main-content" id="crud-container" style="padding: 40px;">
         <div class="d-flex justify-content-between align-items-center mb-4">
@@ -139,5 +139,3 @@ if (isset($_SESSION["user"]["id_usuario"])) {
             </div>
         </div>
     </div>
-    <script src="<?= Config::get('JS_URL') ?>/main.js"></script>
-</body>

@@ -1,12 +1,12 @@
 <?php
-require_once("../../Model/mascota/MascotaModel.php");
-require_once("../../Model/fundacion/FundacionModel.php");
+require_once __DIR__ . '/../../vendor/autoload.php';
+use App\Model\Mascota\Mascota;
+use App\Model\Fundacion\Fundacion;
+use App\Config\Roles;
 
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
-
-require_once("../../config/roles.php");
 
 $Modelo = new Mascota();
 $FundacionModelo = new Fundacion();
@@ -17,15 +17,15 @@ $nits = $FundacionModelo->getNitsFundacion();
 $estados = $Modelo->getEstadosAdopcion();
 
 $id_usuario = $_SESSION['user']['id_usuario'] ?? null;
-$esAdmin = $id_usuario && esAdmin($id_usuario);
-$esFundacion = $id_usuario && esFundacion($id_usuario);
+$esAdmin = $id_usuario && Roles::esAdmin($id_usuario);
+$esFundacion = $id_usuario && Roles::esFundacion($id_usuario);
 $nit_sesion = $_SESSION['user']['nit_fundacion'] ?? null;
 ?>
 
 <div class="container crud-container">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h2 class="mb-0">Gestión de Mascotas</h2>
-        <?php if ($esAdmin || $esFundacion): ?>
+        <?php if ($esFundacion): ?>
             <button id="btn-abrir-modal-mascota" class="btn btn-primary">
                 <i class=" bi bi-plus-circle"></i> Registrar mascota
             </button>
@@ -77,7 +77,7 @@ $nit_sesion = $_SESSION['user']['nit_fundacion'] ?? null;
                                 <?php endif; ?>
 
                                 <?php if ($esAdmin): ?>
-                                    <button class="btn btn-sm btn-danger btn-eliminar-mascota" data-id="<?= $mascota['id_mascota'] ?>">
+                                    <button class="btn btn-sm btn-danger btn-eliminar-mascota" data-id="<?php echo $mascota['id_mascota']; ?>">
                                         <i class="uil uil-trash"></i>
                                     </button>
                                 <?php endif; ?>

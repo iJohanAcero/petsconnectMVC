@@ -1,7 +1,9 @@
 <?php
-require_once("../../Model/fundacion/FundacionModel.php");
+require_once __DIR__ . '/../../vendor/autoload.php';
+use App\Model\Fundacion\Fundacion;
+
 $Modelo = new Fundacion();
-$Fundaciones = $Modelo->getFundacion(); // Suponiendo que tienes este método
+$Fundaciones = $Modelo->getFundacion(); 
 ?>
 
 <div class="container crud-container">

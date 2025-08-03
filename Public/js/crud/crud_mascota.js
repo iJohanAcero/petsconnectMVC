@@ -60,7 +60,7 @@ function inicializarEventosMascotas() {
         };
     }
 
-    // ✅ ASIGNAR EVENTO EDITAR (como producto)
+    // ✅ ASIGNAR EVENTO EDITAR 
     const botonesEditar = document.querySelectorAll(".btn-editar-mascota");
     botonesEditar.forEach(btn => {
         btn.addEventListener("click", function () {
@@ -101,20 +101,44 @@ function inicializarEventosMascotas() {
                 });
         });
     });
+
+
+// 🗑️ BOTONES DE ELIMINAR
+    const botonesEliminar = document.querySelectorAll(".btn-eliminar-mascota");
+    botonesEliminar.forEach(btn => {
+        btn.addEventListener("click", function () {
+            const idMascota = this.dataset.id;
+            if (confirm("¿Estás seguro de que deseas eliminar esta mascota?")) {
+                const formData = new FormData();
+                formData.append('accion', 'eliminar');
+                formData.append('id_', idMascota);
+
+                fetch(`${window.BASE_URL}/controller/Mascota/MascotaController.php`, {
+                    method: "POST",
+                    body: formData
+                })
+                    .then(res => res.text())
+                    .then(data => {
+                        alert(data);
+                        cargarCrudMascotas();
+                    })
+                    .catch(error => {
+                        console.error("❌ Error al eliminar:", error);
+                    });
+            }
+        });
+    });
 }
 
 // Inicializar al cargar el DOM
 document.addEventListener("DOMContentLoaded", () => {
     const btnMascotas = document.getElementById("btn-cargar-mascotas");
+
     if (btnMascotas) {
-        console.log("✅ Botón Mascotas encontrado y preparado");
         btnMascotas.addEventListener("click", function (e) {
             e.preventDefault();
             cargarCrudMascotas();
         });
-    } else {
-        console.error("❌ No se encontró el botón 'btn-cargar-mascotas'");
     }
 });
 
-console.log("🐾 Función cargarCrudMascotas:", typeof cargarCrudMascotas);

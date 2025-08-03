@@ -1,7 +1,6 @@
 <?php
 require_once __DIR__ . '/../../vendor/autoload.php';
 
-use App\Config\Config;
 use App\Model\Publicacion\Publicacion;
 
 $Modelo = new Publicacion();
@@ -28,8 +27,8 @@ $publicacion = $publicacion[0]; // Tomamos el primer registro si viene en forma 
     <!-- Contenedor principal de Bootstrap -->
     <div class="container mt-1">
         <!-- Formulario con clases de Bootstrap -->
-        <form id="form-editar-publicacion" method="POST" action="<?= Config::get('BASE_URL') ?>/controller/publicacion/PublicacionController.php">
-
+        <form id="form-editar-publicacion" method="POST" enctype="multipart/form-data" >
+            <input type="hidden" name="accion" value="editar">
             <!-- Campo oculto para el ID  -->
             <input type="hidden" name="id" value="<?= $publicacion['id_publicacion']; ?>">
 

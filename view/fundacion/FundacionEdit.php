@@ -1,5 +1,6 @@
 <?php
-require_once "../../Model/fundacion/FundacionModel.php";
+require_once __DIR__ . '/../../vendor/autoload.php';
+use App\Model\Fundacion\Fundacion;
 
 if (!isset($_GET['id'])) {
     echo "Error: ID no proporcionado";

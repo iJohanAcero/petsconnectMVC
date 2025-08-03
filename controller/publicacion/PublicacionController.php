@@ -1,15 +1,15 @@
 <?php
 
 namespace App\Controller\publicacion;
-
+require_once __DIR__ . '/../../vendor/autoload.php';
 
 use App\Model\Publicacion\Publicacion;
 
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
+
 class PublicacionController
 {
+
+    
     public function recientes()
     {
         // Validar y asignar página
@@ -36,7 +36,7 @@ class PublicacionController
         // Procesar imagen si viene
         if (isset($_FILES['imagen']) && $_FILES['imagen']['error'] === UPLOAD_ERR_OK) {
             $nombreImagen = uniqid() . '_' . $_FILES['imagen']['name'];
-            $rutaDestino = __DIR__ . '/../../../Public/images/eventos_fundacion/' . $nombreImagen;
+            $rutaDestino = __DIR__ . '/../Public/images/eventos_fundacion/' . $nombreImagen;
             move_uploaded_file($_FILES['imagen']['tmp_name'], $rutaDestino);
             $imagen = $nombreImagen;
         }
@@ -80,5 +80,20 @@ class PublicacionController
         $resultado = $modeloPublicacion->delete($id);
 
         echo $resultado ? "Publicación eliminada correctamente" : "Error al eliminar publicación";
+    }
+
+
+}
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $accion = $_POST['accion'] ?? '';
+    $controller = new PublicacionController();
+
+    if ($accion === 'editar') {
+        $controller->editar();
+    } elseif ($accion === 'registrar') {
+        $controller->registrar();
+    } elseif ($accion === 'eliminar') {
+        $controller->eliminar();
     }
 }

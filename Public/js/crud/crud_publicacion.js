@@ -1,14 +1,13 @@
 
-// =========== CRUD DE Publicacion =========== //
+// ===================== FUNCIÓN PRINCIPAL PARA CARGAR CRUD ===================== //
 window.cargarCrudPublicacion = function () {
-    fetch(`/view/publicacion/PublicacionView.php?id=${idPublicacion}`)
+    fetch("view/publicacion/PublicacionView.php")
         .then(response => {
             if (!response.ok) throw new Error("Error en la red");
             return response.text();
         })
         .then(data => {
-            // Cambia el objetivo al contenedor del main
-            const mainContainer = document.getElementById("main-content")
+            const mainContainer = document.getElementById("main-content");
 
             if (mainContainer) {
                 mainContainer.innerHTML = data;
@@ -23,7 +22,7 @@ window.cargarCrudPublicacion = function () {
         });
 };
 
-
+// ===================== MODAL DE REGISTRO ===================== //
 function abrirModalCrearPublicacion() {
     const modalElement = document.getElementById("modal-publicacion");
     if (modalElement) {
@@ -32,47 +31,46 @@ function abrirModalCrearPublicacion() {
     }
 }
 
+// ===================== EVENTOS DEL CRUD ===================== //
 function inicializarEventosPublicacion() {
-    // Modal crear Publicacion
+    // ➕ Abrir modal de registro
     const btnAbrirModal = document.getElementById("btn-abrir-modal-publicacion");
     if (btnAbrirModal) {
         btnAbrirModal.addEventListener("click", abrirModalCrearPublicacion);
     }
 
-    // ✅ REGISTRAR Publicacion
+    // ✅ FORMULARIO DE REGISTRO
     const formRegistrar = document.getElementById("form-registrar-publicacion");
 
     if (formRegistrar) {
-        // Usamos onsubmit en vez de addEventListener, así no se repite el evento
         formRegistrar.onsubmit = function (e) {
-            e.preventDefault(); // Evita que se recargue la página
-            const formData = new FormData(formRegistrar); // Captura los datos del formulario
+            e.preventDefault();
+            const formData = new FormData(formRegistrar);
 
             fetch(`${window.BASE_URL}/controller/publicacion/PublicacionController.php`, {
                 method: "POST",
                 body: formData
             })
-                .then(response => response.text()) // Espera respuesta del servidor como texto
+                .then(response => response.text())
                 .then(data => {
-                        alert(data);
-                        const modalElement = document.getElementById("modal-publicacion");
-                        const modal = bootstrap.Modal.getInstance(modalElement);
-                        if (modal) modal.hide();
-                        formRegistrar.reset(); // Limpia el formulario
-                        cargarCrudPublicacion(); // Vuelve a cargar la lista actualizada
+                    alert(data);
+                    const modalElement = document.getElementById("modal-publicacion");
+                    const modal = bootstrap.Modal.getInstance(modalElement);
+                    if (modal) modal.hide();
+                    formRegistrar.reset();
+                    cargarCrudPublicacion();
                 })
                 .catch(error => {
-                    console.error("Error:", error);
-                    alert("Error en la comunicación con el servidor");
+                    console.error("❌ Error:", error);
                 });
         };
     }
 
-    // ✅ BOTONES EDITAR
+    // ✏️ BOTONES DE EDITAR
     const botonesEditar = document.querySelectorAll(".btn-editar-publicacion");
 
-    botonesEditar.forEach(btn => {
-        btn.addEventListener("click", function () {
+    botonesEditar.forEach(boton => {
+        boton.addEventListener("click", function () {
             const idPublicacion = this.dataset.id;
 
             fetch(`view/publicacion/PublicacionEditView.php?id=${idPublicacion}`)
@@ -81,14 +79,16 @@ function inicializarEventosPublicacion() {
                     return response.text();
                 })
                 .then(html => {
-                    document.getElementById("contenido-editar").innerHTML = html;
-                    const modalElement = document.getElementById("modal-editar-publicacion");
-                    const modal = new bootstrap.Modal(modalElement);
+                    const contenedor = document.getElementById("contenido-editar");
+                    contenedor.innerHTML = html;
+
+                    const modal = new bootstrap.Modal(document.getElementById("modal-editar-publicacion"));
                     modal.show();
 
                     const formEditar = document.getElementById("form-editar-publicacion");
+
                     if (formEditar) {
-                        formEditar.addEventListener("submit", function (e) {
+                        formEditar.onsubmit = function (e) {
                             e.preventDefault();
                             const formData = new FormData(formEditar);
 
@@ -96,35 +96,32 @@ function inicializarEventosPublicacion() {
                                 method: "POST",
                                 body: formData
                             })
-                                .then(res => res.text()) // no json
+                                .then(response => response.text())
                                 .then(data => {
-                                    alert(data);
-                                    const modalElement = document.getElementById("modal-editar-publicacion");
-                                    const modal = bootstrap.Modal.getInstance(modalElement);
-                                    if (modal) modal.hide();
+                                    if (data.trim()) {
+                                        alert(data);
+                                    }
+                                    modal.hide();
                                     cargarCrudPublicacion();
-                                })
-                                .catch(error => {
-                                    console.error("Error:", error);
-                                    mostrarAlerta('error', 'Error en la comunicación con el servidor');
                                 });
-                        });
+                        };
                     }
+                })
+                .catch(error => {
+                    console.error("❌ Error al cargar PublicacionEdit.php:", error);
                 });
         });
     });
 
     // 🗑️ BOTONES DE ELIMINAR
     const botonesEliminar = document.querySelectorAll(".btn-eliminar-publicacion");
-
     botonesEliminar.forEach(btn => {
         btn.addEventListener("click", function () {
-            const id = this.dataset.id;
-
-            if (confirm("¿Estás seguro de que deseas eliminar esta publicacion?")) {
+            const idPublicacion = this.dataset.id;
+            if (confirm("¿Estás seguro de que deseas eliminar esta publicación?")) {
                 const formData = new FormData();
-                formData.append("eliminar", "true");
-                formData.append("id", id);
+                formData.append('accion', 'eliminar');
+                formData.append('id', idPublicacion);
 
                 fetch(`${window.BASE_URL}/controller/publicacion/PublicacionController.php`, {
                     method: "POST",
@@ -143,14 +140,14 @@ function inicializarEventosPublicacion() {
     });
 }
 
+// ===================== INICIALIZAR BOTÓN DE MENÚ ===================== //
 document.addEventListener("DOMContentLoaded", () => {
-    const btnCargarPublicacion = document.getElementById("btn-cargar-publicacion");
+    const btnCargarPublicaciones = document.getElementById("btn-cargar-publicacion");
 
-    if (btnCargarPublicacion) {
-        btnCargarPublicacion.addEventListener("click", function (e) {
+    if (btnCargarPublicaciones) {
+        btnCargarPublicaciones.addEventListener("click", function (e) {
             e.preventDefault();
             cargarCrudPublicacion();
         });
     }
 });
-
