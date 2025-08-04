@@ -1,5 +1,8 @@
 <?php
-use App\Model\Perfil\PerfilModel;
+
+require_once __DIR__ . '/../../vendor/autoload.php';
+use App\Config\Config;
+use App\Model\Perfil\Perfil;
 
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
@@ -15,9 +18,9 @@ if (!isset($_SESSION["user"]) || $_SESSION["tipo_usuario"] !== "guardian") {
     exit;
 }
 
-$perfilModel = new PerfilModel();
+$perfil = new Perfil();
 $id = $_SESSION["user"]["id_usuario"];
-$perfil = $perfilModel->getPerfilPorUsuario($id);
+$perfil = $perfil->getPerfilPorUsuario($id);
 
 ?>
 
@@ -33,16 +36,16 @@ $perfil = $perfilModel->getPerfilPorUsuario($id);
 
     <link
         rel="shortcut icon"
-        href="<?= IMG_URL ?>/icono2.png"
+        href="<?=Config::get('IMG_URL') ?>/icono2.png"
         type="image/png" />
     <!-- ===== All CSS files ===== -->
     <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.8/css/line.css">
     <link rel="stylesheet" href="//cdn.datatables.net/2.3.2/css/dataTables.dataTables.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 
-    <link rel="stylesheet" href="<?= CSS_URL ?>/styles.css" />
-    <link rel="stylesheet" href="<?= CSS_URL ?>/animate.css" />
-    <link rel="stylesheet" href="<?= CSS_URL ?>/ud-styles.css" /> <!-- Llamamos a la librería de iconos -->
+    <link rel="stylesheet" href="<?=Config::get('CSS_URL') ?>/styles.css" />
+    <link rel="stylesheet" href="<?=Config::get('CSS_URL') ?>/animate.css" />
+    <link rel="stylesheet" href="<?=Config::get('CSS_URL') ?>/ud-styles.css" /> <!-- Llamamos a la librería de iconos -->
 
 </head>
 
@@ -54,7 +57,7 @@ $perfil = $perfilModel->getPerfilPorUsuario($id);
                 <i class="uil uil-bars"></i>
             </button>
             <a class="navbar-brand" href="#" onclick="history.go(0);">
-                <img src="<?= IMG_URL ?>/logo/logo.png" alt="Logo" id="logo" class="d-inline-block align-text-top">
+                <img src="<?=Config::get('IMG_URL') ?>/logo/logo.png" alt="Logo" id="logo" class="d-inline-block align-text-top">
             </a>
 
             <div class="collapse navbar-collapse">
@@ -82,7 +85,7 @@ $perfil = $perfilModel->getPerfilPorUsuario($id);
                         <?php
 
                         $nombreImagen = !empty($perfil['imagen']) ? $perfil['imagen'] : 'default.png';
-                        $rutaImagen = IMG_URL . "/perfil/" . htmlspecialchars($nombreImagen);
+                        $rutaImagen = Config::get('IMG_URL') . "/perfil/" . htmlspecialchars($nombreImagen);
                         ?>
                         <img
                             src="<?= $rutaImagen ?>"
@@ -205,11 +208,11 @@ $perfil = $perfilModel->getPerfilPorUsuario($id);
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
 
     <!-- SCRIPTS DE JS CRUDS Y RUTAS -->
-    <script src="<?= JS_URL ?>/config.js"></script>
-    <script src="<?= JS_URL ?>/main.js"></script>
-    <script src="<?= JS_URL ?>/routes/perfilGuardian.js"></script>
-    <script src="<?= JS_URL ?>/routes/routes.js"></script>
-    <script src="<?= JS_URL ?>/routes/cartelera.js"></script>
+    <script src="<?= Config::get('JS_URL') ?>/config.js"></script>
+    <script src="<?= Config::get('JS_URL') ?>/main.js"></script>
+    <script src="<?= Config::get('JS_URL') ?>/routes/perfilGuardian.js"></script>
+    <script src="<?= Config::get('JS_URL') ?>/routes/routes.js"></script>
+    <script src="<?= Config::get('JS_URL') ?>/routes/cartelera.js"></script>
 
     <script>
         let page = 1;
@@ -239,7 +242,7 @@ $perfil = $perfilModel->getPerfilPorUsuario($id);
 
                                     ${pub.imagen ? `
                                         <div class="post-image-container mb-3">
-                                            <img src="<?= IMG_URL ?>/eventos_fundacion/${pub.imagen}"
+                                            <img src="<?=Config::get('IMG_URL') ?>/eventos_fundacion/${pub.imagen}"
                                                  class="img-fluid rounded-3 post-image"
                                                  alt="Imagen publicación">
                                         </div>` : ''}

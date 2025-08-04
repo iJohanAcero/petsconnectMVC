@@ -115,13 +115,15 @@ class MascotaController
             exit;
         }
 
-        $id = $_POST['id_mascota'] ?? null;
-        if (!$id) {
+        $id = htmlspecialchars($_POST['id'] ?? '');
+
+        if (empty($id)) {
             echo "ID de mascota no proporcionado";
-            exit;
+            return;
         }
 
-        $resultado = $this->modeloMascota->delete($id);
+        $modeloMascota = new Mascota();
+        $resultado = $modeloMascota->delete($id);
 
         echo $resultado ? "Mascota eliminada correctamente" : "Error al eliminar mascota";
     }

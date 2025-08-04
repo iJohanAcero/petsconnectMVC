@@ -5,7 +5,7 @@ use App\Model\Conexion;
 use PDO;
 
 
-class PerfilModel
+class Perfil
 {
     private $db;
 

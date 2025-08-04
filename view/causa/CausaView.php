@@ -1,7 +1,10 @@
 <?php
-session_start();
-require_once("../../Model/causa/CausaModel.php");
-require_once("../../Model/fundacion/FundacionModel.php");
+require_once __DIR__ . '/../../vendor/autoload.php';
+
+use App\Model\Causa\Causa;
+use App\Model\Fundacion\Fundacion;
+
+
 $Modelo = new Causa();
 
 $nit_fundacion = null;
@@ -9,16 +12,17 @@ if (isset($_SESSION["user"]["id_usuario"])) {
     $nit_fundacion = Fundacion::obtenerNitPorUsuario($_SESSION["user"]["id_usuario"]);
 }
 ?>
+
 <body>
     <!-- Contenedor principal del CRUD con ID para JS -->
     <div class="container crud-container main-content" id="crud-container" style="padding: 40px;">
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h2 class="mb-0">Gestión de Causas</h2>
             <?php if (isset($_SESSION["tipo_usuario"]) && $_SESSION["tipo_usuario"] === "fundacion"): ?>
-   <button id="btn-abrir-modal-causa" class="btn btn-primary">
-        <i class="bi bi-plus-circle"></i> Añadir Causa
-    </button>
-<?php endif; ?>
+                <button id="btn-abrir-modal-causa" class="btn btn-primary">
+                    <i class="bi bi-plus-circle"></i> Añadir Causa
+                </button>
+            <?php endif; ?>
         </div>
 
         <!-- Tabla de causas -->
@@ -66,7 +70,7 @@ if (isset($_SESSION["user"]["id_usuario"])) {
                                 </td>
                                 <td><?php echo htmlspecialchars($Causa['tipo_causa']); ?></td>
                                 <td>
-                                
+
                                     <button class="btn btn-sm btn-warning btn-editar-causa" data-id="<?php echo $Causa['id_causa']; ?>">
                                         <i class="uil uil-pen"></i>
                                     </button>
@@ -81,7 +85,7 @@ if (isset($_SESSION["user"]["id_usuario"])) {
                     } else {
                         ?>
                         <tr>
-                            <td colspan="7" class="text-center">No hay causa registrada</td>
+                            <td colspan="10" class="text-center">No hay causa registrada</td>
                         </tr>
                     <?php } ?>
                 </tbody>
@@ -100,48 +104,48 @@ if (isset($_SESSION["user"]["id_usuario"])) {
                 <div class="modal-body">
                     <!-- ✅ Formulario sin method ni action -->
                     <form id="form-registrar-causa" method="POST" enctype="multipart/form-data" action="../../controller/causa/CausaController.php">
-    <input type="hidden" name="accion" value="registrar">
-    <div class="mb-3">
-        <label for="nombre" class="form-label">Nombre</label>
-        <input type="text" class="form-control" id="nombre" name="nombre" required>
-    </div>
-    <div class="mb-3">
-        <label for="descripcion" class="form-label">Descripción</label>
-        <input type="text" class="form-control" id="descripcion" name="descripcion" required>
-    </div>
-    <div class="mb-3">
-        <label for="meta" class="form-label">Meta</label>
-        <input type="text" class="form-control" id="meta" name="meta" required>
-    </div>
-    <div class="mb-3">
-        <label for="estado_causa" class="form-label">Estado de causa</label>
-        <select class="form-select" id="estado_causa" name="estado_causa" required>
-            <option value="">Selecciona estado</option>
-            <option value="activa">Activa</option>
-            <option value="en pausa">En pausa</option>
-            <option value="cumplida">Cumplida</option>
-            <option value="cancelada">Cancelada</option>
-        </select>
-    </div>
-    <div class="mb-3">
-        <label for="tipo_causa" class="form-label">Tipo de causa</label>
-        <select class="form-select" id="tipo_causa" name="tipo_causa" required>
-            <option value="">Selecciona tipo</option>
-            <option value="alimentación">Alimentación</option>
-            <option value="medicamentos">Medicamentos</option>
-            <option value="esterilizacion">Esterilización</option>
-        </select>
-    </div>
-    <div class="mb-3">
-        <label for="imagen" class="form-label">Imagen</label>
-        <input type="file" class="form-control" id="imagen" name="imagen" accept="image/*">
-    </div>
-    <input type="hidden" name="nit_fundacion" value="<?php echo htmlspecialchars($nit_fundacion); ?>">
-    <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-        <button type="submit" class="btn btn-primary">Guardar</button>
-    </div>
-</form>
+                        <input type="hidden" name="accion" value="registrar">
+                        <div class="mb-3">
+                            <label for="nombre" class="form-label">Nombre</label>
+                            <input type="text" class="form-control" id="nombre" name="nombre" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="descripcion" class="form-label">Descripción</label>
+                            <input type="text" class="form-control" id="descripcion" name="descripcion" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="meta" class="form-label">Meta</label>
+                            <input type="text" class="form-control" id="meta" name="meta" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="estado_causa" class="form-label">Estado de causa</label>
+                            <select class="form-select" id="estado_causa" name="estado_causa" required>
+                                <option value="">Selecciona estado</option>
+                                <option value="activa">Activa</option>
+                                <option value="en pausa">En pausa</option>
+                                <option value="cumplida">Cumplida</option>
+                                <option value="cancelada">Cancelada</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="tipo_causa" class="form-label">Tipo de causa</label>
+                            <select class="form-select" id="tipo_causa" name="tipo_causa" required>
+                                <option value="">Selecciona tipo</option>
+                                <option value="alimentación">Alimentación</option>
+                                <option value="medicamentos">Medicamentos</option>
+                                <option value="esterilizacion">Esterilización</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="imagen" class="form-label">Imagen</label>
+                            <input type="file" class="form-control" id="imagen" name="imagen" accept="image/*">
+                        </div>
+                        <input type="hidden" name="nit_fundacion" value="<?php echo htmlspecialchars($nit_fundacion); ?>">
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                            <button type="submit" class="btn btn-primary">Guardar</button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
@@ -161,5 +165,4 @@ if (isset($_SESSION["user"]["id_usuario"])) {
             </div>
         </div>
     </div>
-        <script src="../../Public/js/main.js"></script>
 </body>

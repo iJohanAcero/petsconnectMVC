@@ -111,7 +111,7 @@ function inicializarEventosMascotas() {
             if (confirm("¿Estás seguro de que deseas eliminar esta mascota?")) {
                 const formData = new FormData();
                 formData.append('accion', 'eliminar');
-                formData.append('id_', idMascota);
+                formData.append('id', idMascota);
 
                 fetch(`${window.BASE_URL}/controller/Mascota/MascotaController.php`, {
                     method: "POST",

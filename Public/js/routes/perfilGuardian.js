@@ -37,7 +37,7 @@ function inicializarEventosPerfilGuardian() {
         boton.addEventListener("click", function () {
             const id = this.dataset.id;
 
-            fetch(`view/guardian/GuardianEdit.php?id=${encodeURIComponent(id)}`)
+            fetch(`${window.BASE_URL}/view/guardian/GuardianEdit.php?id=${encodeURIComponent(id)}`)
                 .then(response => {
                     if (!response.ok) throw new Error("No se pudo cargar el formulario de edición");
                     return response.text();

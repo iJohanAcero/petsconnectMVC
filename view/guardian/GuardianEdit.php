@@ -1,19 +1,26 @@
 <?php
-require_once("../../Model/perfil/PerfilModel.php");
+require_once __DIR__ . '/../../vendor/autoload.php';
+use App\Model\Perfil\Perfil;
 
-$Modelo = new PerfilModel();
+$Perfil = new Perfil();
 
 // Validación: si no se pasa el ID, se muestra un mensaje y se detiene la ejecución
+$perfilModel = new Perfil();
+
 if (!isset($_GET['id'])) {
     echo "ID de Perfil no especificado.";
     exit;
 }
 
-$id = $_GET['id']; // Ojo: era `$Id`, pero luego se usa `$id` en getId. Uniformamos.
-$perfil = $Modelo->getPerfilPorUsuario($id);
 
-// Si no se encuentra el perfil con ese ID, se avisa y se detiene
-if (!$perfil || empty($perfil)) {
+
+$id = (int)$_GET['id'];
+$Perfil = $perfilModel->getPerfilPorUsuario($id);
+
+var_dump($id);
+var_dump($Perfil);
+
+if (!$Perfil || empty($Perfil)) {
     echo "Perfil no encontrado.";
     exit;
 }

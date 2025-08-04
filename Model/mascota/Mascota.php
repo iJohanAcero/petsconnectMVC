@@ -120,7 +120,7 @@ class Mascota
         return $stmt->execute();
     }
 
-    // 🔴 Eliminar mascota (solo para admin)
+    // 🔴 Eliminar mascota 
     public function delete($id_mascota)
     {
         $stmt = $this->db->prepare("DELETE FROM t_mascota WHERE id_mascota = :id");

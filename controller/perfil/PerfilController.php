@@ -1,55 +1,69 @@
 <?php
-
 namespace App\controller\perfil;
-use App\Model\perfil\PerfilModel;
+
+require_once __DIR__ . '/../../vendor/autoload.php';
+use App\Model\Perfil\Perfil;
 
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-$perfilModel = new PerfilModel();
-$id = $_SESSION["user"]["id_usuario"];
+class PerfilController
+{
+    private $perfilModel;
+    private $id_usuario;
 
-// Obtener imagen actual
-    $perfil = $perfilModel->getPerfilPorUsuario($id);
-    $imagen = $perfil['imagen'];
+    public function __construct()
+    {
+        $this->perfilModel = new Perfil();
+        $this->id_usuario = $_SESSION["user"]["id_usuario"] ?? null;
+    }
 
-// Actualizar perfil de guardian y fundación
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['accion']) && $_POST['accion'] === 'editar') {
-    $id = $_POST['id'];
-    $nombre = $_POST['nombre'];
-    $descripcion = $_POST['descripcion'];
-    $preferencia = $_POST['preferencia'];
-     // Procesar imagen
-        $imagen = null;
+    public function editar()
+    {
+        $id = $_POST['id'] ?? $this->id_usuario;
+        $nombre = $_POST['nombre'] ?? '';
+        $descripcion = $_POST['descripcion'] ?? '';
+        $preferencia = $_POST['preferencia'] ?? '';
+
+        // Obtener imagen actual del perfil
+        $perfil = $this->perfilModel->getPerfilPorUsuario($id);
+        $imagen_actual = $perfil['imagen'] ?? null;
+
+        // Procesar imagen
+        $imagen = $imagen_actual;
         if (isset($_FILES['imagen']) && $_FILES['imagen']['error'] === UPLOAD_ERR_OK) {
             $nombreImagen = uniqid() . '_' . $_FILES['imagen']['name'];
-            $rutaDestino = '../../Public/images/perfil/' . $nombreImagen;
-            move_uploaded_file($_FILES['imagen']['tmp_name'], $rutaDestino);
-            $imagen = $nombreImagen;
-
+            $rutaDestino = __DIR__ . '/../../Public/images/perfil/' . $nombreImagen;
             if (move_uploaded_file($_FILES['imagen']['tmp_name'], $rutaDestino)) {
-            $imagen = $nombreImagen; // <-- Solo se reemplaza si se subió una nueva
+                $imagen = $nombreImagen;
+            }
         }
+
+        // Validar campos obligatorios
+        if (empty($nombre) || empty($descripcion) || empty($preferencia)) {
+            echo "Todos los campos son obligatorios.";
+            exit;
+        }
+
+        // Actualizar el perfil (puede ser guardian o fundación)
+        $resultadoGuardian = $this->perfilModel->actualizarPerfilGuardian($id, $nombre, $descripcion, $preferencia, $imagen);
+        $resultadoFundacion = $this->perfilModel->actualizarPerfilFundacion($id, $nombre, $descripcion, $preferencia, $imagen);
+
+        if ($resultadoGuardian || $resultadoFundacion) {
+            echo "Perfil actualizado correctamente.";
         } else {
-            $imagen = $perfil['imagen']; // Mantener la imagen actual si no se subió una nueva
+            echo "Error al actualizar el perfil.";
         }
-
-    // Validar que los campos no estén vacíos
-    if (empty($nombre) || empty($descripcion) || empty($preferencia)) {
-        echo "Todos los campos son obligatorios.";
-        exit;
-    }
-
-    // Actualizar el perfil
-    $resultado = $perfilModel->actualizarPerfilGuardian($id, $nombre, $descripcion, $preferencia, $imagen);
-    $resultado2 = $perfilModel->actualizarPerfilFundacion($id, $nombre, $descripcion, $preferencia, $imagen);
-
-    if ($resultado || $resultado2) {
-        echo "Perfil actualizado correctamente.";
-        exit;
-    } else {
-        echo "Error al actualizar el perfil.";
     }
 }
-?>
+
+// Router de acciones
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $accion = $_POST['accion'] ?? '';
+    $controller = new PerfilController();
+
+    if ($accion === 'editar') {
+        $controller->editar();
+    }
+}

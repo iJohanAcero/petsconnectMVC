@@ -1,16 +1,24 @@
 <?php
-require_once(__DIR__ . '/../../controller/perfil/PerfilController.php');
+require_once __DIR__ . '/../../vendor/autoload.php';
+use App\Model\Perfil\Perfil;
+
 
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 
-
-    // No cachear esta página
     header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
     header("Cache-Control: post-check=0, pre-check=0", false);
     header("Pragma: no-cache");
 }
+
+$Perfil = new Perfil();
+
+$id_usuario = $_SESSION['user']['id_usuario'] ?? null;
+
+
+$Perfil = $Perfil->getPerfilPorUsuario($id_usuario);
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -18,7 +26,7 @@ if (session_status() === PHP_SESSION_NONE) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Perfil guardian</title>
-    <link rel="stylesheet" href="../../Public/css/style.css">
+    <link rel="stylesheet" href="config::/style.css">
 </head>
 
 
@@ -34,16 +42,16 @@ if (session_status() === PHP_SESSION_NONE) {
                             <div class="blockabout-inner text-center text-sm-start">
                                 <div class="title-big pb-3 mb-3">
                                     <!-- Nombre -->
-                                    <h3 class="card-title mb-2"><?php echo htmlspecialchars($perfil['nombre']); ?></h3>
+                                    <h3 class="card-title mb-2"><?php echo htmlspecialchars($Perfil['nombre']); ?></h3>
                                 </div>
                                 <!-- Descripción -->
                                 <h6 class="text-muted">Descripción</h6>
                                 <p class="description-p text-muted pe-0 pe-lg-0">
-                                    <?php echo htmlspecialchars($perfil['descripcion']); ?>
+                                    <?php echo htmlspecialchars($Perfil['descripcion']); ?>
                                 </p>
-                                <h6 class="text-primary pt-5">Mascotas mas buscadas</h6>
+                                <h6 class="text-primary pt-5">Preferencia de Mascotas</h6>
                                 <p class="text-muted mb-3">
-                                    <?php echo htmlspecialchars($perfil['preferencia']); ?>
+                                    <?php echo htmlspecialchars($Perfil['preferencia']); ?>
                                 </p>
                                 <div class="sosmed-horizontal pt-3 pb-3">
                                     <a href="#"><i class="uil uil-facebook-f"></i></a>
@@ -105,8 +113,6 @@ if (session_status() === PHP_SESSION_NONE) {
             </div>
         </div>
     </div>
-
-    <script src="../../Public/js/main.js"></script>
 </body>
 
 </html>
