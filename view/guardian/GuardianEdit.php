@@ -2,7 +2,7 @@
 require_once __DIR__ . '/../../vendor/autoload.php';
 use App\Model\Perfil\Perfil;
 
-$Perfil = new Perfil();
+$perfil = new Perfil();
 
 // Validación: si no se pasa el ID, se muestra un mensaje y se detiene la ejecución
 $perfilModel = new Perfil();
@@ -15,12 +15,10 @@ if (!isset($_GET['id'])) {
 
 
 $id = (int)$_GET['id'];
-$Perfil = $perfilModel->getPerfilPorUsuario($id);
+$perfil = $perfilModel->getPerfilPorUsuario($id);
 
-var_dump($id);
-var_dump($Perfil);
 
-if (!$Perfil || empty($Perfil)) {
+if (!$perfil || empty($perfil)) {
     echo "Perfil no encontrado.";
     exit;
 }

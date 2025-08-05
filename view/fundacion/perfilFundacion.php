@@ -1,5 +1,6 @@
 <?php
-require_once(__DIR__ . '/../../controller/perfil/PerfilController.php');
+require_once __DIR__ . '/../../vendor/autoload.php';
+use App\Model\Perfil\Perfil;
 
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
@@ -9,16 +10,15 @@ if (session_status() === PHP_SESSION_NONE) {
     header("Cache-Control: post-check=0, pre-check=0", false);
     header("Pragma: no-cache");
 }
+
+$perfil = new Perfil();
+
+$id_usuario = $_SESSION['user']['id_usuario'] ?? null;
+
+$perfil = $perfil->getPerfilPorUsuario($id_usuario);
 ?>
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Perfil Fundacion</title>
-    <link rel="stylesheet" href="../../Public/css/style.css">
-</head>
 
 <body>
     <section id="about-section" class="pt-5 pb-5">
@@ -102,8 +102,6 @@ if (session_status() === PHP_SESSION_NONE) {
             </div>
         </div>
     </div>
-
-    <script src="../../Public/js/main.js"></script>
 </body>
 
 </html>

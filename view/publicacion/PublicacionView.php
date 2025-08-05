@@ -5,9 +5,14 @@ use App\Model\Publicacion\Publicacion;
 use App\Model\Fundacion\Fundacion;
 
 
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
 $Modelo = new Publicacion();
 
 $nit_fundacion = null;
+
 if (isset($_SESSION["user"]["id_usuario"])) {
     $nit_fundacion = Fundacion::obtenerNitPorUsuario($_SESSION["user"]["id_usuario"]);
 }

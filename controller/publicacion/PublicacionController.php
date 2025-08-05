@@ -1,15 +1,17 @@
 <?php
 
 namespace App\Controller\publicacion;
+
 require_once __DIR__ . '/../../vendor/autoload.php';
 
 use App\Model\Publicacion\Publicacion;
 
 
+
 class PublicacionController
 {
 
-    
+
     public function recientes()
     {
         // Validar y asignar página
@@ -35,10 +37,38 @@ class PublicacionController
 
         // Procesar imagen si viene
         if (isset($_FILES['imagen']) && $_FILES['imagen']['error'] === UPLOAD_ERR_OK) {
-            $nombreImagen = uniqid() . '_' . $_FILES['imagen']['name'];
-            $rutaDestino = __DIR__ . '/../Public/images/eventos_fundacion/' . $nombreImagen;
-            move_uploaded_file($_FILES['imagen']['tmp_name'], $rutaDestino);
-            $imagen = $nombreImagen;
+            // Validar tipo de archivo
+            $permitidos = ['image/jpeg', 'image/png', 'image/gif'];
+            $tipoArchivo = mime_content_type($_FILES['imagen']['tmp_name']);
+
+            if (!in_array($tipoArchivo, $permitidos)) {
+                echo "Tipo de archivo no permitido";
+                return;
+            }
+
+            $nombreImagen = uniqid() . '_' . basename($_FILES['imagen']['name']);
+
+            // Asegúrate que esta ruta es correcta para tu proyecto
+            $directorioDestino = __DIR__ . '/../../Public/images/eventos_fundacion/';
+
+            if (!is_dir($directorioDestino)) {
+                if (!mkdir($directorioDestino, 0777, true)) {
+                    echo "Error al crear el directorio de destino";
+                    return;
+                }
+            }
+
+            $rutaDestino = $directorioDestino . $nombreImagen;
+
+            if (move_uploaded_file($_FILES['imagen']['tmp_name'], $rutaDestino)) {
+                $imagen = $nombreImagen;
+            } else {
+                echo "Error al mover el archivo subido";
+                return;
+            }
+        } else {
+            echo "Error en la subida del archivo o no se proporcionó imagen";
+            return;
         }
 
         $fecha = date('Y-m-d H:i:s');
@@ -81,8 +111,6 @@ class PublicacionController
 
         echo $resultado ? "Publicación eliminada correctamente" : "Error al eliminar publicación";
     }
-
-
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {

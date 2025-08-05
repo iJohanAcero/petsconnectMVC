@@ -11,12 +11,11 @@ if (session_status() === PHP_SESSION_NONE) {
     header("Pragma: no-cache");
 }
 
-$Perfil = new Perfil();
+$perfil = new Perfil();
 
 $id_usuario = $_SESSION['user']['id_usuario'] ?? null;
 
-
-$Perfil = $Perfil->getPerfilPorUsuario($id_usuario);
+$perfil = $perfil->getPerfilPorUsuario($id_usuario);
 ?>
 
 <!DOCTYPE html>
@@ -42,16 +41,16 @@ $Perfil = $Perfil->getPerfilPorUsuario($id_usuario);
                             <div class="blockabout-inner text-center text-sm-start">
                                 <div class="title-big pb-3 mb-3">
                                     <!-- Nombre -->
-                                    <h3 class="card-title mb-2"><?php echo htmlspecialchars($Perfil['nombre']); ?></h3>
+                                    <h3 class="card-title mb-2"><?php echo htmlspecialchars($perfil['nombre']); ?></h3>
                                 </div>
                                 <!-- Descripción -->
                                 <h6 class="text-muted">Descripción</h6>
                                 <p class="description-p text-muted pe-0 pe-lg-0">
-                                    <?php echo htmlspecialchars($Perfil['descripcion']); ?>
+                                    <?php echo htmlspecialchars($perfil['descripcion']); ?>
                                 </p>
                                 <h6 class="text-primary pt-5">Preferencia de Mascotas</h6>
                                 <p class="text-muted mb-3">
-                                    <?php echo htmlspecialchars($Perfil['preferencia']); ?>
+                                    <?php echo htmlspecialchars($perfil['preferencia']); ?>
                                 </p>
                                 <div class="sosmed-horizontal pt-3 pb-3">
                                     <a href="#"><i class="uil uil-facebook-f"></i></a>
