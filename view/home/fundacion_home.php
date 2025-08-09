@@ -193,14 +193,17 @@ $perfil = $perfil->getPerfilPorUsuario($id);
                 <li class="sidebar-item has-dropdown">
                     <a href="" class="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse" data-bs-target="#crud" aria-expanded="false" aria-controls="crud">
                         <i class="uil uil-clipboard-alt"></i>
-                        <span class="sidebar-text">Publicaciones </span>
+                        <span class="sidebar-text">Gestiones </span>
                     </a>
                     <ul id="publicacion" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
                         <li class="sidebar-item">
                             <a href="#" class="sidebar-link" id="btn-cargar-publicacion">✔ Mis publicaciones</a>
                         </li>
                         <li class="sidebar-item">
-                            <a href="#" class="sidebar-link" id="btn-cargar-causa">✔ Causas</a>
+                            <a href="#" class="sidebar-link" id="btn-cargar-causa">✔ Mis Causas</a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a href="#" class="sidebar-link" id="btn-cargar-mascotas">✔ Mis Mascotas</a>
                         </li>
                     </ul>
                 </li>
@@ -235,7 +238,7 @@ $perfil = $perfil->getPerfilPorUsuario($id);
     <script src="<?=Config::get('JS_URL') ?>/config.js"></script>
     <script src="<?=Config::get('JS_URL') ?>/crud/crud_causa.js"></script>
     <script src="<?=Config::get('JS_URL') ?>/crud/crud_fundacion.js"></script>
-
+    <script src="<?=Config::get('JS_URL') ?>/crud/crud_mascota.js"></script>
     <script src="<?=Config::get('JS_URL') ?>/crud/crud_publicacion.js"></script>
     <script src="<?=Config::get('JS_URL') ?>/routes/routes.js"></script>
     <script src="<?=Config::get('JS_URL') ?>/routes/perfilFundacion.js"></script>

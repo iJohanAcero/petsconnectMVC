@@ -3,14 +3,26 @@ require_once __DIR__ . '/../../vendor/autoload.php';
 
 use App\Model\Causa\Causa;
 use App\Model\Fundacion\Fundacion;
+use App\Config\Roles;
 
 
 $Modelo = new Causa();
 
-$nit_fundacion = null;
-if (isset($_SESSION["user"]["id_usuario"])) {
-    $nit_fundacion = Fundacion::obtenerNitPorUsuario($_SESSION["user"]["id_usuario"]);
+
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
 }
+
+$Fundacion = new Fundacion();
+
+
+$nit = $Fundacion->getNitsFundacion();
+
+
+$id_usuario = $_SESSION['user']['id_usuario'] ?? null;
+$esAdmin = $id_usuario && Roles::esAdmin($id_usuario);
+$esFundacion = $id_usuario && Roles::esFundacion($id_usuario);
+$nit_sesion = $_SESSION['user']['nit_fundacion'] ?? null;
 ?>
 
 <body>
@@ -18,9 +30,9 @@ if (isset($_SESSION["user"]["id_usuario"])) {
     <div class="container crud-container main-content" id="crud-container" style="padding: 40px;">
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h2 class="mb-0">Gestión de Causas</h2>
-            <?php if (isset($_SESSION["tipo_usuario"]) && $_SESSION["tipo_usuario"] === "fundacion"): ?>
+            <?php if ($esFundacion): ?>
                 <button id="btn-abrir-modal-causa" class="btn btn-primary">
-                    <i class="bi bi-plus-circle"></i> Añadir Causa
+                    <i class=" bi bi-plus-circle"></i> Registrar causa
                 </button>
             <?php endif; ?>
         </div>
@@ -44,9 +56,16 @@ if (isset($_SESSION["user"]["id_usuario"])) {
                 </thead>
                 <tbody>
                     <?php
+                    $tipo_usuario = $_SESSION["tipo_usuario"] ?? null;
                     $Causa = $Modelo->getCausa();
+
+                    if ($tipo_usuario === "fundacion" && $nit !== null) {
+                        $Causa = $Modelo->getCausasPorFundacion($nit);
+                    } else {
+                        $Causa = $Modelo->getCausa(); // Admin ve todo
+                    }
                     if ($Causa !== null) {
-                        foreach ($Causa as $Causa) {
+                        foreach ($Modelo as $Causa) {
                     ?>
                             <tr>
                                 <td><?php echo $Causa['id_causa']; ?></td>

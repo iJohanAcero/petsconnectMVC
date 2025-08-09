@@ -1,9 +1,10 @@
 <?php
-// Se requiere el archivo de conexión con la base de datos
 
 namespace App\Model\Causa;
 
-use App\Model\conexion; 
+require_once __DIR__ . '/../../vendor/autoload.php';
+
+use App\Model\conexion;
 use PDO;
 
 class Causa
@@ -112,5 +113,14 @@ class Causa
             $rows[] = $resultado;
         }
         return $rows;
+    }
+
+    public function getCausasPorFundacion($nit_fundacion)
+    {
+        $sql = "SELECT * FROM t_causa WHERE nit_fundacion = :nit";
+        $statement = $this->db->prepare($sql);
+        $statement->bindParam(':nit', $nit_fundacion, PDO::PARAM_STR);
+        $statement->execute();
+        return $statement->fetchAll(PDO::FETCH_ASSOC);
     }
 }

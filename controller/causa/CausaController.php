@@ -1,5 +1,7 @@
 <?php
 namespace App\controller\causa;
+
+require_once __DIR__ . '/../../vendor/autoload.php';
 use App\Model\Causa\Causa;
 
 if (session_status() === PHP_SESSION_NONE) {
