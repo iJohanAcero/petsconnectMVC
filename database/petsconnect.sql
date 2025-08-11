@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 22-07-2025 a las 03:41:26
+-- Tiempo de generación: 11-08-2025 a las 05:38:07
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -112,45 +112,69 @@ VALUES (p_id_usuario, v_id_registro, v_id_perfil);
 
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_insertar_mascota` (IN `p_id_mascota` VARCHAR(30), IN `p_nombre` VARCHAR(50), IN `p_edad_meses` INT, IN `p_sexo` ENUM('macho','hembra'), IN `p_imagen` VARCHAR(255), IN `p_id_tipo_mascota` INT, IN `p_nit_fundacion` VARCHAR(20), IN `p_id_estado_adopcion` INT)   BEGIN
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_insertar_mascota` (IN `p_id_mascota` VARCHAR(50), IN `p_nombre` VARCHAR(100), IN `p_edad_meses` INT, IN `p_sexo` VARCHAR(10), IN `p_imagen` VARCHAR(255), IN `p_id_tipo_mascota` INT, IN `p_nit_fundacion` VARCHAR(20), IN `p_id_estado_adopcion` INT)   BEGIN
     DECLARE tipo_existe INT DEFAULT 0;
     DECLARE fundacion_existe INT DEFAULT 0;
-
-    -- Validar tipo de mascota
-    SELECT COUNT(*) INTO tipo_existe
-    FROM t_tipo_mascota
-    WHERE id_tipo_mascota = p_id_tipo_mascota;
-
-    -- Validar fundación
-    SELECT COUNT(*) INTO fundacion_existe
-    FROM t_fundacion
-    WHERE nit_fundacion = p_nit_fundacion;
-
-    -- Insertar si todo es válido
-    IF tipo_existe > 0 AND fundacion_existe > 0 THEN
-        INSERT INTO t_mascota (
-            id_mascota,
-            nombre,
-            edad_meses,
-            sexo,
-            imagen,
-            id_tipo_mascota,
-            nit_fundacion,
-            id_estado_adopcion
-        ) VALUES (
-            p_id_mascota,
-            p_nombre,
-            p_edad_meses,
-            p_sexo,
-            p_imagen,
-            p_id_tipo_mascota,
-            p_nit_fundacion,
-            p_id_estado_adopcion
-        );
-    ELSE
-        SIGNAL SQLSTATE '45000'
-        SET MESSAGE_TEXT = 'Error: tipo de mascota o fundación no válida.';
+    DECLARE id_duplicado INT DEFAULT 0;
+    
+    -- 1. Validar ID duplicado
+    SELECT COUNT(*) INTO id_duplicado FROM t_mascota WHERE id_mascota = p_id_mascota;
+    IF id_duplicado > 0 THEN
+        SIGNAL SQLSTATE '45000' 
+        SET MESSAGE_TEXT = 'ERROR: El ID de mascota ya existe';
     END IF;
+    
+    -- 2. Validar tipo de mascota
+    SELECT COUNT(*) INTO tipo_existe FROM t_tipo_mascota WHERE id_tipo_mascota = p_id_tipo_mascota;
+    IF tipo_existe = 0 THEN
+        SIGNAL SQLSTATE '45000' 
+        SET MESSAGE_TEXT = 'ERROR: El tipo de mascota no existe';
+    END IF;
+    
+    -- 3. Validar fundación
+    SELECT COUNT(*) INTO fundacion_existe FROM t_fundacion WHERE nit_fundacion = p_nit_fundacion;
+    IF fundacion_existe = 0 THEN
+        SIGNAL SQLSTATE '45000' 
+        SET MESSAGE_TEXT = 'ERROR: La fundación no existe';
+    END IF;
+    
+    -- 4. Validar edad mínima
+    IF p_edad_meses < 1 THEN
+        SIGNAL SQLSTATE '45000' 
+        SET MESSAGE_TEXT = 'ERROR: La edad debe ser al menos 1 mes';
+    END IF;
+    
+    -- 5. Validar sexo
+    IF p_sexo NOT IN ('macho', 'hembra') THEN
+        SIGNAL SQLSTATE '45000' 
+        SET MESSAGE_TEXT = 'ERROR: Sexo debe ser "macho" o "hembra"';
+    END IF;
+    
+    -- 6. Insertar registro
+    INSERT INTO t_mascota (
+        id_mascota,
+        nombre,
+        edad_meses,
+        sexo,
+        imagen,
+        id_tipo_mascota,
+        nit_fundacion,
+        id_estado_adopcion,
+        fecha_registro
+    ) VALUES (
+        p_id_mascota,
+        p_nombre,
+        p_edad_meses,
+        p_sexo,
+        p_imagen,
+        p_id_tipo_mascota,
+        p_nit_fundacion,
+        p_id_estado_adopcion,
+        NOW()
+    );
+    
+    -- 7. Retornar éxito
+    SELECT 'Éxito: Mascota registrada correctamente' AS resultado;
 END$$
 
 DELIMITER ;
@@ -212,7 +236,9 @@ CREATE TABLE `t_causa` (
 --
 
 INSERT INTO `t_causa` (`id_causa`, `nombre`, `descripcion`, `meta`, `estado_causa`, `fecha_creacion`, `nit_fundacion`, `imagen_url`, `tipo_causa`) VALUES
-(9, 'Alimento ', 'es urgente', 600.00, 'activa', '2025-07-11 20:45:45', '11111', '68715bd9a1642_gatos.jpg', 'alimentación');
+(11, 'asddas', 'dasdasd', 1232312.00, 'activa', '2025-08-09 06:02:22', '<br />\r\n<b>Warning</', '6896c84e60744_Collage_of_Six_Cats-02.jpg', 'alimentación'),
+(13, 'aa', 'aa', 22.00, 'en pausa', '2025-08-09 06:38:19', '<br />\r\n<b>Warning</', '6896d0bb341f5_english_will.jpg', 'alimentación'),
+(15, 'aaaaa2222aaaaa', 'asdda11111123123', 121.00, 'en pausa', '2025-08-09 23:21:20', '11111', '6897c7c593dd0_images.jpg', 'medicamentos');
 
 -- --------------------------------------------------------
 
@@ -330,7 +356,7 @@ CREATE TABLE `t_mascota` (
 --
 
 INSERT INTO `t_mascota` (`id_mascota`, `nombre`, `edad_meses`, `sexo`, `imagen`, `id_tipo_mascota`, `nit_fundacion`, `id_estado_adopcion`) VALUES
-(999, 'negrita', 9, 'hembra', '686ee8623f6fb_gatos.jpg', 8, 2222, 1);
+(222, 'adad', 32, 'macho', '689924ab7ee7a_Collage_of_Six_Cats-02.jpg', 12, 11111, 1);
 
 -- --------------------------------------------------------
 
@@ -351,10 +377,11 @@ CREATE TABLE `t_perfil` (
 --
 
 INSERT INTO `t_perfil` (`id_perfil`, `nombre`, `preferencia`, `descripcion`, `imagen`) VALUES
-(20, 'Johan Acero', 'gatos negris', 'me gustaria adoptar gatos en bogota', '686ee90709137_perfil.jpg'),
-(21, 'Perfil Fundación', '', '', 'fundacion_default.jpg'),
+(20, 'Johan Acero', 'Gatos', 'me gustaria adoptar gatos en bogota', '686dfd7b0b3aa_gato.jpg'),
+(21, 'Funacion maaqioaaaa', 'Gatos', 'asdasdasddasaaaaaaaawwwwwwwww', '6897bcae791ec_english_will.jpg'),
 (22, 'Perfil Guardian', 'Ninguna', 'Auto-generado', 'default.jpg'),
-(23, 'Perfil Fundación', '', '', 'fundacion_default.jpg');
+(23, 'Perfil Fundación', '', '', 'fundacion_default.jpg'),
+(24, 'Perfil Fundación', '', '', 'fundacion_default.jpg');
 
 -- --------------------------------------------------------
 
@@ -407,9 +434,8 @@ CREATE TABLE `t_publicacion` (
 --
 
 INSERT INTO `t_publicacion` (`id_publicacion`, `titulo`, `contenido`, `imagen`, `fecha`, `nit_fundacion`) VALUES
-(6, 'Nueva publicacion', 'perros en adopcion', '68676fcdda998_adopciones.jpg', '2025-07-04 00:00:00', 11111),
-(7, 'gatos en adopcion', 'gatos lindos en kennedy', '686ec1a875fba_gatos.jpg', '2025-07-09 21:23:20', 11111),
-(8, 'jornada de adopcion', 'jornada', '686ee9c57a15c_Captura de pantalla_28-6-2025_192431_photos.google.com.jpeg', '2025-07-10 00:14:29', 11111);
+(20, 'aaaaaaaa', '2222', '68918a7be3e3d_images.jpg', '2025-08-05 06:37:15', 11111),
+(22, 'aasdads', '123123123', '6897c35a3c987_Collage_of_Six_Cats-02.jpg', '2025-08-09 23:53:30', 11111);
 
 -- --------------------------------------------------------
 
@@ -460,7 +486,8 @@ INSERT INTO `t_registro` (`id_registro`, `fecha`, `tipo_usuario`) VALUES
 (24, '2025-07-04', 'GUARDIAN'),
 (25, '2025-07-04', 'FUNDACION'),
 (26, '2025-07-09', 'GUARDIAN'),
-(27, '2025-07-09', 'FUNDACION');
+(27, '2025-07-09', 'FUNDACION'),
+(28, '2025-08-02', 'FUNDACION');
 
 -- --------------------------------------------------------
 
@@ -470,22 +497,16 @@ INSERT INTO `t_registro` (`id_registro`, `fecha`, `tipo_usuario`) VALUES
 
 CREATE TABLE `t_tipo_mascota` (
   `id_tipo_mascota` int(11) NOT NULL,
-  `especie` varchar(100) NOT NULL,
-  `raza` varchar(100) DEFAULT NULL,
-  `tamaño` varchar(20) NOT NULL,
-  `tipo_pelaje` varchar(50) NOT NULL
+  `especie` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `t_tipo_mascota`
 --
 
-INSERT INTO `t_tipo_mascota` (`id_tipo_mascota`, `especie`, `raza`, `tamaño`, `tipo_pelaje`) VALUES
-(5, 'Perro', 'Labrador Retriever	', 'Grande', 'Corto y denso'),
-(6, 'Gato', 'Siamés', 'Mediano', 'Corto'),
-(7, 'Perro', 'Chihuahua', 'Pequeño', 'Corto'),
-(8, 'Gato', 'Persa', 'Mediano', 'Largo'),
-(9, 'Perro', 'Bulldog Francés	', 'Pequeño', 'Corto');
+INSERT INTO `t_tipo_mascota` (`id_tipo_mascota`, `especie`) VALUES
+(12, 'Canino'),
+(13, 'Felino');
 
 -- --------------------------------------------------------
 
@@ -513,7 +534,7 @@ INSERT INTO `t_usuario` (`id_usuario`, `nombre`, `apellido`, `contrasena`, `emai
 (32, 'Johan David', 'Acero', NULL, 'johanacero8@gmail.com', '', '', '110443786294827582324'),
 (33, 'Jhon', 'Doe', '$2y$10$hd0SPDHn1f5Ob312a.Es..tylEKiK55r22FWaHNae57s4TYGomfe6', 'fundacion@gmail.com', 'Bogotá', '111111', NULL),
 (34, 'jon', 'doe', '$2y$10$43jhNAA48Ak3NJJpHso0KudWVlZt4o44XeA6vc/wR8HUHzdJLCTSG', 'jon@gmail.com', 'bogota', '1312321', NULL),
-(35, 'andres', 'miranda', '$2y$10$D3iTjQQmNbyUgK9IC2yh0.zN.XR8FN256ac4vQGta0yvXzbxtdLum', 'miranda@gmail.com', 'bogota', '1233121', NULL);
+(35, 'andres', 'miranda', '$2y$10$D3iTjQQmNbyUgK9IC2yh0.zN.XR8FN256ac4vQGta0yvXzbxtdLum', 'mirandass222@gmail.com', 'bogota', '1233121', NULL);
 
 -- --------------------------------------------------------
 
@@ -688,7 +709,7 @@ ALTER TABLE `t_calificacion`
 -- AUTO_INCREMENT de la tabla `t_causa`
 --
 ALTER TABLE `t_causa`
-  MODIFY `id_causa` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id_causa` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT de la tabla `t_donacion`
@@ -712,7 +733,7 @@ ALTER TABLE `t_informe`
 -- AUTO_INCREMENT de la tabla `t_perfil`
 --
 ALTER TABLE `t_perfil`
-  MODIFY `id_perfil` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `id_perfil` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
 -- AUTO_INCREMENT de la tabla `t_proceso_adopcion`
@@ -730,7 +751,7 @@ ALTER TABLE `t_producto`
 -- AUTO_INCREMENT de la tabla `t_publicacion`
 --
 ALTER TABLE `t_publicacion`
-  MODIFY `id_publicacion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id_publicacion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- AUTO_INCREMENT de la tabla `t_recuperar_constrasena`
@@ -748,19 +769,19 @@ ALTER TABLE `t_red_social`
 -- AUTO_INCREMENT de la tabla `t_registro`
 --
 ALTER TABLE `t_registro`
-  MODIFY `id_registro` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
+  MODIFY `id_registro` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
 
 --
 -- AUTO_INCREMENT de la tabla `t_tipo_mascota`
 --
 ALTER TABLE `t_tipo_mascota`
-  MODIFY `id_tipo_mascota` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id_tipo_mascota` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT de la tabla `t_usuario`
 --
 ALTER TABLE `t_usuario`
-  MODIFY `id_usuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
+  MODIFY `id_usuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=38;
 
 --
 -- Restricciones para tablas volcadas
