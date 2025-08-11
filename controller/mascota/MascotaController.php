@@ -1,10 +1,10 @@
 <?php
+
 namespace App\controller\mascota;
 
 require_once __DIR__ . '/../../vendor/autoload.php';
 
 use App\Model\Mascota\Mascota;
-use App\config\Roles;
 
 
 
@@ -15,12 +15,10 @@ if (session_status() === PHP_SESSION_NONE) {
 class MascotaController
 {
     private $modeloMascota;
-    private $id_usuario;
 
     public function __construct()
     {
         $this->modeloMascota = new Mascota();
-        $this->id_usuario = $_SESSION['user']['id_usuario'] ?? null;
     }
 
     // 1️⃣ REGISTRAR mascota
@@ -32,25 +30,25 @@ class MascotaController
         $sexo = $_POST['sexo'] ?? '';
         $imagen = null;
 
-        if (isset($_FILES["imagen"]) && $_FILES["imagen"]["error"] === UPLOAD_ERR_OK) {
-            $nombreImagen = uniqid() . '_' . $_FILES['imagen']['name'];
+        // Procesar imagen si se sube
+        if (isset($_FILES['imagen']) && $_FILES['imagen']['error'] === UPLOAD_ERR_OK) {
+            $nombreImagen = uniqid() . '_' . basename($_FILES['imagen']['name']);
             $rutaDestino = __DIR__ . '/../../Public/images/mascotas/' . $nombreImagen;
-            move_uploaded_file($_FILES["imagen"]["tmp_name"], $rutaDestino);
-            $imagen = $nombreImagen;
+            if (move_uploaded_file($_FILES['imagen']['tmp_name'], $rutaDestino)) {
+                $imagen = $nombreImagen;
+            }
         }
 
-        $id_tipo_mascota = $_POST['id_tipo_mascota'] ?? null;
-        $id_estado_adopcion = $_POST['id_estado_adopcion'] ?? 2; // EN ADOPCIÓN por defecto
+        $id_tipo_mascota = $_POST['id_tipo_mascota'] ?? '';
+        $id_estado_adopcion = $_POST['id_estado_adopcion'] ?? '';
+        $nit_fundacion = $_POST['nit_fundacion'] ?? '';
 
-        // Fundaciones: su NIT viene por la sesión
-        if (Roles::esFundacion($this->id_usuario)) {
-            $nit_fundacion = $_SESSION['nit_fundacion'] ?? null;
-        } elseif (Roles::esAdmin($this->id_usuario)) {
-            $nit_fundacion = $_POST['nit_fundacion'] ?? null;
-        } else {
-            echo "Error: no autorizado";
-            exit;
-        }
+        // Validación básica
+    if (empty($id_tipo_mascota)) {
+        die("Error: Debes seleccionar un tipo de mascota válido");
+    }
+
+
 
         $resultado = $this->modeloMascota->add(
             $id_mascota,
@@ -60,11 +58,13 @@ class MascotaController
             $imagen,
             $id_tipo_mascota,
             $nit_fundacion,
-            $id_estado_adopcion
+            $id_estado_adopcion,
+            $nit_fundacion
         );
 
         echo $resultado ? "Mascota registrada correctamente" : "Error al registrar mascota";
     }
+
 
     // 2️⃣ ACTUALIZAR mascota
     public function editar()
@@ -73,26 +73,32 @@ class MascotaController
         $nombre = $_POST['nombre'] ?? '';
         $edad_meses = $_POST['edad_meses'] ?? '';
         $sexo = $_POST['sexo'] ?? '';
-        $imagen = $_POST['imagen_actual'] ?? null;
 
-        if (isset($_FILES["imagen"]) && $_FILES["imagen"]["error"] === UPLOAD_ERR_OK) {
-            $nombreImagen = uniqid() . '_' . $_FILES['imagen']['name'];
+        // Obtener la mascota actual para conservar la imagen existente
+        $mascotaActual = $this->modeloMascota->getId($id_mascota);
+        $imagen = $mascotaActual['imagen']; // Mantener la imagen actual por defecto
+
+        // Procesar nueva imagen si se sube
+        if (isset($_FILES['imagen']) && $_FILES['imagen']['error'] === UPLOAD_ERR_OK) {
+            $nombreImagen = uniqid() . '_' . basename($_FILES['imagen']['name']);
             $rutaDestino = __DIR__ . '/../../Public/images/mascotas/' . $nombreImagen;
-            move_uploaded_file($_FILES["imagen"]["tmp_name"], $rutaDestino);
-            $imagen = $nombreImagen;
-
+            if (move_uploaded_file($_FILES['imagen']['tmp_name'], $rutaDestino)) {
+                $imagen = $nombreImagen;
+                // Opcional: eliminar la imagen anterior si existe
+                if (!empty($mascotaActual['imagen'])) {
+                    $imagenAnterior = __DIR__ . '/../../Public/images/mascotas/' . $mascotaActual['imagen'];
+                    if (file_exists($imagenAnterior)) {
+                        unlink($imagenAnterior);
+                    }
+                }
+            }
         }
 
-        
+
 
         $id_tipo_mascota = $_POST['id_tipo_mascota'] ?? null;
         $id_estado_adopcion = $_POST['id_estado_adopcion'] ?? null;
-
-        // Fundaciones y administradores pueden editar
-        if (!Roles::esAdmin($this->id_usuario) && !Roles::esFundacion($this->id_usuario)) {
-            echo "Error: no autorizado para editar";
-            exit;
-        }
+        $nit_fundacion = $_POST['nit_fundacion'] ?? null;
 
         $resultado = $this->modeloMascota->update(
             $id_mascota,
@@ -101,30 +107,22 @@ class MascotaController
             $sexo,
             $imagen,
             $id_tipo_mascota,
-            $id_estado_adopcion
+            $id_estado_adopcion,
+            $nit_fundacion
         );
 
         echo $resultado ? "Mascota actualizada correctamente" : "Error al actualizar mascota";
     }
 
-    // 3️⃣ ELIMINAR mascota (solo administrador)
+    // 3️⃣ ELIMINAR mascota 
     public function eliminar()
     {
-        if (!Roles::esAdmin($this->id_usuario)) {
-            echo "Error: solo el administrador puede eliminar";
-            exit;
-        }
-
-        $id = htmlspecialchars($_POST['id'] ?? '');
-
-        if (empty($id)) {
+        $id_mascota = $_POST['id_mascota'] ?? '';
+        if (empty($id_mascota)) {
             echo "ID de mascota no proporcionado";
             return;
         }
-
-        $modeloMascota = new Mascota();
-        $resultado = $modeloMascota->delete($id);
-
+        $resultado = $this->modeloMascota->delete($id_mascota);
         echo $resultado ? "Mascota eliminada correctamente" : "Error al eliminar mascota";
     }
 }

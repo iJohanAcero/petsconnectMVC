@@ -5,24 +5,25 @@ use App\Model\Causa\Causa;
 use App\Model\Fundacion\Fundacion;
 use App\Config\Roles;
 
-
-$Modelo = new Causa();
-
-
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
 $Fundacion = new Fundacion();
+$Modelo = new Causa();
 
 
-$nit = $Fundacion->getNitsFundacion();
+$nit_fundacion = null;
 
 
 $id_usuario = $_SESSION['user']['id_usuario'] ?? null;
 $esAdmin = $id_usuario && Roles::esAdmin($id_usuario);
 $esFundacion = $id_usuario && Roles::esFundacion($id_usuario);
 $nit_sesion = $_SESSION['user']['nit_fundacion'] ?? null;
+
+if (isset($_SESSION["user"]["id_usuario"])) {
+    $nit_fundacion = Fundacion::obtenerNitPorUsuario($_SESSION["user"]["id_usuario"]);
+}
 ?>
 
 <body>
@@ -59,13 +60,13 @@ $nit_sesion = $_SESSION['user']['nit_fundacion'] ?? null;
                     $tipo_usuario = $_SESSION["tipo_usuario"] ?? null;
                     $Causa = $Modelo->getCausa();
 
-                    if ($tipo_usuario === "fundacion" && $nit !== null) {
-                        $Causa = $Modelo->getCausasPorFundacion($nit);
+                    if ($tipo_usuario === "fundacion" && $nit_fundacion !== null) {
+                        $Causa = $Modelo->getCausasPorFundacion($nit_fundacion);
                     } else {
                         $Causa = $Modelo->getCausa(); // Admin ve todo
                     }
                     if ($Causa !== null) {
-                        foreach ($Modelo as $Causa) {
+                        foreach ($Causa as $Causa) {
                     ?>
                             <tr>
                                 <td><?php echo $Causa['id_causa']; ?></td>
@@ -96,7 +97,6 @@ $nit_sesion = $_SESSION['user']['nit_fundacion'] ?? null;
                                     <button class="btn btn-sm btn-danger btn-eliminar-causa" data-id="<?php echo $Causa['id_causa']; ?>">
                                         <i class="uil uil-trash"></i>
                                     </button>
-                                    </form>
                                 </td>
                             </tr>
                         <?php

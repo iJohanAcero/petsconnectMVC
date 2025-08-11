@@ -1,5 +1,6 @@
 <?php
 require_once __DIR__ . '/../../vendor/autoload.php';
+
 use App\Model\Mascota\Mascota;
 use App\Model\Fundacion\Fundacion;
 use App\Config\Roles;
@@ -11,15 +12,23 @@ if (session_status() === PHP_SESSION_NONE) {
 $Modelo = new Mascota();
 $FundacionModelo = new Fundacion();
 
-$mascotas = $Modelo->getMascotas();
+$mascotas = $Modelo->getMascota();
 $tipos = $Modelo->getTiposMascota();
 $nits = $FundacionModelo->getNitsFundacion();
 $estados = $Modelo->getEstadosAdopcion();
+
+$nit_fundacion = null;
+
 
 $id_usuario = $_SESSION['user']['id_usuario'] ?? null;
 $esAdmin = $id_usuario && Roles::esAdmin($id_usuario);
 $esFundacion = $id_usuario && Roles::esFundacion($id_usuario);
 $nit_sesion = $_SESSION['user']['nit_fundacion'] ?? null;
+
+if (isset($_SESSION["user"]["id_usuario"])) {
+    $nit_fundacion = Fundacion::obtenerNitPorUsuario($_SESSION["user"]["id_usuario"]);
+}
+
 ?>
 
 <div class="container crud-container">
@@ -32,6 +41,8 @@ $nit_sesion = $_SESSION['user']['nit_fundacion'] ?? null;
         <?php endif; ?>
     </div>
 
+    
+
     <div class="table-responsive">
         <table class="table table-striped table-hover table-bordered text-center" id="tabla_mascotas">
             <thead class="table" style="background-color: #1a1333; color: white;">
@@ -41,27 +52,33 @@ $nit_sesion = $_SESSION['user']['nit_fundacion'] ?? null;
                     <th>Edad (meses)</th>
                     <th>Sexo</th>
                     <th>Especie</th>
-                    <th>Raza</th>
-                    <th>Tamaño</th>
-                    <th>Pelaje</th>
                     <th>Estado</th>
+                    <th>Nit Fundación</th>
                     <th>Imagen</th>
                     <th>Acciones</th>
                 </tr>
             </thead>
             <tbody>
-                <?php if ($mascotas): ?>
-                    <?php foreach ($mascotas as $mascota): ?>
+                <?php
+                $tipo_usuario = $_SESSION["tipo_usuario"] ?? null;
+                $mascotas = $Modelo->getMascota();
+
+                if ($tipo_usuario === "fundacion" && $nit_fundacion !== null) {
+                    $mascotas = $Modelo->getMascotasPorFundacion($nit_fundacion);
+                } else {
+                    $mascotas = $Modelo->getMascota();
+                }
+                if (!empty($mascotas)) {
+                    foreach ($mascotas as $mascota) {
+                ?>
                         <tr>
                             <td><?= $mascota['id_mascota'] ?></td>
                             <td><?= htmlspecialchars($mascota['nombre']) ?></td>
                             <td><?= $mascota['edad_meses'] ?></td>
                             <td><?= $mascota['sexo'] ?></td>
-                            <td><?= $mascota['especie'] ?></td>
-                            <td><?= $mascota['raza'] ?></td>
-                            <td><?= $mascota['tamaño'] ?></td>
-                            <td><?= $mascota['tipo_pelaje'] ?></td>
-                            <td><?= $mascota['tipo_estado'] ?></td>
+                            <td><?= htmlspecialchars($mascota['especie']) ?></td>
+                            <td><?= htmlspecialchars($mascota['tipo_estado']) ?></td>
+                            <td><?= $mascota['nit_fundacion'] ?></td>
                             <td>
                                 <?php if (!empty($mascota['imagen'])): ?>
                                     <img src="/petsconnectMVC/public/images/mascotas/<?= htmlspecialchars($mascota['imagen']) ?>" alt="Mascota" width="60" class="img-thumbnail">
@@ -76,19 +93,23 @@ $nit_sesion = $_SESSION['user']['nit_fundacion'] ?? null;
                                     </button>
                                 <?php endif; ?>
 
-                                <?php if ($esAdmin): ?>
+                                <?php if ($esAdmin || $esFundacion): ?>
                                     <button class="btn btn-sm btn-danger btn-eliminar-mascota" data-id="<?php echo $mascota['id_mascota']; ?>">
                                         <i class="uil uil-trash"></i>
                                     </button>
                                 <?php endif; ?>
                             </td>
                         </tr>
-                    <?php endforeach; ?>
-                <?php else: ?>
-                    <tr>
-                        <td colspan="11" class="text-center">No hay mascotas registradas</td>
-                    </tr>
-                <?php endif; ?>
+                    <?php
+                    } 
+                    } else {
+                    ?>
+                        <tr>
+                            <td colspan="9" class="text-center">No hay mascotas registradas</td>
+                        </tr>
+                    <?php
+                }
+            ?>
             </tbody>
         </table>
     </div>
@@ -143,7 +164,7 @@ $nit_sesion = $_SESSION['user']['nit_fundacion'] ?? null;
                             <?php if (!empty($tipos) && is_array($tipos)): ?>
                                 <?php foreach ($tipos as $tipo): ?>
                                     <option value="<?= $tipo['id_tipo_mascota'] ?>">
-                                        <?= $tipo['especie'] ?> - <?= $tipo['raza'] ?> - <?= $tipo['tamaño'] ?> - <?= $tipo['tipo_pelaje'] ?>
+                                        <?= $tipo['especie'] ?>
                                     </option>
                                 <?php endforeach; ?>
                             <?php else: ?>
@@ -163,26 +184,12 @@ $nit_sesion = $_SESSION['user']['nit_fundacion'] ?? null;
                         </select>
                     </div>
 
-                    <?php if ($esAdmin): ?>
-                        <div class="mb-2">
-                            <label>NIT Fundación:</label>
-                            <input list="nits_fundacion" name="nit_fundacion" class="form-control" required>
-                            <datalist id="nits_fundacion">
-                                <?php foreach ($nits as $nit): ?>
-                                    <option value="<?= $nit['nit_fundacion'] ?>">
-                                    <?php endforeach; ?>
-                            </datalist>
-                        </div>
-                    <?php elseif ($esFundacion): ?>
-                        <input type="hidden" name="nit_fundacion" value="<?= $nit_sesion ?>">
-                    <?php endif; ?>
+                    <input type="hidden" name="nit_fundacion" value="<?php echo htmlspecialchars($nit_fundacion); ?>">
 
-                </div>
-
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="submit" class="btn btn-primary">Guardar</button>
-                </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-primary">Guardar</button>
+                    </div>
             </form>
         </div>
     </div>

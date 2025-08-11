@@ -1,5 +1,6 @@
 <?php
-require_once("../../Model/causa/CausaModel.php");
+require_once __DIR__ . '/../../vendor/autoload.php';
+use App\Model\Causa\Causa;
 
 $Modelo = new Causa();
 
@@ -31,7 +32,7 @@ if (!$causa || empty($causa)) {
     <!-- Contenedor principal de Bootstrap -->
     <div class="container crud-container main-content" style="padding: 40px; max-width: 600px;">
         <!-- Formulario con clases de Bootstrap -->
-        <form id="form-editar-causa" method="POST" enctype="multipart/form-data" action="../../controller/causa/CausaController.php" class="card p-4 shadow-sm border-0 rounded-4 bg-white">
+        <form id="form-editar-causa" method="POST" enctype="multipart/form-data" class="card p-4 shadow-sm border-0 rounded-4 bg-white">
             <input type="hidden" name="accion" value="editar">
             <input type="hidden" name="id_causa" value="<?= htmlspecialchars($causa['id_causa']); ?>">
             <div class="mb-3">
@@ -48,11 +49,18 @@ if (!$causa || empty($causa)) {
             </div>
             <div class="mb-3">
                 <label for="meta" class="form-label">Meta</label>
-                <input type="text" class="form-control" id="meta" name="meta" value="<?= htmlspecialchars($causa['meta']); ?>" required>
+                <input type="text" class="form-control" id="meta" name="meta" value="<?= htmlspecialchars($causa['meta']); ?>" required readonly>
+                <small class="text-muted">La meta no se puede modificar</small>
             </div>
             <div class="mb-3">
                 <label for="estado_causa" class="form-label">Estado de causa</label>
-                <input type="text" class="form-control" id="estado_causa" name="estado_causa" value="<?= htmlspecialchars($causa['estado_causa']); ?>" required>
+                <select class="form-select" id="estado_causa" name="estado_causa" required>
+                    <option value="">Selecciona estado</option>
+                    <option value="activa">Activa</option>
+                    <option value="en pausa">En pausa</option>
+                    <option value="cumplida">Cumplida</option>
+                    <option value="cancelada">Cancelada</option>
+                </select>
             </div>
             <div class="mb-3">
                 <label for="fecha_creacion" class="form-label">Fecha de creación</label>
@@ -60,24 +68,35 @@ if (!$causa || empty($causa)) {
             </div>
             <div class="mb-3">
                 <label for="nit_fundacion" class="form-label">NIT Fundacion</label>
-                <input type="text" class="form-control" id="nit_fundacion" name="nit_fundacion" value="<?= htmlspecialchars($causa['nit_fundacion']); ?>" required>
+                <input type="text" class="form-control" id="nit_fundacion" name="nit_fundacion" value="<?= htmlspecialchars($causa['nit_fundacion']); ?>" required readonly>
+                <small class="text-muted">El NIT no se puede modificar</small>
             </div>
-            <div class="mb-3">
-                <label for="imagen_url" class="form-label">Imagen actual</label><br>
-                <?php if (!empty($causa['imagen_url'])): ?>
-                    <img src="../../Public/images/eventos_fundacion/<?= htmlspecialchars($causa['imagen_url']); ?>" alt="Imagen" class="img-thumbnail" style="max-width: 100px;">
-                <?php else: ?>
-                    Sin imagen
-                <?php endif; ?>
-                <input type="file" class="form-control mt-2" id="imagen" name="imagen">
-                <input type="hidden" name="imagen_url" value="<?= htmlspecialchars($causa['imagen_url']); ?>">
+            <div class="col-lg-6 mt-5 mt-lg-0 align-items-center justify-content-center d-flex">
+                <figure class="causa-img-container text-center">
+                    <?php
+                    $nombreImagen = !empty($causa['imagen_url']) ? $causa['imagen_url'] : 'default.jpg';
+                    $rutaImagen = "/petsconnectMVC/Public/images/causa/" . htmlspecialchars($nombreImagen);
+                    ?>
+                    <img id="preview-imagen"
+                        src="<?= $rutaImagen ?>"
+                        alt="Foto de perfil"
+                        style="object-fit: cover; max-height: 60vh;"
+                        class="img-fluid perfil-img-preview">
+
+                    <div class="mt-3">
+                        <label for="input-imagen" class="form-label">Actualizar imagen</label>
+                        <input type="file" name="imagen" id="input-imagen" class="form-control" accept="image/*">
+                    </div>
+                </figure>
             </div>
             <div class="mb-3">
                 <label for="tipo_causa" class="form-label">Tipo de causa</label>
-                <input type="text" class="form-control" id="tipo_causa" name="tipo_causa" value="<?= htmlspecialchars($causa['tipo_causa']); ?>" required>
+                <input type="text" class="form-control" id="tipo_causa" name="tipo_causa" value="<?= htmlspecialchars($causa['tipo_causa']); ?>" required readonly>
+                <small class="text-muted">El tipo de causa no se puede modificar</small>
             </div>
             <div class="d-flex justify-content-end gap-2">
-                <a href="CausaView.php" class="btn btn-secondary">Cancelar</a>
+                <!-- Enlace para regresar -->
+                <button type="button" class="btn btn-secondary ms-2" data-bs-dismiss="modal" aria-label="Close">← Volver a la lista</button>
                 <button type="submit" class="btn btn-primary">Actualizar</button>
             </div>
         </form>

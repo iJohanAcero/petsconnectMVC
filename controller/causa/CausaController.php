@@ -1,7 +1,9 @@
 <?php
+
 namespace App\controller\causa;
 
 require_once __DIR__ . '/../../vendor/autoload.php';
+
 use App\Model\Causa\Causa;
 
 if (session_status() === PHP_SESSION_NONE) {
@@ -60,7 +62,10 @@ class CausaController
         $estado_causa = $_POST['estado_causa'] ?? '';
         $nit_fundacion = $_POST['nit_fundacion'] ?? '';
         $tipo_causa = $_POST['tipo_causa'] ?? '';
-        $imagen_url = $_POST['imagen_url'] ?? null;
+
+        // Obtener la causa actual para conservar la imagen existente
+        $causaActual = $this->modeloCausa->getId($id_causa);
+        $imagen_url = $causaActual['imagen_url']; // Mantener la imagen actual por defecto
 
         // Procesar nueva imagen si se sube
         if (isset($_FILES['imagen']) && $_FILES['imagen']['error'] === UPLOAD_ERR_OK) {
@@ -68,6 +73,13 @@ class CausaController
             $rutaDestino = __DIR__ . '/../../Public/images/causa/' . $nombreImagen;
             if (move_uploaded_file($_FILES['imagen']['tmp_name'], $rutaDestino)) {
                 $imagen_url = $nombreImagen;
+                // Opcional: eliminar la imagen anterior si existe
+                if (!empty($causaActual['imagen_url'])) {
+                    $imagenAnterior = __DIR__ . '/../../Public/images/causa/' . $causaActual['imagen_url'];
+                    if (file_exists($imagenAnterior)) {
+                        unlink($imagenAnterior);
+                    }
+                }
             }
         }
 

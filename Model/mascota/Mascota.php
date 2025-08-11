@@ -1,9 +1,11 @@
 <?php
 // Requiere la conexión a la base de datos
 namespace App\Model\Mascota;
+
 use App\Model\Conexion;
 use PDO;
 use PDOException;
+use Exception;
 
 class Mascota
 {
@@ -14,61 +16,51 @@ class Mascota
         $this->db = (new Conexion())->getConexion();
     }
 
-    // 🟢 Agregar nueva mascota usando PROCEDIMIENTO ALMACENADO
+    // 🟢 Agregar nueva mascota 
     public function add($id_mascota, $nombre, $edad_meses, $sexo, $imagen, $id_tipo_mascota, $nit_fundacion, $id_estado_adopcion)
     {
-        try {
-            $sql = "CALL sp_insertar_mascota(:id_mascota, :nombre, :edad_meses, :sexo, :imagen, :id_tipo_mascota, :nit_fundacion, :id_estado_adopcion)";
-            $stmt = $this->db->prepare($sql);
+        $statement = $this->db->prepare("INSERT INTO t_mascota
+            (id_mascota, nombre, edad_meses, sexo, imagen, id_tipo_mascota, nit_fundacion, id_estado_adopcion)
+            VALUES (:id_mascota, :nombre, :edad_meses, :sexo, :imagen, :id_tipo_mascota, :nit_fundacion, :id_estado_adopcion)");
 
-            $stmt->bindParam(':id_mascota', $id_mascota);
-            $stmt->bindParam(':nombre', $nombre);
-            $stmt->bindParam(':edad_meses', $edad_meses);
-            $stmt->bindParam(':sexo', $sexo);
-            $stmt->bindParam(':imagen', $imagen);
-            $stmt->bindParam(':id_tipo_mascota', $id_tipo_mascota);
-            $stmt->bindParam(':nit_fundacion', $nit_fundacion);
-            $stmt->bindParam(':id_estado_adopcion', $id_estado_adopcion);
+        $statement->bindParam(':id_mascota', $id_mascota);
+        $statement->bindParam(':nombre', $nombre);
+        $statement->bindParam(':edad_meses', $edad_meses);
+        $statement->bindParam(':sexo', $sexo);
+        $statement->bindParam(':imagen', $imagen);
+        $statement->bindParam(':id_tipo_mascota', $id_tipo_mascota);
+        $statement->bindParam(':nit_fundacion', $nit_fundacion);
+        $statement->bindParam(':id_estado_adopcion', $id_estado_adopcion);
 
-            return $stmt->execute();
-        } catch (PDOException $e) {
-            return false;
-        }
+        // ❌ Ya NO se redirige, solo se devuelve true/false
+        return $statement->execute();
     }
 
     // 🟡 Obtener todas las mascotas con JOINs para mostrar datos legibles
-    public function getMascotas()
-    {
-        $rows = null;
-
-        $sql = "SELECT 
-                    m.id_mascota,
-                    m.nombre,
-                    m.edad_meses,
-                    m.sexo,
-                    m.imagen,
-                    m.nit_fundacion,
-                    
-                    tm.especie,
-                    tm.raza,
-                    tm.tamaño,
-                    tm.tipo_pelaje,
-
-                    ea.tipo_estado
-
-                FROM t_mascota m
-                INNER JOIN t_tipo_mascota tm ON m.id_tipo_mascota = tm.id_tipo_mascota
-                INNER JOIN t_estado_adopcion ea ON m.id_estado_adopcion = ea.id_estado_adopcion";
-
-        $stmt = $this->db->prepare($sql);
-        $stmt->execute();
-
-        while ($resultado = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            $rows[] = $resultado;
-        }
-
-        return $rows;
-    }
+    public function getMascota()
+{
+    $sql = "SELECT 
+                m.id_mascota,
+                m.nombre,
+                m.edad_meses,
+                m.sexo,
+                m.imagen,
+                m.nit_fundacion,
+                m.id_tipo_mascota,
+                m.id_estado_adopcion,
+                tm.especie,
+                ea.tipo_estado
+            FROM t_mascota m
+            LEFT JOIN t_tipo_mascota tm ON m.id_tipo_mascota = tm.id_tipo_mascota
+            LEFT JOIN t_estado_adopcion ea ON m.id_estado_adopcion = ea.id_estado_adopcion";
+    
+    error_log("Consulta SQL ejecutada: " . $sql);  // Para depuración
+    
+    $stmt = $this->db->prepare($sql);
+    $stmt->execute();
+    
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
 
     // 🟠 Obtener mascota por ID
     public function getId($id)
@@ -77,7 +69,7 @@ class Mascota
 
         $sql = "SELECT 
                     m.*, 
-                    tm.especie, tm.raza, tm.tamaño, tm.tipo_pelaje,
+                    tm.especie,
                     ea.tipo_estado
                 FROM t_mascota m
                 INNER JOIN t_tipo_mascota tm ON m.id_tipo_mascota = tm.id_tipo_mascota
@@ -98,27 +90,26 @@ class Mascota
     // 🔵 Actualizar mascota
     public function update($id_mascota, $nombre, $edad_meses, $sexo, $imagen, $id_tipo_mascota, $id_estado_adopcion)
     {
-        $sql = "UPDATE t_mascota 
-                SET nombre = :nombre,
-                    edad_meses = :edad_meses,
-                    sexo = :sexo,
-                    imagen = :imagen,
-                    id_tipo_mascota = :id_tipo_mascota,
-                    id_estado_adopcion = :id_estado_adopcion
-                WHERE id_mascota = :id_mascota";
+        $statement = $this->db->prepare("UPDATE t_mascota SET
+        nombre = :nombre,
+        edad_meses = :edad_meses,
+        sexo = :sexo,
+        imagen = :imagen,
+        id_tipo_mascota = :id_tipo_mascota,
+        id_estado_adopcion = :id_estado_adopcion
+        WHERE id_mascota = :id_mascota");
 
-        $stmt = $this->db->prepare($sql);
+        $statement->bindParam(':id_mascota', $id_mascota);
+        $statement->bindParam(':nombre', $nombre);
+        $statement->bindParam(':edad_meses', $edad_meses);
+        $statement->bindParam(':sexo', $sexo);
+        $statement->bindParam(':imagen', $imagen);
+        $statement->bindParam(':id_tipo_mascota', $id_tipo_mascota);
+        $statement->bindParam(':id_estado_adopcion', $id_estado_adopcion);
 
-        $stmt->bindParam(':id_mascota', $id_mascota);
-        $stmt->bindParam(':nombre', $nombre);
-        $stmt->bindParam(':edad_meses', $edad_meses);
-        $stmt->bindParam(':sexo', $sexo);
-        $stmt->bindParam(':imagen', $imagen);
-        $stmt->bindParam(':id_tipo_mascota', $id_tipo_mascota);
-        $stmt->bindParam(':id_estado_adopcion', $id_estado_adopcion);
-
-        return $stmt->execute();
+        return $statement->execute();
     }
+
 
     // 🔴 Eliminar mascota 
     public function delete($id_mascota)
@@ -142,6 +133,28 @@ class Mascota
 
         return $rows;
     }
+
+
+    public function getMascotasPorFundacion($nit_fundacion)
+{
+    $sql = "SELECT 
+                m.id_mascota,
+                m.nombre,
+                m.edad_meses,
+                m.sexo,
+                m.imagen,
+                m.nit_fundacion,
+                tm.especie,
+                ea.tipo_estado
+            FROM t_mascota m
+            LEFT JOIN t_tipo_mascota tm ON m.id_tipo_mascota = tm.id_tipo_mascota
+            LEFT JOIN t_estado_adopcion ea ON m.id_estado_adopcion = ea.id_estado_adopcion
+            WHERE m.nit_fundacion = :nit";
+    $statement = $this->db->prepare($sql);
+    $statement->bindParam(':nit', $nit_fundacion, PDO::PARAM_STR);
+    $statement->execute();
+    return $statement->fetchAll(PDO::FETCH_ASSOC);
+}
 
     // 🟤 Obtener todos los estados de adopción (para el select)
     public function getEstadosAdopcion()

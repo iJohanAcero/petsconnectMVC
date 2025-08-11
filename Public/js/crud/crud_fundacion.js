@@ -61,14 +61,13 @@ function inicializarEventosFundacion() {
                     cargarCrudFundacion();
                 })
                 .catch(error => {
-                    console.error("❌ Error:", error);
+                    console.error("Error:", error);
                 });
         };
     }
 
     // ✏️ BOTONES DE EDITAR
     const botonesEditar = document.querySelectorAll(".btn-editar-fundacion");
-
     botonesEditar.forEach(boton => {
         boton.addEventListener("click", function () {
             const nit = this.dataset.id;

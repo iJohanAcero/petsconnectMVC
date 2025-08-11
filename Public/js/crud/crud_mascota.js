@@ -1,28 +1,38 @@
 // =========== CRUD DE MASCOTAS =========== //
-function cargarCrudMascotas() {
+
+window.cargarCrudMascotas = function () {
     fetch("view/mascota/MascotaView.php")
-        .then(response => response.text())
+        .then(response => {
+            if (!response.ok) throw new Error("Error en la red");
+            return response.text();
+        })
         .then(data => {
-            const mainContainer = document.getElementById("main-content") ||
-                document.getElementById("crud-container");
+            const mainContainer = document.getElementById("main-content");
 
             if (mainContainer) {
                 mainContainer.innerHTML = data;
-                inicializarEventosMascotas();
-            } else {
-                console.error("❌ No se encontró el contenedor principal para el CRUD de mascotas");
+
+                setTimeout(() => {
+                    inicializarEventosMascotas();
+                }, 100);
             }
         })
-        .catch(error => console.error("Error al cargar MascotaView.php:", error));
-}
-window.cargarCrudMascotas = cargarCrudMascotas;
-document
+        .catch(error => {
+            console.error("❌ Error al cargar PHP:", error);
+        });
+};
+
+// ===================== MODAL DE REGISTRO ===================== //
 function abrirModalCrearMascota() {
     const modalElement = document.getElementById("modal-mascotas");
-    const modalBootstrap = new bootstrap.Modal(modalElement);
-    modalBootstrap.show();
+    if (modalElement) {
+        const modalBootstrap = new bootstrap.Modal(modalElement);
+        modalBootstrap.show();
+    }
 }
 
+
+// ===================== EVENTOS DEL CRUD ===================== //
 function inicializarEventosMascotas() {
     // Botón para abrir modal
     const btnAbrirModal = document.getElementById("btn-abrir-modal-mascota");
@@ -111,7 +121,7 @@ function inicializarEventosMascotas() {
             if (confirm("¿Estás seguro de que deseas eliminar esta mascota?")) {
                 const formData = new FormData();
                 formData.append('accion', 'eliminar');
-                formData.append('id', idMascota);
+                formData.append('id_mascota', idMascota);
 
                 fetch(`${window.BASE_URL}/controller/Mascota/MascotaController.php`, {
                     method: "POST",

@@ -67,10 +67,12 @@ function inicializarCausa() {
 
     // ✅ BOTONES EDITAR
     const botonesEditar = document.querySelectorAll(".btn-editar-causa");
+
     botonesEditar.forEach(btn => {
         btn.addEventListener("click", function () {
             const idCausa = this.dataset.id;
-            fetch(`view/causa/CausaEdit.php?id=${idCausa}`)
+
+            fetch(`view/causa/CausaEdit.php?id=${encodeURIComponent(idCausa)}`)
                 .then(response => {
                     if (!response.ok) throw new Error("No se pudo cargar el formulario de edición");
                     return response.text();
@@ -80,6 +82,22 @@ function inicializarCausa() {
                     const modalElement = document.getElementById("modal-editar-causa");
                     const modal = new bootstrap.Modal(modalElement);
                     modal.show();
+
+                    const inputImagen = document.getElementById("input-imagen");
+const previewImagen = document.getElementById("preview-imagen");
+
+if (inputImagen && previewImagen) {
+    inputImagen.addEventListener("change", function () {
+        const archivo = this.files[0];
+        if (archivo) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                previewImagen.src = e.target.result;
+            };
+            reader.readAsDataURL(archivo);
+        }
+    });
+}
 
                     const formEditar = document.getElementById("form-editar-causa");
                     if (formEditar) {
@@ -149,4 +167,3 @@ document.addEventListener("DOMContentLoaded", function () {
 // Solo si estás usando type="module"
 window.cargarCrudCausa = cargarCrudCausa;
 
-console.log("📢 Función cargarCrudCausa:", typeof cargarCrudCausa);
