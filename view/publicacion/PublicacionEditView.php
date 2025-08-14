@@ -56,10 +56,10 @@ $publicacion = $publicacion[0]; // Tomamos el primer registro si viene en forma 
         <div class="col-md-12 text-center">
             <figure class="publicacion-img-container">
                 <?php
-                $nombreImagen = !empty($publicacion['imagen_url']) ? $publicacion['imagen_url'] : 'default.jpg';
-                $rutaImagen = "/petsconnectMVC/Public/images/publicaciones/" . htmlspecialchars($nombreImagen);
+                $nombreImagen = !empty($publicacion['imagen']) ? $publicacion['imagen'] : 'no-image.png';
+                $rutaImagen = "/petsconnectMVC/Public/images/eventos_fundacion/" . htmlspecialchars($nombreImagen);
                 ?>
-                <img id="preview-imagen-publicacion"
+                <img id="preview-imagen"
                     src="<?php echo $rutaImagen; ?>"
                     alt="Imagen de la publicación"
                     style="object-fit: cover; max-height: 300px;"
