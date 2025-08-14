@@ -23,35 +23,60 @@ if (!$publicacion || empty($publicacion)) {
 $publicacion = $publicacion[0]; // Tomamos el primer registro si viene en forma de arreglo
 ?>
 
-<body>
-    <!-- Contenedor principal de Bootstrap -->
-    <div class="container mt-1">
-        <!-- Formulario con clases de Bootstrap -->
-        <form id="form-editar-publicacion" method="POST" enctype="multipart/form-data" >
-            <input type="hidden" name="accion" value="editar">
-            <!-- Campo oculto para el ID  -->
-            <input type="hidden" name="id" value="<?= $publicacion['id_publicacion']; ?>">
+<form id="form-editar-publicacion" method="POST" enctype="multipart/form-data">
+    <input type="hidden" name="accion" value="editar">
+    <input type="hidden" name="id" value="<?php echo htmlspecialchars($publicacion['id_publicacion']); ?>">
 
+    <!-- Datos de la Publicación -->
+    <fieldset class="border p-3 mb-4 rounded">
+        <legend class="text-center text-secondary fw-semibold" style="text-decoration: underline;">
+            Editar Publicación
+        </legend>
 
-            <div class="mb-3">
-                <label class="form-label">Titulo</label>
-                <input type="text" name="titulo" class="form-control" value="<?= $publicacion['titulo']; ?>" required>
+        <div class="row">
+            <div class="col-md-12 mb-3">
+                <label for="titulo" class="form-label">Título <span class="text-danger">*</span></label>
+                <input type="text" class="form-control" id="titulo" name="titulo" 
+                    value="<?php echo htmlspecialchars($publicacion['titulo']); ?>" required>
             </div>
+        </div>
 
-
-            <div class="mb-3">
-                <label class="form-label">Contenido</label>
-                <input type="text" name="contenido" class="form-control" value="<?= $publicacion['contenido']; ?>" required>
+        <div class="row">
+            <div class="col-md-12 mb-3">
+                <label for="contenido" class="form-label">Contenido <span class="text-danger">*</span></label>
+                <textarea class="form-control" id="contenido" name="contenido" rows="4" required><?php 
+                    echo htmlspecialchars($publicacion['contenido']); 
+                ?></textarea>
             </div>
+        </div>
+    </fieldset>
 
-            <input type="hidden" name="accion" value="editar">
-
-            <!-- Botón de acción -->
-            <button type="submit" class="btn btn-primary">Actualizar</button>
-
-            <!-- Enlace para regresar -->
-            <button type="button" class="btn btn-secondary ms-2" data-bs-dismiss="modal" aria-label="Close">← Volver a la lista</button>
-        </form>
+    <!-- Vista previa de la imagen -->
+    <div class="row mb-4">
+        <div class="col-md-12 text-center">
+            <figure class="publicacion-img-container">
+                <?php
+                $nombreImagen = !empty($publicacion['imagen_url']) ? $publicacion['imagen_url'] : 'default.jpg';
+                $rutaImagen = "/petsconnectMVC/Public/images/publicaciones/" . htmlspecialchars($nombreImagen);
+                ?>
+                <img id="preview-imagen-publicacion"
+                    src="<?php echo $rutaImagen; ?>"
+                    alt="Imagen de la publicación"
+                    style="object-fit: cover; max-height: 300px;"
+                    class="img-fluid rounded shadow-sm">
+                <figcaption class="mt-2 text-muted">Vista previa de la imagen actual</figcaption>
+            </figure>
+        </div>
     </div>
-</body>
+
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+            <i class="bi bi-arrow-left"></i> Volver a la lista
+        </button>
+        <button type="submit" class="btn btn-primary">
+            <i class="bi bi-save"></i> Actualizar Publicación
+        </button>
+    </div>
+</form>
+
 

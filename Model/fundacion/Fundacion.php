@@ -1,6 +1,9 @@
 <?php
+
 namespace App\Model\Fundacion;
+
 use App\Model\Conexion;
+use PDOException;
 use PDO;
 
 class Fundacion
@@ -94,13 +97,14 @@ class Fundacion
         return $rows;
     }
 
-public static function obtenerNitPorUsuario($id_usuario) {
-    $db = new PDO("mysql:host=localhost;dbname=petsconnect", "root", ""); // Ajusta usuario/contraseña si es necesario
-    $stmt = $db->prepare("SELECT nit_fundacion FROM t_fundacion WHERE id_usuario = ?");
-    $stmt->execute([$id_usuario]);
-    $row = $stmt->fetch(PDO::FETCH_ASSOC);
-    return $row ? $row["nit_fundacion"] : null;
-}
+    public static function obtenerNitPorUsuario($id_usuario)
+    {
+        $db = new PDO("mysql:host=localhost;dbname=petsconnect", "root", ""); // Ajusta usuario/contraseña si es necesario
+        $stmt = $db->prepare("SELECT nit_fundacion FROM t_fundacion WHERE id_usuario = ?");
+        $stmt->execute([$id_usuario]);
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $row ? $row["nit_fundacion"] : null;
+    }
     // ACTUALIZAR FUNDACIÓN - CORREGIDO (cambié los parámetros y consulta)
     public function updateFundacion($nit, $nombre, $apellido, $email, $direccion, $telefono)
     {
@@ -134,25 +138,67 @@ public static function obtenerNitPorUsuario($id_usuario) {
     }
 
     // Eliminar fundación (dejé igual porque funciona bien)
-    public function delete($nit)
+    public function tieneMascotasAsociadas($nit)
     {
-        $stmt = $this->db->prepare("SELECT id_usuario FROM t_fundacion WHERE nit_fundacion = :nit");
+        $stmt = $this->db->prepare("SELECT COUNT(*) as total FROM t_mascota WHERE nit_fundacion = :nit");
         $stmt->bindParam(':nit', $nit);
         $stmt->execute();
-        $usuario = $stmt->fetch();
+        $resultado = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        if (!$usuario) return false;
-        $id_usuario = $usuario['id_usuario'];
+        return $resultado['total'] > 0;
+    }
 
-        $stmt = $this->db->prepare("DELETE FROM t_fundacion WHERE nit_fundacion = :nit");
+    // Obtener mascotas asociadas a una fundación
+    public function getMascotasAsociadas($nit)
+    {
+        $stmt = $this->db->prepare("SELECT * FROM t_mascota WHERE nit_fundacion = :nit");
         $stmt->bindParam(':nit', $nit);
-        $result1 = $stmt->execute();
+        $stmt->execute();
 
-        $stmt = $this->db->prepare("DELETE FROM t_usuario WHERE id_usuario = :id_usuario");
-        $stmt->bindParam(':id_usuario', $id_usuario);
-        $result2 = $stmt->execute();
+        $mascotas = [];
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $mascotas[] = $row;
+        }
 
-        return $result1 && $result2;
+        return $mascotas;
+    }
+
+    public function delete($nit)
+    {
+        try {
+            // Verificar si tiene mascotas asociadas
+            if ($this->tieneMascotasAsociadas($nit)) {
+                // Retornar un código específico para este error
+                return 'mascotas_asociadas';
+            }
+
+            // Obtener el id_usuario asociado
+            $stmt = $this->db->prepare("SELECT id_usuario FROM t_fundacion WHERE nit_fundacion = :nit");
+            $stmt->bindParam(':nit', $nit);
+            $stmt->execute();
+            $usuario = $stmt->fetch();
+
+            if (!$usuario) return false;
+            $id_usuario = $usuario['id_usuario'];
+
+            // Eliminar fundación primero
+            $stmt = $this->db->prepare("DELETE FROM t_fundacion WHERE nit_fundacion = :nit");
+            $stmt->bindParam(':nit', $nit);
+            $result1 = $stmt->execute();
+
+            // Eliminar usuario después
+            $stmt = $this->db->prepare("DELETE FROM t_usuario WHERE id_usuario = :id_usuario");
+            $stmt->bindParam(':id_usuario', $id_usuario);
+            $result2 = $stmt->execute();
+
+            return $result1 && $result2;
+        } catch (PDOException $e) {
+            // Si hay un error de integridad referencial
+            if ($e->getCode() == '23000') {
+                return 'constraint_error';
+            }
+            return false;
+        }
     }
 
     public function getNitsFundacion()

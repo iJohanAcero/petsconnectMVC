@@ -203,7 +203,7 @@ $perfil = $perfil->getPerfilPorUsuario($id);
                             <a href="#" class="sidebar-link" id="btn-cargar-causa">✔ Mis Causas</a>
                         </li>
                         <li class="sidebar-item">
-                            <a href="#" class="sidebar-link" id="btn-cargar-mascotas">✔ Mis Mascotas</a>
+                            <a href="#" class="sidebar-link" id="btn-cargar-mascota">✔ Mis Mascotas</a>
                         </li>
                     </ul>
                 </li>

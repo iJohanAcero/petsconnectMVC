@@ -180,12 +180,7 @@ if (!isset($_SESSION["user"]) || $_SESSION["tipo_usuario"] !== "admin") {
                             </a>
                             <ul id="crud-2" class="sidebar-dropdown list-unstyled collapse">
                                 <li class="sidebar-item">
-                                    <a href="" class="sidebar-link">
-                                        - Usuarios
-                                    </a>
-                                </li>
-                                <li class="sidebar-item">
-                                    <a href="" class="sidebar-link">
+                                    <a href="#" class="sidebar-link" id="btn-cargar-guardianes">
                                         - Guardianes
                                     </a>
                                 </li>
@@ -202,7 +197,7 @@ if (!isset($_SESSION["user"]) || $_SESSION["tipo_usuario"] !== "admin") {
                             </a>
                             <ul id="crud-3" class="sidebar-dropdown list-unstyled collapse">
                                 <li class="sidebar-item">
-                                    <a href="#" class="sidebar-link" id="btn-cargar-mascotas">
+                                    <a href="#" class="sidebar-link" id="btn-cargar-mascota">
                                         - Mascotas
                                     </a>
                                 </li>
@@ -284,6 +279,7 @@ if (!isset($_SESSION["user"]) || $_SESSION["tipo_usuario"] !== "admin") {
     <script src="<?=Config::get('JS_URL') ?>/crud/crud_publicacion.js"></script>
     <script src="<?=Config::get('JS_URL') ?>/routes/routes.js"></script>
     <script src="<?=Config::get('JS_URL') ?>/crud/crud_mascota.js"></script>
+    <script src="<?=Config::get('JS_URL') ?>/crud/crud_guardian.js"></script>
 
     <script>
         let page = 1;

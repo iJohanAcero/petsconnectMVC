@@ -132,10 +132,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $accion = $_POST['accion'] ?? '';
     $controller = new MascotaController();
 
-    if ($accion === 'editar') {
-        $controller->editar();
-    } elseif ($accion === 'registrar') {
+    if ($accion === 'registrar') {
         $controller->registrar();
+    } elseif ($accion === 'editar') {
+        $controller->editar();
     } elseif ($accion === 'eliminar') {
         $controller->eliminar();
     }

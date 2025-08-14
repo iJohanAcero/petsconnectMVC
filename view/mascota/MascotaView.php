@@ -41,7 +41,7 @@ if (isset($_SESSION["user"]["id_usuario"])) {
         <?php endif; ?>
     </div>
 
-    
+
 
     <div class="table-responsive">
         <table class="table table-striped table-hover table-bordered text-center" id="tabla_mascotas">
@@ -87,36 +87,31 @@ if (isset($_SESSION["user"]["id_usuario"])) {
                                 <?php endif; ?>
                             </td>
                             <td>
-                                <?php if ($esAdmin || $esFundacion): ?>
-                                    <button class="btn btn-sm btn-warning btn-editar-mascota" data-id="<?= $mascota['id_mascota'] ?>">
-                                        <i class="uil uil-pen"></i>
-                                    </button>
-                                <?php endif; ?>
-
-                                <?php if ($esAdmin || $esFundacion): ?>
-                                    <button class="btn btn-sm btn-danger btn-eliminar-mascota" data-id="<?php echo $mascota['id_mascota']; ?>">
-                                        <i class="uil uil-trash"></i>
-                                    </button>
-                                <?php endif; ?>
+                                <button class="btn btn-sm btn-warning btn-editar-mascota" data-id="<?php echo $mascota['id_mascota']; ?>">
+                                    <i class="uil uil-pen"></i>
+                                </button>
+                                <button class="btn btn-sm btn-danger btn-eliminar-mascota" data-id="<?php echo $mascota['id_mascota']; ?>">
+                                    <i class="uil uil-trash"></i>
+                                </button>
                             </td>
                         </tr>
                     <?php
-                    } 
-                    } else {
+                    }
+                } else {
                     ?>
-                        <tr>
-                            <td colspan="9" class="text-center">No hay mascotas registradas</td>
-                        </tr>
-                    <?php
+                    <tr>
+                        <td colspan="9" class="text-center">No hay mascotas registradas</td>
+                    </tr>
+                <?php
                 }
-            ?>
+                ?>
             </tbody>
         </table>
     </div>
 </div>
 
 <!-- Modal Registrar Mascota -->
-<div class="modal fade" id="modal-mascotas" tabindex="-1">
+<div class="modal fade" id="modal-mascota" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered" style="margin-top: 70px;">
         <div class="modal-content">
             <form id="form-registrar-mascota" method="post" enctype="multipart/form-data">
@@ -196,14 +191,16 @@ if (isset($_SESSION["user"]["id_usuario"])) {
 </div>
 
 <!-- Modal Editar (Contenido por JS) -->
-<div class="modal fade" id="modal-editar-mascota" tabindex="-1">
+<div class="modal fade" id="modal-editar-mascota" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
-            <div class="modal-header" style="background-color: #fdaac4;">
-                <h5 class="modal-title">Editar Mascota</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            <div class="modal-header">
+                <h5 class="modal-title">Editar mascota</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body" id="contenido-editar-mascota"></div>
+            <div class="modal-body" id="contenido-editar">
+                <!-- Se carga dinámicamente con JS -->
+            </div>
         </div>
     </div>
 </div>

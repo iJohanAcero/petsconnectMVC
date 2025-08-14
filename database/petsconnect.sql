@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 11-08-2025 a las 05:38:07
+-- Tiempo de generación: 14-08-2025 a las 01:48:04
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -112,71 +112,6 @@ VALUES (p_id_usuario, v_id_registro, v_id_perfil);
 
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_insertar_mascota` (IN `p_id_mascota` VARCHAR(50), IN `p_nombre` VARCHAR(100), IN `p_edad_meses` INT, IN `p_sexo` VARCHAR(10), IN `p_imagen` VARCHAR(255), IN `p_id_tipo_mascota` INT, IN `p_nit_fundacion` VARCHAR(20), IN `p_id_estado_adopcion` INT)   BEGIN
-    DECLARE tipo_existe INT DEFAULT 0;
-    DECLARE fundacion_existe INT DEFAULT 0;
-    DECLARE id_duplicado INT DEFAULT 0;
-    
-    -- 1. Validar ID duplicado
-    SELECT COUNT(*) INTO id_duplicado FROM t_mascota WHERE id_mascota = p_id_mascota;
-    IF id_duplicado > 0 THEN
-        SIGNAL SQLSTATE '45000' 
-        SET MESSAGE_TEXT = 'ERROR: El ID de mascota ya existe';
-    END IF;
-    
-    -- 2. Validar tipo de mascota
-    SELECT COUNT(*) INTO tipo_existe FROM t_tipo_mascota WHERE id_tipo_mascota = p_id_tipo_mascota;
-    IF tipo_existe = 0 THEN
-        SIGNAL SQLSTATE '45000' 
-        SET MESSAGE_TEXT = 'ERROR: El tipo de mascota no existe';
-    END IF;
-    
-    -- 3. Validar fundación
-    SELECT COUNT(*) INTO fundacion_existe FROM t_fundacion WHERE nit_fundacion = p_nit_fundacion;
-    IF fundacion_existe = 0 THEN
-        SIGNAL SQLSTATE '45000' 
-        SET MESSAGE_TEXT = 'ERROR: La fundación no existe';
-    END IF;
-    
-    -- 4. Validar edad mínima
-    IF p_edad_meses < 1 THEN
-        SIGNAL SQLSTATE '45000' 
-        SET MESSAGE_TEXT = 'ERROR: La edad debe ser al menos 1 mes';
-    END IF;
-    
-    -- 5. Validar sexo
-    IF p_sexo NOT IN ('macho', 'hembra') THEN
-        SIGNAL SQLSTATE '45000' 
-        SET MESSAGE_TEXT = 'ERROR: Sexo debe ser "macho" o "hembra"';
-    END IF;
-    
-    -- 6. Insertar registro
-    INSERT INTO t_mascota (
-        id_mascota,
-        nombre,
-        edad_meses,
-        sexo,
-        imagen,
-        id_tipo_mascota,
-        nit_fundacion,
-        id_estado_adopcion,
-        fecha_registro
-    ) VALUES (
-        p_id_mascota,
-        p_nombre,
-        p_edad_meses,
-        p_sexo,
-        p_imagen,
-        p_id_tipo_mascota,
-        p_nit_fundacion,
-        p_id_estado_adopcion,
-        NOW()
-    );
-    
-    -- 7. Retornar éxito
-    SELECT 'Éxito: Mascota registrada correctamente' AS resultado;
-END$$
-
 DELIMITER ;
 
 -- --------------------------------------------------------
@@ -197,21 +132,6 @@ CREATE TABLE `t_administrador` (
 
 INSERT INTO `t_administrador` (`n_documento`, `id_registro`, `id_usuario`) VALUES
 (1001, 23, 31);
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `t_calificacion`
---
-
-CREATE TABLE `t_calificacion` (
-  `id_calificacion` int(11) NOT NULL,
-  `puntaje` int(11) NOT NULL,
-  `comentario` varchar(100) DEFAULT NULL,
-  `fecha` date DEFAULT NULL,
-  `n_documento` int(11) NOT NULL,
-  `nit_fundacion` bigint(20) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -249,10 +169,9 @@ INSERT INTO `t_causa` (`id_causa`, `nombre`, `descripcion`, `meta`, `estado_caus
 CREATE TABLE `t_donacion` (
   `id_donacion` int(11) NOT NULL,
   `fecha` date DEFAULT NULL,
-  `cantidad` int(11) NOT NULL,
   `total_donacion` decimal(15,2) NOT NULL,
   `n_documento` int(11) NOT NULL,
-  `id_producto` int(11) NOT NULL,
+  `id_causa` int(11) NOT NULL,
   `nit_fundacion` bigint(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -351,13 +270,6 @@ CREATE TABLE `t_mascota` (
   `id_estado_adopcion` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Volcado de datos para la tabla `t_mascota`
---
-
-INSERT INTO `t_mascota` (`id_mascota`, `nombre`, `edad_meses`, `sexo`, `imagen`, `id_tipo_mascota`, `nit_fundacion`, `id_estado_adopcion`) VALUES
-(222, 'adad', 32, 'macho', '689924ab7ee7a_Collage_of_Six_Cats-02.jpg', 12, 11111, 1);
-
 -- --------------------------------------------------------
 
 --
@@ -402,21 +314,6 @@ CREATE TABLE `t_proceso_adopcion` (
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `t_producto`
---
-
-CREATE TABLE `t_producto` (
-  `id_producto` int(11) NOT NULL,
-  `nombre` varchar(100) NOT NULL,
-  `tipo_producto` varchar(100) NOT NULL,
-  `descripcion` varchar(100) NOT NULL,
-  `precio` decimal(15,2) NOT NULL,
-  `cantidad_disponible` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- --------------------------------------------------------
-
---
 -- Estructura de tabla para la tabla `t_publicacion`
 --
 
@@ -450,19 +347,6 @@ CREATE TABLE `t_recuperar_constrasena` (
   `fecha_solicitud` date NOT NULL,
   `fecha_expiracion` date NOT NULL,
   `id_usuario` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `t_red_social`
---
-
-CREATE TABLE `t_red_social` (
-  `id_red_social` int(11) NOT NULL,
-  `nombre` varchar(100) NOT NULL,
-  `url` varchar(100) NOT NULL,
-  `nit_fundacion` bigint(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -536,19 +420,6 @@ INSERT INTO `t_usuario` (`id_usuario`, `nombre`, `apellido`, `contrasena`, `emai
 (34, 'jon', 'doe', '$2y$10$43jhNAA48Ak3NJJpHso0KudWVlZt4o44XeA6vc/wR8HUHzdJLCTSG', 'jon@gmail.com', 'bogota', '1312321', NULL),
 (35, 'andres', 'miranda', '$2y$10$D3iTjQQmNbyUgK9IC2yh0.zN.XR8FN256ac4vQGta0yvXzbxtdLum', 'mirandass222@gmail.com', 'bogota', '1233121', NULL);
 
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `t_vacuna`
---
-
-CREATE TABLE `t_vacuna` (
-  `num_serie_vacuna` bigint(20) NOT NULL,
-  `nombre_vacuna` varchar(100) NOT NULL,
-  `fecha_vacunacion` date NOT NULL,
-  `direccion_veterinaria` varchar(100) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
 --
 -- Índices para tablas volcadas
 --
@@ -562,14 +433,6 @@ ALTER TABLE `t_administrador`
   ADD KEY `fk_id_usuario` (`id_usuario`);
 
 --
--- Indices de la tabla `t_calificacion`
---
-ALTER TABLE `t_calificacion`
-  ADD PRIMARY KEY (`id_calificacion`),
-  ADD KEY `fk_n_documento` (`n_documento`),
-  ADD KEY `fk_nit_fundacion` (`nit_fundacion`);
-
---
 -- Indices de la tabla `t_causa`
 --
 ALTER TABLE `t_causa`
@@ -580,8 +443,8 @@ ALTER TABLE `t_causa`
 --
 ALTER TABLE `t_donacion`
   ADD PRIMARY KEY (`id_donacion`),
+  ADD KEY `fk_dona_id_causa` (`id_causa`),
   ADD KEY `fk_dona_n_documento` (`n_documento`),
-  ADD KEY `fk_dona_id_producto` (`id_producto`),
   ADD KEY `fk_dona_nit_fundacion` (`nit_fundacion`);
 
 --
@@ -643,13 +506,6 @@ ALTER TABLE `t_proceso_adopcion`
   ADD KEY `fk_id_estado` (`id_estado`);
 
 --
--- Indices de la tabla `t_producto`
---
-ALTER TABLE `t_producto`
-  ADD PRIMARY KEY (`id_producto`),
-  ADD UNIQUE KEY `nombre` (`nombre`);
-
---
 -- Indices de la tabla `t_publicacion`
 --
 ALTER TABLE `t_publicacion`
@@ -662,13 +518,6 @@ ALTER TABLE `t_publicacion`
 ALTER TABLE `t_recuperar_constrasena`
   ADD PRIMARY KEY (`id_recuperacion`),
   ADD KEY `fk_recuperar_usuario` (`id_usuario`);
-
---
--- Indices de la tabla `t_red_social`
---
-ALTER TABLE `t_red_social`
-  ADD PRIMARY KEY (`id_red_social`),
-  ADD KEY `fk_red_nit_fundacion` (`nit_fundacion`);
 
 --
 -- Indices de la tabla `t_registro`
@@ -690,20 +539,8 @@ ALTER TABLE `t_usuario`
   ADD UNIQUE KEY `email` (`email`);
 
 --
--- Indices de la tabla `t_vacuna`
---
-ALTER TABLE `t_vacuna`
-  ADD PRIMARY KEY (`num_serie_vacuna`);
-
---
 -- AUTO_INCREMENT de las tablas volcadas
 --
-
---
--- AUTO_INCREMENT de la tabla `t_calificacion`
---
-ALTER TABLE `t_calificacion`
-  MODIFY `id_calificacion` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `t_causa`
@@ -742,12 +579,6 @@ ALTER TABLE `t_proceso_adopcion`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT de la tabla `t_producto`
---
-ALTER TABLE `t_producto`
-  MODIFY `id_producto` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=59;
-
---
 -- AUTO_INCREMENT de la tabla `t_publicacion`
 --
 ALTER TABLE `t_publicacion`
@@ -758,12 +589,6 @@ ALTER TABLE `t_publicacion`
 --
 ALTER TABLE `t_recuperar_constrasena`
   MODIFY `id_recuperacion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
-
---
--- AUTO_INCREMENT de la tabla `t_red_social`
---
-ALTER TABLE `t_red_social`
-  MODIFY `id_red_social` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `t_registro`
@@ -795,17 +620,10 @@ ALTER TABLE `t_administrador`
   ADD CONSTRAINT `fk_id_usuario` FOREIGN KEY (`id_usuario`) REFERENCES `t_usuario` (`id_usuario`);
 
 --
--- Filtros para la tabla `t_calificacion`
---
-ALTER TABLE `t_calificacion`
-  ADD CONSTRAINT `fk_n_documento` FOREIGN KEY (`n_documento`) REFERENCES `t_guardian` (`id_usuario`),
-  ADD CONSTRAINT `fk_nit_fundacion` FOREIGN KEY (`nit_fundacion`) REFERENCES `t_fundacion` (`nit_fundacion`);
-
---
 -- Filtros para la tabla `t_donacion`
 --
 ALTER TABLE `t_donacion`
-  ADD CONSTRAINT `fk_dona_id_producto` FOREIGN KEY (`id_producto`) REFERENCES `t_producto` (`id_producto`),
+  ADD CONSTRAINT `fk_dona_id_causa` FOREIGN KEY (`id_causa`) REFERENCES `t_causa` (`id_causa`),
   ADD CONSTRAINT `fk_dona_n_documento` FOREIGN KEY (`n_documento`) REFERENCES `t_guardian` (`id_usuario`),
   ADD CONSTRAINT `fk_dona_nit_fundacion` FOREIGN KEY (`nit_fundacion`) REFERENCES `t_fundacion` (`nit_fundacion`);
 
