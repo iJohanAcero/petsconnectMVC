@@ -1,6 +1,7 @@
 <?php
 
 require_once __DIR__ . '/../../vendor/autoload.php';
+
 use App\Config\Config;
 use App\Model\Perfil\Perfil;
 
@@ -39,16 +40,16 @@ $perfil = $perfil->getPerfilPorUsuario($id);
 
     <link
         rel="shortcut icon"
-        href="<?=Config::get('IMG_URL') ?>/icono2.png"
+        href="<?= Config::get('IMG_URL') ?>/icono2.png"
         type="image/png" />
     <!-- ===== All CSS files ===== -->
     <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.8/css/line.css">
     <link rel="stylesheet" href="//cdn.datatables.net/2.3.2/css/dataTables.dataTables.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 
-    <link rel="stylesheet" href="<?=Config::get('CSS_URL') ?>/styles.css" />
-    <link rel="stylesheet" href="<?=Config::get('CSS_URL') ?>/animate.css" />
-    <link rel="stylesheet" href="<?=Config::get('CSS_URL') ?>/ud-styles.css" /> <!-- Llamamos a la librería de iconos -->
+    <link rel="stylesheet" href="<?= Config::get('CSS_URL') ?>/styles.css" />
+    <link rel="stylesheet" href="<?= Config::get('CSS_URL') ?>/animate.css" />
+    <link rel="stylesheet" href="<?= Config::get('CSS_URL') ?>/ud-styles.css" /> <!-- Llamamos a la librería de iconos -->
 
 </head>
 
@@ -60,7 +61,7 @@ $perfil = $perfil->getPerfilPorUsuario($id);
                 <i class="uil uil-bars"></i>
             </button>
             <a class="navbar-brand" href="#" onclick="history.go(0);">
-                <img src="<?=Config::get('IMG_URL') ?>/logo/logo.png" alt="Logo" id="logo" class="d-inline-block align-text-top">
+                <img src="<?= Config::get('IMG_URL') ?>/logo/logo.png" alt="Logo" id="logo" class="d-inline-block align-text-top">
             </a>
 
             <div class="collapse navbar-collapse">
@@ -161,7 +162,7 @@ $perfil = $perfil->getPerfilPorUsuario($id);
                     </a>
                 </li>
                 <li class="sidebar-item">
-                    <a href="" class="sidebar-link">
+                    <a href="#" class="sidebar-link btn-cargar-cartelFundacion">
                         <i class="uil uil-building"></i>
                         <span class="sidebar-text">Fundaciones</span>
                     </a>
@@ -187,25 +188,24 @@ $perfil = $perfil->getPerfilPorUsuario($id);
                         <li class="sidebar-item">
                             <a href="" class="sidebar-link">✔ Todos</a>
                         </li>
-
                     </ul>
                 </li>
                 <li class="sidebar-item has-dropdown">
-                    <a href="" class="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse" data-bs-target="#crud" aria-expanded="false" aria-controls="crud">
-                        <i class="uil uil-clipboard-alt"></i>
-                        <span class="sidebar-text">Gestiones </span>
-                    </a>
-                    <ul id="publicacion" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
-                        <li class="sidebar-item">
-                            <a href="#" class="sidebar-link" id="btn-cargar-publicacion">✔ Mis publicaciones</a>
-                        </li>
-                        <li class="sidebar-item">
-                            <a href="#" class="sidebar-link" id="btn-cargar-causa">✔ Mis Causas</a>
-                        </li>
-                        <li class="sidebar-item">
-                            <a href="#" class="sidebar-link" id="btn-cargar-mascota">✔ Mis Mascotas</a>
-                        </li>
-                    </ul>
+                <a href="" class="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse" data-bs-target="#crud" aria-expanded="false" aria-controls="crud">
+                    <i class="uil uil-clipboard-alt"></i>
+                    <span class="sidebar-text">Gestiones </span>
+                </a>
+                <ul id="crud" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
+                    <li class="sidebar-item">
+                        <a href="#" class="sidebar-link" id="btn-cargar-publicacion">✔ Mis publicaciones</a>
+                    </li>
+                    <li class="sidebar-item">
+                        <a href="#" class="sidebar-link" id="btn-cargar-causa">✔ Mis Causas</a>
+                    </li>
+                    <li class="sidebar-item">
+                        <a href="#" class="sidebar-link" id="btn-cargar-mascota">✔ Mis Mascotas</a>
+                    </li>
+                </ul>
                 </li>
                 <li class="sidebar-item">
                     <a href="#" class="sidebar-link" onclick="cargarDashboard()">
@@ -234,16 +234,17 @@ $perfil = $perfil->getPerfilPorUsuario($id);
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
 
     <!-- SCRIPTS DE JS CRUDS Y RUTAS -->
-    <script src="<?=Config::get('JS_URL') ?>/main.js"></script>
-    <script src="<?=Config::get('JS_URL') ?>/config.js"></script>
-    <script src="<?=Config::get('JS_URL') ?>/crud/crud_causa.js"></script>
-    <script src="<?=Config::get('JS_URL') ?>/crud/crud_fundacion.js"></script>
-    <script src="<?=Config::get('JS_URL') ?>/crud/crud_mascota.js"></script>
-    <script src="<?=Config::get('JS_URL') ?>/crud/crud_publicacion.js"></script>
-    <script src="<?=Config::get('JS_URL') ?>/routes/routes.js"></script>
-    <script src="<?=Config::get('JS_URL') ?>/routes/perfilFundacion.js"></script>
+    <script src="<?= Config::get('JS_URL') ?>/main.js"></script>
+    <script src="<?= Config::get('JS_URL') ?>/config.js"></script>
+    <script src="<?= Config::get('JS_URL') ?>/crud/crud_causa.js"></script>
+    <script src="<?= Config::get('JS_URL') ?>/crud/crud_fundacion.js"></script>
+    <script src="<?= Config::get('JS_URL') ?>/crud/crud_mascota.js"></script>
+    <script src="<?= Config::get('JS_URL') ?>/crud/crud_publicacion.js"></script>
+    <script src="<?= Config::get('JS_URL') ?>/routes/routes.js"></script>
+    <script src="<?= Config::get('JS_URL') ?>/routes/perfilFundacion.js"></script>
+    <script src="<?= Config::get('JS_URL') ?>/routes/carteleraFundacion.js"></script>
 
-   <script>
+    <script>
         let page = 1;
         let loading = false;
         let finished = false;
@@ -271,7 +272,7 @@ $perfil = $perfil->getPerfilPorUsuario($id);
 
                                     ${pub.imagen ? `
                                         <div class="post-image-container mb-3">
-                                            <img src="<?=Config::get('IMG_URL') ?>/eventos_fundacion/${pub.imagen}"
+                                            <img src="<?= Config::get('IMG_URL') ?>/eventos_fundacion/${pub.imagen}"
                                                  class="img-fluid rounded-3 post-image"
                                                  alt="Imagen publicación">
                                         </div>` : ''}

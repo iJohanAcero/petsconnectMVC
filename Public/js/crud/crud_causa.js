@@ -83,7 +83,21 @@ function inicializarCausa() {
                     const modal = new bootstrap.Modal(modalElement);
                     modal.show();
 
-                
+                    const inputImagen = document.getElementById("input-imagen");
+const previewImagen = document.getElementById("preview-imagen");
+
+if (inputImagen && previewImagen) {
+    inputImagen.addEventListener("change", function () {
+        const archivo = this.files[0];
+        if (archivo) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                previewImagen.src = e.target.result;
+            };
+            reader.readAsDataURL(archivo);
+        }
+    });
+}
 
                     const formEditar = document.getElementById("form-editar-causa");
                     if (formEditar) {

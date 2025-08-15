@@ -214,4 +214,64 @@ class Fundacion
 
         return $nits;
     }
+
+    public function getAllFundacionesCarrusel()
+    {
+        $stmt = $this->db->prepare("
+        SELECT 
+            p.id_perfil,
+            p.nombre,
+            p.descripcion,
+            p.imagen
+        FROM t_fundacion f
+        INNER JOIN t_perfil p ON f.id_perfil = p.id_perfil
+        ORDER BY p.nombre ASC
+    ");
+
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getDetallesPorId($id_perfil)
+{
+    $stmt = $this->db->prepare("
+        SELECT 
+            p.id_perfil,
+            p.nombre,
+            p.descripcion,
+            p.imagen,
+            f.nit_fundacion
+        FROM t_fundacion f
+        INNER JOIN t_perfil p ON f.id_perfil = p.id_perfil
+        WHERE p.id_perfil = :id_perfil
+    ");
+    
+    $stmt->bindParam(':id_perfil', $id_perfil, PDO::PARAM_INT);
+    $stmt->execute();
+    
+    return $stmt->fetch(PDO::FETCH_ASSOC);
+}
+
+public function getContactoPorId($id_perfil)
+{
+    $stmt = $this->db->prepare("
+        SELECT 
+            p.id_perfil,
+            p.nombre,
+            p.imagen,
+            u.email,
+            u.telefono,
+            u.direccion
+        FROM t_fundacion f
+        INNER JOIN t_perfil p ON f.id_perfil = p.id_perfil
+        INNER JOIN t_usuario u ON f.id_usuario = u.id_usuario
+        WHERE p.id_perfil = :id_perfil
+    ");
+    
+    $stmt->bindParam(':id_perfil', $id_perfil, PDO::PARAM_INT);
+    $stmt->execute();
+    
+    return $stmt->fetch(PDO::FETCH_ASSOC);
+}
+
 }

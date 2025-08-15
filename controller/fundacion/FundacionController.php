@@ -5,6 +5,7 @@ namespace App\controller\Fundacion;
 require_once __DIR__ . '/../../vendor/autoload.php';
 
 use App\Model\Fundacion\Fundacion;
+use Exception;
 
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
@@ -100,9 +101,72 @@ class FundacionController
             echo "Error al eliminar fundación";
         }
     }
-}
 
-// Router de acciones
+    // NUEVO MÉTODO para obtener fundaciones para cartelera
+    public function getAllFundacionesCarrusel()
+    {
+        try {
+            $fundaciones = $this->modeloFundacion->getAllFundacionesCarrusel();
+
+            header('Content-Type: application/json');
+            echo json_encode($fundaciones);
+            exit;
+        } catch (Exception $e) {
+            header('Content-Type: application/json');
+            echo json_encode(['error' => 'Error al obtener fundaciones: ' . $e->getMessage()]);
+            exit;
+        }
+    }
+
+    // NUEVO MÉTODO para obtener detalles de una fundación específica
+    public function getDetallesFundacion()
+    {
+        $id = $_GET['id'] ?? '';
+
+        if (empty($id)) {
+            header('Content-Type: application/json');
+            echo json_encode(['error' => 'ID de fundación no proporcionado']);
+            exit;
+        }
+
+        try {
+            // Podrías crear un método específico en el modelo o usar el existente
+            $fundacion = $this->modeloFundacion->getDetallesPorId($id);
+
+            header('Content-Type: application/json');
+            echo json_encode($fundacion);
+            exit;
+        } catch (Exception $e) {
+            header('Content-Type: application/json');
+            echo json_encode(['error' => 'Error al obtener detalles: ' . $e->getMessage()]);
+            exit;
+        }
+    }
+
+    public function getContactoFundacion()
+    {
+        $id = $_GET['id'] ?? '';
+
+        if (empty($id)) {
+            header('Content-Type: application/json');
+            echo json_encode(['error' => 'ID de fundación no proporcionado']);
+            exit;
+        }
+
+        try {
+            $fundacion = $this->modeloFundacion->getContactoPorId($id);
+
+            header('Content-Type: application/json');
+            echo json_encode($fundacion);
+            exit;
+        } catch (Exception $e) {
+            header('Content-Type: application/json');
+            echo json_encode(['error' => 'Error al obtener información de contacto: ' . $e->getMessage()]);
+            exit;
+        }
+    }
+}
+// Router de acciones - ACTUALIZADO para manejar GET y POST
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $accion = $_POST['accion'] ?? '';
     $controller = new FundacionController();
@@ -113,5 +177,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $controller->editar();
     } elseif ($accion === 'eliminar') {
         $controller->eliminar();
+    }
+}
+
+// NUEVO: Manejo de peticiones GET para AJAX
+// En la parte de manejo de peticiones GET
+if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+    $action = $_GET['action'] ?? '';
+    $controller = new FundacionController();
+
+    if ($action === 'getAllFundacionesCarrusel') {
+        $controller->getAllFundacionesCarrusel();
+    } elseif ($action === 'getDetallesFundacion') {
+        $controller->getDetallesFundacion();
+    } elseif ($action === 'getContactoFundacion') {
+        $controller->getContactoFundacion();
+    } else {
+        header('Content-Type: application/json');
+        echo json_encode(['error' => 'Acción no válida']);
+        exit;
     }
 }

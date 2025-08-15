@@ -158,7 +158,7 @@ $perfil = $perfil->getPerfilPorUsuario($id);
                     </a>
                 </li>
                 <li class="sidebar-item">
-                    <a href="" class="sidebar-link">
+                    <a href="#" class="sidebar-link btn-cargar-cartelFundacion">
                         <i class="uil uil-building"></i>
                         <span class="sidebar-text">Fundaciones</span>
                     </a>
@@ -213,6 +213,7 @@ $perfil = $perfil->getPerfilPorUsuario($id);
     <script src="<?= Config::get('JS_URL') ?>/routes/perfilGuardian.js"></script>
     <script src="<?= Config::get('JS_URL') ?>/routes/routes.js"></script>
     <script src="<?= Config::get('JS_URL') ?>/routes/cartelera.js"></script>
+    <script src="<?= Config::get('JS_URL') ?>/routes/carteleraFundacion.js"></script>
 
     <script>
         let page = 1;
