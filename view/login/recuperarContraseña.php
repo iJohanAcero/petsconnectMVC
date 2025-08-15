@@ -64,9 +64,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['email'])) {
                                 <button type="submit" class="ud-main-btn w-100">Enviar enlace de recuperación</button>
                             </div>
                         </form>
-                        <p class="signup-option">
-                            ¿Ya tienes un token? <a href="index.php?page=restablecer_contrasena"> Restablecer contraseña </a>
-                        </p>
                         <!-- Volver al login -->
                         <form action="index.php" method="get">
                             <div class="ud-form-group">

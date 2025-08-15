@@ -68,8 +68,79 @@ class AuthController
                     $mail->setFrom('pablovela.upn@gmail.com', 'PetsConnect');
                     $mail->addAddress($email); // $email es el destinatario
 
-                    $mail->Subject = 'Recupera tu contraseña';
-                    $mail->Body    = "Hola,\n\nHaz clic en el siguiente enlace para restablecer tu contraseña:\n$url\n\nSi no solicitaste este cambio, ignora este correo.";
+                    $mail->Subject = 'Recuperación de contraseña - Soporte ';
+                    $mail->isHTML(true);
+                    $mail->Body = '
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .header {
+            background-color:hsl(252, 30%, 17%);;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            border-radius: 5px 5px 0 0;
+        }
+        .content {
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: 0 0 5px 5px;
+            border: 1px solid #ddd;
+            border-top: none;
+        }
+        .button {
+            display: inline-block;
+            padding: 12px 24px;
+            background-color: hsl(252, 30%, 17%);;
+            color: white !important;
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: bold;
+            margin: 15px 0;
+        }
+        .footer {
+            margin-top: 20px;
+            font-size: 12px;
+            color: #777;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h2>Recupera tu contraseña</h2>
+    </div>
+    <div class="content">
+        <p>Hola,</p>
+        <p>Hemos recibido una solicitud para restablecer la contraseña de tu cuenta.</p>
+        <p>Por favor, haz clic en el siguiente botón para continuar con el proceso:</p>
+        
+        <p style="text-align: center;">
+            <a href="' . $url . '" class="button">Restablecer contraseña</a>
+        </p>
+        
+        <p>Si el botón no funciona, copia y pega este enlace en tu navegador:<br>
+        <small>' . $url . '</small></p>
+        
+        <p><strong>¿No solicitaste este cambio?</strong><br>
+        Si no fuiste tú quien solicitó restablecer la contraseña, puedes ignorar este mensaje. Tu contraseña permanecerá igual.</p>
+        
+        <div class="footer">
+            <p>Este enlace expirará en 24 horas por motivos de seguridad.</p>
+        </div>
+    </div>
+</body>
+</html>
+';
 
                     $mail->send();
                     $mensaje .= "<br>Se ha enviado un enlace de recuperación a tu correo.";
