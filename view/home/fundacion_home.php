@@ -240,7 +240,6 @@ $perfil = $perfil->getPerfilPorUsuario($id);
     <script src="<?= Config::get('JS_URL') ?>/crud/crud_fundacion.js"></script>
     <script src="<?= Config::get('JS_URL') ?>/crud/crud_mascota.js"></script>
     <script src="<?= Config::get('JS_URL') ?>/crud/crud_publicacion.js"></script>
-    <script src="<?= Config::get('JS_URL') ?>/routes/routes.js"></script>
     <script src="<?= Config::get('JS_URL') ?>/routes/perfilFundacion.js"></script>
     <script src="<?= Config::get('JS_URL') ?>/routes/carteleraFundacion.js"></script>
 

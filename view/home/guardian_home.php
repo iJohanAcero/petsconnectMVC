@@ -211,7 +211,6 @@ $perfil = $perfil->getPerfilPorUsuario($id);
     <script src="<?= Config::get('JS_URL') ?>/config.js"></script>
     <script src="<?= Config::get('JS_URL') ?>/main.js"></script>
     <script src="<?= Config::get('JS_URL') ?>/routes/perfilGuardian.js"></script>
-    <script src="<?= Config::get('JS_URL') ?>/routes/routes.js"></script>
     <script src="<?= Config::get('JS_URL') ?>/routes/cartelera.js"></script>
     <script src="<?= Config::get('JS_URL') ?>/routes/carteleraFundacion.js"></script>
 

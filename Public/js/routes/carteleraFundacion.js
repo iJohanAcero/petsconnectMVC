@@ -134,10 +134,6 @@ function crearCartaFundacion(fundacion) {
                     
                     <div class="mt-auto">
                         <div class="d-flex justify-content-between align-items-center">
-                            <small class="text-muted">
-                                <i class="fas fa-id-badge me-1"></i>
-                                ID: ${idPerfil}
-                            </small>
                             
                             <div class="btn-group">
                                 <button type="button" 
@@ -192,23 +188,8 @@ function inicializarEventosCartas() {
     });
 }
 
-// Función para ver detalles de una fundación
 function verDetallesFundacion(idPerfil) {
-    
-    // Aquí puedes implementar:
-    // 1. Abrir un modal con más información
-    // 2. Navegar a una página de detalles
-    // 3. Hacer otra llamada AJAX para obtener más datos
-    
-    // Ejemplo básico con modal de Bootstrap
-    if (typeof bootstrap !== 'undefined') {
-        const modal = document.getElementById('modalDetalles');
-        if (modal) {
-            cargarDetallesModal(idPerfil);
-            const bsModal = new bootstrap.Modal(modal);
-            bsModal.show();
-        }
-    }
+    window.location.href = `/petsconnectMVC/view/fundacion/perfilFundacion.php?id=${idPerfil}`;
 }
 
 // Función para contactar una fundación
@@ -352,66 +333,6 @@ function copiarTexto(texto) {
         console.error('Error al copiar: ', err);
         alert('No se pudo copiar al portapapeles');
     });
-}
-
-// Función para cargar detalles en el modal
-function cargarDetallesModal(idPerfil) {
-    const modalBody = document.getElementById('modalDetallesBody');
-    const modalTitle = document.getElementById('modalDetallesLabel');
-    
-    if (!modalBody) return;
-    
-    // Mostrar loading en el modal
-    modalBody.innerHTML = `
-        <div class="text-center py-4">
-            <div class="spinner-border text-primary2" role="status">
-                <span class="visually-hidden">Cargando...</span>
-            </div>
-            <p class="mt-3">Cargando detalles...</p>
-        </div>
-    `;
-    
-    // Llamada para obtener detalles específicos
-    fetch(`/petsconnectmvc/index.php?controller=fundacion&action=getDetallesFundacion&id=${idPerfil}`)
-        .then(response => response.json())
-        .then(fundacion => {
-            modalTitle.textContent = fundacion.nombre || 'Detalles de la Fundación';
-            modalBody.innerHTML = `
-                <div class="text-center mb-4">
-                    <img src="${fundacion.imagen}" 
-                         class="img-fluid rounded" 
-                         alt="${fundacion.nombre}"
-                         style="max-height: 300px; object-fit: cover;"
-                         onerror="this.style.display='none'">
-                </div>
-                <h4 class="text-primary2 mb-3">
-                    <i class="fas fa-heart me-2"></i>
-                    ${fundacion.nombre}
-                </h4>
-                <p class="lead">${fundacion.descripcion}</p>
-                <hr>
-                <div class="row">
-                    <div class="col-6">
-                        <strong>ID Perfil:</strong> ${fundacion.id_perfil}
-                    </div>
-                    <div class="col-6 text-end">
-                        <button class="btn btn-primary" onclick="contactarFundacion(${fundacion.id_perfil})">
-                            <i class="fas fa-envelope me-1"></i>
-                            Contactar
-                        </button>
-                    </div>
-                </div>
-            `;
-        })
-        .catch(error => {
-            console.error('Error al cargar detalles:', error);
-            modalBody.innerHTML = `
-                <div class="alert alert-danger">
-                    <i class="fas fa-exclamation-triangle me-2"></i>
-                    Error al cargar los detalles de la fundación.
-                </div>
-            `;
-        });
 }
 
 // Función para animar entrada de cartas

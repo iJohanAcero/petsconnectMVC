@@ -61,15 +61,13 @@ class PerfilController
             $resultadoFundacion = $this->perfilModel->actualizarPerfilFundacion($id, $nombre, $descripcion, $preferencia, $imagen, $redes_sociales);
 
             if ($resultadoGuardian || $resultadoFundacion) {
-                echo json_encode([
-                    'success' => true,
-                    'message' => 'Perfil actualizado correctamente.'
-                ]);
+                echo json_encode(
+                    'Perfil actualizado correctamente.'
+                );
             } else {
-                echo json_encode([
-                    'success' => false,
-                    'message' => 'Error al actualizar el perfil.'
-                ]);
+                echo json_encode(
+                    'Error al actualizar el perfil.'
+                );
             }
         } catch (Exception $e) {
             header('Content-Type: application/json');

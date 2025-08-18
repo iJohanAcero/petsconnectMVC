@@ -28,8 +28,6 @@ if (!$perfil || empty($perfil)) {
 
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
-    <!-- SweetAlert2 -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
@@ -102,13 +100,13 @@ if (!$perfil || empty($perfil)) {
                                         <select name="preferencia" id="preferencia" class="form-select" required>
                                             <option value="">Seleccionar preferencia</option>
                                             <option value="Perros" <?= $perfil['preferencia'] == 'Perros' ? 'selected' : '' ?>>
-                                                🐕 Perros
+                                                Perros
                                             </option>
                                             <option value="Gatos" <?= $perfil['preferencia'] == 'Gatos' ? 'selected' : '' ?>>
-                                                🐱 Gatos
+                                                Gatos
                                             </option>
                                             <option value="Todos los animales" <?= $perfil['preferencia'] == 'Todos los animales' ? 'selected' : '' ?>>
-                                                🐾 Todos los animales
+                                                Todos los animales
                                             </option>
                                         </select>
                                         <div class="invalid-feedback">

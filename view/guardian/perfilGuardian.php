@@ -1,5 +1,6 @@
 <?php
 require_once __DIR__ . '/../../vendor/autoload.php';
+
 use App\Model\Perfil\Perfil;
 
 
@@ -31,54 +32,160 @@ $perfil = $perfil->getPerfilPorUsuario($id_usuario);
 
 
 <body>
-    <section id="about-section" class="pt-5 pb-5">
-        <div class="custom-wrapper">
-            <div class="container-fluid px-5 wrapabout">
-                <div class="red"></div>
-                <div class="row">
-                    <div class="col-lg-6 align-items-center justify-content-center d-flex mb-5 mb-lg-0">
-                        <div class="blockabout">
-                            <div class="blockabout-inner text-center text-sm-start">
-                                <div class="title-big pb-3 mb-3">
-                                    <!-- Nombre -->
-                                    <h3 class="card-title mb-2"><?php echo htmlspecialchars($perfil['nombre']); ?></h3>
-                                </div>
-                                <!-- Descripción -->
-                                <h6 class="text-muted">Descripción</h6>
-                                <p class="description-p text-muted pe-0 pe-lg-0">
-                                    <?php echo htmlspecialchars($perfil['descripcion']); ?>
-                                </p>
-                                <h6 class="text-primary pt-5">Preferencia de Mascotas</h6>
-                                <p class="text-muted mb-3">
-                                    <?php echo htmlspecialchars($perfil['preferencia']); ?>
-                                </p>
-                                <div class="sosmed-horizontal pt-3 pb-3">
-                                    <a href="#"><i class="uil uil-facebook-f"></i></a>
-                                    <a href="#"><i class="uil uil-instagram-alt"></i></a>
-                                    <a href="#"><i class="uil uil-twitter"></i></a>
-                                </div>
+    <section id="about-section" class="py-5">
+        <div class="container">
+            <!-- Header del perfil -->
+            <div class="row justify-content-center mb-4">
+                <div class="col-lg-10">
+                    <div class="card border-0 shadow-sm">
+                        <div class="card-body p-0">
+                            <!-- Perfil principal -->
+                            <div class="px-4 pb-4">
+                                <div class="row align-items-end" style="margin-top: -60px;">
+                                    <!-- Foto de perfil -->
+                                    <div class="col-auto">
+                                        <div class="position-relative">
+                                            <?php
+                                            $nombreImagen = !empty($perfil['imagen']) ? $perfil['imagen'] : 'default.jpg';
+                                            $rutaImagen = "/petsconnectMVC/Public/images/perfil/" . htmlspecialchars($nombreImagen);
+                                            ?>
+                                            <img src="<?= $rutaImagen ?>"
+                                                alt="Foto de perfil"
+                                                class="rounded-circle border border-4 border-white shadow"
+                                                style="width: 120px; height: 120px; object-fit: cover;">
+                                            <span class="position-absolute bottom-0 end-0 bg-success border border-white rounded-circle" style="width: 24px; height: 24px;"></span>
+                                        </div>
+                                    </div>
 
-                                <button class="btn rey-btn mt-3 btn-editar-perfilGuardian" data-id="<?php echo htmlspecialchars($perfil['id_usuario']); ?>">
-                                    <i class="uil uil-pen">Editar perfil</i>
-                                </button>
+                                    <!-- Info básica -->
+                                    <div class="">
+                                        <div class="mt-3">
+                                            <h2 class="mb-1 fw-bold"><?php echo htmlspecialchars($perfil['nombre']); ?><i class="uil uil-user me-1"></i></h2>
+                                        </div>
+                                    </div>
+
+                                    <!-- Botón editar -->
+                                    <div class="col-auto">
+                                        <button class="btn btn-outline-primary2 btn-editar-perfilGuardian"
+                                            data-id="<?php echo htmlspecialchars($perfil['id_usuario']); ?>">
+                                            <i class="uil uil-pen me-2"></i>
+                                            Editar perfil
+                                        </button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-6 mt-5 mt-lg-0 align-items-center justify-content-center d-flex">
-                        <figure class="perfil-img-container">
-                            <!-- Foto de Perfil -->
-                            <?php
+                </div>
+            </div>
 
-                            $nombreImagen = !empty($perfil['imagen']) ? $perfil['imagen'] : 'default.jpg';
-                            $rutaImagen = "/petsconnectMVC/Public/images/perfil/" . htmlspecialchars($nombreImagen);
-                            ?>
+            <!-- Contenido principal -->
+            <div class="row justify-content-center">
+                <div class="col-lg-10">
+                    <div class="row g-4">
+                        <!-- Información principal -->
+                        <div class="col-lg-8">
+                            <!-- Descripción -->
+                            <div class="card border-0 shadow-sm mb-4">
+                                <div class="card-body p-4">
+                                    <h5 class="card-title mb-3">
+                                        <i class="uil uil-info-circle text-primary2 me-2"></i>
+                                        Acerca de mí
+                                    </h5>
+                                    <p class="card-text text-muted lh-lg mb-0">
+                                        <?php echo nl2br(htmlspecialchars($perfil['descripcion'])); ?>
+                                    </p>
+                                </div>
+                            </div>
 
-                            <img src="<?= $rutaImagen ?>"
-                                alt="Foto de perfil"
-                                style="object-fit: cover; max-height: 60vh; "
-                                class="img-fluid perfil-img-preview">
+                            <!-- Información de contacto -->
+                            <?php if (!empty($perfil['telefono']) || !empty($perfil['direccion']) || !empty($perfil['email'])): ?>
+                                <div class="card border-0 shadow-sm mb-4">
+                                    <div class="card-body p-4">
+                                        <h5 class="card-title mb-3">
+                                            <i class="uil uil-phone text-primary2 me-2"></i>
+                                            Información de contacto
+                                        </h5>
+                                        <div class="row">
+                                            <?php if (!empty($perfil['email'])): ?>
+                                                <div class="col-md-6 mb-3">
+                                                    <div class="d-flex align-items-center">
+                                                        <div class="bg-primary-subtle rounded-circle me-3 d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                                                            <i class="uil uil-envelope text-primary2"></i>
+                                                        </div>
+                                                        <div>
+                                                            <h6 class="mb-0">Email</h6>
+                                                            <small class="text-muted"><?php echo htmlspecialchars($perfil['email']); ?></small>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            <?php endif; ?>
 
-                        </figure>
+                                            <?php if (!empty($perfil['telefono'])): ?>
+                                                <div class="col-md-6 mb-3">
+                                                    <div class="d-flex align-items-center">
+                                                        <div class="bg-success-subtle rounded-circle me-3 d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                                                            <i class="uil uil-phone text-success"></i>
+                                                        </div>
+                                                        <div>
+                                                            <h6 class="mb-0">Teléfono</h6>
+                                                            <small class="text-muted"><?php echo htmlspecialchars($perfil['telefono']); ?></small>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            <?php endif; ?>
+
+                                            <?php if (!empty($perfil['direccion'])): ?>
+                                                <div class="col-12">
+                                                    <div class="d-flex align-items-center">
+                                                        <div class="bg-info-subtle rounded-circle me-3 d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                                                            <i class="uil uil-map-marker text-info"></i>
+                                                        </div>
+                                                        <div>
+                                                            <h6 class="mb-0">Dirección</h6>
+                                                            <small class="text-muted"><?php echo htmlspecialchars($perfil['direccion']); ?></small>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            <?php endif; ?>
+                                        </div>
+                                    </div>
+                                </div>
+                            <?php endif; ?>
+                        </div>
+
+                        <!-- Barra lateral -->
+                        <div class="col-lg-4">
+                            <!-- Preferencias de adopción -->
+                            <div class="card border-0 shadow-sm mb-4">
+                                <div class="card-body p-3">
+                                    <h5 class="card-title mb-3">
+                                        <i class="uil uil-heart text-primary2 me-2"></i>
+                                        Preferencias de adopción
+                                    </h5>
+                                    <div class="text-center p-4 bg-light rounded">
+                                        <div class="mb-3">
+                                            <?php
+                                            $iconoPreferencia = '';
+                                            switch (strtolower($perfil['preferencia'])) {
+                                                case 'perros':
+                                                    $iconoPreferencia = 'uil uil-favorite';
+                                                    break;
+                                                case 'gatos':
+                                                    $iconoPreferencia = 'uil uil-heart';
+                                                    break;
+                                                default:
+                                                    $iconoPreferencia = 'uil uil-paw';
+                                            }
+                                            ?>
+                                            <i class="<?= $iconoPreferencia ?> fs-1 text-primary2"></i>
+                                        </div>
+                                        <h6 class="mb-1"><?php echo htmlspecialchars($perfil['preferencia']); ?></h6>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -86,27 +193,29 @@ $perfil = $perfil->getPerfilPorUsuario($id_usuario);
     </section>
 
     <div class="modal fade" id="modal-editar-perfilGuardian" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-sin-limite  modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Editar Perfil</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content border-0 shadow-lg mt-5">
+                <div class="modal-header bg-light border-bottom-0 py-3">
+                    <div class="d-flex align-items-center">
+                        <div class="bg-primary rounded-circle me-3 d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                            <i class="uil uil-edit-alt text-white"></i>
+                        </div>
+                        <div>
+                            <h5 class="modal-title mb-0 fw-bold">Editar mi perfil</h5>
+                            <small class="text-muted">Actualiza tu información personal</small>
+                        </div>
+                    </div>
+                    <button type="button" class="btn-close btn-close bg-secondary rounded-circle p-2" data-bs-dismiss="modal" aria-label="Cerrar"></button>
                 </div>
-                <div class="modal-body" id="contenido-editar">
-                    <!-- Se carga dinámicamente con JS -->
-                </div>
-            </div>
 
-            <div class="modal fade" id="modal-editar-perfilGuardian" tabindex="-1" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title">Editar Perfil</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <div class="modal-body p-0" id="contenido-editar">
+                    <!-- Se carga dinámicamente con JS -->
+                    <!-- Loader mientras carga el contenido -->
+                    <div class="text-center py-5" id="modal-loader">
+                        <div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;">
+                            <span class="visually-hidden">Cargando...</span>
                         </div>
-                        <div class="modal-body" id="contenido-editar">
-                            <!-- Se carga dinámicamente con JS -->
-                        </div>
+                        <p class="mt-3 text-muted">Cargando formulario de edición...</p>
                     </div>
                 </div>
             </div>

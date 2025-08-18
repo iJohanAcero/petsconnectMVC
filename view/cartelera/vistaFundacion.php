@@ -12,11 +12,22 @@ if (session_status() === PHP_SESSION_NONE) {
     header("Pragma: no-cache");
 }
 
-$perfil = new Perfil();
+$perfilModel = new Perfil();
 
-$id_usuario = $_SESSION['user']['id_usuario'] ?? null;
+$id_perfil = $_GET['id'] ?? null;
 
-$perfil = $perfil->getPerfilPorUsuario($id_usuario);
+if (!$id_perfil || !is_numeric($id_perfil)) {
+    header("Location: /lista-fundaciones.php");
+    exit();
+}
+
+// Usar el método nuevo que busca por id_perfil
+$perfil = $perfilModel->getPerfilPorIdPerfil($id_perfil);
+
+if (!$perfil) {
+    echo "Fundación no encontrada";
+    exit();
+}
 ?>
 
 <!DOCTYPE html>

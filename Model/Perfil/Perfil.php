@@ -74,6 +74,50 @@ class Perfil
         return false;
     }
 
+    // Agregar ESTE método nuevo, sin tocar el existente
+    public function getPerfilPorIdPerfil($id_perfil)
+    {
+        // Buscar en guardian usando id_perfil
+        $stmt = $this->db->prepare("
+        SELECT p.*, g.id_usuario, u.telefono, u.direccion, u.email
+        FROM t_guardian g
+        INNER JOIN t_perfil p ON g.id_perfil = p.id_perfil
+        INNER JOIN t_usuario u ON g.id_usuario = u.id_usuario
+        WHERE p.id_perfil = :id_perfil
+        LIMIT 1
+    ");
+        $stmt->bindParam(':id_perfil', $id_perfil, PDO::PARAM_INT);
+        $stmt->execute();
+        $perfil = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if ($perfil) {
+            // Obtener redes sociales del perfil
+            $perfil['redes_sociales'] = $this->getRedesSocialesPorPerfil($perfil['id_perfil']);
+            return $perfil;
+        }
+
+        // Buscar en fundacion usando id_perfil
+        $stmt = $this->db->prepare("
+        SELECT p.*, f.id_usuario, u.telefono, u.direccion, u.email
+        FROM t_fundacion f
+        INNER JOIN t_perfil p ON f.id_perfil = p.id_perfil
+        INNER JOIN t_usuario u ON f.id_usuario = u.id_usuario
+        WHERE p.id_perfil = :id_perfil
+        LIMIT 1
+    ");
+        $stmt->bindParam(':id_perfil', $id_perfil, PDO::PARAM_INT);
+        $stmt->execute();
+        $perfil = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if ($perfil) {
+            // Obtener redes sociales del perfil
+            $perfil['redes_sociales'] = $this->getRedesSocialesPorPerfil($perfil['id_perfil']);
+            return $perfil;
+        }
+
+        return false;
+    }
+
     // Versión mejorada del método actualizarPerfilFundacion
     public function actualizarPerfilFundacion($id, $nombre, $descripcion, $preferencia, $imagen, $redes_sociales = [])
     {

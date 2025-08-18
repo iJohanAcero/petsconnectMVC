@@ -31,8 +31,15 @@ $routes = [
     "registro"     => ["role" => "guest", "file" => "view/login/register.php"],
     "recuperar_contrasena" => ["role" => "guest", "file" => "view/login/recuperarContraseña.php"],
     "restablecer_contrasena" => ["role" => "guest", "file" => "view/login/restablecerContraseña.php"],
-    "landing" => ["role" => "guest", "file" => "view/login/landing.php"]
-]; 
+    "landing" => ["role" => "guest", "file" => "view/login/landing.php"],
+
+    // Nueva ruta para la cartelera de fundaciones
+    "cartelera" => [
+        "role" => "all", // o roles específicos: ["fundacion", "guardian", "admin"]
+        "file" => "view/cartelera/vistaFundacion.php",
+        "params" => ["id"] // Parámetro dinámico en la URL
+    ]
+];
 
 // --- Manejo de formularios POST ---
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["action"])) {
@@ -99,7 +106,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["action"])) {
 if (isset($_GET["action"]) && $_GET["action"] == "logout") {
     session_start();
     session_destroy();
-    
+
     $redirect = urlencode('http://localhost/petsconnectmvc/index.php');
     $googleLogoutUrl = "https://accounts.google.com/Logout?continue=https://appengine.google.com/_ah/logout?continue={$redirect}";
     header("Location: $googleLogoutUrl");
