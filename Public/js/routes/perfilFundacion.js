@@ -237,11 +237,11 @@ function inicializarEventosPerfilFundacion() {
 }
 
 function configurarEventosFormulario() {
+    console.log('Configurando eventos del formulario...');
+
     // Configurar preview de imagen
     const inputImagen = document.getElementById("input-imagen");
-    const previewImagen = document.getElementById("preview-imagen");
-
-    if (inputImagen && previewImagen) {
+    if (inputImagen) {
         inputImagen.addEventListener("change", function () {
             previewImagen(this);
         });
@@ -255,7 +255,6 @@ function configurarEventosFormulario() {
         descripcionTextarea.addEventListener('input', function() {
             contadorCaracteres.textContent = this.value.length;
             
-            // Cambiar color según límite
             const contador = document.getElementById('contador-caracteres');
             if (contador) {
                 if (this.value.length > 900) {
@@ -272,17 +271,29 @@ function configurarEventosFormulario() {
         });
     }
 
+    // CONFIGURAR BOTÓN AGREGAR RED SOCIAL
+    const btnAgregarRed = document.getElementById('btn-agregar-red');
+    console.log('Botón agregar red encontrado:', btnAgregarRed);
+    
+    if (btnAgregarRed) {
+        btnAgregarRed.addEventListener('click', function(e) {
+            e.preventDefault();
+            console.log('Click en agregar red social detectado');
+            agregarRedSocialConEventListeners();
+        });
+        console.log('Event listener para agregar red configurado');
+    } else {
+        console.error('Botón agregar red NO encontrado');
+    }
+
+    // CONFIGURAR BOTONES ELIMINAR EXISTENTES
+    configurarBotonesEliminar();
+
     // Configurar eventos para redes sociales existentes
-    const tipoSelects = document.querySelectorAll('select[name*="tipo_red"]');
-    const urlInputs = document.querySelectorAll('input[name*="url_red"]');
-    
-    tipoSelects.forEach(select => {
-        select.addEventListener('change', actualizarPreviewRedes);
-    });
-    
-    urlInputs.forEach(input => {
-        input.addEventListener('input', actualizarPreviewRedes);
-    });
+    configurarEventosRedesSociales();
+
+    // Actualizar preview inicial
+    actualizarPreviewRedes();
 
     // Configurar envío del formulario
     const formEditar = document.getElementById("form-editar-perfilFundacion");
@@ -290,7 +301,6 @@ function configurarEventosFormulario() {
         formEditar.addEventListener("submit", function (e) {
             e.preventDefault();
             
-            // Validar formulario
             if (!formEditar.checkValidity()) {
                 formEditar.classList.add('was-validated');
                 return;
@@ -299,7 +309,6 @@ function configurarEventosFormulario() {
             const formData = new FormData(formEditar);
             const btnGuardar = document.getElementById('btn-guardar');
             
-            // Mostrar loading
             if (btnGuardar) {
                 btnGuardar.disabled = true;
                 btnGuardar.innerHTML = '<i class="spinner-border spinner-border-sm me-2"></i>Guardando...';
@@ -322,7 +331,7 @@ function configurarEventosFormulario() {
                     if (typeof Swal !== 'undefined') {
                         Swal.fire({
                             icon: 'success',
-                            title: '¡Éxito!',
+                            title: 'Éxito!',
                             text: data.message,
                             confirmButtonText: 'OK',
                             confirmButtonColor: '#198754'
@@ -354,7 +363,6 @@ function configurarEventosFormulario() {
                 }
             })
             .finally(() => {
-                // Restaurar botón
                 if (btnGuardar) {
                     btnGuardar.disabled = false;
                     btnGuardar.innerHTML = '<i class="uil uil-save"></i> Guardar cambios';
@@ -362,6 +370,152 @@ function configurarEventosFormulario() {
             });
         });
     }
+}
+
+// NUEVA FUNCIÓN PARA AGREGAR RED SOCIAL CON EVENT LISTENERS
+function agregarRedSocialConEventListeners() {
+    console.log('Ejecutando agregarRedSocialConEventListeners');
+    
+    const container = document.getElementById('redes-sociales-container');
+    if (!container) {
+        console.error('Container redes-sociales-container no encontrado');
+        return;
+    }
+    
+    // Remover mensaje de "no hay redes"
+    const mensajeVacio = container.querySelector('#mensaje-sin-redes');
+    if (mensajeVacio) {
+        mensajeVacio.remove();
+        console.log('Mensaje vacío removido');
+    }
+    
+    const nuevaRed = document.createElement('div');
+    nuevaRed.className = 'red-social-item border p-3 mb-3 rounded bg-white';
+    nuevaRed.setAttribute('data-index', redesSocialesIndex);
+    
+    nuevaRed.innerHTML = `
+        <div class="row align-items-center">
+            <div class="col-4">
+                <select name="redes_sociales[${redesSocialesIndex}][tipo_red]" 
+                        class="form-select form-select-sm tipo-red-select">
+                    <option value="">Seleccionar</option>
+                    <option value="facebook">Facebook</option>
+                    <option value="instagram">Instagram</option>
+                    <option value="pagina_web">Página Web</option>
+                </select>
+            </div>
+            <div class="col-6">
+                <input type="url" name="redes_sociales[${redesSocialesIndex}][url_red]" 
+                       class="form-control form-control-sm url-red-input" 
+                       placeholder="https://...">
+            </div>
+            <div class="col-2 text-end">
+                <button type="button" class="btn btn-danger btn-sm btn-eliminar-red">
+                    <i class="uil uil-trash-alt"></i>
+                </button>
+            </div>
+        </div>
+    `;
+    
+    container.appendChild(nuevaRed);
+    
+    // Configurar event listeners para la nueva red
+    const nuevoSelect = nuevaRed.querySelector('.tipo-red-select');
+    const nuevoInput = nuevaRed.querySelector('.url-red-input');
+    const nuevoBotonEliminar = nuevaRed.querySelector('.btn-eliminar-red');
+    
+    if (nuevoSelect) {
+        nuevoSelect.addEventListener('change', actualizarPreviewRedes);
+    }
+    
+    if (nuevoInput) {
+        nuevoInput.addEventListener('input', actualizarPreviewRedes);
+    }
+    
+    if (nuevoBotonEliminar) {
+        nuevoBotonEliminar.addEventListener('click', function(e) {
+            e.preventDefault();
+            eliminarRedSocialConEventListeners(this);
+        });
+    }
+    
+    redesSocialesIndex++;
+    console.log('Nueva red social agregada, índice actual:', redesSocialesIndex);
+    
+    // Animación de entrada
+    nuevaRed.style.opacity = '0';
+    setTimeout(() => {
+        nuevaRed.style.transition = 'opacity 0.3s ease';
+        nuevaRed.style.opacity = '1';
+    }, 10);
+}
+
+// NUEVA FUNCIÓN PARA ELIMINAR RED SOCIAL CON EVENT LISTENERS
+function eliminarRedSocialConEventListeners(button) {
+    console.log('Eliminando red social');
+    const redSocialItem = button.closest('.red-social-item');
+    
+    // Animación de salida
+    redSocialItem.style.transition = 'opacity 0.3s ease';
+    redSocialItem.style.opacity = '0';
+    
+    setTimeout(() => {
+        redSocialItem.remove();
+        actualizarPreviewRedes();
+        
+        // Si no quedan redes, mostrar mensaje
+        const container = document.getElementById('redes-sociales-container');
+        if (container && container.querySelectorAll('.red-social-item').length === 0) {
+            container.innerHTML = `
+                <div class="text-muted text-center py-3" id="mensaje-sin-redes">
+                    <i class="uil uil-link-add fs-2"></i>
+                    <p class="mb-0">No hay redes sociales configuradas</p>
+                    <small class="text-muted">Haz clic en "Agregar Red Social" para comenzar</small>
+                </div>
+            `;
+        }
+    }, 300);
+}
+
+// FUNCIÓN PARA CONFIGURAR BOTONES ELIMINAR EXISTENTES
+function configurarBotonesEliminar() {
+    const botonesEliminar = document.querySelectorAll('.btn-eliminar-red');
+    console.log('Configurando botones eliminar existentes:', botonesEliminar.length);
+    
+    botonesEliminar.forEach((boton, index) => {
+        // Remover event listeners anteriores si existen
+        boton.replaceWith(boton.cloneNode(true));
+        const nuevoBoton = document.querySelectorAll('.btn-eliminar-red')[index];
+        
+        nuevoBoton.addEventListener('click', function(e) {
+            e.preventDefault();
+            console.log('Click en eliminar red existente');
+            eliminarRedSocialConEventListeners(this);
+        });
+    });
+}
+
+// FUNCIÓN PARA CONFIGURAR EVENTOS DE REDES SOCIALES EXISTENTES
+function configurarEventosRedesSociales() {
+    const tipoSelects = document.querySelectorAll('select[name*="tipo_red"]');
+    const urlInputs = document.querySelectorAll('input[name*="url_red"]');
+    
+    console.log('Configurando selects existentes:', tipoSelects.length);
+    console.log('Configurando inputs existentes:', urlInputs.length);
+    
+    tipoSelects.forEach(select => {
+        // Clonar para remover event listeners anteriores
+        const nuevoSelect = select.cloneNode(true);
+        select.parentNode.replaceChild(nuevoSelect, select);
+        nuevoSelect.addEventListener('change', actualizarPreviewRedes);
+    });
+    
+    urlInputs.forEach(input => {
+        // Clonar para remover event listeners anteriores
+        const nuevoInput = input.cloneNode(true);
+        input.parentNode.replaceChild(nuevoInput, input);
+        nuevoInput.addEventListener('input', actualizarPreviewRedes);
+    });
 }
 
 document.addEventListener("DOMContentLoaded", () => {

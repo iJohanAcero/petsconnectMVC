@@ -25,6 +25,9 @@ class PerfilController
     public function editar()
     {
         try {
+            // Asegurar que la respuesta sea JSON
+            header('Content-Type: application/json');
+
             $id = $_POST['id'] ?? $this->id_usuario;
             $nombre = $_POST['nombre'] ?? '';
             $descripcion = $_POST['descripcion'] ?? '';
@@ -58,12 +61,22 @@ class PerfilController
             $resultadoFundacion = $this->perfilModel->actualizarPerfilFundacion($id, $nombre, $descripcion, $preferencia, $imagen, $redes_sociales);
 
             if ($resultadoGuardian || $resultadoFundacion) {
-                echo json_encode('Perfil actualizado correctamente.');
+                echo json_encode([
+                    'success' => true,
+                    'message' => 'Perfil actualizado correctamente.'
+                ]);
             } else {
-                echo json_encode('Error al actualizar el perfil.');
+                echo json_encode([
+                    'success' => false,
+                    'message' => 'Error al actualizar el perfil.'
+                ]);
             }
         } catch (Exception $e) {
-            echo json_encode('Error: ' . $e->getMessage());
+            header('Content-Type: application/json');
+            echo json_encode([
+                'success' => false,
+                'message' => 'Error: ' . $e->getMessage()
+            ]);
         }
     }
 }

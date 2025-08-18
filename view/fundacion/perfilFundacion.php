@@ -90,7 +90,7 @@ $perfil = $perfil->getPerfilPorUsuario($id_usuario);
     </section>
 
     <!-- Información Detallada -->
-    <section class="py-4" >
+    <section class="py-4">
         <div class="container-fluid " style="width: 60vw;">
             <div class="row">
                 <!-- Columna Principal -->
@@ -186,28 +186,48 @@ $perfil = $perfil->getPerfilPorUsuario($id_usuario);
                     </div>
 
                     <!-- Redes Sociales -->
-                    <div class="card border-0 shadow-sm mb-3">
-                        <div class="card-body p-3">
-                            <h5 class="card-title mb-3">
-                                <i class="fas fa-share-alt text-primary me-2"></i>
-                                Síguenos
-                            </h5>
-                            <div class="d-flex gap-2">
-                                <a href="#" class="btn btn-outline-primary btn-sm flex-fill text-center">
-                                    <i class="fab fa-facebook-f"></i>
-                                </a>
-                                <a href="#" class="btn btn-outline-danger btn-sm flex-fill text-center">
-                                    <i class="fab fa-instagram"></i>
-                                </a>
-                                <a href="#" class="btn btn-outline-info btn-sm flex-fill text-center">
-                                    <i class="fab fa-twitter"></i>
-                                </a>
-                                <a href="#" class="btn btn-outline-success btn-sm flex-fill text-center">
-                                    <i class="fab fa-whatsapp"></i>
-                                </a>
+                    <?php if (isset($perfil['redes_sociales']) && !empty($perfil['redes_sociales'])): ?>
+                        <div class="card border-0 shadow-sm mb-3">
+                            <div class="card-body p-3">
+                                <h5 class="card-title mb-3">
+                                    <i class="fas fa-share-alt text-primary me-2"></i>
+                                    Síguenos
+                                </h5>
+                                <div class="d-flex gap-2">
+                                    <?php foreach ($perfil['redes_sociales'] as $red): ?>
+                                        <?php
+                                        // Definir clases y iconos según el tipo de red
+                                        $claseBoton = '';
+                                        $icono = '';
+                                        switch ($red['tipo_red']) {
+                                            case 'facebook':
+                                                $claseBoton = 'btn-outline-primary';
+                                                $icono = 'fab fa-facebook-f';
+                                                break;
+                                            case 'instagram':
+                                                $claseBoton = 'btn-outline-danger';
+                                                $icono = 'fab fa-instagram';
+                                                break;
+                                            case 'pagina_web':
+                                                $claseBoton = 'btn-outline-info';
+                                                $icono = 'fas fa-globe';
+                                                break;
+                                            default:
+                                                $claseBoton = 'btn-outline-secondary';
+                                                $icono = 'fas fa-link';
+                                        }
+                                        ?>
+                                        <a href="<?= htmlspecialchars($red['url_red']) ?>"
+                                            target="_blank"
+                                            class="btn <?= $claseBoton ?> btn-sm flex-fill text-center"
+                                            title="<?= ucfirst($red['tipo_red']) ?>">
+                                            <i class="<?= $icono ?>"></i>
+                                        </a>
+                                    <?php endforeach; ?>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    <?php endif; ?>
                 </div>
             </div>
         </div>

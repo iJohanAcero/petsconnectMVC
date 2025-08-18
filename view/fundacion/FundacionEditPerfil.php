@@ -128,33 +128,32 @@ if (!$perfil || empty($perfil)) {
                                             <div id="redes-sociales-container">
                                                 <?php if (isset($perfil['redes_sociales']) && !empty($perfil['redes_sociales'])): ?>
                                                     <?php foreach ($perfil['redes_sociales'] as $index => $red): ?>
+
                                                         <div class="red-social-item border p-3 mb-3 rounded bg-white" data-index="<?= $index ?>">
                                                             <div class="row align-items-center">
                                                                 <div class="col-4">
                                                                     <select name="redes_sociales[<?= $index ?>][tipo_red]"
-                                                                        class="form-select form-select-sm"
-                                                                        onchange="actualizarPreviewRedes()">
+                                                                        class="form-select form-select-sm tipo-red-select">
                                                                         <option value="">Seleccionar</option>
                                                                         <option value="facebook" <?= $red['tipo_red'] == 'facebook' ? 'selected' : '' ?>>
-                                                                            📘 Facebook
+                                                                            Facebook
                                                                         </option>
                                                                         <option value="instagram" <?= $red['tipo_red'] == 'instagram' ? 'selected' : '' ?>>
-                                                                            📷 Instagram
+                                                                            Instagram
                                                                         </option>
                                                                         <option value="pagina_web" <?= $red['tipo_red'] == 'pagina_web' ? 'selected' : '' ?>>
-                                                                            🌐 Página Web
+                                                                            Página Web
                                                                         </option>
                                                                     </select>
                                                                 </div>
                                                                 <div class="col-6">
                                                                     <input type="url" name="redes_sociales[<?= $index ?>][url_red]"
-                                                                        class="form-control form-control-sm"
+                                                                        class="form-control form-control-sm url-red-input"
                                                                         placeholder="https://..."
-                                                                        value="<?= htmlspecialchars($red['url_red']) ?>"
-                                                                        onchange="actualizarPreviewRedes()">
+                                                                        value="<?= htmlspecialchars($red['url_red']) ?>">
                                                                 </div>
                                                                 <div class="col-2 text-end">
-                                                                    <button type="button" class="btn btn-danger btn-sm" onclick="eliminarRedSocial(this)">
+                                                                    <button type="button" class="btn btn-danger btn-sm btn-eliminar-red">
                                                                         <i class="uil uil-trash-alt"></i>
                                                                     </button>
                                                                 </div>
@@ -162,15 +161,17 @@ if (!$perfil || empty($perfil)) {
                                                         </div>
                                                     <?php endforeach; ?>
                                                 <?php else: ?>
-                                                    <div class="text-muted text-center py-3">
+                                                    <div class="text-muted text-center py-3" id="mensaje-sin-redes">
                                                         <i class="uil uil-link-add fs-2"></i>
                                                         <p class="mb-0">No hay redes sociales configuradas</p>
+                                                        <small class="text-muted">Haz clic en "Agregar Red Social" para comenzar</small>
                                                     </div>
                                                 <?php endif; ?>
                                             </div>
 
-                                            <div class="text-center">
-                                                <button type="button" class="btn btn-success btn-sm" onclick="agregarRedSocial()">
+                                            <!-- BOTÓN AGREGAR RED SOCIAL -->
+                                            <div class="text-center mt-3">
+                                                <button type="button" class="btn btn-success btn-sm" id="btn-agregar-red">
                                                     <i class="uil uil-plus"></i> Agregar Red Social
                                                 </button>
                                             </div>
@@ -270,14 +271,6 @@ if (!$perfil || empty($perfil)) {
 
     <!-- Los scripts de Bootstrap se mantienen -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
-    <!-- Inicializar el índice de redes sociales para JavaScript -->
-    <script>
-        // Solo necesitas pasar el valor inicial al archivo JS
-        if (window.redesSocialesIndex === undefined) {
-            window.redesSocialesIndex = <?= isset($perfil['redes_sociales']) ? count($perfil['redes_sociales']) : 0 ?>;
-        }
-    </script>
 </body>
 
 </html>
