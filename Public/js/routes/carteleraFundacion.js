@@ -188,8 +188,265 @@ function inicializarEventosCartas() {
     });
 }
 
+// Función para ver detalles de la fundación en modal
 function verDetallesFundacion(idPerfil) {
-    window.location.href = `/petsconnectMVC/view/fundacion/perfilFundacion.php?id=${idPerfil}`;
+    // Mostrar loading en el modal
+    const modalBody = document.getElementById('contenido-perfil-fundacion');
+    modalBody.innerHTML = `
+        <div class="text-center py-4">
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Cargando...</span>
+            </div>
+            <p class="mt-2">Cargando información de la fundación...</p>
+        </div>
+    `;
+
+    // Mostrar el modal
+    const modal = new bootstrap.Modal(document.getElementById('modal-perfil-fundacion'));
+    modal.show();
+
+    // Hacer petición AJAX para obtener los datos del perfil
+    fetch(`${window.BASE_URL}/Controller/Perfil/perfilController.php?action=getPerfilPorId&id=${idPerfil}`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                mostrarPerfilEnModal(data.perfil);
+            } else {
+                mostrarErrorEnModal('No se pudo cargar la información de la fundación');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            mostrarErrorEnModal('Error al cargar la información');
+        });
+}
+
+// Función para mostrar el perfil en el modal
+function mostrarPerfilEnModal(perfil) {
+    const nombreImagen = perfil.imagen || 'default.jpg';
+    const rutaImagen = `${window.BASE_URL}/Public/images/perfil/${nombreImagen}`;
+
+    // Generar HTML de redes sociales
+    let redesSocialesHtml = '';
+    if (perfil.redes_sociales && perfil.redes_sociales.length > 0) {
+        redesSocialesHtml = `
+            <div class="card border-0 shadow-sm mb-3">
+                <div class="card-body p-3">
+                    <h5 class="card-title mb-3">
+                        <i class="fas fa-share-alt text-primary me-2"></i>
+                        Síguenos
+                    </h5>
+                    <div class="d-flex gap-2">
+                        ${perfil.redes_sociales.map(red => {
+                            let claseBoton = '';
+                            let icono = '';
+                            switch (red.tipo_red) {
+                                case 'facebook':
+                                    claseBoton = 'btn-outline-primary';
+                                    icono = 'fab fa-facebook-f';
+                                    break;
+                                case 'instagram':
+                                    claseBoton = 'btn-outline-danger';
+                                    icono = 'fab fa-instagram';
+                                    break;
+                                case 'pagina_web':
+                                    claseBoton = 'btn-outline-info';
+                                    icono = 'fas fa-globe';
+                                    break;
+                                default:
+                                    claseBoton = 'btn-outline-secondary';
+                                    icono = 'fas fa-link';
+                            }
+                            return `
+                                <a href="${red.url_red}"
+                                   target="_blank"
+                                   class="btn ${claseBoton} btn-sm flex-fill text-center"
+                                   title="${red.tipo_red.charAt(0).toUpperCase() + red.tipo_red.slice(1)}">
+                                    <i class="${icono}"></i>
+                                </a>
+                            `;
+                        }).join('')}
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+
+    const contenidoModal = `
+        <!-- Header Section -->
+        <section class="py-4 bg-white shadow-sm mb-3"">
+            <div class="container-fluid px-3">
+
+                <!-- Información Principal -->
+                <div class="row align-items-center mb-4">
+                    <div class="col-md-2 text-center mb-3 mb-md-0">
+                        <img src="${rutaImagen}"
+                             alt="Logo de la fundación"
+                             class="rounded-circle border border-2 border-light shadow"
+                             style="width: 100px; height: 100px; object-fit: cover;">
+                    </div>
+                    <div class="col-md-7">
+                        <h1 class="h3 mb-2">${perfil.nombre}</h1>
+                        <div class="d-flex align-items-center text-muted small">
+                            <i class="fas fa-map-marker-alt me-2"></i>
+                            <span>${perfil.direccion}</span>
+                        </div>
+                    </div>
+                    <div class="col-md-3 text-md-end">
+                        <div class="d-flex flex-column flex-md-row gap-2">
+                            <!-- Aquí podrían ir botones adicionales si es necesario -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Stats Section -->
+        <section class="py-3 bg-white mt-2 shadow-sm mb-3"">
+            <div class="container-fluid px-3">
+                <div class="row text-center">
+                    <div class="col-4">
+                        <div class="p-2">
+                            <h4 class="mb-1 text-primary">0</h4>
+                            <p class="text-muted mb-0 small">Mascotas en adopción</p>
+                        </div>
+                    </div>
+                    <div class="col-4 border-start border-end">
+                        <div class="p-2">
+                            <h4 class="mb-1 text-success">0</h4>
+                            <p class="text-muted mb-0 small">Adopciones exitosas</p>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="p-2">
+                            <h4 class="mb-1 text-info">0</h4>
+                            <p class="text-muted mb-0 small">Años de experiencia</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Información Detallada -->
+        <section class="py-4">
+            <div class="container-fluid">
+                <div class="row">
+                    <!-- Columna Principal -->
+                    <div class="col-lg-8 mb-4">
+                        <!-- Sobre Nosotros -->
+                        <div class="card border-0 shadow-sm mb-3">
+                            <div class="card-body p-3">
+                                <h5 class="card-title mb-3">
+                                    <i class="fas fa-heart text-primary me-2"></i>
+                                    Sobre nosotros
+                                </h5>
+                                <p class="text-muted">
+                                    ${perfil.descripcion}
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Preferencias de Mascotas -->
+                        <div class="card border-0 shadow-sm mb-3">
+                            <div class="card-body p-3">
+                                <h5 class="card-title mb-3">
+                                    <i class="fas fa-star text-warning me-2"></i>
+                                    Especialidades
+                                </h5>
+                                <p class="text-muted">
+                                    ${perfil.preferencia}
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Mascotas en Adopción -->
+                        <div class="card border-0 shadow-sm mb-3">
+                            <div class="card-body p-3">
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <h5 class="card-title mb-0">
+                                        <i class="fas fa-paw text-primary me-2"></i>
+                                        Nuestras mascotas
+                                    </h5>
+                                    <button class="btn btn-outline-primary2 btn-sm">
+                                        Ver todas
+                                    </button>
+                                </div>
+
+                                <!-- Grid de mascotas - Espacio vacío para la lógica -->
+                                <div class="row g-3" id="mascotas-container">
+                                    <!-- Aquí se cargarán las mascotas dinámicamente -->
+                                    <div class="col-12 text-center py-4">
+                                        <div class="text-muted">
+                                            <i class="fas fa-paw fa-2x mb-3"></i>
+                                            <p>Las mascotas aparecerán aquí</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Sidebar -->
+                    <div class="col-lg-4">
+                        <!-- Información de Contacto -->
+                        <div class="card border-0 shadow-sm mb-3">
+                            <div class="card-body p-3">
+                                <h5 class="card-title mb-3">
+                                    <i class="fas fa-address-book text-primary me-2"></i>
+                                    Contacto
+                                </h5>
+                                <div class="mb-3">
+                                    <div class="d-flex align-items-center mb-2">
+                                        <i class="fas fa-envelope text-muted me-2"></i>
+                                        <small class="text-muted">Email</small>
+                                    </div>
+                                    <a href="mailto:${perfil.email}" class="text-decoration-none small">
+                                        ${perfil.email}
+                                    </a>
+                                </div>
+                                <div class="mb-3">
+                                    <div class="d-flex align-items-center mb-2">
+                                        <i class="fas fa-phone text-muted me-2"></i>
+                                        <small class="text-muted">Teléfono</small>
+                                    </div>
+                                    <a href="tel:${perfil.telefono}" class="text-decoration-none small">
+                                        ${perfil.telefono}
+                                    </a>
+                                </div>
+                                <div class="mb-3">
+                                    <div class="d-flex align-items-center mb-2">
+                                        <i class="fas fa-map-marker-alt text-muted me-2"></i>
+                                        <small class="text-muted">Ubicación</small>
+                                    </div>
+                                    <span class="text-muted small">${perfil.direccion}</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Redes Sociales -->
+                        ${redesSocialesHtml}
+                    </div>
+                </div>
+            </div>
+        </section>
+    `;
+
+    document.getElementById('contenido-perfil-fundacion').innerHTML = contenidoModal;
+}
+
+// Función para mostrar error en el modal
+function mostrarErrorEnModal(mensaje) {
+    const contenidoError = `
+        <div class="text-center py-4">
+            <div class="text-danger mb-3">
+                <i class="fas fa-exclamation-triangle fa-3x"></i>
+            </div>
+            <h5>Error al cargar</h5>
+            <p class="text-muted">${mensaje}</p>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+        </div>
+    `;
+    document.getElementById('contenido-perfil-fundacion').innerHTML = contenidoError;
 }
 
 // Función para contactar una fundación

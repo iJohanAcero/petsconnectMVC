@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 14-08-2025 a las 01:48:04
+-- Tiempo de generación: 19-08-2025 a las 03:21:28
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -112,6 +112,28 @@ VALUES (p_id_usuario, v_id_registro, v_id_perfil);
 
 END$$
 
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_agregar_red_social` (IN `p_id_perfil` INT, IN `p_tipo_red` VARCHAR(50), IN `p_url_red` VARCHAR(255))   BEGIN
+    -- Validar que el perfil exista
+    DECLARE v_perfil_existe INT;
+    SELECT COUNT(*) INTO v_perfil_existe FROM t_perfil WHERE id_perfil = p_id_perfil;
+    
+    IF v_perfil_existe = 0 THEN
+        SIGNAL SQLSTATE '45000' 
+        SET MESSAGE_TEXT = 'El perfil especificado no existe';
+    ELSE
+        -- Insertar red social
+        INSERT INTO t_perfil_redes (
+            id_perfil, 
+            tipo_red, 
+            url_red
+        ) VALUES (
+            p_id_perfil, 
+            p_tipo_red, 
+            p_url_red
+        );
+    END IF;
+END$$
+
 DELIMITER ;
 
 -- --------------------------------------------------------
@@ -156,9 +178,7 @@ CREATE TABLE `t_causa` (
 --
 
 INSERT INTO `t_causa` (`id_causa`, `nombre`, `descripcion`, `meta`, `estado_causa`, `fecha_creacion`, `nit_fundacion`, `imagen_url`, `tipo_causa`) VALUES
-(11, 'asddas', 'dasdasd', 1232312.00, 'activa', '2025-08-09 06:02:22', '<br />\r\n<b>Warning</', '6896c84e60744_Collage_of_Six_Cats-02.jpg', 'alimentación'),
-(13, 'aa', 'aa', 22.00, 'en pausa', '2025-08-09 06:38:19', '<br />\r\n<b>Warning</', '6896d0bb341f5_english_will.jpg', 'alimentación'),
-(15, 'aaaaa2222aaaaa', 'asdda11111123123', 121.00, 'en pausa', '2025-08-09 23:21:20', '11111', '6897c7c593dd0_images.jpg', 'medicamentos');
+(15, 'a', 'a', 121.00, 'activa', '2025-08-09 23:21:20', '11111', '689d7d2877ff0_Collage_of_Six_Cats-02.jpg', 'medicamentos');
 
 -- --------------------------------------------------------
 
@@ -214,7 +234,6 @@ CREATE TABLE `t_fundacion` (
 --
 
 INSERT INTO `t_fundacion` (`nit_fundacion`, `nombre`, `id_usuario`, `id_perfil`) VALUES
-(2222, 'Huellitas', 35, 23),
 (11111, 'Fundacion1', 33, 21);
 
 -- --------------------------------------------------------
@@ -234,8 +253,7 @@ CREATE TABLE `t_guardian` (
 --
 
 INSERT INTO `t_guardian` (`id_registro`, `id_usuario`, `id_perfil`) VALUES
-(24, 32, 20),
-(26, 34, 22);
+(24, 32, 20);
 
 -- --------------------------------------------------------
 
@@ -270,6 +288,13 @@ CREATE TABLE `t_mascota` (
   `id_estado_adopcion` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Volcado de datos para la tabla `t_mascota`
+--
+
+INSERT INTO `t_mascota` (`id_mascota`, `nombre`, `edad_meses`, `sexo`, `imagen`, `id_tipo_mascota`, `nit_fundacion`, `id_estado_adopcion`) VALUES
+(333, 'Nano', 12, 'macho', '689d5bbb5786c_images.jpg', 13, 11111, 1);
+
 -- --------------------------------------------------------
 
 --
@@ -289,11 +314,30 @@ CREATE TABLE `t_perfil` (
 --
 
 INSERT INTO `t_perfil` (`id_perfil`, `nombre`, `preferencia`, `descripcion`, `imagen`) VALUES
-(20, 'Johan Acero', 'Gatos', 'me gustaria adoptar gatos en bogota', '686dfd7b0b3aa_gato.jpg'),
-(21, 'Funacion maaqioaaaa', 'Gatos', 'asdasdasddasaaaaaaaawwwwwwwww', '6897bcae791ec_english_will.jpg'),
-(22, 'Perfil Guardian', 'Ninguna', 'Auto-generado', 'default.jpg'),
+(20, 'Johan Acero', 'Todos los animales', 'me gustaria adoptar gatos en bogotaa', '68a2c12ee14a7_IMG_20231012_233339.jpg'),
+(21, 'Fundacion Valentina', 'Gatos', 'fundacion de gatos ', '68a25900d686b_gato.jpg'),
 (23, 'Perfil Fundación', '', '', 'fundacion_default.jpg'),
 (24, 'Perfil Fundación', '', '', 'fundacion_default.jpg');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `t_perfil_redes`
+--
+
+CREATE TABLE `t_perfil_redes` (
+  `id_red` int(11) NOT NULL,
+  `id_perfil` int(11) NOT NULL,
+  `tipo_red` varchar(50) NOT NULL,
+  `url_red` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `t_perfil_redes`
+--
+
+INSERT INTO `t_perfil_redes` (`id_red`, `id_perfil`, `tipo_red`, `url_red`) VALUES
+(46, 21, 'facebook', 'https://www.youtube.com/');
 
 -- --------------------------------------------------------
 
@@ -369,7 +413,6 @@ INSERT INTO `t_registro` (`id_registro`, `fecha`, `tipo_usuario`) VALUES
 (23, '2025-07-04', 'ADMIN'),
 (24, '2025-07-04', 'GUARDIAN'),
 (25, '2025-07-04', 'FUNDACION'),
-(26, '2025-07-09', 'GUARDIAN'),
 (27, '2025-07-09', 'FUNDACION'),
 (28, '2025-08-02', 'FUNDACION');
 
@@ -415,10 +458,8 @@ CREATE TABLE `t_usuario` (
 
 INSERT INTO `t_usuario` (`id_usuario`, `nombre`, `apellido`, `contrasena`, `email`, `direccion`, `telefono`, `google_id`) VALUES
 (31, 'Admin', 'pets', '$2y$10$kpFsZAIko71tAkZIlPRhvegAe./rAO1/8TPpK0cGZWngfvkwh8Ls.', 'admin@gmail.com', 'Bogotá', '123456', NULL),
-(32, 'Johan David', 'Acero', NULL, 'johanacero8@gmail.com', '', '', '110443786294827582324'),
-(33, 'Jhon', 'Doe', '$2y$10$hd0SPDHn1f5Ob312a.Es..tylEKiK55r22FWaHNae57s4TYGomfe6', 'fundacion@gmail.com', 'Bogotá', '111111', NULL),
-(34, 'jon', 'doe', '$2y$10$43jhNAA48Ak3NJJpHso0KudWVlZt4o44XeA6vc/wR8HUHzdJLCTSG', 'jon@gmail.com', 'bogota', '1312321', NULL),
-(35, 'andres', 'miranda', '$2y$10$D3iTjQQmNbyUgK9IC2yh0.zN.XR8FN256ac4vQGta0yvXzbxtdLum', 'mirandass222@gmail.com', 'bogota', '1233121', NULL);
+(32, 'Johan David', 'Acero Pirajan', NULL, 'johanacero8@gmail.com', '', '', '110443786294827582324'),
+(33, 'Jhon', 'Doe', '$2y$10$hd0SPDHn1f5Ob312a.Es..tylEKiK55r22FWaHNae57s4TYGomfe6', 'fundacion@gmail.com', 'Bogotá, calle12', '111111', NULL);
 
 --
 -- Índices para tablas volcadas
@@ -496,6 +537,13 @@ ALTER TABLE `t_perfil`
   ADD PRIMARY KEY (`id_perfil`);
 
 --
+-- Indices de la tabla `t_perfil_redes`
+--
+ALTER TABLE `t_perfil_redes`
+  ADD PRIMARY KEY (`id_red`),
+  ADD KEY `id_perfil` (`id_perfil`);
+
+--
 -- Indices de la tabla `t_proceso_adopcion`
 --
 ALTER TABLE `t_proceso_adopcion`
@@ -571,6 +619,12 @@ ALTER TABLE `t_informe`
 --
 ALTER TABLE `t_perfil`
   MODIFY `id_perfil` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+
+--
+-- AUTO_INCREMENT de la tabla `t_perfil_redes`
+--
+ALTER TABLE `t_perfil_redes`
+  MODIFY `id_red` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=47;
 
 --
 -- AUTO_INCREMENT de la tabla `t_proceso_adopcion`
@@ -657,6 +711,12 @@ ALTER TABLE `t_mascota`
   ADD CONSTRAINT `fk_id_tipo_mascota` FOREIGN KEY (`id_tipo_mascota`) REFERENCES `t_tipo_mascota` (`id_tipo_mascota`),
   ADD CONSTRAINT `fk_mascota_nit_fundacion` FOREIGN KEY (`nit_fundacion`) REFERENCES `t_fundacion` (`nit_fundacion`),
   ADD CONSTRAINT `t_mascota_ibfk_2` FOREIGN KEY (`id_estado_adopcion`) REFERENCES `t_estado_adopcion` (`id_estado_adopcion`) ON UPDATE CASCADE;
+
+--
+-- Filtros para la tabla `t_perfil_redes`
+--
+ALTER TABLE `t_perfil_redes`
+  ADD CONSTRAINT `t_perfil_redes_ibfk_1` FOREIGN KEY (`id_perfil`) REFERENCES `t_perfil` (`id_perfil`) ON DELETE CASCADE;
 
 --
 -- Filtros para la tabla `t_proceso_adopcion`

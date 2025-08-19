@@ -1,6 +1,7 @@
 <?php
 // Se requiere el archivo de conexión con la base de datos
 namespace App\Model\Publicacion;
+
 use App\Model\Conexion;
 use PDO;
 
@@ -36,7 +37,7 @@ class Publicacion
     {
         $rows = null;
         $statement = $this->db->prepare(
-                "SELECT p.*, f.nombre AS nombre_fundacion 
+            "SELECT p.*, f.nombre AS nombre_fundacion 
             FROM t_publicacion p
             INNER JOIN t_fundacion f ON p.nit_fundacion = f.nit_fundacion"
         );
@@ -96,14 +97,19 @@ class Publicacion
 
 
 
-    // MOSTRAR PUBLICACIONES RECIENTES EN EL INICIO
+
     public function getPublicacionesRecientes($limit, $offset)
     {
         $statement = $this->db->prepare(
-            "SELECT p.*, f.nombre AS nombre_fundacion 
+            "SELECT p.*, 
+                f.nombre AS nombre_fundacion, 
+                pr.imagen AS imagen_fundacion,
+                pr.descripcion AS descripcion_fundacion
          FROM t_publicacion p
          INNER JOIN t_fundacion f ON p.nit_fundacion = f.nit_fundacion
-         ORDER BY p.fecha DESC LIMIT :limit OFFSET :offset"
+         LEFT JOIN t_perfil pr ON f.id_perfil = pr.id_perfil
+         ORDER BY p.fecha DESC 
+         LIMIT :limit OFFSET :offset"
         );
         $statement->bindValue(':limit', (int)$limit, PDO::PARAM_INT);
         $statement->bindValue(':offset', (int)$offset, PDO::PARAM_INT);
@@ -116,11 +122,12 @@ class Publicacion
         return $rows;
     }
 
-    public function getPublicacionesPorFundacion($nit_fundacion) {
-    $sql = "SELECT * FROM t_publicacion WHERE nit_fundacion = :nit";
-    $statement = $this->db->prepare($sql);
-    $statement->bindParam(':nit', $nit_fundacion);
-    $statement->execute();
-    return $statement->fetchAll(PDO::FETCH_ASSOC);
-}
+    public function getPublicacionesPorFundacion($nit_fundacion)
+    {
+        $sql = "SELECT * FROM t_publicacion WHERE nit_fundacion = :nit";
+        $statement = $this->db->prepare($sql);
+        $statement->bindParam(':nit', $nit_fundacion);
+        $statement->execute();
+        return $statement->fetchAll(PDO::FETCH_ASSOC);
+    }
 }

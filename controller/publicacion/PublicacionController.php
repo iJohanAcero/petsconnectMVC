@@ -48,7 +48,6 @@ class PublicacionController
 
             $nombreImagen = uniqid() . '_' . basename($_FILES['imagen']['name']);
 
-            // Asegúrate que esta ruta es correcta para tu proyecto
             $directorioDestino = __DIR__ . '/../../Public/images/eventos_fundacion/';
 
             if (!is_dir($directorioDestino)) {

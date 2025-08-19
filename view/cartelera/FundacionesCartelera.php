@@ -18,7 +18,10 @@ $id_usuario = $_SESSION['user']['id_usuario'] ?? null;
 
 $fundaciones = $fundacion->getAllFundacionesCarrusel();
 ?>
-
+<!DOCTYPE html>
+<head>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+</head>
 <body class="">
     <div class="container my-5">
         <!-- Encabezado -->
@@ -86,6 +89,24 @@ $fundaciones = $fundacion->getAllFundacionesCarrusel();
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para mostrar perfil de fundación -->
+    <div class="modal fade" id="modal-perfil-fundacion" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        <i class="fas fa-building me-2"></i>
+                        Perfil de la Fundación
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-0" id="contenido-perfil-fundacion" style="max-height: 80vh; overflow-y: auto;">
+                    <!-- Se carga dinámicamente con JavaScript -->
                 </div>
             </div>
         </div>
