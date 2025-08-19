@@ -290,7 +290,6 @@ if (!isset($_SESSION["user"]) || $_SESSION["tipo_usuario"] !== "admin") {
 
         function cargarPublicaciones() {
             if (loading || finished) return;
-
             loading = true;
             $('#loader').show();
 
@@ -302,29 +301,54 @@ if (!isset($_SESSION["user"]) || $_SESSION["tipo_usuario"] !== "admin") {
                     if (Array.isArray(res) && res.length > 0) {
                         res.forEach(pub => {
                             $('#publicaciones-container').append(`
-                            <div class="card post-card mb-4 shadow-sm border-0">
-                                <div class="card-body">
-                                    <div class="d-flex justify-content-between align-items-center mb-2 flex-wrap">
-                                        <h4 class="card-title fw-bold mb-0">${pub.titulo}</h4>
-                                        <small class="text-primary fw-semibold">Fundación: ${pub.nombre_fundacion}</small>
-                                    </div>
-
-                                    ${pub.imagen ? `
-                                        <div class="post-image-container mb-3">
-                                            <img src="<?= Config::get('IMG_URL') ?>/eventos_fundacion/${pub.imagen}"
-                                                 class="img-fluid rounded-3 post-image"
-                                                 alt="Imagen publicación">
-                                        </div>` : ''}
-
-                                    <p class="text-muted mb-1">Descripción:</p>
-                                    <p class="card-text">${pub.contenido}</p>
-
-                                    <div class="text-end mt-3">
-                                        <small class="text-muted">${pub.fecha}</small>
+                        <div class="card mb-4 shadow-sm border-0 overflow-hidden" style="border-radius: 16px;">
+                            <!-- Header con información de la fundación -->
+                            <div class="card-header bg-white border-0 py-3">
+                                <div class="d-flex align-items-center justify-content-between">
+                                    <div class="d-flex align-items-center">
+                                        <div class="bg-primary rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 48px; height: 48px;">
+                                            <img src="<?= Config::get('IMG_URL') ?>/perfil/${pub.imagen_fundacion}" class="img-fluid rounded-circle" alt="Imagen fundación">
+                                        </div>
+                                        <div>
+                                            <h6 class="mb-0 fw-bold text-dark">${pub.nombre_fundacion}</h6>
+                                            <small class="text-muted">Fundación</small>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        `);
+
+                            <!-- Contenido principal -->
+                            <div class="card-body px-4 py-3">
+                                <!-- Título de la publicación -->
+                                <h5 class="card-title fw-bold mb-3 text-dark lh-base">${pub.titulo}</h5>
+                                
+                                <!-- Descripción -->
+                                <p class="card-text text-secondary lh-lg mb-3" style="font-size: 0.95rem;">${pub.contenido}</p>
+                            </div>
+
+                            <!-- Imagen (si existe) -->
+                            ${pub.imagen ? `
+                                <div class="position-relative">
+                                    <img src="<?= Config::get('IMG_URL') ?>/eventos_fundacion/${pub.imagen}"
+                                         class="card-img w-100"
+                                         style="height: 280px;"
+                                         alt="Imagen publicación">
+                                </div>
+                            ` : ''}
+
+                            <!-- Footer con acciones y fecha -->
+                            <div class="card-footer bg-white border-0 py-3">
+                                <div class="d-flex align-items-center justify-content-between">
+                                    
+                                    <!-- Fecha -->
+                                    <div class="d-flex align-items-center text-muted">
+                                        <i class="far fa-clock me-2"></i>
+                                        <small class="fw-medium">${pub.fecha}</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `);
                         });
                         page++;
                     } else {
