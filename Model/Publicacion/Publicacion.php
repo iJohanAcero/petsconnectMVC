@@ -1,6 +1,7 @@
 <?php
-// Se requiere el archivo de conexión con la base de datos
 namespace App\Model\Publicacion;
+
+require_once __DIR__ . '/../../vendor/autoload.php';
 
 use App\Model\Conexion;
 use PDO;
@@ -15,20 +16,19 @@ class Publicacion
     }
 
     // Registrar nuevo Publicacion
-    public function add($titulo, $contenido, $imagen, $fecha, $nit_fundacion)
+    public function add($titulo, $contenido, $imagen, $fecha, $nit_fundacion, $public_id = null)
     {
         $statement = $this->db->prepare("INSERT INTO t_publicacion 
-            (titulo, contenido, imagen, fecha, nit_fundacion)
-            VALUES (:titulo, :contenido, :imagen, :fecha, :nit_fundacion)");
+            (titulo, contenido, imagen, fecha, nit_fundacion, public_id)
+            VALUES (:titulo, :contenido, :imagen, :fecha, :nit_fundacion, :public_id)");
 
-        // Vincular los parámetros con los valores recibidos
         $statement->bindParam(':titulo', $titulo);
         $statement->bindParam(':contenido', $contenido);
         $statement->bindParam(':imagen', $imagen);
         $statement->bindParam(':fecha', $fecha);
         $statement->bindParam(':nit_fundacion', $nit_fundacion);
+        $statement->bindParam(':public_id', $public_id);
 
-        // ❌ Ya NO se redirige, solo se devuelve true/false
         return $statement->execute();
     }
 
@@ -48,39 +48,29 @@ class Publicacion
         return $rows;
     }
 
-    // Obtener Publicacion por ID
+    // ✅ CORREGIDO: Obtener Publicacion por ID (devuelve un solo array)
     public function getId($id)
     {
-        // Inicializa una variable para almacenar el resultado
-        $rows = null;
-
-        // Preparar la consulta SQL para seleccionar un Publicacion por ID
         $statement = $this->db->prepare("SELECT * FROM t_publicacion WHERE id_publicacion = :id");
-        // Vincular el parámetro :id con el valor recibido
         $statement->bindParam(':id', $id);
-        // Ejecutar la consulta
         $statement->execute();
-
-        // Iterar sobre los resultados y almacenarlos en el array $rows
-        while ($resultado = $statement->fetch()) {
-            $rows[] = $resultado;
-        }
-
-        // Devuelve el Publicacion encontrado
-        return $rows;
+        
+        // Devolver un solo registro, no un array de arrays
+        return $statement->fetch(PDO::FETCH_ASSOC);
     }
 
-    // Método para actualizar un Publicacion usando su ID
-    // Reemplaza el método update con este:
-    public function update($id, $titulo, $contenido)
+    // ✅ CORREGIDO: Método para actualizar - ahora incluye imagen
+    public function update($id, $titulo, $contenido, $imagen, $public_id = null)
     {
         $statement = $this->db->prepare("UPDATE t_publicacion 
-        SET titulo = :titulo, contenido = :contenido
+        SET titulo = :titulo, contenido = :contenido, imagen = :imagen, public_id = :public_id
         WHERE id_publicacion = :id");
 
         $statement->bindParam(':id', $id);
         $statement->bindParam(':titulo', $titulo);
         $statement->bindParam(':contenido', $contenido);
+        $statement->bindParam(':imagen', $imagen);
+        $statement->bindParam(':public_id', $public_id);
 
         return $statement->execute();
     }
@@ -91,12 +81,8 @@ class Publicacion
         $statement = $this->db->prepare("DELETE FROM t_publicacion WHERE id_publicacion = :id");
         $statement->bindParam(':id', $id);
 
-        return $statement->execute(); // Devuelve true o false
+        return $statement->execute();
     }
-
-
-
-
 
     public function getPublicacionesRecientes($limit, $offset)
     {

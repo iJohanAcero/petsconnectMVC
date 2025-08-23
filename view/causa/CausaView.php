@@ -78,12 +78,11 @@ if (isset($_SESSION["user"]["id_usuario"])) {
                                 <td><?php echo htmlspecialchars($Causa['nit_fundacion']); ?></td>
                                 <td>
                                     <?php if (!empty($Causa['imagen_url'])): ?>
-                                        <img
-                                            src="Public/images/causa/<?php echo htmlspecialchars($Causa['imagen_url']); ?>"
+                                        <img src="<?php echo htmlspecialchars($Causa['imagen_url']); ?>"
                                             alt="Imagen"
                                             class="img-thumbnail img-clickable"
                                             style="max-width: 200px; max-height: 200px;"
-                                            data-src="Public/images/causa/<?php echo htmlspecialchars($Causa['imagen_url']); ?>">
+                                            data-src="<?php echo htmlspecialchars($Causa['imagen_url']); ?>">
                                     <?php else: ?>
                                         Sin imagen
                                     <?php endif; ?>

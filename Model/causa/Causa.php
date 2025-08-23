@@ -17,11 +17,11 @@ class Causa
     }
 
     // Registrar nueva Causa
-    public function add($nombre, $descripcion, $meta, $estado_causa, $fecha_creacion, $nit_fundacion, $imagen_url, $tipo_causa)
+    public function add($nombre, $descripcion, $meta, $estado_causa, $fecha_creacion, $nit_fundacion, $imagen_url, $tipo_causa, $public_id = null)
     {
         $statement = $this->db->prepare("INSERT INTO t_causa 
-            (nombre, descripcion, meta, estado_causa, fecha_creacion, nit_fundacion, imagen_url, tipo_causa)
-            VALUES (:nombre, :descripcion, :meta, :estado_causa, :fecha_creacion, :nit_fundacion, :imagen_url, :tipo_causa)");
+            (nombre, descripcion, meta, estado_causa, fecha_creacion, nit_fundacion, imagen_url, tipo_causa, public_id)
+            VALUES (:nombre, :descripcion, :meta, :estado_causa, :fecha_creacion, :nit_fundacion, :imagen_url, :tipo_causa, :public_id)");
 
         $statement->bindParam(':nombre', $nombre);
         $statement->bindParam(':descripcion', $descripcion);
@@ -31,8 +31,8 @@ class Causa
         $statement->bindParam(':nit_fundacion', $nit_fundacion);
         $statement->bindParam(':imagen_url', $imagen_url);
         $statement->bindParam(':tipo_causa', $tipo_causa);
+        $statement->bindParam(':public_id', $public_id);
 
-        // ❌ Ya NO se redirige, solo se devuelve true/false
         return $statement->execute();
     }
 
@@ -40,7 +40,7 @@ class Causa
     public function getCausa()
     {
         $rows = [];
-        $statement = $this->db->prepare("SELECT id_causa, nombre, descripcion, meta, estado_causa, fecha_creacion, nit_fundacion, imagen_url, tipo_causa FROM t_causa");
+        $statement = $this->db->prepare("SELECT id_causa, nombre, descripcion, meta, estado_causa, fecha_creacion, nit_fundacion, imagen_url, tipo_causa, public_id FROM t_causa");
         $statement->execute();
         while ($resultado = $statement->fetch(PDO::FETCH_ASSOC)) {
             $rows[] = $resultado;
@@ -57,9 +57,8 @@ class Causa
         return $statement->fetch(PDO::FETCH_ASSOC);
     }
 
-    // Método para actualizar un Causa usando su ID
-    // Reemplaza el método update con este:
-    public function update($id_causa, $nombre, $descripcion, $meta, $estado_causa, $nit_fundacion, $imagen_url, $tipo_causa)
+    // Método para actualizar una Causa usando su ID
+    public function update($id_causa, $nombre, $descripcion, $meta, $estado_causa, $nit_fundacion, $imagen_url, $tipo_causa, $public_id = null)
     {
         $statement = $this->db->prepare("UPDATE t_causa SET
         nombre = :nombre,
@@ -68,7 +67,8 @@ class Causa
         estado_causa = :estado_causa,
         nit_fundacion = :nit_fundacion,
         imagen_url = :imagen_url,
-        tipo_causa = :tipo_causa
+        tipo_causa = :tipo_causa,
+        public_id = :public_id
         WHERE id_causa = :id_causa");
 
         $statement->bindParam(':id_causa', $id_causa);
@@ -79,6 +79,7 @@ class Causa
         $statement->bindParam(':nit_fundacion', $nit_fundacion);
         $statement->bindParam(':imagen_url', $imagen_url);
         $statement->bindParam(':tipo_causa', $tipo_causa);
+        $statement->bindParam(':public_id', $public_id);
 
         return $statement->execute();
     }
@@ -91,9 +92,6 @@ class Causa
 
         return $statement->execute(); // Devuelve true o false
     }
-
-
-
 
     // MOSTRAR causa RECIENTES EN EL INICIO
     public function getcausaRecientes($limit, $offset)

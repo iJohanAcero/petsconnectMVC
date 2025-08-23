@@ -307,7 +307,7 @@ if (!isset($_SESSION["user"]) || $_SESSION["tipo_usuario"] !== "admin") {
                                 <div class="d-flex align-items-center justify-content-between">
                                     <div class="d-flex align-items-center">
                                         <div class="bg-primary rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 48px; height: 48px;">
-                                            <img src="<?= Config::get('IMG_URL') ?>/perfil/${pub.imagen_fundacion}" class="img-fluid rounded-circle" alt="Imagen fundación">
+                                            <img src="${pub.imagen_fundacion}" class="img-fluid rounded-circle" alt="Imagen fundación">
                                         </div>
                                         <div>
                                             <h6 class="mb-0 fw-bold text-dark">${pub.nombre_fundacion}</h6>
@@ -329,7 +329,7 @@ if (!isset($_SESSION["user"]) || $_SESSION["tipo_usuario"] !== "admin") {
                             <!-- Imagen (si existe) -->
                             ${pub.imagen ? `
                                 <div class="position-relative">
-                                    <img src="<?= Config::get('IMG_URL') ?>/eventos_fundacion/${pub.imagen}"
+                                    <img src="${pub.imagen}"
                                          class="card-img w-100"
                                          style="height: 280px;"
                                          alt="Imagen publicación">

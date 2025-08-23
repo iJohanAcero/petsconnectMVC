@@ -3,6 +3,7 @@
 namespace App\controller\causa;
 
 require_once __DIR__ . '/../../vendor/autoload.php';
+require_once __DIR__ . '/../../config/cloudinary.php'; // Incluir tu archivo de config
 
 use App\Model\Causa\Causa;
 
@@ -19,6 +20,25 @@ class CausaController
         $this->modeloCausa = new Causa();
     }
 
+    /**
+     * Validar archivo de imagen
+     */
+    private function validateImage($file)
+    {
+        $allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+        $maxSize = 5 * 1024 * 1024; // 5MB
+
+        if (!in_array($file['type'], $allowedTypes)) {
+            return ['valid' => false, 'error' => 'Tipo de archivo no permitido. Solo JPEG, PNG, GIF y WebP.'];
+        }
+
+        if ($file['size'] > $maxSize) {
+            return ['valid' => false, 'error' => 'El archivo es demasiado grande. Máximo 5MB.'];
+        }
+
+        return ['valid' => true];
+    }
+
     public function registrar()
     {
         $nombre = $_POST['nombre'] ?? '';
@@ -29,13 +49,30 @@ class CausaController
         $nit_fundacion = $_POST['nit_fundacion'] ?? '';
         $tipo_causa = $_POST['tipo_causa'] ?? '';
         $imagen_url = null;
+        $public_id = null;
 
         // Procesar imagen si se sube
         if (isset($_FILES['imagen']) && $_FILES['imagen']['error'] === UPLOAD_ERR_OK) {
-            $nombreImagen = uniqid() . '_' . basename($_FILES['imagen']['name']);
-            $rutaDestino = __DIR__ . '/../../Public/images/causa/' . $nombreImagen;
-            if (move_uploaded_file($_FILES['imagen']['tmp_name'], $rutaDestino)) {
-                $imagen_url = $nombreImagen;
+            // Validar imagen
+            $validation = $this->validateImage($_FILES['imagen']);
+            if (!$validation['valid']) {
+                echo "Error: " . $validation['error'];
+                return;
+            }
+
+            // Subir a Cloudinary usando la función global
+            $uploadResult = uploadImageToCloudinary(
+                $_FILES['imagen']['tmp_name'],
+                'causas',
+                null // public_id automático
+            );
+
+            if ($uploadResult['success']) {
+                $imagen_url = $uploadResult['url'];
+                $public_id = $uploadResult['public_id'];
+            } else {
+                echo "Error al subir imagen: " . $uploadResult['error'];
+                return;
             }
         }
 
@@ -47,7 +84,8 @@ class CausaController
             $fecha_creacion,
             $nit_fundacion,
             $imagen_url,
-            $tipo_causa
+            $tipo_causa,
+            $public_id
         );
 
         echo $resultado ? "Causa registrada correctamente" : "Error al registrar causa";
@@ -63,23 +101,38 @@ class CausaController
         $nit_fundacion = $_POST['nit_fundacion'] ?? '';
         $tipo_causa = $_POST['tipo_causa'] ?? '';
 
-        // Obtener la causa actual para conservar la imagen existente
+        // Obtener la causa actual para conservar datos existentes
         $causaActual = $this->modeloCausa->getId($id_causa);
         $imagen_url = $causaActual['imagen_url']; // Mantener la imagen actual por defecto
+        $public_id = $causaActual['public_id'] ?? null; // Mantener public_id actual
 
         // Procesar nueva imagen si se sube
         if (isset($_FILES['imagen']) && $_FILES['imagen']['error'] === UPLOAD_ERR_OK) {
-            $nombreImagen = uniqid() . '_' . basename($_FILES['imagen']['name']);
-            $rutaDestino = __DIR__ . '/../../Public/images/causa/' . $nombreImagen;
-            if (move_uploaded_file($_FILES['imagen']['tmp_name'], $rutaDestino)) {
-                $imagen_url = $nombreImagen;
-                // Opcional: eliminar la imagen anterior si existe
-                if (!empty($causaActual['imagen_url'])) {
-                    $imagenAnterior = __DIR__ . '/../../Public/images/causa/' . $causaActual['imagen_url'];
-                    if (file_exists($imagenAnterior)) {
-                        unlink($imagenAnterior);
-                    }
+            // Validar imagen
+            $validation = $this->validateImage($_FILES['imagen']);
+            if (!$validation['valid']) {
+                echo "Error: " . $validation['error'];
+                return;
+            }
+
+            // Subir nueva imagen a Cloudinary usando la función global
+            $uploadResult = uploadImageToCloudinary(
+                $_FILES['imagen']['tmp_name'],
+                'causas',
+                null 
+            );
+
+            if ($uploadResult['success']) {
+                // Eliminar imagen anterior de Cloudinary si existe
+                if (!empty($causaActual['public_id'])) {
+                    deleteImageFromCloudinary($causaActual['public_id']);
                 }
+
+                $imagen_url = $uploadResult['url'];
+                $public_id = $uploadResult['public_id'];
+            } else {
+                echo "Error al subir imagen: " . $uploadResult['error'];
+                return;
             }
         }
 
@@ -91,7 +144,8 @@ class CausaController
             $estado_causa,
             $nit_fundacion,
             $imagen_url,
-            $tipo_causa
+            $tipo_causa,
+            $public_id 
         );
 
         echo $resultado ? "Causa actualizada correctamente" : "Error al actualizar causa";
@@ -104,7 +158,18 @@ class CausaController
             echo "ID de causa no proporcionado";
             return;
         }
+
+        // Obtener datos de la causa antes de eliminar para limpiar Cloudinary
+        $causaActual = $this->modeloCausa->getId($id_causa);
+        
+        // Eliminar de la base de datos
         $resultado = $this->modeloCausa->delete($id_causa);
+        
+        // Si se eliminó correctamente, eliminar también de Cloudinary
+        if ($resultado && !empty($causaActual['public_id'])) {
+            deleteImageFromCloudinary($causaActual['public_id']);
+        }
+
         echo $resultado ? "Causa eliminada correctamente" : "Error al eliminar Causa";
     }
 }

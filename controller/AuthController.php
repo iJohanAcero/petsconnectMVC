@@ -272,12 +272,11 @@ class AuthController
     public function loginGoogle()
     {
         $client = new \Google_Client();
-        $client->setClientId('637931459042-873opva17515qd99c4dj51i6202jdqlf.apps.googleusercontent.com');
-        $client->setClientSecret('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');
-        $client->setRedirectUri('http://localhost/petsconnectmvc/index.php?action=google_callback');
+        $client->setClientId($_ENV['GOOGLE_CLIENT_ID']);
+        $client->setClientSecret($_ENV['GOOGLE_CLIENT_SECRET']);
+        $client->setRedirectUri($_ENV['GOOGLE_REDIRECT_URI']);
         $client->addScope('email');
         $client->addScope('profile');
-
         $login_url = $client->createAuthUrl();
         header('Location: ' . $login_url);
         exit;
@@ -287,20 +286,18 @@ class AuthController
     public function googleCallback()
     {
         $client = new \Google_Client();
-        $client->setClientId('637931459042-873opva17515qd99c4dj51i6202jdqlf.apps.googleusercontent.com');
-        $client->setClientSecret('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');
-        $client->setRedirectUri('http://localhost/petsconnectmvc/index.php?action=google_callback');
+        $client->setClientId($_ENV['GOOGLE_CLIENT_ID']);
+        $client->setClientSecret($_ENV['GOOGLE_CLIENT_SECRET']);
+        $client->setRedirectUri($_ENV['GOOGLE_REDIRECT_URI']);
 
         if (isset($_GET['code'])) {
             $token = $client->fetchAccessTokenWithAuthCode($_GET['code']);
-
             if (isset($token['error'])) {
                 echo "<h3>Error al obtener el token de Google:</h3>";
                 echo "<p><strong>Código:</strong> " . htmlspecialchars($token['error']) . "</p>";
                 echo "<p><strong>Descripción:</strong> " . htmlspecialchars($token['error_description'] ?? 'Sin descripción') . "</p>";
                 exit;
             }
-
             $client->setAccessToken($token['access_token']);
 
             // Obtener información del usuario

@@ -2,7 +2,9 @@
     "require": {
         "phpmailer/phpmailer": "^6.10",
         "league/oauth2-google": "^4.0",
-        "google/apiclient": "^2.18"
+        "google/apiclient": "^2.18",
+        "cloudinary/cloudinary_php": "^3.1",
+        "vlucas/phpdotenv": "^5.6"
     },
     "autoload": {
     "psr-4": {
@@ -15,5 +17,3 @@
     ]
 }
 }
-
-

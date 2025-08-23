@@ -5,6 +5,7 @@ namespace App;
 
 require_once __DIR__ . '/vendor/autoload.php';
 
+
 use App\Controller\usuario\UsuarioController;
 use App\Controller\publicacion\PublicacionController;
 use App\Controller\AuthController;
@@ -14,6 +15,23 @@ session_start();
 
 $action = $_GET['action'] ?? null;
 $controller = new UsuarioController();
+
+function loadEnv($path) {
+    if (!file_exists($path)) {
+        return;
+    }
+    
+    $lines = file($path, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+    foreach ($lines as $line) {
+        if (strpos($line, '=') !== false && strpos($line, '#') !== 0) {
+            list($name, $value) = explode('=', $line, 2);
+            $_ENV[trim($name)] = trim($value);
+        }
+    }
+}
+
+loadEnv(__DIR__ . '/.env');
+
 
 // --- Manejo de restablecimiento de contraseña ---
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'guardar_nueva_contrasena') {
