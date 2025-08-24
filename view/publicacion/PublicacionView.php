@@ -62,11 +62,11 @@ if (isset($_SESSION["user"]["id_usuario"])) {
                                 <td><?php echo htmlspecialchars($Publicacion['contenido']); ?></td>
                                 <td>
                                     <img
-                                        src="Public/images/eventos_fundacion/<?php echo htmlspecialchars($Publicacion['imagen']); ?>"
+                                        src="<?php echo htmlspecialchars($Publicacion['imagen']); ?>"
                                         alt="Imagen"
                                         class="img-thumbnail img-clickable"
                                         style="max-width: 200px; max-height: 200px;"
-                                        data-src="Public/images/eventos_fundacion/<?php echo htmlspecialchars($Publicacion['imagen']); ?>">
+                                        data-src="<?php echo htmlspecialchars($Publicacion['imagen']); ?>">
                                 </td>
                                 <td><?php echo htmlspecialchars($Publicacion['fecha']); ?></td>
                                 <td><?php echo $Publicacion['nit_fundacion']; ?></td>

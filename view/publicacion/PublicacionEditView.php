@@ -11,16 +11,34 @@ if (!isset($_GET['id'])) {
     exit;
 }
 
-$id = $_GET['id']; // Ojo: era `$Id`, pero luego se usa `$id` en getId. Uniformamos.
-$publicacion = $Modelo->getId($id);
+$id = $_GET['id'];
+$resultado = $Modelo->getId($id);
 
-// Si no se encuentra el Publicacion con ese ID, se avisa y se detiene
-if (!$publicacion || empty($publicacion)) {
-    echo "publicacion no encontrado.";
+// Verificar si se obtuvieron datos
+if (!$resultado || empty($resultado)) {
+    echo "Publicacion no encontrada.";
     exit;
 }
 
-$publicacion = $publicacion[0]; // Tomamos el primer registro si viene en forma de arreglo
+// Verificar el formato de los datos retornados
+if (is_array($resultado) && isset($resultado[0])) {
+    // Si viene como array de arrays
+    $publicacion = $resultado[0];
+} elseif (is_array($resultado) && isset($resultado['id_publicacion'])) {
+    // Si viene como array asociativo directo
+    $publicacion = $resultado;
+} else {
+    echo "Formato de datos inválido.";
+    exit;
+}
+
+// Verificar que tenemos los campos necesarios
+if (!isset($publicacion['id_publicacion']) || 
+    !isset($publicacion['titulo']) || 
+    !isset($publicacion['contenido'])) {
+    echo "Datos de publicacion incompletos.";
+    exit;
+}
 ?>
 
 <form id="form-editar-publicacion" method="POST" enctype="multipart/form-data">
@@ -37,7 +55,7 @@ $publicacion = $publicacion[0]; // Tomamos el primer registro si viene en forma 
             <div class="col-md-12 mb-3">
                 <label for="titulo" class="form-label">Título <span class="text-danger">*</span></label>
                 <input type="text" class="form-control" id="titulo" name="titulo" 
-                    value="<?php echo htmlspecialchars($publicacion['titulo']); ?>" required>
+                    value="<?php echo htmlspecialchars($publicacion['titulo'] ?? ''); ?>" required>
             </div>
         </div>
 
@@ -45,7 +63,7 @@ $publicacion = $publicacion[0]; // Tomamos el primer registro si viene en forma 
             <div class="col-md-12 mb-3">
                 <label for="contenido" class="form-label">Contenido <span class="text-danger">*</span></label>
                 <textarea class="form-control" id="contenido" name="contenido" rows="4" required><?php 
-                    echo htmlspecialchars($publicacion['contenido']); 
+                    echo htmlspecialchars($publicacion['contenido'] ?? ''); 
                 ?></textarea>
             </div>
         </div>
@@ -57,7 +75,7 @@ $publicacion = $publicacion[0]; // Tomamos el primer registro si viene en forma 
             <figure class="publicacion-img-container">
                 <?php
                 $nombreImagen = !empty($publicacion['imagen']) ? $publicacion['imagen'] : 'no-image.png';
-                $rutaImagen = "/petsconnectMVC/Public/images/eventos_fundacion/" . htmlspecialchars($nombreImagen);
+                $rutaImagen = htmlspecialchars($nombreImagen);
                 ?>
                 <img id="preview-imagen"
                     src="<?php echo $rutaImagen; ?>"
@@ -78,5 +96,3 @@ $publicacion = $publicacion[0]; // Tomamos el primer registro si viene en forma 
         </button>
     </div>
 </form>
-
-

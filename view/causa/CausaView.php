@@ -121,7 +121,7 @@ if (isset($_SESSION["user"]["id_usuario"])) {
                 </div>
                 <div class="modal-body">
                     <!-- ✅ Formulario sin method ni action -->
-                    <form id="form-registrar-causa" method="POST" enctype="multipart/form-data" action="../../controller/causa/CausaController.php">
+                    <form id="form-registrar-causa" method="POST" enctype="multipart/form-data">
                         <input type="hidden" name="accion" value="registrar">
                         <div class="mb-3">
                             <label for="nombre" class="form-label">Nombre</label>

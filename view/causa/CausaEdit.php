@@ -104,7 +104,7 @@ if (!$causa || empty($causa)) {
             <figure class="causa-img-container">
                 <?php
                 $nombreImagen = !empty($causa['imagen_url']) ? $causa['imagen_url'] : 'default.jpg';
-                $rutaImagen = "/petsconnectMVC/Public/images/causa/" . htmlspecialchars($nombreImagen);
+                $rutaImagen = htmlspecialchars($nombreImagen);
                 ?>
                 <img id="preview-imagen"
                     src="<?php echo $rutaImagen; ?>"
