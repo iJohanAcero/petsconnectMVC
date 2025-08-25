@@ -33,22 +33,22 @@ function generarUrlCloudinary(publicId, transformaciones = '') {
     
     // Verificar si ya es una URL completa de Cloudinary
     if (publicId.includes('res.cloudinary.com')) {
-        // Si ya es una URL completa, solo agregar transformaciones si no las tiene
+
         if (transformaciones && !publicId.includes('w_')) {
-            // Insertar transformaciones después de '/upload/'
+
             return publicId.replace('/upload/', `/upload/${transformaciones}/`);
         }
-        // Si ya tiene transformaciones o no se requieren, devolver tal como está
+
         return publicId;
     }
     
     // Tu cloud name de Cloudinary
     const CLOUDINARY_CLOUD_NAME = 'dhyowmhw6';
     
-    // Limpiar el public_id (remover extensión si existe)
+
     const cleanPublicId = publicId.replace(/\.(jpg|jpeg|png|gif|webp)$/i, '');
     
-    // Construir URL de Cloudinary
+
     let url = `https://res.cloudinary.com/${CLOUDINARY_CLOUD_NAME}/image/upload/`;
     
     if (transformaciones) {

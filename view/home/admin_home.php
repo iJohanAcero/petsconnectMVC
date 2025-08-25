@@ -145,7 +145,7 @@ if (!isset($_SESSION["user"]) || $_SESSION["tipo_usuario"] !== "admin") {
                     </a>
                 </li>
                 <li class="sidebar-item">
-                    <a href="" class="sidebar-link">
+                    <a href="#" class="sidebar-link">
                         <i class="uil uil-credit-card"></i>
                         <span class="sidebar-text">Donaciones</span>
                     </a>
@@ -222,7 +222,7 @@ if (!isset($_SESSION["user"]) || $_SESSION["tipo_usuario"] !== "admin") {
                             </a>
                             <ul id="crud-5" class="sidebar-dropdown list-unstyled collapse">
                                 <li class="sidebar-item">
-                                    <a href="" class="sidebar-link">
+                                    <a href="" class="sidebar-link" id="btn-cargar-donaciones">
                                         - Donaciones
                                     </a>
                                 </li>
@@ -275,12 +275,13 @@ if (!isset($_SESSION["user"]) || $_SESSION["tipo_usuario"] !== "admin") {
     <!-- SCRIPTS DE JS CRUDS Y RUTAS -->
     <script src="<?= Config::get('JS_URL') ?>/config.js"></script>
     <script src="<?= Config::get('JS_URL') ?>/main.js"></script>
+    <script src="<?= Config::get('JS_URL') ?>/crud/crud_donacion.js"></script>
     <script src="<?= Config::get('JS_URL') ?>/crud/crud_causa.js"></script>
     <script src="<?= Config::get('JS_URL') ?>/crud/crud_fundacion.js"></script>
     <script src="<?= Config::get('JS_URL') ?>/crud/crud_publicacion.js"></script>
-    <script src="<?= Config::get('JS_URL') ?>/routes/routes.js"></script>
     <script src="<?= Config::get('JS_URL') ?>/crud/crud_mascota.js"></script>
     <script src="<?= Config::get('JS_URL') ?>/crud/crud_guardian.js"></script>
+    <script src="<?= Config::get('JS_URL') ?>/routes/routes.js"></script>
     <script src="<?= Config::get('JS_URL') ?>/routes/carteleraFundacion.js"></script>
 
     <script>

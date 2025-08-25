@@ -253,31 +253,6 @@ $perfil = $perfil->getPerfilPorUsuario($id);
         let loading = false;
         let finished = false;
 
-        // Función para generar URL optimizada de Cloudinary
-        function optimizarImagenCloudinary(imagenUrl, transformaciones) {
-            if (!imagenUrl || imagenUrl.trim() === '') {
-                return generarImagenPorDefecto();
-            }
-
-            // Si ya es una URL completa de Cloudinary
-            if (imagenUrl.includes('res.cloudinary.com')) {
-                // Si ya tiene transformaciones, devolverla tal como está
-                if (imagenUrl.includes('w_')) {
-                    return imagenUrl;
-                }
-                // Si no tiene transformaciones, agregarlas
-                return imagenUrl.replace('/upload/', `/upload/${transformaciones}/`);
-            }
-
-            // Si no es URL de Cloudinary, devolverla tal como está
-            return imagenUrl;
-        }
-
-        // Función para imagen por defecto
-        function generarImagenPorDefecto() {
-            return "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='100'><rect width='100' height='100' fill='%23e9ecef'/><text x='50%' y='50%' text-anchor='middle' dy='.3em' fill='%236c757d' font-size='12'>Sin imagen</text></svg>";
-        }
-
         function cargarPublicaciones() {
             if (loading || finished) return;
             loading = true;
@@ -290,30 +265,14 @@ $perfil = $perfil->getPerfilPorUsuario($id);
                 success: function(res) {
                     if (Array.isArray(res) && res.length > 0) {
                         res.forEach(pub => {
-                            // 🔥 OPTIMIZAR IMÁGENES CON TRANSFORMACIONES ESPECÍFICAS
-                            const imagenFundacionOptimizada = optimizarImagenCloudinary(
-                                pub.imagen_fundacion,
-                                'w_48,h_48,c_fill,g_face,q_auto,f_auto'
-                            );
-
-                            const imagenPublicacionOptimizada = pub.imagen ?
-                                optimizarImagenCloudinary(
-                                    pub.imagen,
-                                    'w_800,h_280,c_fill,g_center,q_auto,f_auto'
-                                ) : null;
-
                             $('#publicaciones-container').append(`
                         <div class="card mb-4 shadow-sm border-0 overflow-hidden" style="border-radius: 16px;">
                             <!-- Header con información de la fundación -->
                             <div class="card-header bg-white border-0 py-3">
                                 <div class="d-flex align-items-center justify-content-between">
                                     <div class="d-flex align-items-center">
-                                        <div class="bg-light rounded-circle d-flex align-items-center justify-content-center me-3 overflow-hidden" style="width: 48px; height: 48px;">
-                                            <img src="${imagenFundacionOptimizada}" 
-                                                 class="w-100 h-100" 
-                                                 style="object-fit: cover;"
-                                                 alt="Imagen fundación"
-                                                 onerror="this.src='${generarImagenPorDefecto()}'">
+                                        <div class="bg-primary rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 48px; height: 48px;">
+                                            <img src="${pub.imagen_fundacion}" class="img-fluid rounded-circle" alt="Imagen fundación">
                                         </div>
                                         <div>
                                             <h6 class="mb-0 fw-bold text-dark">${pub.nombre_fundacion}</h6>
@@ -333,14 +292,12 @@ $perfil = $perfil->getPerfilPorUsuario($id);
                             </div>
 
                             <!-- Imagen (si existe) -->
-                            ${imagenPublicacionOptimizada ? `
-                                <div class="position-relative overflow-hidden">
-                                    <img src="${imagenPublicacionOptimizada}"
-                                         class="w-100"
-                                         style="height: 280px; object-fit: cover;"
-                                         alt="Imagen publicación"
-                                         loading="lazy"
-                                         onerror="this.style.display='none'">
+                            ${pub.imagen ? `
+                                <div class="position-relative">
+                                    <img src="${pub.imagen}"
+                                         class="card-img w-100"
+                                         style="height: 280px;"
+                                         alt="Imagen publicación">
                                 </div>
                             ` : ''}
 
