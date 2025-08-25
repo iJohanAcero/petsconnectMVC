@@ -7,7 +7,6 @@ use PDOException;
 use Exception;
 use PDO;
 
-
 class Perfil
 {
     private $db;
@@ -118,16 +117,17 @@ class Perfil
         return false;
     }
 
-    // Versión mejorada del método actualizarPerfilFundacion
-    public function actualizarPerfilFundacion($id, $nombre, $descripcion, $preferencia, $imagen, $redes_sociales = [])
+    // Versión mejorada del método actualizarPerfilFundacion con public_id
+    public function actualizarPerfilFundacion($id, $nombre, $descripcion, $preferencia, $imagen, $redes_sociales = [], $public_id = null)
     {
         try {
             $this->db->beginTransaction();
 
-            // Actualizar datos básicos del perfil
+            // Actualizar datos básicos del perfil con public_id
             $stmt = $this->db->prepare("
             UPDATE t_perfil
-            SET nombre = :nombre, descripcion = :descripcion, preferencia = :preferencia, imagen = :imagen
+            SET nombre = :nombre, descripcion = :descripcion, preferencia = :preferencia, 
+                imagen = :imagen, public_id = :public_id
             WHERE id_perfil = (
                 SELECT id_perfil FROM t_fundacion WHERE id_usuario = :id_usuario
             )
@@ -137,6 +137,7 @@ class Perfil
             $stmt->bindParam(':descripcion', $descripcion, PDO::PARAM_STR);
             $stmt->bindParam(':preferencia', $preferencia, PDO::PARAM_STR);
             $stmt->bindParam(':imagen', $imagen, PDO::PARAM_STR);
+            $stmt->bindParam(':public_id', $public_id, PDO::PARAM_STR);
 
             if (!$stmt->execute()) {
                 $this->db->rollBack();
@@ -220,16 +221,17 @@ class Perfil
         }
     }
 
-    // También actualiza el método para guardian
-    public function actualizarPerfilGuardian($id, $nombre, $descripcion, $preferencia, $imagen, $redes_sociales = [])
+    // Método actualizado para guardian con public_id
+    public function actualizarPerfilGuardian($id, $nombre, $descripcion, $preferencia, $imagen, $redes_sociales = [], $public_id = null)
     {
         try {
             $this->db->beginTransaction();
 
-            // Actualizar datos básicos del perfil
+            // Actualizar datos básicos del perfil con public_id
             $stmt = $this->db->prepare("
             UPDATE t_perfil
-            SET nombre = :nombre, descripcion = :descripcion, preferencia = :preferencia, imagen = :imagen
+            SET nombre = :nombre, descripcion = :descripcion, preferencia = :preferencia, 
+                imagen = :imagen, public_id = :public_id
             WHERE id_perfil = (
                 SELECT id_perfil FROM t_guardian WHERE id_usuario = :id_usuario
             )
@@ -239,6 +241,7 @@ class Perfil
             $stmt->bindParam(':descripcion', $descripcion, PDO::PARAM_STR);
             $stmt->bindParam(':preferencia', $preferencia, PDO::PARAM_STR);
             $stmt->bindParam(':imagen', $imagen, PDO::PARAM_STR);
+            $stmt->bindParam(':public_id', $public_id, PDO::PARAM_STR);
 
             if (!$stmt->execute()) {
                 $this->db->rollBack();
@@ -262,7 +265,30 @@ class Perfil
             return true;
         } catch (Exception $e) {
             $this->db->rollBack();
+            error_log("Error actualizando perfil guardián: " . $e->getMessage());
             return false;
+        }
+    }
+
+    // Método para eliminar perfil (si es necesario)
+    public function eliminarPerfil($id_usuario)
+    {
+        try {
+            $this->db->beginTransaction();
+
+            // Primero obtener el public_id antes de eliminar
+            $perfil = $this->getPerfilPorUsuario($id_usuario);
+            $public_id = $perfil['public_id'] ?? null;
+
+            // Lógica para eliminar el perfil según el tipo de usuario
+            // (debes implementar esto según tu estructura de base de datos)
+            
+            $this->db->commit();
+            return ['success' => true, 'public_id' => $public_id];
+        } catch (Exception $e) {
+            $this->db->rollBack();
+            error_log("Error eliminando perfil: " . $e->getMessage());
+            return ['success' => false, 'public_id' => null];
         }
     }
 }

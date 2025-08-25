@@ -228,7 +228,7 @@ if (!$perfil || empty($perfil)) {
                                     <figure class="perfil-img-container text-center mb-4">
                                         <?php
                                         $nombreImagen = !empty($perfil['imagen']) ? $perfil['imagen'] : 'default.jpg';
-                                        $rutaImagen = "/petsconnectMVC/Public/images/perfil/" . htmlspecialchars($nombreImagen);
+                                        $rutaImagen = htmlspecialchars($nombreImagen);
                                         ?>
                                         <img id="preview-imagen"
                                             src="<?= $rutaImagen ?>"

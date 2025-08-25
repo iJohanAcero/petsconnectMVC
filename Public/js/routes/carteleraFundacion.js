@@ -1,4 +1,4 @@
-// carteleraFundacion.js - Actualizado para manejo de cartas de fundaciones
+// carteleraFundacion.js - Actualizado para manejo de cartas de fundaciones con Cloudinary
 
 window.cargarCarteleraFundacion = function () {
     fetch("view/cartelera/FundacionesCartelera.php")
@@ -20,17 +20,56 @@ window.cargarCarteleraFundacion = function () {
             }
         })
         .catch(error => {
-            console.error("❌ Error al cargar PHP:", error);
+            console.error("⚠ Error al cargar PHP:", error);
             mostrarErrorCarga();
         });
 };
+
+// Función para generar URL de Cloudinary
+function generarUrlCloudinary(publicId, transformaciones = '') {
+    if (!publicId || publicId.trim() === '') {
+        return generarImagenPorDefecto();
+    }
+    
+    // Verificar si ya es una URL completa de Cloudinary
+    if (publicId.includes('res.cloudinary.com')) {
+        // Si ya es una URL completa, solo agregar transformaciones si no las tiene
+        if (transformaciones && !publicId.includes('w_')) {
+            // Insertar transformaciones después de '/upload/'
+            return publicId.replace('/upload/', `/upload/${transformaciones}/`);
+        }
+        // Si ya tiene transformaciones o no se requieren, devolver tal como está
+        return publicId;
+    }
+    
+    // Tu cloud name de Cloudinary
+    const CLOUDINARY_CLOUD_NAME = 'dhyowmhw6';
+    
+    // Limpiar el public_id (remover extensión si existe)
+    const cleanPublicId = publicId.replace(/\.(jpg|jpeg|png|gif|webp)$/i, '');
+    
+    // Construir URL de Cloudinary
+    let url = `https://res.cloudinary.com/${CLOUDINARY_CLOUD_NAME}/image/upload/`;
+    
+    if (transformaciones) {
+        url += `${transformaciones}/`;
+    }
+    
+    url += `${cleanPublicId}`;
+    
+    return url;
+}
+
+// Función para generar imagen por defecto
+function generarImagenPorDefecto() {
+    return "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='200'><rect width='300' height='200' fill='%23e9ecef'/><text x='50%' y='50%' text-anchor='middle' dy='.3em' fill='%236c757d' font-size='14'>Sin imagen</text></svg>";
+}
 
 function inicializarEventosCarteleraFundacion() {
     if (!document.getElementById('fundacionesContainer')) {
         console.warn("Elementos de cartelera no encontrados");
         return;
     }
-    
 }
 
 // Función para cargar fundaciones desde el backend
@@ -41,7 +80,7 @@ function cargarFundacionesDesdeBackend() {
 
     // Verificar que los elementos existan
     if (!loading || !fundacionesContainer || !mensajeVacio) {
-        console.error("❌ Elementos del DOM no encontrados para cartelera");
+        console.error("⚠ Elementos del DOM no encontrados para cartelera");
         return;
     }
 
@@ -56,7 +95,7 @@ function cargarFundacionesDesdeBackend() {
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
-            return response.text(); // Cambiar temporalmente a text() para ver qué devuelve
+            return response.text();
         })
         .then(data => {
             if (!data || data.trim() === '') {
@@ -72,7 +111,7 @@ function cargarFundacionesDesdeBackend() {
             }
         })
         .catch(error => {
-            console.error("❌ Error completo al cargar fundaciones:", error);
+            console.error("⚠ Error completo al cargar fundaciones:", error);
             mostrarErrorFundaciones();
         });
 }
@@ -101,17 +140,18 @@ function mostrarFundaciones(fundaciones) {
     animarEntradaCartas();
 }
 
-// Función para crear HTML de cada carta
+// Función para crear HTML de cada carta - ACTUALIZADA PARA CLOUDINARY
 function crearCartaFundacion(fundacion) {
     // Validar que la fundación tenga los campos necesarios
     const nombre = fundacion.nombre || 'Nombre no disponible';
     const descripcion = fundacion.descripcion || 'Descripción no disponible';
     const idPerfil = fundacion.id_perfil || fundacion.idPerfil || 0;
-    let imagenUrl = '';
-    if (fundacion.imagen && fundacion.imagen.trim() !== '') {
-        // Ajusta esta ruta según donde tengas guardadas las imágenes
-        imagenUrl = `${window.BASE_URL}/Public/images/perfil/${fundacion.imagen}`;
-    }
+    
+    // 🔥 CAMBIO PRINCIPAL: Usar Cloudinary para las imágenes
+    const imagenUrl = generarUrlCloudinary(
+        fundacion.imagen, 
+        'w_300,h_200,c_fill,g_center,q_auto,f_auto' // Transformaciones para optimizar
+    );
 
     return `
         <div class="col-lg-4 col-md-6 col-sm-12 ">
@@ -120,7 +160,7 @@ function crearCartaFundacion(fundacion) {
                     class="card-img-top" 
                     alt="${nombre}"
                     style="height: 200px; object-fit: cover;"
-                    onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22300%22 height=%22200%22><rect width=%22300%22 height=%22200%22 fill=%22%23e9ecef%22/><text x=%2250%%22 y=%2250%%22 text-anchor=%22middle%22 dy=%22.3em%22 fill=%22%236c757d%22 font-size=%2214%22>Sin imagen</text></svg>'">
+                    onerror="this.src='${generarImagenPorDefecto()}'">
                 
                 <div class="card-body d-flex flex-column">
                     <h5 class="card-title text-primary2 mb-3">
@@ -221,10 +261,13 @@ function verDetallesFundacion(idPerfil) {
         });
 }
 
-// Función para mostrar el perfil en el modal
+// Función para mostrar el perfil en el modal - ACTUALIZADA PARA CLOUDINARY
 function mostrarPerfilEnModal(perfil) {
-    const nombreImagen = perfil.imagen || 'default.jpg';
-    const rutaImagen = `${window.BASE_URL}/Public/images/perfil/${nombreImagen}`;
+    // 🔥 CAMBIO: Usar Cloudinary para la imagen del modal
+    const rutaImagen = generarUrlCloudinary(
+        perfil.imagen, 
+        'w_100,h_100,c_fill,g_face,q_auto,f_auto' // Transformaciones específicas para avatar
+    );
 
     // Generar HTML de redes sociales
     let redesSocialesHtml = '';
@@ -283,7 +326,8 @@ function mostrarPerfilEnModal(perfil) {
                         <img src="${rutaImagen}"
                              alt="Logo de la fundación"
                              class="rounded-circle border border-2 border-light shadow"
-                             style="width: 100px; height: 100px; object-fit: cover;">
+                             style="width: 100px; height: 100px; object-fit: cover;"
+                             onerror="this.src='${generarImagenPorDefecto()}'">
                     </div>
                     <div class="col-md-7">
                         <h1 class="h3 mb-2">${perfil.nombre}</h1>
@@ -449,7 +493,7 @@ function mostrarErrorEnModal(mensaje) {
     document.getElementById('contenido-perfil-fundacion').innerHTML = contenidoError;
 }
 
-// Función para contactar una fundación
+// Función para contactar una fundación - ACTUALIZADA PARA CLOUDINARY
 function contactarFundacion(idPerfil) {
     
     const modalContacto = document.getElementById('modalContacto');
@@ -489,13 +533,19 @@ function contactarFundacion(idPerfil) {
                 Contactar: ${fundacion.nombre || 'Fundación'}
             `;
             
+            // 🔥 CAMBIO: Usar Cloudinary para la imagen del modal de contacto
+            const imagenContactoUrl = generarUrlCloudinary(
+                fundacion.imagen, 
+                'w_80,h_80,c_fill,g_face,q_auto,f_auto'
+            );
+            
             modalContactoBody.innerHTML = `
                 <div class="text-center mb-4">
-                    <img src="Public/images/perfil/${fundacion.imagen}" 
+                    <img src="${imagenContactoUrl}" 
                          class="rounded-circle mb-3" 
                          alt="${fundacion.nombre}"
                          style="width: 80px; height: 80px; object-fit: cover;"
-                         onerror="this.style.display='none'">
+                         onerror="this.src='${generarImagenPorDefecto()}'">
                     <h4 class="text-primary2">${fundacion.nombre}</h4>
                 </div>
                 

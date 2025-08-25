@@ -167,7 +167,7 @@ if (!$perfil || empty($perfil)) {
                                         <div class="position-relative mb-4">
                                             <?php
                                             $nombreImagen = !empty($perfil['imagen']) ? $perfil['imagen'] : 'default.jpg';
-                                            $rutaImagen = "/petsconnectMVC/Public/images/perfil/" . htmlspecialchars($nombreImagen);
+                                            $rutaImagen = htmlspecialchars($nombreImagen);
                                             ?>
                                             <img id="preview-imagen"
                                                 src="<?= $rutaImagen ?>"

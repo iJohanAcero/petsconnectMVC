@@ -10,7 +10,7 @@ function cargarCrudMascota() {
             if (mainContainer) {
                 mainContainer.innerHTML = data;
                 
-            setTimeout(() => {
+                setTimeout(() => {
                     inicializarMascota();
                 }, 100);
             }
@@ -68,80 +68,39 @@ function inicializarMascota() {
     // ✅ BOTONES EDITAR
     const botonesEditar = document.querySelectorAll(".btn-editar-mascota");
 
-botonesEditar.forEach(btn => {
-    btn.addEventListener("click", function () {
-        const idMascota = this.dataset.id;
-        console.log("🔍 ID Mascota:", idMascota);
+    botonesEditar.forEach(btn => {
+        btn.addEventListener("click", function () {
+            const idMascota = this.dataset.id;
 
-        fetch(`view/mascota/MascotaEditView.php?id=${encodeURIComponent(idMascota)}`)
-            .then(response => {
-                console.log("📡 Response status:", response.status);
-                return response.text();
-            })
-            .then(html => {
-                console.log("📄 HTML recibido - Longitud:", html.length);
-                
-                const contenidoDiv = document.getElementById("contenido-editar");
-                if (!contenidoDiv) {
-                    console.error("❌ No se encontró #contenido-editar");
-                    return;
-                }
-                
-                contenidoDiv.innerHTML = html;
-                console.log("✅ HTML insertado en contenido-editar");
-                
-                // 🔧 SOLUCIÓN: Forzar la aparición del modal
-                const modalElement = document.getElementById("modal-editar-mascota");
-                if (!modalElement) {
-                    console.error("❌ No se encontró #modal-editar-mascota");
-                    return;
-                }
-                
-                // ⭐ CAMBIO CRÍTICO: Eliminar instancias previas
-                const existingModal = bootstrap.Modal.getInstance(modalElement);
-                if (existingModal) {
-                    existingModal.dispose();
-                }
-                
-                // ⭐ FORZAR LA VISUALIZACIÓN
-                modalElement.style.display = 'block';
-                modalElement.classList.add('show');
-                document.body.classList.add('modal-open');
-                
-                // Crear backdrop manualmente
-                let backdrop = document.querySelector('.modal-backdrop');
-                if (!backdrop) {
-                    backdrop = document.createElement('div');
-                    backdrop.className = 'modal-backdrop fade show';
-                    document.body.appendChild(backdrop);
-                }
-                
-                // Crear nueva instancia del modal
-                const modal = new bootstrap.Modal(modalElement, {
-                    backdrop: 'static',
-                    keyboard: false
-                });
-                
-                console.log("✅ Modal forzado a mostrarse");
+            fetch(`view/mascota/MascotaEditView.php?id=${encodeURIComponent(idMascota)}`)
+                .then(response => {
+                    if (!response.ok) throw new Error("No se pudo cargar el formulario de edición");
+                    return response.text();
+                })
+                .then(html => {
+                    document.getElementById("contenido-editar").innerHTML = html;
+                    const modalElement = document.getElementById("modal-editar-mascota");
+                    const modal = new bootstrap.Modal(modalElement);
+                    modal.show();
 
-                // Configurar el botón de cerrar
-                const btnCerrar = modalElement.querySelector('[data-bs-dismiss="modal"]');
-                if (btnCerrar) {
-                    btnCerrar.onclick = function() {
-                        modalElement.style.display = 'none';
-                        modalElement.classList.remove('show');
-                        document.body.classList.remove('modal-open');
-                        const backdrop = document.querySelector('.modal-backdrop');
-                        if (backdrop) backdrop.remove();
-                    };
-                }
+                    const inputImagen = document.getElementById("input-imagen");
+                    const previewImagen = document.getElementById("preview-imagen");
 
-                // Configurar eventos del formulario
-                setTimeout(() => {
+                    if (inputImagen && previewImagen) {
+                        inputImagen.addEventListener("change", function () {
+                            const archivo = this.files[0];
+                            if (archivo) {
+                                const reader = new FileReader();
+                                reader.onload = function (e) {
+                                    previewImagen.src = e.target.result;
+                                };
+                                reader.readAsDataURL(archivo);
+                            }
+                        });
+                    }
+
                     const formEditar = document.getElementById("form-editar-mascota");
                     if (formEditar) {
-                        console.log("✅ Configurando formulario...");
-                        
                         formEditar.addEventListener("submit", function (e) {
                             e.preventDefault();
                             const formData = new FormData(formEditar);
@@ -153,29 +112,19 @@ botonesEditar.forEach(btn => {
                                 .then(res => res.text())
                                 .then(data => {
                                     alert(data);
-                                    // Cerrar modal manualmente
-                                    modalElement.style.display = 'none';
-                                    modalElement.classList.remove('show');
-                                    document.body.classList.remove('modal-open');
-                                    const backdrop = document.querySelector('.modal-backdrop');
-                                    if (backdrop) backdrop.remove();
-                                    
+                                    const modalElement = document.getElementById("modal-editar-mascota");
+                                    const modal = bootstrap.Modal.getInstance(modalElement);
+                                    if (modal) modal.hide();
                                     cargarCrudMascota();
                                 })
                                 .catch(error => {
                                     console.error("Error:", error);
                                 });
                         });
-                    } else {
-                        console.error("❌ Formulario no encontrado");
                     }
-                }, 100);
-            })
-            .catch(error => {
-                console.error("💥 Error en fetch:", error);
-            });
+                });
+        });
     });
-});
 
     // ✅ BOTONES ELIMINAR
     const botonesEliminar = document.querySelectorAll(".btn-eliminar-mascota");

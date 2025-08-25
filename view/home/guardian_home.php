@@ -82,17 +82,21 @@ $perfil = $perfil->getPerfilPorUsuario($id);
                         aria-expanded="false"
                         style="text-decoration: none;">
                         <p class="m-1 "> Guardian </p>
-                        <!-- Foto de Perfil -->
                         <?php
-
                         $nombreImagen = !empty($perfil['imagen']) ? $perfil['imagen'] : 'default.png';
-                        $rutaImagen = Config::get('IMG_URL') . "/perfil/" . htmlspecialchars($nombreImagen);
+
+                        // Si es una URL completa de Cloudinary, agregar transformaciones
+                        if (strpos($nombreImagen, 'res.cloudinary.com') !== false) {
+                            // Insertar transformaciones después de '/upload/'
+                            $rutaImagen = str_replace('/upload/', '/upload/w_40,h_40,c_fill,g_face/', $nombreImagen);
+                        } else {
+                            // Si no es URL de Cloudinary, usar como está
+                            $rutaImagen = htmlspecialchars($nombreImagen);
+                        }
                         ?>
                         <img
                             src="<?= $rutaImagen ?>"
                             class="rounded-circle"
-                            height="40"
-                            width="40"
                             alt="Foto de perfil"
                             loading="lazy" />
                     </a>

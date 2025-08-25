@@ -153,7 +153,7 @@ class MascotaController
             $imagen,
             $id_tipo_mascota,
             $id_estado_adopcion,
-            $public_id // Agregar public_id
+            $public_id
         );
 
         echo $resultado ? "Mascota actualizada correctamente" : "Error al actualizar mascota";
@@ -171,12 +171,35 @@ class MascotaController
         // Obtener datos de la mascota antes de eliminar para limpiar Cloudinary
         $mascotaActual = $this->modeloMascota->getId($id_mascota);
 
-        // Eliminar de la base de datos
+
+        // Verificar si se obtuvieron datos válidos
+        if (!$mascotaActual || empty($mascotaActual)) {
+            echo "No se pudieron obtener los datos de la mascota";
+            return;
+        }
+
+        // Verificar si es un array de arrays (como [0 => array(...)])
+        if (isset($mascotaActual[0]) && is_array($mascotaActual[0])) {
+            $mascotaActual = $mascotaActual[0];
+        }
+
+        // Eliminar de la base de datos primero
         $resultado = $this->modeloMascota->delete($id_mascota);
 
         // Si se eliminó correctamente, eliminar también de Cloudinary
-        if ($resultado && !empty($mascotaActual['public_id'])) {
-            deleteImageFromCloudinary($mascotaActual['public_id']);
+        if ($resultado) {
+            // Verificar si existe public_id y no está vacío
+            $public_id = $mascotaActual['public_id'] ?? ($mascotaActual['public_id'] ?? null);
+
+            if (!empty($public_id)) {
+                $deleteResult = deleteImageFromCloudinary($public_id);
+
+                if ($deleteResult['result'] !== 'ok') {
+                    error_log("Error al eliminar imagen de Cloudinary: " . print_r($deleteResult, true));
+                }
+            } else {
+                error_log("No se encontró public_id para eliminar de Cloudinary");
+            }
         }
 
         echo $resultado ? "Mascota eliminada correctamente" : "Error al eliminar mascota";

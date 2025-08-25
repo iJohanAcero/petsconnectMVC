@@ -3,8 +3,7 @@
 namespace App\controller\causa;
 
 require_once __DIR__ . '/../../vendor/autoload.php';
-require_once __DIR__ . '/../../config/cloudinary.php'; // Incluir tu archivo de config
-
+require_once __DIR__ . '/../../config/cloudinary.php';
 use App\Model\Causa\Causa;
 
 if (session_status() === PHP_SESSION_NONE) {

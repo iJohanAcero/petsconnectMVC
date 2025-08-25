@@ -36,7 +36,7 @@ $perfil = $perfil->getPerfilPorUsuario($id_usuario);
                     <?php
 
                     $nombreImagen = !empty($perfil['imagen']) ? $perfil['imagen'] : 'default.jpg';
-                    $rutaImagen = "/petsconnectMVC/Public/images/perfil/" . htmlspecialchars($nombreImagen);
+                    $rutaImagen = htmlspecialchars($nombreImagen);
                     ?>
                     <img src="<?= $rutaImagen ?>"
                         alt="Logo de la fundación"
