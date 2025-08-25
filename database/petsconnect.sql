@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 19-08-2025 a las 03:21:28
+-- Tiempo de generación: 25-08-2025 a las 08:05:47
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -170,15 +170,16 @@ CREATE TABLE `t_causa` (
   `fecha_creacion` datetime DEFAULT current_timestamp(),
   `nit_fundacion` varchar(20) DEFAULT NULL,
   `imagen_url` varchar(255) DEFAULT NULL,
-  `tipo_causa` varchar(50) DEFAULT NULL
+  `tipo_causa` varchar(50) DEFAULT NULL,
+  `public_id` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `t_causa`
 --
 
-INSERT INTO `t_causa` (`id_causa`, `nombre`, `descripcion`, `meta`, `estado_causa`, `fecha_creacion`, `nit_fundacion`, `imagen_url`, `tipo_causa`) VALUES
-(15, 'a', 'a', 121.00, 'activa', '2025-08-09 23:21:20', '11111', '689d7d2877ff0_Collage_of_Six_Cats-02.jpg', 'medicamentos');
+INSERT INTO `t_causa` (`id_causa`, `nombre`, `descripcion`, `meta`, `estado_causa`, `fecha_creacion`, `nit_fundacion`, `imagen_url`, `tipo_causa`, `public_id`) VALUES
+(18, 'Jornada de adopcion1', 'aaaa', 1000.00, 'activa', '2025-08-24 07:41:01', '11111', 'https://res.cloudinary.com/dhyowmhw6/image/upload/v1756014063/causas/php755D.jpg', 'medicamentos', 'causas/php755D');
 
 -- --------------------------------------------------------
 
@@ -285,15 +286,9 @@ CREATE TABLE `t_mascota` (
   `imagen` varchar(255) NOT NULL,
   `id_tipo_mascota` int(11) NOT NULL,
   `nit_fundacion` bigint(20) NOT NULL,
-  `id_estado_adopcion` int(11) NOT NULL
+  `id_estado_adopcion` int(11) NOT NULL,
+  `public_id` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Volcado de datos para la tabla `t_mascota`
---
-
-INSERT INTO `t_mascota` (`id_mascota`, `nombre`, `edad_meses`, `sexo`, `imagen`, `id_tipo_mascota`, `nit_fundacion`, `id_estado_adopcion`) VALUES
-(333, 'Nano', 12, 'macho', '689d5bbb5786c_images.jpg', 13, 11111, 1);
 
 -- --------------------------------------------------------
 
@@ -306,18 +301,19 @@ CREATE TABLE `t_perfil` (
   `nombre` varchar(100) NOT NULL,
   `preferencia` varchar(100) NOT NULL,
   `descripcion` varchar(255) NOT NULL,
-  `imagen` varchar(255) NOT NULL
+  `imagen` varchar(255) NOT NULL,
+  `public_id` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `t_perfil`
 --
 
-INSERT INTO `t_perfil` (`id_perfil`, `nombre`, `preferencia`, `descripcion`, `imagen`) VALUES
-(20, 'Johan Acero', 'Todos los animales', 'me gustaria adoptar gatos en bogotaa', '68a2c12ee14a7_IMG_20231012_233339.jpg'),
-(21, 'Fundacion Valentina', 'Gatos', 'fundacion de gatos ', '68a25900d686b_gato.jpg'),
-(23, 'Perfil Fundación', '', '', 'fundacion_default.jpg'),
-(24, 'Perfil Fundación', '', '', 'fundacion_default.jpg');
+INSERT INTO `t_perfil` (`id_perfil`, `nombre`, `preferencia`, `descripcion`, `imagen`, `public_id`) VALUES
+(20, 'Johan Acero', 'Todos los animales', 'me gustaria adoptar gatos en bogotaa', 'https://res.cloudinary.com/dhyowmhw6/image/upload/v1756100904/perfiles/php8E2D.jpg', 'perfiles/php8E2D'),
+(21, 'Fundacion Valentina', 'Gatos', 'fundacion de gatos ', 'https://res.cloudinary.com/dhyowmhw6/image/upload/v1756099138/perfiles/php9E5A.jpg', 'perfiles/php9E5A'),
+(23, 'Perfil Fundación', '', '', 'fundacion_default.jpg', NULL),
+(24, 'Perfil Fundación', '', '', 'fundacion_default.jpg', NULL);
 
 -- --------------------------------------------------------
 
@@ -337,7 +333,7 @@ CREATE TABLE `t_perfil_redes` (
 --
 
 INSERT INTO `t_perfil_redes` (`id_red`, `id_perfil`, `tipo_red`, `url_red`) VALUES
-(46, 21, 'facebook', 'https://www.youtube.com/');
+(48, 21, 'facebook', 'https://www.youtube.com/');
 
 -- --------------------------------------------------------
 
@@ -367,16 +363,16 @@ CREATE TABLE `t_publicacion` (
   `contenido` varchar(100) NOT NULL,
   `imagen` varchar(255) NOT NULL,
   `fecha` datetime DEFAULT NULL,
-  `nit_fundacion` bigint(20) NOT NULL
+  `nit_fundacion` bigint(20) NOT NULL,
+  `public_id` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `t_publicacion`
 --
 
-INSERT INTO `t_publicacion` (`id_publicacion`, `titulo`, `contenido`, `imagen`, `fecha`, `nit_fundacion`) VALUES
-(20, 'aaaaaaaa', '2222', '68918a7be3e3d_images.jpg', '2025-08-05 06:37:15', 11111),
-(22, 'aasdads', '123123123', '6897c35a3c987_Collage_of_Six_Cats-02.jpg', '2025-08-09 23:53:30', 11111);
+INSERT INTO `t_publicacion` (`id_publicacion`, `titulo`, `contenido`, `imagen`, `fecha`, `nit_fundacion`, `public_id`) VALUES
+(27, 'Jornada de adopcion', 'perros en adopcion', 'https://res.cloudinary.com/dhyowmhw6/image/upload/v1755927648/publicaciones/phpE8D6.jpg', '2025-08-23 07:40:49', 11111, 'publicaciones/phpE8D6');
 
 -- --------------------------------------------------------
 
@@ -458,7 +454,7 @@ CREATE TABLE `t_usuario` (
 
 INSERT INTO `t_usuario` (`id_usuario`, `nombre`, `apellido`, `contrasena`, `email`, `direccion`, `telefono`, `google_id`) VALUES
 (31, 'Admin', 'pets', '$2y$10$kpFsZAIko71tAkZIlPRhvegAe./rAO1/8TPpK0cGZWngfvkwh8Ls.', 'admin@gmail.com', 'Bogotá', '123456', NULL),
-(32, 'Johan David', 'Acero Pirajan', NULL, 'johanacero8@gmail.com', '', '', '110443786294827582324'),
+(32, 'Johan David', 'Acero Pirajan', NULL, 'johanacero8@gmail.com', '', '123123123', '110443786294827582324'),
 (33, 'Jhon', 'Doe', '$2y$10$hd0SPDHn1f5Ob312a.Es..tylEKiK55r22FWaHNae57s4TYGomfe6', 'fundacion@gmail.com', 'Bogotá, calle12', '111111', NULL);
 
 --
@@ -594,7 +590,7 @@ ALTER TABLE `t_usuario`
 -- AUTO_INCREMENT de la tabla `t_causa`
 --
 ALTER TABLE `t_causa`
-  MODIFY `id_causa` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id_causa` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT de la tabla `t_donacion`
@@ -624,7 +620,7 @@ ALTER TABLE `t_perfil`
 -- AUTO_INCREMENT de la tabla `t_perfil_redes`
 --
 ALTER TABLE `t_perfil_redes`
-  MODIFY `id_red` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=47;
+  MODIFY `id_red` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=49;
 
 --
 -- AUTO_INCREMENT de la tabla `t_proceso_adopcion`
@@ -636,7 +632,7 @@ ALTER TABLE `t_proceso_adopcion`
 -- AUTO_INCREMENT de la tabla `t_publicacion`
 --
 ALTER TABLE `t_publicacion`
-  MODIFY `id_publicacion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+  MODIFY `id_publicacion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 
 --
 -- AUTO_INCREMENT de la tabla `t_recuperar_constrasena`
