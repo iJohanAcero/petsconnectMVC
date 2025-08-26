@@ -245,30 +245,6 @@ class MascotaController
         }
     }
 
-    // 6️⃣ OBTENER información de adopción de una mascota
-    public function getInfoAdopcion()
-    {
-        $id = $_GET['id'] ?? '';
-
-        if (empty($id)) {
-            header('Content-Type: application/json');
-            echo json_encode(['error' => 'ID de mascota no proporcionado']);
-            exit;
-        }
-
-        try {
-            $infoAdopcion = $this->modeloMascota->getInfoAdopcionPorId($id);
-
-            header('Content-Type: application/json');
-            echo json_encode($infoAdopcion);
-            exit;
-        } catch (Exception $e) {
-            header('Content-Type: application/json');
-            echo json_encode(['error' => 'Error al obtener información de adopción: ' . $e->getMessage()]);
-            exit;
-        }
-    }
-
     // 7️⃣ FILTRAR mascotas por criterios específicos
     public function filtrarMascotas()
     {
@@ -310,72 +286,6 @@ class MascotaController
         } catch (Exception $e) {
             header('Content-Type: application/json');
             echo json_encode(['error' => 'Error al obtener perfil completo: ' . $e->getMessage()]);
-            exit;
-        }
-    }
-
-    // 9️⃣ SOLICITAR adopción de mascota
-    public function solicitarAdopcion()
-    {
-        if (!isset($_SESSION['user'])) {
-            echo json_encode(['error' => 'Debes iniciar sesión para solicitar adopción']);
-            return;
-        }
-
-        $id_mascota = $_POST['id_mascota'] ?? '';
-        $id_usuario = $_SESSION['user']['id_usuario'];
-        $mensaje = $_POST['mensaje'] ?? '';
-
-        if (empty($id_mascota)) {
-            echo json_encode(['error' => 'ID de mascota no proporcionado']);
-            return;
-        }
-
-        try {
-            $resultado = $this->modeloMascota->crearSolicitudAdopcion($id_mascota, $id_usuario, $mensaje);
-
-            header('Content-Type: application/json');
-            echo json_encode([
-                'success' => $resultado,
-                'message' => $resultado ? 'Solicitud de adopción enviada correctamente' : 'Error al enviar solicitud'
-            ]);
-            exit;
-        } catch (Exception $e) {
-            header('Content-Type: application/json');
-            echo json_encode(['error' => 'Error al procesar solicitud: ' . $e->getMessage()]);
-            exit;
-        }
-    }
-
-    // 🔟 AGREGAR/QUITAR mascota de favoritos
-    public function toggleFavorito()
-    {
-        if (!isset($_SESSION['user'])) {
-            echo json_encode(['error' => 'Debes iniciar sesión para agregar favoritos']);
-            return;
-        }
-
-        $id_mascota = $_POST['id_mascota'] ?? '';
-        $id_usuario = $_SESSION['user']['id_usuario'];
-
-        if (empty($id_mascota)) {
-            echo json_encode(['error' => 'ID de mascota no proporcionado']);
-            return;
-        }
-
-        try {
-            $resultado = $this->modeloMascota->toggleFavorito($id_mascota, $id_usuario);
-
-            header('Content-Type: application/json');
-            echo json_encode([
-                'success' => true,
-                'action' => $resultado['action'], // 'added' o 'removed'
-                'message' => $resultado['message']
-            ]);
-            exit;
-        } catch (Exception $e) {
-            header('Content-Type: application/json');
-            echo json_encode(['error' => 'Error al procesar favorito: ' . $e->getMessage()]);
             exit;
         }
     }
