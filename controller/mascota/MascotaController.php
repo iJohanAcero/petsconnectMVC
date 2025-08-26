@@ -6,6 +6,7 @@ require_once __DIR__ . '/../../vendor/autoload.php';
 require_once __DIR__ . '/../../config/cloudinary.php'; // Incluir configuración de Cloudinary
 
 use App\Model\Mascota\Mascota;
+use Exception;
 
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
@@ -171,7 +172,6 @@ class MascotaController
         // Obtener datos de la mascota antes de eliminar para limpiar Cloudinary
         $mascotaActual = $this->modeloMascota->getId($id_mascota);
 
-
         // Verificar si se obtuvieron datos válidos
         if (!$mascotaActual || empty($mascotaActual)) {
             echo "No se pudieron obtener los datos de la mascota";
@@ -204,9 +204,184 @@ class MascotaController
 
         echo $resultado ? "Mascota eliminada correctamente" : "Error al eliminar mascota";
     }
+
+    // 4️⃣ OBTENER todas las mascotas para carrusel/cartas
+    public function getAllMascotasCarrusel()
+    {
+        try {
+            $mascotas = $this->modeloMascota->getAllMascotasCarrusel();
+
+            header('Content-Type: application/json');
+            echo json_encode($mascotas);
+            exit;
+        } catch (Exception $e) {
+            header('Content-Type: application/json');
+            echo json_encode(['error' => 'Error al obtener mascotas: ' . $e->getMessage()]);
+            exit;
+        }
+    }
+
+    // 5️⃣ OBTENER detalles de una mascota específica
+    public function getDetallesMascota()
+    {
+        $id = $_GET['id'] ?? '';
+
+        if (empty($id)) {
+            header('Content-Type: application/json');
+            echo json_encode(['error' => 'ID de mascota no proporcionado']);
+            exit;
+        }
+
+        try {
+            $mascota = $this->modeloMascota->getDetallesPorId($id);
+
+            header('Content-Type: application/json');
+            echo json_encode($mascota);
+            exit;
+        } catch (Exception $e) {
+            header('Content-Type: application/json');
+            echo json_encode(['error' => 'Error al obtener detalles: ' . $e->getMessage()]);
+            exit;
+        }
+    }
+
+    // 6️⃣ OBTENER información de adopción de una mascota
+    public function getInfoAdopcion()
+    {
+        $id = $_GET['id'] ?? '';
+
+        if (empty($id)) {
+            header('Content-Type: application/json');
+            echo json_encode(['error' => 'ID de mascota no proporcionado']);
+            exit;
+        }
+
+        try {
+            $infoAdopcion = $this->modeloMascota->getInfoAdopcionPorId($id);
+
+            header('Content-Type: application/json');
+            echo json_encode($infoAdopcion);
+            exit;
+        } catch (Exception $e) {
+            header('Content-Type: application/json');
+            echo json_encode(['error' => 'Error al obtener información de adopción: ' . $e->getMessage()]);
+            exit;
+        }
+    }
+
+    // 7️⃣ FILTRAR mascotas por criterios específicos
+    public function filtrarMascotas()
+    {
+        $especie = $_GET['especie'] ?? '';
+        $tamano = $_GET['tamano'] ?? '';
+        $edad = $_GET['edad'] ?? '';
+        $genero = $_GET['genero'] ?? '';
+
+        try {
+            $mascotas = $this->modeloMascota->filtrarMascotas($especie, $tamano, $edad, $genero);
+
+            header('Content-Type: application/json');
+            echo json_encode($mascotas);
+            exit;
+        } catch (Exception $e) {
+            header('Content-Type: application/json');
+            echo json_encode(['error' => 'Error al filtrar mascotas: ' . $e->getMessage()]);
+            exit;
+        }
+    }
+
+    // 8️⃣ OBTENER perfil completo de mascota con información de fundación
+    public function getPerfilCompleto()
+    {
+        $id = $_GET['id'] ?? '';
+
+        if (empty($id)) {
+            header('Content-Type: application/json');
+            echo json_encode(['error' => 'ID de mascota no proporcionado']);
+            exit;
+        }
+
+        try {
+            $perfil = $this->modeloMascota->getPerfilCompletoPorId($id);
+
+            header('Content-Type: application/json');
+            echo json_encode($perfil);
+            exit;
+        } catch (Exception $e) {
+            header('Content-Type: application/json');
+            echo json_encode(['error' => 'Error al obtener perfil completo: ' . $e->getMessage()]);
+            exit;
+        }
+    }
+
+    // 9️⃣ SOLICITAR adopción de mascota
+    public function solicitarAdopcion()
+    {
+        if (!isset($_SESSION['user'])) {
+            echo json_encode(['error' => 'Debes iniciar sesión para solicitar adopción']);
+            return;
+        }
+
+        $id_mascota = $_POST['id_mascota'] ?? '';
+        $id_usuario = $_SESSION['user']['id_usuario'];
+        $mensaje = $_POST['mensaje'] ?? '';
+
+        if (empty($id_mascota)) {
+            echo json_encode(['error' => 'ID de mascota no proporcionado']);
+            return;
+        }
+
+        try {
+            $resultado = $this->modeloMascota->crearSolicitudAdopcion($id_mascota, $id_usuario, $mensaje);
+
+            header('Content-Type: application/json');
+            echo json_encode([
+                'success' => $resultado,
+                'message' => $resultado ? 'Solicitud de adopción enviada correctamente' : 'Error al enviar solicitud'
+            ]);
+            exit;
+        } catch (Exception $e) {
+            header('Content-Type: application/json');
+            echo json_encode(['error' => 'Error al procesar solicitud: ' . $e->getMessage()]);
+            exit;
+        }
+    }
+
+    // 🔟 AGREGAR/QUITAR mascota de favoritos
+    public function toggleFavorito()
+    {
+        if (!isset($_SESSION['user'])) {
+            echo json_encode(['error' => 'Debes iniciar sesión para agregar favoritos']);
+            return;
+        }
+
+        $id_mascota = $_POST['id_mascota'] ?? '';
+        $id_usuario = $_SESSION['user']['id_usuario'];
+
+        if (empty($id_mascota)) {
+            echo json_encode(['error' => 'ID de mascota no proporcionado']);
+            return;
+        }
+
+        try {
+            $resultado = $this->modeloMascota->toggleFavorito($id_mascota, $id_usuario);
+
+            header('Content-Type: application/json');
+            echo json_encode([
+                'success' => true,
+                'action' => $resultado['action'], // 'added' o 'removed'
+                'message' => $resultado['message']
+            ]);
+            exit;
+        } catch (Exception $e) {
+            header('Content-Type: application/json');
+            echo json_encode(['error' => 'Error al procesar favorito: ' . $e->getMessage()]);
+            exit;
+        }
+    }
 }
 
-// Router de acciones
+// Router de acciones - ACTUALIZADO para manejar GET y POST
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $accion = $_POST['accion'] ?? '';
     $controller = new MascotaController();
@@ -217,5 +392,31 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $controller->editar();
     } elseif ($accion === 'eliminar') {
         $controller->eliminar();
+    } elseif ($accion === 'solicitar_adopcion') {
+        $controller->solicitarAdopcion();
+    } elseif ($accion === 'toggle_favorito') {
+        $controller->toggleFavorito();
+    }
+}
+
+// NUEVO: Manejo de peticiones GET para AJAX
+if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+    $action = $_GET['action'] ?? '';
+    $controller = new MascotaController();
+
+    if ($action === 'getAllMascotasCarrusel') {
+        $controller->getAllMascotasCarrusel();
+    } elseif ($action === 'getDetallesMascota') {
+        $controller->getDetallesMascota();
+    } elseif ($action === 'getInfoAdopcion') {
+        $controller->getInfoAdopcion();
+    } elseif ($action === 'filtrarMascotas') {
+        $controller->filtrarMascotas();
+    } elseif ($action === 'getPerfilCompleto') {
+        $controller->getPerfilCompleto();
+    } else {
+        header('Content-Type: application/json');
+        echo json_encode(['error' => 'Acción no válida']);
+        exit;
     }
 }

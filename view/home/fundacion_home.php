@@ -178,22 +178,11 @@ $perfil = $perfil->getPerfilPorUsuario($id);
                         <span class="sidebar-text">Donaciones</span>
                     </a>
                 </li>
-                <li class="sidebar-item has-dropdown" id="mascotas">
-                    <a href="" class="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse" data-bs-target="#mascota" aria-expanded="false" aria-controls="mascota">
+                <li class="sidebar-item has-dropdown btn-cargar-cartelMascota">
+                    <a href="#" class="sidebar-link">
                         <i class="uil uil-heart"></i>
                         <span class="sidebar-text">Mascotas</span>
                     </a>
-                    <ul id="mascota" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
-                        <li class="sidebar-item">
-                            <a href="" class="sidebar-link">✔ Perros</a>
-                        </li>
-                        <li class="sidebar-item">
-                            <a href="" class="sidebar-link">✔ Gatos</a>
-                        </li>
-                        <li class="sidebar-item">
-                            <a href="" class="sidebar-link">✔ Todos</a>
-                        </li>
-                    </ul>
                 </li>
                 <li class="sidebar-item has-dropdown">
                     <a href="" class="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse" data-bs-target="#crud" aria-expanded="false" aria-controls="crud">
@@ -247,6 +236,8 @@ $perfil = $perfil->getPerfilPorUsuario($id);
     <script src="<?= Config::get('JS_URL') ?>/crud/crud_publicacion.js"></script>
     <script src="<?= Config::get('JS_URL') ?>/routes/perfilFundacion.js"></script>
     <script src="<?= Config::get('JS_URL') ?>/routes/carteleraFundacion.js"></script>
+    <script src="<?= Config::get('JS_URL') ?>/routes/carteleraMascotas.js"></script>
+
 
     <script>
         let page = 1;
