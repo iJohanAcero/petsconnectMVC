@@ -33,7 +33,7 @@ $fundaciones = $fundacion->getAllFundacionesCarrusel();
         </div>
 
         <!-- Loading -->
-        <div class="row" id="loading">
+        <div class="row" id="loadingFundacion">
             <div class="col-12 text-center py-5">
                 <div class="spinner-border text-primary" role="status">
                     <span class="visually-hidden">Cargando...</span>
@@ -48,27 +48,12 @@ $fundaciones = $fundacion->getAllFundacionesCarrusel();
         </div>
 
         <!-- Mensaje si no hay fundaciones -->
-        <div class="row" id="mensajeVacio" style="display: none;">
+        <div class="row" id="mensajeVacioFundacion" style="display: none;">
             <div class="col-12">
                 <div class="alert alert-info text-center py-5">
                     <i class="fas fa-info-circle fa-3x mb-3 text-info"></i>
                     <h4>No hay fundaciones registradas</h4>
                     <p class="mb-0">Aún no se han registrado fundaciones en el sistema.</p>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal para ver detalles (opcional) -->
-    <div class="modal fade" id="modalDetalles" tabindex="-1" aria-labelledby="modalDetallesLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="modalDetallesLabel">Detalles de la Fundación</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body" id="modalDetallesBody">
-                    <!-- Contenido del modal se carga aquí -->
                 </div>
             </div>
         </div>

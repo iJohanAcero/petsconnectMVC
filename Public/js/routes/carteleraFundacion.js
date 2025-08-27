@@ -74,9 +74,9 @@ function inicializarEventosCarteleraFundacion() {
 
 // Función para cargar fundaciones desde el backend
 function cargarFundacionesDesdeBackend() {
-    const loading = document.getElementById('loading');
+    const loading = document.getElementById('loadingFundacion');
     const fundacionesContainer = document.getElementById('fundacionesContainer');
-    const mensajeVacio = document.getElementById('mensajeVacio');
+    const mensajeVacio = document.getElementById('mensajeVacioFundacion');
 
     // Verificar que los elementos existan
     if (!loading || !fundacionesContainer || !mensajeVacio) {
@@ -118,10 +118,10 @@ function cargarFundacionesDesdeBackend() {
 
 // Función para mostrar las fundaciones en cartas
 function mostrarFundaciones(fundaciones) {
-    const loading = document.getElementById('loading');
+    const loading = document.getElementById('loadingFundacion');
     const fundacionesContainer = document.getElementById('fundacionesContainer');
-    const mensajeVacio = document.getElementById('mensajeVacio');
-    
+    const mensajeVacio = document.getElementById('mensajeVacioFundacion');
+
     loading.style.display = 'none';
     
     if (!fundaciones || fundaciones.length === 0) {
@@ -134,7 +134,7 @@ function mostrarFundaciones(fundaciones) {
     fundacionesContainer.innerHTML = fundaciones.map(crearCartaFundacion).join('');
 
     // Inicializar eventos de las cartas
-    inicializarEventosCartas();
+    inicializarEventosCartasFundacion();
     
     // Animación de entrada
     animarEntradaCartas();
@@ -199,7 +199,7 @@ function crearCartaFundacion(fundacion) {
 }
 
 // Función para inicializar eventos de las cartas
-function inicializarEventosCartas() {
+function inicializarEventosCartasFundacion() {
     // Eventos para botones "Ver más"
     document.querySelectorAll('.btn-ver-detalles').forEach(btn => {
         btn.addEventListener('click', function() {
@@ -493,7 +493,7 @@ function mostrarErrorEnModal(mensaje) {
     document.getElementById('contenido-perfil-fundacion').innerHTML = contenidoError;
 }
 
-// Función para contactar una fundación - ACTUALIZADA PARA CLOUDINARY
+// Función para contactar una fundación 
 function contactarFundacion(idPerfil) {
     
     const modalContacto = document.getElementById('modalContacto');

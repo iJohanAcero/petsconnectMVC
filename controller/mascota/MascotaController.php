@@ -94,7 +94,7 @@ class MascotaController
             $id_tipo_mascota,
             $nit_fundacion,
             $id_estado_adopcion,
-            $public_id // Agregar public_id
+            $public_id 
         );
 
         echo $resultado ? "Mascota registrada correctamente" : "Error al registrar mascota";
@@ -249,12 +249,11 @@ class MascotaController
     public function filtrarMascotas()
     {
         $especie = $_GET['especie'] ?? '';
-        $tamano = $_GET['tamano'] ?? '';
         $edad = $_GET['edad'] ?? '';
         $genero = $_GET['genero'] ?? '';
 
         try {
-            $mascotas = $this->modeloMascota->filtrarMascotas($especie, $tamano, $edad, $genero);
+            $mascotas = $this->modeloMascota->filtrarMascotas($especie, $edad, $genero);
 
             header('Content-Type: application/json');
             echo json_encode($mascotas);
@@ -302,11 +301,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $controller->editar();
     } elseif ($accion === 'eliminar') {
         $controller->eliminar();
-    } elseif ($accion === 'solicitar_adopcion') {
-        $controller->solicitarAdopcion();
-    } elseif ($accion === 'toggle_favorito') {
-        $controller->toggleFavorito();
-    }
+    } 
 }
 
 // NUEVO: Manejo de peticiones GET para AJAX
@@ -318,8 +313,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         $controller->getAllMascotasCarrusel();
     } elseif ($action === 'getDetallesMascota') {
         $controller->getDetallesMascota();
-    } elseif ($action === 'getInfoAdopcion') {
-        $controller->getInfoAdopcion();
     } elseif ($action === 'filtrarMascotas') {
         $controller->filtrarMascotas();
     } elseif ($action === 'getPerfilCompleto') {

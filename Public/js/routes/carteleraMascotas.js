@@ -61,11 +61,6 @@ function inicializarEventosCarteleraMascotas() {
 
 // Función para inicializar filtros de mascotas
 function inicializarFiltrosMascotas() {
-    // Eventos para filtros si existen en el HTML
-    const filtroEspecie = document.getElementById('filtroEspecie');
-    const filtroTamano = document.getElementById('filtroTamano');
-    const filtroEdad = document.getElementById('filtroEdad');
-    const filtroGenero = document.getElementById('filtroGenero');
     const btnLimpiarFiltros = document.getElementById('btnLimpiarFiltros');
     const btnAplicarFiltros = document.getElementById('btnAplicarFiltros');
 
@@ -77,12 +72,6 @@ function inicializarFiltrosMascotas() {
         btnLimpiarFiltros.addEventListener('click', limpiarFiltrosMascotas);
     }
 
-    // Filtrado en tiempo real (opcional)
-    [filtroEspecie, filtroTamano, filtroEdad, filtroGenero].forEach(filtro => {
-        if (filtro) {
-            filtro.addEventListener('change', aplicarFiltrosMascotas);
-        }
-    });
 }
 
 // Función para aplicar filtros
@@ -96,7 +85,7 @@ function aplicarFiltrosMascotas() {
     if (filtroEdad) params.append('edad', filtroEdad);
     if (filtroGenero) params.append('genero', filtroGenero);
 
-    const loading = document.getElementById('loading');
+    const loading = document.getElementById('loadingMascota');
     const mascotasContainer = document.getElementById('mascotasContainer');
 
     if (loading) loading.style.display = 'block';
@@ -126,9 +115,9 @@ function limpiarFiltrosMascotas() {
 
 // Función para cargar mascotas desde el backend
 function cargarMascotasDesdeBackend() {
-    const loading = document.getElementById('loading');
+    const loading = document.getElementById('loadingMascota');
     const mascotasContainer = document.getElementById('mascotasContainer');
-    const mensajeVacio = document.getElementById('mensajeVacio');
+    const mensajeVacio = document.getElementById('mensajeVacioMascota');
 
     // Verificar que los elementos existan
     if (!loading || !mascotasContainer || !mensajeVacio) {
@@ -169,10 +158,10 @@ function cargarMascotasDesdeBackend() {
 
 // Función para mostrar las mascotas en cartas
 function mostrarMascotas(mascotas) {
-    const loading = document.getElementById('loading');
+    const loading = document.getElementById('loadingMascota');
     const mascotasContainer = document.getElementById('mascotasContainer');
-    const mensajeVacio = document.getElementById('mensajeVacio');
-    
+    const mensajeVacio = document.getElementById('mensajeVacioMascota');
+
     loading.style.display = 'none';
 
     if (!mascotas || mascotas.length === 0) {
@@ -194,8 +183,8 @@ function mostrarMascotas(mascotas) {
     mascotasContainer.innerHTML = mascotas.map(crearCartaMascota).join('');
 
     // Inicializar eventos de las cartas
-    inicializarEventosCartas();
-    
+    inicializarEventosCartasMascotas();
+
     // Animación de entrada
     animarEntradaCartas();
 }
@@ -208,7 +197,6 @@ function crearCartaMascota(mascota) {
     const sexo = mascota.sexo;
     const tipoEstado = mascota.tipo_estado;
     const nombreFundacion = mascota.nombre_fundacion;
-    const categoriaEdad = mascota.categoria_edad || 'adulto';
 
     // Calcular edad legible
     const edadTexto = edadMeses < 12 
@@ -228,84 +216,73 @@ function crearCartaMascota(mascota) {
     );
 
     return `
-        <div class="col-lg-4 col-md-6 col-sm-12 mb-4">
-            <div class="card h-100 shadow-sm carta-mascota" data-id="${mascota.id_mascota}">
-                <div class="position-relative">
-                    <img src="${imagenUrl}" 
-                        class="card-img-top" 
-                        alt="${nombre}"
-                        style="height: 250px; object-fit: cover;">
-                    
-                    <div class="position-absolute top-0 start-0 m-2">
-                        <span class="badge ${colorEstado}">${tipoEstado}</span>
+<div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-3">
+    <div class="card h-100 shadow-lg border-0 carta-mascota" data-id="${mascota.id_mascota}">
+        <div class="position-relative overflow-hidden">
+            <img src="${imagenUrl}"
+                class="card-img-top"
+                alt="${nombre}"
+                style="height: 250px; object-fit: cover;">
+           
+            <div class="position-absolute top-0 end-0 m-3">
+                <span class="badge ${colorEstado} fs-6 px-3 py-2">${tipoEstado}</span>
+            </div>
+        </div>
+       
+        <div class="card-body p-4">
+            <!-- Nombre con icono -->
+            <div class="text-center mb-3">
+                <h4 class="card-title text-primary2 mb-1 fw-bold">
+                    <i class="${iconoEspecie} me-2 fs-4"></i>
+                    ${nombre}
+                </h4>
+            </div>
+            
+            <!-- Información principal destacada -->
+            <div class="row text-center mb-4">
+                <div class="col-6">
+                    <div class="border-end">
+                        <div class="fs-5 fw-bold text-primary2">${edadTexto}</div>
                     </div>
-
                 </div>
-                
-                <div class="card-body d-flex flex-column">
-                    <div class="d-flex justify-content-between align-items-start mb-2">
-                        <h5 class="card-title text-primary2 mb-0">
-                            <i class="${iconoEspecie} me-2"></i>
-                            ${nombre}
-                        </h5>
-                        <h5 class="text-muted">${sexo}</h5>
+                <div class="col-6">
+                    <div class="fs-5 fw-bold text-primary2">${sexo}</div>
+                </div>
+            </div>
+            <!-- Botones de acción -->
+            <div class="d-grid gap-2">
+                <div class="row g-2">
+                    <div class="col-6">
+                        <button type="button"
+                                class="btn btn-outline-primary2 w-100 btn-ver-perfil"
+                                data-id="${mascota.id_mascota}">
+                            <i class="fas fa-eye me-1"></i>
+                            <small>Ver perfil</small>
+                        </button>
                     </div>
-                    
-                    <div class="mb-3">
-                        <div class="row g-2">
-                            <div class="col-6">
-                                <small class="text-muted d-block">Edad</small>
-                                <span class="badge bg-light text-dark">${edadTexto}</span>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="mb-3 flex-grow-1">
-                        <small class="text-muted d-block mb-1">Fundación</small>
-                        <p class="card-text small">
-                            <i class="fas fa-home me-1"></i>
-                            ${nombreFundacion}
-                        </p>
-                    </div>
-                    
-                    <div class="mt-auto">
-                        <div class="d-flex gap-2">
-                            <button type="button" 
-                                    class="btn btn-outline-primary2 btn-sm flex-fill btn-ver-perfil" 
-                                    data-id="${mascota.id_mascota}">
-                                <i class="fas fa-eye me-1"></i>
-                                Ver perfil
-                            </button>
-                            
-                            <button type="button" 
-                                    class="btn btn-primary2 btn-sm flex-fill btn-adoptar" 
-                                    data-id="${mascota.id_mascota}">
-                                <i class="fas fa-heart me-1"></i>
-                                Adoptar
-                            </button>
-                        </div>
+                    <div class="col-6">
+                        <button type="button"
+                                class="btn btn-primary2 w-100 btn-adoptar"
+                                data-id="${mascota.id_mascota}">
+                            <i class="fas fa-heart me-1"></i>
+                            <small>Adoptar</small>
+                        </button>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
+</div>
     `;
 }
 
 // Función para inicializar eventos de las cartas
-function inicializarEventosCartas() {
+function inicializarEventosCartasMascotas() {
     // Eventos para botones "Ver perfil"
     document.querySelectorAll('.btn-ver-perfil').forEach(btn => {
         btn.addEventListener('click', function() {
             const id = this.getAttribute('data-id');
             verPerfilMascota(id);
-        });
-    });
-
-    // Eventos para botones "Adoptar"
-    document.querySelectorAll('.btn-adoptar').forEach(btn => {
-        btn.addEventListener('click', function() {
-            const id = this.getAttribute('data-id');
-            mostrarModalAdopcion(id);
         });
     });
 
@@ -362,7 +339,7 @@ function verPerfilMascota(id) {
 }
 
 // Función para mostrar perfil completo en modal
-function mostrarPerfilCompletoEnModal(mascota) {
+function mostrarPerfilCompletoEnModal(mascota, fundacion) {
     const modalBody = document.getElementById('contenido-perfil-mascota');
 
     // Calcular edad legible
@@ -378,7 +355,7 @@ function mostrarPerfilCompletoEnModal(mascota) {
     );
 
     const imagenFundacionUrl = generarUrlCloudinary(
-        mascota.fundacion_imagen,
+        mascota.fundacion_imagen || fundacion.imagen,
         'w_60,h_60,c_fill,g_face,q_auto,f_auto'
     );
 
@@ -430,15 +407,6 @@ function mostrarPerfilCompletoEnModal(mascota) {
                     <div class="col-6">
                         <div class="card bg-light border-0">
                             <div class="card-body p-2 text-center">
-                                <i class="fas fa-ruler text-primary2 mb-1"></i>
-                                <div class="small text-muted">Tamaño</div>
-                                <div class="fw-bold">${mascota.tamano_estimado || 'Mediano'}</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-6">
-                        <div class="card bg-light border-0">
-                            <div class="card-body p-2 text-center">
                                 <i class="fas fa-tag text-primary2 mb-1"></i>
                                 <div class="small text-muted">Categoría</div>
                                 <div class="fw-bold">${mascota.categoria_edad}</div>
@@ -472,22 +440,27 @@ function mostrarPerfilCompletoEnModal(mascota) {
     inicializarEventosModalPerfil();
 }
 
-// Función para inicializar eventos del modal de perfil
-function inicializarEventosModalPerfil() {
-
+function inicializarEventosAdopcion() {
+    // Evento para todos los botones con clase btn-adoptar (tanto de carta como de modal)
+    $(document).on('click', '.btn-adoptar', function() {
+        const idMascota = $(this).data('id');
+        mostrarModalAdopcion(idMascota);
+    });
 }
+$(document).ready(function() {
+    inicializarEventosAdopcion();
+    inicializarEventosModalPerfil();
+});
 
-// Función para mostrar modal de adopción
 function mostrarModalAdopcion(idMascota) {
-
-}
-
-// Función para mostrar formulario de adopción
-function mostrarFormularioAdopcion(mascota) {
-}
-
-// Función para enviar solicitud de adopción
-function enviarSolicitudAdopcion() {
+    // Cerrar el modal de perfil si está abierto
+    $('#modalPerfil').modal('hide');
+    
+    // Abrir el modal de adopción
+    $('#modalAdopcion').modal('show');
+    
+    // Guardar el ID de la mascota para uso posterior
+    $('#modalAdopcion').data('id-mascota', idMascota);
 }
 
 // Función para animar entrada de cartas
