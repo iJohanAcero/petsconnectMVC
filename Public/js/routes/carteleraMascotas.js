@@ -14,6 +14,7 @@ window.cargarCarteleraMascotas = function () {
                     inicializarEventosCarteleraMascotas();
                     cargarMascotasDesdeBackend();
                     inicializarFiltrosMascotas();
+                    inicializarFormularioAdopcion();
                 }, 100);
             }
         })
@@ -71,7 +72,6 @@ function inicializarFiltrosMascotas() {
     if (btnLimpiarFiltros) {
         btnLimpiarFiltros.addEventListener('click', limpiarFiltrosMascotas);
     }
-
 }
 
 // Función para aplicar filtros
@@ -286,6 +286,14 @@ function inicializarEventosCartasMascotas() {
         });
     });
 
+    // ✅ EVENTOS PARA BOTONES "ADOPTAR" - CORREGIDO
+    document.querySelectorAll('.btn-adoptar').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const idMascota = this.getAttribute('data-id');
+            mostrarModalAdopcion(idMascota);
+        });
+    });
+
     // Evento click en toda la carta (opcional)
     document.querySelectorAll('.carta-mascota').forEach(carta => {
         carta.addEventListener('click', function(e) {
@@ -355,7 +363,7 @@ function mostrarPerfilCompletoEnModal(mascota, fundacion) {
     );
 
     const imagenFundacionUrl = generarUrlCloudinary(
-        mascota.fundacion_imagen || fundacion.imagen,
+        mascota.fundacion_imagen || fundacion?.imagen,
         'w_60,h_60,c_fill,g_face,q_auto,f_auto'
     );
 
@@ -430,37 +438,100 @@ function mostrarPerfilCompletoEnModal(mascota, fundacion) {
                         </div>
                     </div>
                 </div>
+
+                <!-- ✅ BOTÓN DE ADOPTAR EN EL MODAL PERFIL -->
+                <div class="d-grid">
+                    <button type="button" 
+                            class="btn btn-primary2 btn-lg btn-adoptar-modal" 
+                            data-id="${mascota.id_mascota}">
+                        <i class="fas fa-heart me-2"></i>
+                        ¡Quiero adoptarlo!
+                    </button>
+                </div>
             </div>
         </div>
     `;
 
     modalBody.innerHTML = contenidoModal;
 
-    // Inicializar eventos del modal
-    inicializarEventosModalPerfil();
+    // ✅ AGREGAR EVENTO AL BOTÓN DE ADOPTAR DEL MODAL PERFIL
+    const btnAdoptarModal = document.querySelector('.btn-adoptar-modal');
+    if (btnAdoptarModal) {
+        btnAdoptarModal.addEventListener('click', function() {
+            const idMascota = this.getAttribute('data-id');
+            mostrarModalAdopcion(idMascota);
+        });
+    }
 }
 
-function inicializarEventosAdopcion() {
-    // Evento para todos los botones con clase btn-adoptar (tanto de carta como de modal)
-    $(document).on('click', '.btn-adoptar', function() {
-        const idMascota = $(this).data('id');
-        mostrarModalAdopcion(idMascota);
-    });
-}
-$(document).ready(function() {
-    inicializarEventosAdopcion();
-    inicializarEventosModalPerfil();
-});
+// ✅ FUNCIÓN PARA INICIALIZAR FORMULARIO DE ADOPCIÓN
+function inicializarFormularioAdopcion() {
+    const formRegistrar = document.getElementById("form-registrar-adopcion");
 
+    if (formRegistrar) {
+        formRegistrar.onsubmit = function (e) {
+            e.preventDefault();
+            const formData = new FormData(formRegistrar);
+
+            fetch(`${window.BASE_URL}/controller/adopcion/AdopcionController.php`, {
+                method: "POST",
+                body: formData
+            })
+                .then(response => response.text())
+                .then(data => {
+                    if (data.toLowerCase().includes("correctamente")) {
+                        alert(data);
+
+                        // Cerrar modal de adopción
+                        const modalElement = document.getElementById("modalAdopcion") || document.getElementById("modal-adopcion");
+                        if (modalElement) {
+                            const modal = bootstrap.Modal.getInstance(modalElement);
+                            if (modal) modal.hide();
+                        }
+
+                        // Limpiar formulario
+                        formRegistrar.reset();
+                        
+                        // Recargar las mascotas para actualizar estados
+                        cargarMascotasDesdeBackend();
+                    } else {
+                        alert("Error: " + data);
+                    }
+                })
+                .catch(error => {
+                    console.error("Error:", error);
+                    alert("Error al procesar la adopción. Inténtalo de nuevo.");
+                });
+        };
+    }
+}
+
+// ✅ FUNCIÓN MEJORADA PARA MOSTRAR MODAL DE ADOPCIÓN
 function mostrarModalAdopcion(idMascota) {
     // Cerrar el modal de perfil si está abierto
-    $('#modalPerfil').modal('hide');
+    const modalPerfil = document.getElementById('modal-perfil-mascota');
+    if (modalPerfil) {
+        const bsModalPerfil = bootstrap.Modal.getInstance(modalPerfil);
+        if (bsModalPerfil) bsModalPerfil.hide();
+    }
     
     // Abrir el modal de adopción
-    $('#modalAdopcion').modal('show');
-    
-    // Guardar el ID de la mascota para uso posterior
-    $('#modalAdopcion').data('id-mascota', idMascota);
+    const modalAdopcion = document.getElementById("modalAdopcion") || document.getElementById("modal-adopcion");
+    if (modalAdopcion) {
+        const bsModal = new bootstrap.Modal(modalAdopcion);
+        bsModal.show();
+        
+        // Asignar el ID de la mascota al campo hidden del formulario
+        setTimeout(() => {
+            const inputIdMascota = document.getElementById('id_mascota') || document.querySelector('input[name="id_mascota"]');
+            if (inputIdMascota) {
+                inputIdMascota.value = idMascota;
+            }
+            
+            // Reinicializar el formulario por si acaso
+            inicializarFormularioAdopcion();
+        }, 100);
+    }
 }
 
 // Función para animar entrada de cartas
@@ -478,7 +549,7 @@ function animarEntradaCartas() {
     });
 }
 
-// Inicialización de eventos del DOM
+// ✅ INICIALIZACIÓN DE EVENTOS DEL DOM - LIMPIADO
 document.addEventListener("DOMContentLoaded", () => {
     const botones = document.querySelectorAll(".btn-cargar-cartelMascota");
 
@@ -488,4 +559,7 @@ document.addEventListener("DOMContentLoaded", () => {
             cargarCarteleraMascotas();
         });
     });
+    
+    // Inicializar formulario de adopción al cargar la página
+    inicializarFormularioAdopcion();
 });

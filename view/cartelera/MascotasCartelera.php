@@ -2,6 +2,8 @@
 require_once __DIR__ . '/../../vendor/autoload.php';
 
 use App\Model\Mascota\Mascota;
+use App\Model\Fundacion\Fundacion;
+use App\Config\Roles;
 
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
@@ -14,7 +16,18 @@ if (session_status() === PHP_SESSION_NONE) {
 
 $mascota = new Mascota();
 
+$Fundacion = new Fundacion();
+
+$nit_fundacion = null;
+
 $id_usuario = $_SESSION['user']['id_usuario'] ?? null;
+$esAdmin = $id_usuario && Roles::esAdmin($id_usuario);
+$esFundacion = $id_usuario && Roles::esFundacion($id_usuario);
+$nit_sesion = $_SESSION['user']['nit_fundacion'] ?? null;
+
+if (isset($_SESSION["user"]["id_usuario"])) {
+    $nit_fundacion = Fundacion::obtenerNitPorUsuario($_SESSION["user"]["id_usuario"]);
+}
 
 $mascotas = $mascota->getAllMascotasCarrusel();
 ?>
@@ -72,7 +85,7 @@ $mascotas = $mascota->getAllMascotasCarrusel();
                     </h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body p-0" id="contenido-perfil-mascota" style="max-height: 80vh; overflow-y: auto;">
+                <div class="modal-body p-0" id="contenido-perfil-mascota" style="max-height: 80vh; overflow-y: none;">
                     <!-- Se carga dinámicamente con JavaScript -->
                 </div>
             </div>
@@ -95,20 +108,17 @@ $mascotas = $mascota->getAllMascotasCarrusel();
                         </small>
                     </div>
                     <div class="card-body p-4">
-                        <form>
+                        <form id="form-registrar-adopcion" method="post" enctype="multipart/form-data">
+                            <input type="hidden" name="accion" value="registrar">
                             <h5 class="mb-3 fw-bold" style="color:#1a1333;">Datos Personales</h5>
                             <div class="row mb-3">
                                 <div class="col-md-6">
                                     <label class="form-label">Nombre Completo</label>
-                                    <input type="text" class="form-control" value="<?php echo htmlspecialchars($_SESSION["user"]["nombre"]); ?> <?php echo htmlspecialchars($_SESSION["user"]["apellido"]); ?>" readonly>
-                                </div>
-                                <div class="col-md-3">
-                                    <label class="form-label">Edad</label>
-                                    <input type="number" class="form-control" required>
+                                    <input type="text" class="form-control" name="nombre_completo" value="<?php echo htmlspecialchars($_SESSION["user"]["nombre"]); ?> <?php echo htmlspecialchars($_SESSION["user"]["apellido"]); ?>" readonly>
                                 </div>
                                 <div class="col-md-3">
                                     <label class="form-label">Estado Civil</label>
-                                    <select class="form-select" required>
+                                    <select class="form-select" name="estado_civil" required>
                                         <option value="">Selecciona...</option>
                                         <option>Soltero/a</option>
                                         <option>Casado/a</option>
@@ -122,43 +132,43 @@ $mascotas = $mascota->getAllMascotasCarrusel();
                             <div class="row mb-3">
                                 <div class="col-md-4">
                                     <label class="form-label">Tipo de Documento</label>
-                                    <select class="form-select" required>
+                                    <select class="form-select" name="tipo_documento" required>
                                         <option value="">Selecciona...</option>
-                                        <option>Cédula de Ciudadanía</option>
-                                        <option>Cédula de Extranjería</option>
+                                        <option value="CC">Cédula de Ciudadanía</option>
+                                        <option value="CE">Cédula de Extranjería</option>
                                     </select>
                                 </div>
                                 <div class="col-md-8">
                                     <label class="form-label">Número de Documento</label>
-                                    <input type="text" class="form-control" placeholder="Ej: 1234567890" required>
+                                    <input type="text" class="form-control" name="numero_documento" placeholder="Ej: 1234567890" required>
                                 </div>
                             </div>
 
                             <div class="row mb-3">
                                 <div class="col-md-6">
                                     <label class="form-label">Correo Electrónico</label>
-                                    <input type="email" class="form-control" value="<?php echo htmlspecialchars($_SESSION["user"]["email"]); ?>" readonly>
+                                    <input type="email" class="form-control" name="email" value="<?php echo htmlspecialchars($_SESSION["user"]["email"]); ?>" readonly>
                                 </div>
                                 <div class="col-md-6">
                                     <label class="form-label">Teléfono</label>
-                                    <input type="tel" class="form-control" value="<?php echo htmlspecialchars($_SESSION["user"]["telefono"]); ?>" readonly>
+                                    <input type="tel" class="form-control" name="telefono" value="<?php echo htmlspecialchars($_SESSION["user"]["telefono"]); ?>" readonly>
                                 </div>
                             </div>
 
                             <div class="mb-3">
                                 <label class="form-label">Dirección de residencia</label>
-                                <input type="text" class="form-control" value="<?php echo htmlspecialchars($_SESSION["user"]["direccion"]); ?>" readonly>
+                                <input type="text" class="form-control" name="direccion" value="<?php echo htmlspecialchars($_SESSION["user"]["direccion"]); ?>" readonly>
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">Ocupación</label>
-                                <input type="text" class="form-control" placeholder="Ej: Ingeniero, estudiante, comerciante..." required>
+                                <input type="text" class="form-control" name="ocupacion" placeholder="Ej: Ingeniero, estudiante, comerciante..." required>
                             </div>
 
                             <!-- CONDICIONES DEL HOGAR -->
                             <h5 class="mb-3 fw-bold" style="color:#1a1333;">Condiciones del Hogar</h5>
                             <div class="mb-3">
                                 <label class="form-label">Tipo de vivienda</label>
-                                <select class="form-select" required>
+                                <select class="form-select" name="tipo_vivienda" required>
                                     <option value="">Selecciona...</option>
                                     <option>Casa propia</option>
                                     <option>Apartamento propio</option>
@@ -170,64 +180,68 @@ $mascotas = $mascota->getAllMascotasCarrusel();
                             <div class="mb-3">
                                 <label class="form-label">¿Tu vivienda tiene patio o balcón?</label><br>
                                 <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="patio" required>
+                                    <input class="form-check-input" type="radio" name="patio" value="si" required>
                                     <label class="form-check-label">Sí</label>
                                 </div>
                                 <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="patio">
+                                    <input class="form-check-input" type="radio" name="patio" value="no">
                                     <label class="form-check-label">No</label>
                                 </div>
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">¿Tu vivienda tiene mallas de seguridad en ventanas/balcones?</label><br>
                                 <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="seguridad" required>
+                                    <input class="form-check-input" type="radio" name="seguridad" value="si" required>
                                     <label class="form-check-label">Sí</label>
                                 </div>
                                 <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="seguridad">
+                                    <input class="form-check-input" type="radio" name="seguridad" value="no">
                                     <label class="form-check-label">No</label>
                                 </div>
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">¿Cuántas personas viven en tu hogar?</label>
-                                <input type="number" class="form-control" required>
+                                <input type="number" class="form-control" name="personas_hogar" required>
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">¿Hay niños o adultos mayores en casa?</label>
-                                <input type="text" class="form-control" placeholder="Ej: 2 niños pequeños, 1 adulto mayor...">
+                                <input type="text" class="form-control" name="ninos_adultos" placeholder="Ej: 2 niños pequeños, 1 adulto mayor...">
                             </div>
 
                             <!-- ESTILO DE VIDA -->
                             <h5 class="mb-3 fw-bold" style="color:#1a1333;">Estilo de Vida</h5>
                             <div class="mb-3">
                                 <label class="form-label">¿Cuántas horas al día pasas fuera de casa?</label>
-                                <input type="text" class="form-control" placeholder="Ej: 8 horas por trabajo, fines de semana en casa...">
+                                <input type="text" class="form-control" name="horas_fuera_casa" placeholder="Ej: 8 horas por trabajo, fines de semana en casa...">
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">¿Viajas con frecuencia?</label>
-                                <textarea class="form-control" rows="2"></textarea>
+                                <textarea class="form-control" name="viajes_frecuentes" rows="2"></textarea>
                             </div>
 
                             <!-- EXPERIENCIA CON MASCOTAS -->
                             <h5 class="mb-3 fw-bold" style="color:#1a1333;">Experiencia con Mascotas</h5>
                             <div class="mb-3">
                                 <label class="form-label">¿Has tenido mascotas anteriormente? ¿Qué pasó con ellas?</label>
-                                <textarea class="form-control" rows="3" required></textarea>
+                                <textarea class="form-control" name="experiencia_previas" rows="3" required></textarea>
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">¿Tienes otras mascotas actualmente?</label>
-                                <input type="text" class="form-control" placeholder="Ej: 1 perro, 2 gatos...">
+                                <input type="text" class="form-control" name="otras_mascotas" placeholder="Ej: 1 perro, 2 gatos...">
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">¿Tus mascotas actuales están vacunadas y esterilizadas?</label><br>
                                 <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="vacunas">
+                                    <input class="form-check-input" type="radio" name="vacunas" value="si">
                                     <label class="form-check-label">Sí</label>
                                 </div>
                                 <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="vacunas">
+                                    <input class="form-check-input" type="radio" name="vacunas" value="no">
                                     <label class="form-check-label">No</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="vacunas" value="no_aplica">
+                                    <label class="form-check-label">No aplica</label>
                                 </div>
                             </div>
 
@@ -236,24 +250,24 @@ $mascotas = $mascota->getAllMascotasCarrusel();
                             <div class="mb-3">
                                 <label class="form-label">¿Estás dispuesto a cubrir gastos de alimentación, vacunas y emergencias veterinarias?</label>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" required>
+                                    <input class="form-check-input" type="checkbox" name="compromiso_gastos" value="si" required>
                                     <label class="form-check-label">Sí, me comprometo a cubrirlos</label>
                                 </div>
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">¿Qué harías si tu situación económica cambia y ya no puedes mantener a la mascota?</label>
-                                <textarea class="form-control" rows="2"></textarea>
+                                <textarea class="form-control" name="situacion_economica" rows="2"></textarea>
                             </div>
 
                             <!-- MOTIVACIÓN -->
                             <h5 class="mb-3 fw-bold" style="color:#1a1333;">Motivación</h5>
                             <div class="mb-3">
                                 <label class="form-label">¿Por qué deseas adoptar una mascota?</label>
-                                <textarea class="form-control" rows="3" required></textarea>
+                                <textarea class="form-control" name="motivacion" rows="3" required></textarea>
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">¿Qué esperas de la mascota que adoptes?</label>
-                                <textarea class="form-control" rows="2"></textarea>
+                                <textarea class="form-control" name="expectativas" rows="2"></textarea>
                             </div>
 
                             <!-- MENSAJE FINAL -->
@@ -267,7 +281,7 @@ $mascotas = $mascota->getAllMascotasCarrusel();
                             </div>
 
                             <div class="form-check mb-3">
-                                <input class="form-check-input" type="checkbox" id="condiciones" required>
+                                <input class="form-check-input" type="checkbox" name="acepta_condiciones" value="si" id="condiciones" required>
                                 <label class="form-check-label" for="condiciones">
                                     Acepto y comprendo esta condición
                                 </label>
@@ -279,6 +293,9 @@ $mascotas = $mascota->getAllMascotasCarrusel();
                                     Enviar Solicitud
                                 </button>
                             </div>
+                            <input type="hidden" name="id_usuario" value="<?php echo htmlspecialchars($_SESSION['user']['id_usuario']); ?>">
+                            <input type="hidden" name="id_mascota" id="id_mascota" value="">
+                            <input type="hidden" name="nit_fundacion" value="<?php echo htmlspecialchars($nit_fundacion); ?>">
                         </form>
                     </div>
                 </div>

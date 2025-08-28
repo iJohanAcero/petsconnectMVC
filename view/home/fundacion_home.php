@@ -199,6 +199,9 @@ $perfil = $perfil->getPerfilPorUsuario($id);
                         <li class="sidebar-item">
                             <a href="#" class="sidebar-link" id="btn-cargar-mascota">✔ Mis Mascotas</a>
                         </li>
+                        <li class="sidebar-item">
+                            <a href="#" class="sidebar-link" id="btn-cargar-adopcion">✔ Mis Adopciones</a>
+                        </li>
                     </ul>
                 </li>
                 <li class="sidebar-item">
@@ -237,6 +240,8 @@ $perfil = $perfil->getPerfilPorUsuario($id);
     <script src="<?= Config::get('JS_URL') ?>/routes/perfilFundacion.js"></script>
     <script src="<?= Config::get('JS_URL') ?>/routes/carteleraFundacion.js"></script>
     <script src="<?= Config::get('JS_URL') ?>/routes/carteleraMascotas.js"></script>
+    <script src="<?= Config::get('JS_URL') ?>/crud/crud_proceso.js"></script>
+
 
 
     <script>
