@@ -85,7 +85,7 @@ class AdopcionController
                 echo json_encode([
                     'success' => true,
                     'message' => 'Solicitud de adopción registrada correctamente.'
-                ]); 
+                ]);
             } else {
                 echo json_encode([
                     'success' => true,
@@ -139,7 +139,6 @@ class AdopcionController
             } else {
                 echo "Error: No se pudo actualizar el estado. Verifica que el proceso existe.";
             }
-
         } catch (Exception $e) {
             error_log("Error en actualizarEstado: " . $e->getMessage());
             echo "Error interno del servidor: " . $e->getMessage();
@@ -152,65 +151,43 @@ class AdopcionController
     public function eliminarProceso()
     {
         try {
-            $id_proceso = $_POST['id_adopcion'] ?? $_POST['id_proceso'] ?? null;
+            $id_proceso = $_POST['proceso_id'] ?? $_POST['id_proceso'] ?? $_POST['id'] ?? null;
 
-            // Validación básica
+            // ✅ Validación antes de mandar al modelo
             if (empty($id_proceso)) {
-                echo "Error: ID de proceso no proporcionado";
+                echo "⚠️ Error: ID de proceso no proporcionado.";
                 return;
             }
 
-            // Llamar al modelo para eliminar
+            // ✅ Llamada al modelo
             $resultado = $this->modeloAdopcion->eliminarProceso($id_proceso);
 
-            if ($resultado) {
-                echo "Proceso de adopción eliminado correctamente";
-            } else {
-                echo "Error al eliminar el proceso. Verifica que existe y no tenga restricciones.";
-            }
+            // ✅ Interpretar el resultado y responder
+            switch ($resultado) {
+                case "SUCCESS":
+                    echo "✅ Proceso de adopción eliminado correctamente.";
+                    break;
 
+                case "NOT_FOUND":
+                    echo "⚠️ No se encontró ningún proceso con el ID proporcionado ($id_proceso).";
+                    break;
+
+                case "FK_CONSTRAINT":
+                    echo "⚠️ No se puede eliminar el proceso porque está relacionado con otros registros (ej: solicitudes, historial, etc.).";
+                    break;
+
+                case "ERROR_DELETE":
+                    echo "❌ Error al intentar eliminar el proceso.";
+                    break;
+
+                case "DB_ERROR":
+                default:
+                    echo "❌ Error interno en la base de datos. Contacta con soporte.";
+                    break;
+            }
         } catch (Exception $e) {
-            error_log("Error en eliminarProceso: " . $e->getMessage());
-            echo "Error interno del servidor";
-        }
-    }
-
-    /**
-     * ✅ Obtener detalles de un proceso para el modal
-     */
-    public function obtenerDetallesProceso()
-    {
-        try {
-            $id_proceso = $_GET['id_proceso'] ?? $_POST['id_proceso'] ?? null;
-
-            if (empty($id_proceso)) {
-                echo json_encode([
-                    'success' => false,
-                    'message' => 'ID de proceso no proporcionado'
-                ]);
-                return;
-            }
-
-            $proceso = $this->modeloAdopcion->obtenerProcesoPorId($id_proceso);
-
-            if ($proceso) {
-                echo json_encode([
-                    'success' => true,
-                    'data' => $proceso
-                ]);
-            } else {
-                echo json_encode([
-                    'success' => false,
-                    'message' => 'Proceso no encontrado'
-                ]);
-            }
-
-        } catch (Exception $e) {
-            error_log("Error en obtenerDetallesProceso: " . $e->getMessage());
-            echo json_encode([
-                'success' => false,
-                'message' => 'Error interno del servidor'
-            ]);
+            error_log("Error general en eliminarProceso: " . $e->getMessage());
+            echo "❌ Error interno del servidor.";
         }
     }
 
@@ -221,14 +198,13 @@ class AdopcionController
     {
         try {
             $nit_fundacion = $_GET['nit_fundacion'] ?? $_POST['nit_fundacion'] ?? null;
-            
+
             $procesos = $this->modeloAdopcion->getProcesosAdopcion($nit_fundacion);
-            
+
             echo json_encode([
                 'success' => true,
                 'data' => $procesos
             ]);
-
         } catch (Exception $e) {
             error_log("Error en listarProcesos: " . $e->getMessage());
             echo json_encode([
@@ -236,16 +212,6 @@ class AdopcionController
                 'message' => 'Error al cargar procesos'
             ]);
         }
-    }
-
-    /**
-     * ✅ Método privado para verificar permisos (opcional)
-     */
-    private function tienePermisosEliminar()
-    {
-        // Implementar lógica de permisos según tu sistema
-        // Por ejemplo, verificar si es admin o fundación propietaria
-        return true; // Por ahora permitir a todos
     }
 }
 
@@ -258,19 +224,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         case 'registrar':
             $controller->registrarSolicitudAdopcion();
             break;
-            
+
         case 'actualizar_estado':
             $controller->actualizarEstado();
             break;
-            
+
         case 'eliminar':
             $controller->eliminarProceso();
             break;
-            
-        case 'obtener_detalles':
-            $controller->obtenerDetallesProceso();
-            break;
-            
+
         default:
             echo "Acción no reconocida";
             break;
@@ -286,11 +248,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         case 'listar':
             $controller->listarProcesos();
             break;
-            
-        case 'obtener_detalles':
-            $controller->obtenerDetallesProceso();
-            break;
-            
         default:
             echo "Acción GET no reconocida";
             break;

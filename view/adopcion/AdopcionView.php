@@ -152,7 +152,7 @@ if (isset($_SESSION["user"]["id_usuario"])) {
                                     </button>
                                     <button class="btn btn-sm btn-danger btn-eliminar-adopcion"
                                         data-formulario-id="<?= $proceso['id_proceso'] ?>"
-                                        data-bs-toggle="tooltip" title="Elimianr proceso">
+                                        data-bs-toggle="tooltip" title="Eliminar proceso">
                                         <i class="uil uil-trash"></i>
                                     </button>
                                 </div>

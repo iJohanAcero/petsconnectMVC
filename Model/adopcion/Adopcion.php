@@ -40,9 +40,6 @@ class Adopcion
         $expectativas
     ) {
         try {
-            // Log de parámetros para debugging (remover en producción)
-            error_log("Parámetros recibidos - Usuario: $id_usuario, Mascota: $id_mascota, Fundación: $nit_fundacion");
-
             $query = "CALL sp_crear_solicitud_adopcion(
             :id_usuario, :id_mascota, :nit_fundacion, :estado_civil,
             :tipo_documento, :numero_documento, :ocupacion, :tipo_vivienda,
@@ -256,58 +253,43 @@ class Adopcion
         }
     }
 
-    /**
-     * ✅ Eliminar proceso de adopción
-     */
-    public function eliminarProceso($id_proceso)
-    {
-        try {
-            $this->db->beginTransaction();
+/**
+ * ✅ Eliminar proceso de adopción (solo proceso, no formulario)
+ */
+public function eliminarProceso()
+{
+    try {
+        // Verificar que el proceso existe
+        $queryVerificar = "SELECT id_proceso FROM t_proceso_adopcion WHERE id_proceso = :id_proceso";
+        $stmtVerificar = $this->db->prepare($queryVerificar);
+        $stmtVerificar->bindParam(':id_proceso', $id_proceso, PDO::PARAM_INT);
+        $stmtVerificar->execute();
 
-            // Primero verificar que el proceso existe
-            $queryVerificar = "SELECT id_proceso, id_formulario FROM t_proceso_adopcion WHERE id_proceso = :id_proceso";
-            $stmtVerificar = $this->db->prepare($queryVerificar);
-            $stmtVerificar->bindParam(':id_proceso', $id_proceso, PDO::PARAM_INT);
-            $stmtVerificar->execute();
-            
-            $proceso = $stmtVerificar->fetch(PDO::FETCH_ASSOC);
-            
-            if (!$proceso) {
-                $this->db->rollBack();
-                return false;
-            }
+        $proceso = $stmtVerificar->fetch(PDO::FETCH_ASSOC);
 
-            // Eliminar el proceso de adopción
-            $queryProceso = "DELETE FROM t_proceso_adopcion WHERE id_proceso = :id_proceso";
-            $stmtProceso = $this->db->prepare($queryProceso);
-            $stmtProceso->bindParam(':id_proceso', $id_proceso, PDO::PARAM_INT);
-            
-            if (!$stmtProceso->execute()) {
-                $this->db->rollBack();
-                return false;
-            }
+        if (!$proceso) {
+            return "NOT_FOUND";
 
-            // Opcional: También eliminar el formulario asociado si no tiene otros procesos
-            $queryFormulario = "DELETE FROM t_formulario_adopcion WHERE id_formulario = :id_formulario";
-            $stmtFormulario = $this->db->prepare($queryFormulario);
-            $stmtFormulario->bindParam(':id_formulario', $proceso['id_formulario'], PDO::PARAM_INT);
-            $stmtFormulario->execute(); // No verificamos el resultado porque es opcional
-
-            $this->db->commit();
-            return true;
-
-        } catch (PDOException $e) {
-            $this->db->rollBack();
-            error_log("Error en eliminarProceso: " . $e->getMessage());
-            return false;
         }
-    }
+        // Eliminar el proceso
+        $queryProceso = "DELETE FROM t_proceso_adopcion WHERE id_proceso = :id_proceso";
+        $stmtProceso = $this->db->prepare($queryProceso);
+        $stmtProceso->bindParam(':id_proceso', $id_proceso, PDO::PARAM_INT);
 
-    /**
-     * ✅ Método mejorado para eliminar (alias del anterior)
-     */
-    public function delete($id_proceso)
-    {
-        return $this->eliminarProceso($id_proceso);
+        if ($stmtProceso->execute()) {
+            return "SUCCESS"; // 🎉 Eliminado correctamente
+        } else {
+            return "ERROR_DELETE"; // 🚨 Error al ejecutar DELETE
+        }
+
+    } catch (PDOException $e) {
+        if ($e->getCode() === "23000") {
+            return "FK_CONSTRAINT"; // 🚨 Restricción de clave foránea
+        }
+
+        error_log("Error en eliminarProceso: " . $e->getMessage());
+        return "DB_ERROR"; // 🚨 Otro error de base de datos
     }
+}
+
 }

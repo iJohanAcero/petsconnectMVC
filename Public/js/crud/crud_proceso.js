@@ -114,11 +114,11 @@ function inicializarAdopcion() {
     const botonesEliminar = document.querySelectorAll(".btn-eliminar-adopcion");
     botonesEliminar.forEach(btn => {
         btn.addEventListener("click", function () {
-            const idAdopcion = this.dataset.id;
+            const idProceso = this.dataset.formularioId;
             if (confirm("¿Estás seguro de que deseas eliminar esta adopcion?")) {
                 const formData = new FormData();
                 formData.append('accion', 'eliminar');
-                formData.append('id_adopcion', idAdopcion);
+                formData.append('id_proceso', idProceso);
 
                 fetch(`${window.BASE_URL}/controller/adopcion/AdopcionController.php`, {
                     method: "POST",
