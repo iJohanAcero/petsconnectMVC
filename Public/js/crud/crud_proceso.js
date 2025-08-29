@@ -36,8 +36,8 @@ function inicializarAdopcion() {
             // ✅ VERIFICAR QUE EL MODAL EXISTE ANTES DE USARLO
             const modalElement = document.getElementById("modalActualizarEstado");
             const procesoIdInput = document.getElementById("procesoIdEstado");
-            const nuevoEstadoSelect = document.getElementById("nuevoEstado");
-            
+            const nuevoEstadoSelect = document.getElementById("nuevoEstadoMascota");
+
             if (!modalElement) {
                 console.error("Modal 'modalActualizarEstado' no encontrado");
                 alert("Error: Modal no encontrado. Asegúrate de que el modal esté incluido en la página.");
@@ -63,29 +63,33 @@ function inicializarAdopcion() {
         });
     });
 
-    // ✅ MANEJAR EL GUARDADO DEL ESTADO (Solo si el botón existe)
     const btnGuardarEstado = document.getElementById("btnGuardarEstado");
     if (btnGuardarEstado) {
-        // Remover event listeners anteriores para evitar duplicados
+        
         const newBtn = btnGuardarEstado.cloneNode(true);
         btnGuardarEstado.parentNode.replaceChild(newBtn, btnGuardarEstado);
         
         newBtn.addEventListener("click", function() {
-            const formActualizarEstado = document.getElementById("formActualizarEstado");
-            
-            if (!formActualizarEstado) {
-                console.error("Formulario 'formActualizarEstado' no encontrado");
-                alert("Error: Formulario no encontrado");
-                return;
-            }
-            
-            const formData = new FormData(formActualizarEstado);
-            formData.append('action', 'actualizar_estado');
-            
-            fetch(`${window.BASE_URL}/controller/adopcion/AdopcionController.php`, {
-                method: "POST",
-                body: formData
-            })
+    const formActualizarEstado = document.getElementById("formActualizarEstado");
+    if (!formActualizarEstado) {
+        console.error("Formulario 'formActualizarEstado' no encontrado");
+        alert("Error: Formulario no encontrado");
+        return;
+    }
+
+    const formData = new FormData(formActualizarEstado);
+    formData.append('action', 'actualizar_estado');
+
+    // Captura el estado de la mascota si existe el campo
+    const nuevoEstadoMascota = document.getElementById("nuevoEstadoMascota");
+    if (nuevoEstadoMascota) {
+        formData.append('nuevo_estado_mascota', nuevoEstadoMascota.value);
+    }
+
+    fetch(`${window.BASE_URL}/controller/adopcion/AdopcionController.php`, {
+        method: "POST",
+        body: formData
+    })
             .then(response => {
                 if (!response.ok) throw new Error("Error en la respuesta del servidor");
                 return response.text();
@@ -109,6 +113,20 @@ function inicializarAdopcion() {
             });
         });
     }
+
+    // BOTONES DESCARGAR PDF
+const botonesDescargarPDF = document.querySelectorAll(".btn-descargar-pdf");
+botonesDescargarPDF.forEach(btn => {
+    btn.addEventListener("click", function () {
+        const idFormulario = this.dataset.formularioId;
+        
+        // Crear enlace temporal para descarga
+        const url = `${window.BASE_URL}/controller/adopcion/AdopcionController.php?accion=generar_pdf&id_formulario=${idFormulario}`;
+        
+        // Abrir en nueva ventana/tab para descarga
+        window.open(url, '_blank');
+    });
+});
 
     // ✅ BOTONES ELIMINAR
     const botonesEliminar = document.querySelectorAll(".btn-eliminar-adopcion");

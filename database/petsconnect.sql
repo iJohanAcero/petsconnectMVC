@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 25-08-2025 a las 08:05:47
+-- Tiempo de generación: 29-08-2025 a las 06:33:59
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -134,6 +134,58 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_agregar_red_social` (IN `p_id_pe
     END IF;
 END$$
 
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_crear_solicitud_adopcion` (IN `p_id_usuario` INT, IN `p_id_mascota` INT, IN `p_nit_fundacion` BIGINT, IN `p_estado_civil` VARCHAR(50), IN `p_tipo_documento` VARCHAR(2), IN `p_numero_documento` VARCHAR(30), IN `p_ocupacion` VARCHAR(100), IN `p_tipo_vivienda` VARCHAR(50), IN `p_tiene_patio` BOOLEAN, IN `p_seguridad_ventanas` BOOLEAN, IN `p_personas_hogar` INT, IN `p_ninos_adultos` VARCHAR(100), IN `p_horas_fuera_casa` VARCHAR(100), IN `p_viajes_frecuentes` TEXT, IN `p_experiencia_previas` TEXT, IN `p_otras_mascotas` TEXT, IN `p_mascotas_vacunadas` BOOLEAN, IN `p_compromiso_gastos` BOOLEAN, IN `p_situacion_economica` TEXT, IN `p_motivacion` TEXT, IN `p_expectativas` TEXT)   BEGIN
+    DECLARE v_id_formulario INT;
+    DECLARE v_id_proceso INT;
+    DECLARE v_id_estado INT;
+    
+    DECLARE EXIT HANDLER FOR SQLEXCEPTION
+    BEGIN
+        ROLLBACK;
+        RESIGNAL;
+    END;
+    
+    START TRANSACTION;
+    
+    -- 1) Insertar formulario
+    INSERT INTO t_formulario_adopcion (
+        id_usuario, id_mascota, nit_fundacion, estado_civil, tipo_documento, numero_documento,
+        ocupacion, tipo_vivienda, tiene_patio, seguridad_ventanas, personas_hogar, ninos_adultos,
+        horas_fuera_casa, viajes_frecuentes, experiencia_previas, otras_mascotas,
+        mascotas_vacunadas, compromiso_gastos, situacion_economica, motivacion, expectativas
+    ) VALUES (
+        p_id_usuario, p_id_mascota, p_nit_fundacion, p_estado_civil, p_tipo_documento, p_numero_documento,
+        p_ocupacion, p_tipo_vivienda, p_tiene_patio, p_seguridad_ventanas, p_personas_hogar, p_ninos_adultos,
+        p_horas_fuera_casa, p_viajes_frecuentes, p_experiencia_previas, p_otras_mascotas,
+        p_mascotas_vacunadas, p_compromiso_gastos, p_situacion_economica, p_motivacion, p_expectativas
+    );
+
+    SET v_id_formulario = LAST_INSERT_ID();
+
+    -- 2) Buscar el estado "EN TRAMITE" (corregido el campo)
+    SELECT id_estado_adopcion
+      INTO v_id_estado
+      FROM t_estado_adopcion
+     WHERE tipo_estado = 'EN TRAMITE'  -- ✅ Ahora usa el campo correcto
+     LIMIT 1;
+
+    -- Si no encuentra el estado, usar un fallback
+    IF v_id_estado IS NULL THEN
+        SET v_id_estado = 2; -- ID que corresponde a 'EN TRAMITE' según tu BD
+    END IF;
+
+    -- 3) Crear proceso de adopción
+    INSERT INTO t_proceso_adopcion (id_formulario, id_estado)
+    VALUES (v_id_formulario, v_id_estado);
+
+    SET v_id_proceso = LAST_INSERT_ID();
+    
+    COMMIT;
+
+    -- 4) Devolver IDs
+    SELECT v_id_formulario AS formulario_id, v_id_proceso AS proceso_id, 'success' AS status;
+END$$
+
 DELIMITER ;
 
 -- --------------------------------------------------------
@@ -214,8 +266,46 @@ CREATE TABLE `t_estado_adopcion` (
 INSERT INTO `t_estado_adopcion` (`id_estado_adopcion`, `tipo_estado`) VALUES
 (1, 'EN ADOPCION'),
 (2, 'EN TRAMITE'),
-(3, 'ADOPTADO'),
-(4, 'TRANSITO');
+(3, 'ADOPTADO');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `t_formulario_adopcion`
+--
+
+CREATE TABLE `t_formulario_adopcion` (
+  `id_formulario` int(11) NOT NULL,
+  `id_usuario` int(11) NOT NULL,
+  `id_mascota` int(11) NOT NULL,
+  `nit_fundacion` bigint(20) NOT NULL,
+  `estado_civil` varchar(50) DEFAULT NULL,
+  `tipo_documento` enum('CC','CE') NOT NULL,
+  `numero_documento` varchar(30) NOT NULL,
+  `ocupacion` varchar(100) DEFAULT NULL,
+  `tipo_vivienda` varchar(50) DEFAULT NULL,
+  `tiene_patio` tinyint(1) DEFAULT NULL,
+  `seguridad_ventanas` tinyint(1) DEFAULT NULL,
+  `personas_hogar` int(11) DEFAULT NULL,
+  `ninos_adultos` text DEFAULT NULL,
+  `horas_fuera_casa` varchar(100) DEFAULT NULL,
+  `viajes_frecuentes` text DEFAULT NULL,
+  `experiencia_previas` text DEFAULT NULL,
+  `otras_mascotas` text DEFAULT NULL,
+  `mascotas_vacunadas` tinyint(1) DEFAULT NULL,
+  `compromiso_gastos` tinyint(1) DEFAULT NULL,
+  `situacion_economica` text DEFAULT NULL,
+  `motivacion` text DEFAULT NULL,
+  `expectativas` text DEFAULT NULL,
+  `fecha_respuesta` datetime DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `t_formulario_adopcion`
+--
+
+INSERT INTO `t_formulario_adopcion` (`id_formulario`, `id_usuario`, `id_mascota`, `nit_fundacion`, `estado_civil`, `tipo_documento`, `numero_documento`, `ocupacion`, `tipo_vivienda`, `tiene_patio`, `seguridad_ventanas`, `personas_hogar`, `ninos_adultos`, `horas_fuera_casa`, `viajes_frecuentes`, `experiencia_previas`, `otras_mascotas`, `mascotas_vacunadas`, `compromiso_gastos`, `situacion_economica`, `motivacion`, `expectativas`, `fecha_respuesta`) VALUES
+(12, 33, 455, 11111, 'Soltero/a', 'CE', 'a12313', 'dasda', 'Apartamento en arriendo', 1, 1, 2, '2', '2', 'dasdada', 'fsdfsdf', '2', 1, 1, 'gfdfgd', 'gdfg', 'gdfgdfg', '2025-08-28 23:19:34');
 
 -- --------------------------------------------------------
 
@@ -290,6 +380,14 @@ CREATE TABLE `t_mascota` (
   `public_id` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Volcado de datos para la tabla `t_mascota`
+--
+
+INSERT INTO `t_mascota` (`id_mascota`, `nombre`, `edad_meses`, `sexo`, `imagen`, `id_tipo_mascota`, `nit_fundacion`, `id_estado_adopcion`, `public_id`) VALUES
+(455, 'Nano', 32, 'macho', 'https://res.cloudinary.com/dhyowmhw6/image/upload/v1756441111/mascotas/phpB9C9.jpg', 13, 11111, 1, 'mascotas/phpB9C9'),
+(76767, 'Mateo', 21, 'macho', 'https://res.cloudinary.com/dhyowmhw6/image/upload/v1756181258/mascotas/phpA3FD.jpg', 13, 11111, 1, 'mascotas/phpA3FD');
+
 -- --------------------------------------------------------
 
 --
@@ -311,7 +409,7 @@ CREATE TABLE `t_perfil` (
 
 INSERT INTO `t_perfil` (`id_perfil`, `nombre`, `preferencia`, `descripcion`, `imagen`, `public_id`) VALUES
 (20, 'Johan Acero', 'Todos los animales', 'me gustaria adoptar gatos en bogotaa', 'https://res.cloudinary.com/dhyowmhw6/image/upload/v1756100904/perfiles/php8E2D.jpg', 'perfiles/php8E2D'),
-(21, 'Fundacion Valentina', 'Gatos', 'fundacion de gatos ', 'https://res.cloudinary.com/dhyowmhw6/image/upload/v1756099138/perfiles/php9E5A.jpg', 'perfiles/php9E5A'),
+(21, 'Fundacion Valentina', 'Gatos', 'fundacion de gatos ', 'https://res.cloudinary.com/dhyowmhw6/image/upload/v1756267115/perfiles/phpBF73.jpg', 'perfiles/phpBF73'),
 (23, 'Perfil Fundación', '', '', 'fundacion_default.jpg', NULL),
 (24, 'Perfil Fundación', '', '', 'fundacion_default.jpg', NULL);
 
@@ -333,7 +431,7 @@ CREATE TABLE `t_perfil_redes` (
 --
 
 INSERT INTO `t_perfil_redes` (`id_red`, `id_perfil`, `tipo_red`, `url_red`) VALUES
-(48, 21, 'facebook', 'https://www.youtube.com/');
+(50, 21, 'facebook', 'https://www.youtube.com/');
 
 -- --------------------------------------------------------
 
@@ -342,14 +440,19 @@ INSERT INTO `t_perfil_redes` (`id_red`, `id_perfil`, `tipo_red`, `url_red`) VALU
 --
 
 CREATE TABLE `t_proceso_adopcion` (
-  `id` int(11) NOT NULL,
-  `fecha_inicio` datetime NOT NULL,
-  `fecha_actualizada` datetime NOT NULL,
-  `id_usuario` int(11) NOT NULL,
-  `id_mascota` int(11) NOT NULL,
-  `nit_fundacion` bigint(11) NOT NULL,
-  `id_estado` int(11) NOT NULL
+  `id_proceso` int(11) NOT NULL,
+  `id_formulario` int(11) NOT NULL,
+  `id_estado` int(11) NOT NULL DEFAULT 1,
+  `fecha_inicio` datetime NOT NULL DEFAULT current_timestamp(),
+  `fecha_actualizada` datetime NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `t_proceso_adopcion`
+--
+
+INSERT INTO `t_proceso_adopcion` (`id_proceso`, `id_formulario`, `id_estado`, `fecha_inicio`, `fecha_actualizada`) VALUES
+(3, 12, 3, '2025-08-28 23:19:34', '2025-08-28 23:19:57');
 
 -- --------------------------------------------------------
 
@@ -491,6 +594,15 @@ ALTER TABLE `t_estado_adopcion`
   ADD PRIMARY KEY (`id_estado_adopcion`);
 
 --
+-- Indices de la tabla `t_formulario_adopcion`
+--
+ALTER TABLE `t_formulario_adopcion`
+  ADD PRIMARY KEY (`id_formulario`),
+  ADD KEY `id_usuario` (`id_usuario`),
+  ADD KEY `id_mascota` (`id_mascota`),
+  ADD KEY `nit_fundacion` (`nit_fundacion`);
+
+--
 -- Indices de la tabla `t_fundacion`
 --
 ALTER TABLE `t_fundacion`
@@ -543,11 +655,9 @@ ALTER TABLE `t_perfil_redes`
 -- Indices de la tabla `t_proceso_adopcion`
 --
 ALTER TABLE `t_proceso_adopcion`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `fk_id_usuario` (`id_usuario`),
-  ADD KEY `fk_id_mascota` (`id_mascota`),
-  ADD KEY `fk_id_fundacion` (`nit_fundacion`),
-  ADD KEY `fk_id_estado` (`id_estado`);
+  ADD PRIMARY KEY (`id_proceso`),
+  ADD KEY `id_formulario` (`id_formulario`),
+  ADD KEY `id_estado` (`id_estado`);
 
 --
 -- Indices de la tabla `t_publicacion`
@@ -605,6 +715,12 @@ ALTER TABLE `t_estado_adopcion`
   MODIFY `id_estado_adopcion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
+-- AUTO_INCREMENT de la tabla `t_formulario_adopcion`
+--
+ALTER TABLE `t_formulario_adopcion`
+  MODIFY `id_formulario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+
+--
 -- AUTO_INCREMENT de la tabla `t_informe`
 --
 ALTER TABLE `t_informe`
@@ -620,13 +736,13 @@ ALTER TABLE `t_perfil`
 -- AUTO_INCREMENT de la tabla `t_perfil_redes`
 --
 ALTER TABLE `t_perfil_redes`
-  MODIFY `id_red` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=49;
+  MODIFY `id_red` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
 
 --
 -- AUTO_INCREMENT de la tabla `t_proceso_adopcion`
 --
 ALTER TABLE `t_proceso_adopcion`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_proceso` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT de la tabla `t_publicacion`
@@ -678,6 +794,14 @@ ALTER TABLE `t_donacion`
   ADD CONSTRAINT `fk_dona_nit_fundacion` FOREIGN KEY (`nit_fundacion`) REFERENCES `t_fundacion` (`nit_fundacion`);
 
 --
+-- Filtros para la tabla `t_formulario_adopcion`
+--
+ALTER TABLE `t_formulario_adopcion`
+  ADD CONSTRAINT `t_formulario_adopcion_ibfk_1` FOREIGN KEY (`id_usuario`) REFERENCES `t_usuario` (`id_usuario`) ON DELETE CASCADE,
+  ADD CONSTRAINT `t_formulario_adopcion_ibfk_2` FOREIGN KEY (`id_mascota`) REFERENCES `t_mascota` (`id_mascota`) ON DELETE CASCADE,
+  ADD CONSTRAINT `t_formulario_adopcion_ibfk_3` FOREIGN KEY (`nit_fundacion`) REFERENCES `t_fundacion` (`nit_fundacion`) ON DELETE CASCADE;
+
+--
 -- Filtros para la tabla `t_fundacion`
 --
 ALTER TABLE `t_fundacion`
@@ -718,9 +842,8 @@ ALTER TABLE `t_perfil_redes`
 -- Filtros para la tabla `t_proceso_adopcion`
 --
 ALTER TABLE `t_proceso_adopcion`
-  ADD CONSTRAINT `fk_estado_adopcion` FOREIGN KEY (`id_estado`) REFERENCES `t_estado_adopcion` (`id_estado_adopcion`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `fk_proceso_fundacion` FOREIGN KEY (`nit_fundacion`) REFERENCES `t_fundacion` (`nit_fundacion`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `fk_proceso_mascota` FOREIGN KEY (`id_mascota`) REFERENCES `t_mascota` (`id_mascota`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `t_proceso_adopcion_ibfk_1` FOREIGN KEY (`id_formulario`) REFERENCES `t_formulario_adopcion` (`id_formulario`) ON DELETE CASCADE,
+  ADD CONSTRAINT `t_proceso_adopcion_ibfk_2` FOREIGN KEY (`id_estado`) REFERENCES `t_estado_adopcion` (`id_estado_adopcion`);
 
 --
 -- Filtros para la tabla `t_recuperar_constrasena`

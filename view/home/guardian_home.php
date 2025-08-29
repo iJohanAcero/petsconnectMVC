@@ -180,6 +180,12 @@ $perfil = $perfil->getPerfilPorUsuario($id);
                         <span class="sidebar-text">Mascotas</span>
                     </a>
                 </li>
+                <li class="sidebar-item has-dropdown" id="btn-cargar-adopcion">
+                    <a href="#" class="sidebar-link">
+                        <i class="uil uil-file-search-alt"></i>
+                        <span class="sidebar-text">Mis Procesos</span>
+                    </a>
+                </li>
                 <li class="sidebar-item">
                     <a href="" class="sidebar-link">
                         <i class="uil uil-setting "></i>
@@ -206,6 +212,7 @@ $perfil = $perfil->getPerfilPorUsuario($id);
     <script src="<?= Config::get('JS_URL') ?>/routes/perfilGuardian.js"></script>
     <script src="<?= Config::get('JS_URL') ?>/routes/carteleraFundacion.js"></script>
     <script src="<?= Config::get('JS_URL') ?>/routes/carteleraMascotas.js"></script>
+    <script src="<?= Config::get('JS_URL') ?>/crud/crud_proceso.js"></script>
 
     <script>
         let page = 1;

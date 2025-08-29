@@ -159,41 +159,82 @@ class Adopcion
     }
 
     /**
-     * ✅ Actualizar estado de proceso de adopción
+     * ✅ Actualizar estado de proceso de adopción y mascota asociada
      */
-    public function actualizarEstadoProceso($id_proceso, $nuevo_estado)
+    public function actualizarEstadoProceso($id_proceso, $nuevo_estado, $nuevo_estado_mascota = null)
     {
         try {
             // Log para debugging
             error_log("Actualizando proceso ID: $id_proceso con estado: $nuevo_estado");
 
-            // Actualizar el estado del proceso
-            $query = "UPDATE t_proceso_adopcion 
-                      SET id_estado = :nuevo_estado, 
-                          fecha_actualizada = NOW() 
-                      WHERE id_proceso = :id_proceso";
+            // Iniciar transacción para asegurar integridad
+            $this->db->beginTransaction();
 
-            $stmt = $this->db->prepare($query);
-            $stmt->bindParam(':nuevo_estado', $nuevo_estado, PDO::PARAM_INT);
-            $stmt->bindParam(':id_proceso', $id_proceso, PDO::PARAM_INT);
+            // Primero verificar que el proceso existe y obtener el id_mascota
+            $queryVerificar = "
+    SELECT p.id_proceso, fa.id_mascota
+    FROM t_proceso_adopcion p
+    INNER JOIN t_formulario_adopcion fa ON p.id_formulario = fa.id_formulario
+    WHERE p.id_proceso = :id_proceso
+";
+            $stmtVerificar = $this->db->prepare($queryVerificar);
+            $stmtVerificar->bindParam(':id_proceso', $id_proceso, PDO::PARAM_INT);
+            $stmtVerificar->execute();
+            $proceso = $stmtVerificar->fetch(PDO::FETCH_ASSOC);
 
-            $resultado = $stmt->execute();
-
-            // Verificar si realmente se actualizó alguna fila
-            $filasAfectadas = $stmt->rowCount();
-            error_log("Filas afectadas: $filasAfectadas");
-
-            if ($resultado && $filasAfectadas > 0) {
-                return true;
-            } else if ($resultado && $filasAfectadas === 0) {
-                error_log("La consulta se ejecutó pero no se actualizó ninguna fila. Verificar si existe el ID: $id_proceso");
-                return false;
-            } else {
-                error_log("Error en la ejecución de la consulta: " . print_r($stmt->errorInfo(), true));
+            if (!$proceso) {
+                $this->db->rollback();
+                error_log("No se encontró el proceso ID: $id_proceso");
                 return false;
             }
 
+            // Actualizar el estado del proceso
+            $queryProceso = "UPDATE t_proceso_adopcion
+                        SET id_estado = :nuevo_estado,
+                            fecha_actualizada = NOW()
+                        WHERE id_proceso = :id_proceso";
+            $stmtProceso = $this->db->prepare($queryProceso);
+            $stmtProceso->bindParam(':nuevo_estado', $nuevo_estado, PDO::PARAM_INT);
+            $stmtProceso->bindParam(':id_proceso', $id_proceso, PDO::PARAM_INT);
+            $resultadoProceso = $stmtProceso->execute();
+
+            if (!$resultadoProceso || $stmtProceso->rowCount() === 0) {
+                $this->db->rollback();
+                error_log("Error al actualizar el proceso o no se actualizó ninguna fila");
+                return false;
+            }
+
+            // Actualizar el estado de la mascota asociada (si se proporciona nuevo estado)
+            if (!empty($proceso['id_mascota']) && $nuevo_estado_mascota !== null) {
+                $queryMascota = "UPDATE t_mascota
+                            SET id_estado_adopcion = :nuevo_estado_mascota
+                            WHERE id_mascota = :id_mascota";
+                $stmtMascota = $this->db->prepare($queryMascota);
+                $stmtMascota->bindParam(':nuevo_estado_mascota', $nuevo_estado_mascota, PDO::PARAM_INT);
+                $stmtMascota->bindParam(':id_mascota', $proceso['id_mascota'], PDO::PARAM_INT);
+                $resultadoMascota = $stmtMascota->execute();
+
+                if (!$resultadoMascota) {
+                    $this->db->rollback();
+                    error_log("Error al actualizar el estado de la mascota ID: " . $proceso['id_mascota']);
+                    return false;
+                }
+
+                $filasAfectadasMascota = $stmtMascota->rowCount();
+                error_log("Filas afectadas en mascota: $filasAfectadasMascota");
+            }
+
+            // Confirmar la transacción
+            $this->db->commit();
+
+            $filasAfectadasProceso = $stmtProceso->rowCount();
+            error_log("Filas afectadas en proceso: $filasAfectadasProceso");
+            error_log("Actualización exitosa - Proceso y mascota actualizados");
+
+            return true;
         } catch (PDOException $e) {
+            // Revertir transacción en caso de error
+            $this->db->rollback();
             error_log("PDOException en actualizarEstadoProceso: " . $e->getMessage());
             return false;
         }
@@ -244,52 +285,128 @@ class Adopcion
             $stmt = $this->db->prepare($query);
             $stmt->bindParam(':id_proceso', $id_proceso, PDO::PARAM_INT);
             $stmt->execute();
-            
-            return $stmt->fetch(PDO::FETCH_ASSOC);
 
+            return $stmt->fetch(PDO::FETCH_ASSOC);
         } catch (PDOException $e) {
             error_log("Error en obtenerProcesoPorId: " . $e->getMessage());
             return false;
         }
     }
 
-/**
- * ✅ Eliminar proceso de adopción (solo proceso, no formulario)
- */
-public function eliminarProceso()
-{
-    try {
-        // Verificar que el proceso existe
-        $queryVerificar = "SELECT id_proceso FROM t_proceso_adopcion WHERE id_proceso = :id_proceso";
-        $stmtVerificar = $this->db->prepare($queryVerificar);
-        $stmtVerificar->bindParam(':id_proceso', $id_proceso, PDO::PARAM_INT);
-        $stmtVerificar->execute();
+    /**
+     * ✅ Eliminar proceso de adopción y su formulario asociado
+     */
+    public function eliminarProceso($id_proceso)
+    {
+        try {
+            // Iniciar transacción para asegurar integridad
+            $this->db->beginTransaction();
 
-        $proceso = $stmtVerificar->fetch(PDO::FETCH_ASSOC);
+            // Verificar que el proceso existe y obtener el id_formulario
+            $queryVerificar = "SELECT id_proceso, id_formulario FROM t_proceso_adopcion WHERE id_proceso = :id_proceso";
+            $stmtVerificar = $this->db->prepare($queryVerificar);
+            $stmtVerificar->bindParam(':id_proceso', $id_proceso, PDO::PARAM_INT);
+            $stmtVerificar->execute();
+            $proceso = $stmtVerificar->fetch(PDO::FETCH_ASSOC);
 
-        if (!$proceso) {
-            return "NOT_FOUND";
+            if (!$proceso) {
+                $this->db->rollback();
+                return "NOT_FOUND";
+            }
 
+            // Eliminar primero el proceso de adopción (hijo en la relación FK)
+            $queryProceso = "DELETE FROM t_proceso_adopcion WHERE id_proceso = :id_proceso";
+            $stmtProceso = $this->db->prepare($queryProceso);
+            $stmtProceso->bindParam(':id_proceso', $id_proceso, PDO::PARAM_INT);
+
+            if (!$stmtProceso->execute()) {
+                $this->db->rollback();
+                return "ERROR_DELETE_PROCESO"; // 🚨 Error al eliminar proceso
+            }
+
+            // Eliminar el formulario asociado (si existe)
+            if (!empty($proceso['id_formulario'])) {
+                $queryFormulario = "DELETE FROM t_formulario_adopcion WHERE id_formulario = :id_formulario";
+                $stmtFormulario = $this->db->prepare($queryFormulario);
+                $stmtFormulario->bindParam(':id_formulario', $proceso['id_formulario'], PDO::PARAM_INT);
+
+                if (!$stmtFormulario->execute()) {
+                    $this->db->rollback();
+                    return "ERROR_DELETE_FORMULARIO"; // 🚨 Error al eliminar formulario
+                }
+            }
+
+            // Confirmar la transacción
+            $this->db->commit();
+            return "SUCCESS"; // 🎉 Eliminado correctamente (proceso y formulario)
+
+        } catch (PDOException $e) {
+            // Revertir transacción en caso de error
+            $this->db->rollback();
+
+            if ($e->getCode() === "23000") {
+                return "FK_CONSTRAINT"; // 🚨 Restricción de clave foránea
+            }
+            error_log("Error en eliminarProceso: " . $e->getMessage());
+            return "DB_ERROR"; // 🚨 Otro error de base de datos
         }
-        // Eliminar el proceso
-        $queryProceso = "DELETE FROM t_proceso_adopcion WHERE id_proceso = :id_proceso";
-        $stmtProceso = $this->db->prepare($queryProceso);
-        $stmtProceso->bindParam(':id_proceso', $id_proceso, PDO::PARAM_INT);
-
-        if ($stmtProceso->execute()) {
-            return "SUCCESS"; // 🎉 Eliminado correctamente
-        } else {
-            return "ERROR_DELETE"; // 🚨 Error al ejecutar DELETE
-        }
-
-    } catch (PDOException $e) {
-        if ($e->getCode() === "23000") {
-            return "FK_CONSTRAINT"; // 🚨 Restricción de clave foránea
-        }
-
-        error_log("Error en eliminarProceso: " . $e->getMessage());
-        return "DB_ERROR"; // 🚨 Otro error de base de datos
     }
-}
 
+    public function getFormularioAdopcion($id_formulario)
+    {
+        try {
+            // Preparar la consulta SQL
+            $sql = "SELECT 
+            f.id_formulario,
+            f.id_usuario,
+            f.id_mascota,
+            f.nit_fundacion,
+            f.estado_civil,
+            f.tipo_documento,
+            f.numero_documento,
+            f.ocupacion,
+            f.tipo_vivienda,
+            f.tiene_patio,
+            f.seguridad_ventanas,
+            f.personas_hogar,
+            f.ninos_adultos,
+            f.horas_fuera_casa,
+            f.viajes_frecuentes,
+            f.experiencia_previas,
+            f.otras_mascotas,
+            f.mascotas_vacunadas,
+            f.compromiso_gastos,
+            f.situacion_economica,
+            f.motivacion,
+            f.expectativas,
+            f.fecha_respuesta,
+            -- Datos de la mascota
+            m.nombre as nombre_mascota,
+            m.imagen as imagen_mascota
+        FROM t_formulario_adopcion f
+        INNER JOIN t_mascota m ON f.id_mascota = m.id_mascota
+        WHERE f.id_formulario = ?";
+
+            // Ejecutar la consulta
+            $stmt = $this->db->prepare($sql);
+            $stmt->bindParam(1, $id_formulario, PDO::PARAM_INT);
+            $stmt->execute();
+
+            // Obtener el resultado
+            $formulario = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            if ($formulario) {
+                return $formulario;
+            } else {
+                error_log("No se encontró formulario con ID: $id_formulario");
+                return false;
+            }
+        } catch (PDOException $e) {
+            error_log("Error en getFormularioAdopcion: " . $e->getMessage());
+            return false;
+        } catch (Exception $e) {
+            error_log("Error general en getFormularioAdopcion: " . $e->getMessage());
+            return false;
+        }
+    }
 }

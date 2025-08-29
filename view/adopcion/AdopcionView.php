@@ -145,10 +145,10 @@ if (isset($_SESSION["user"]["id_usuario"])) {
                                         data-bs-toggle="tooltip" title="Actualizar estado">
                                         <i class="uil uil-edit"></i>
                                     </button>
-                                    <button class="btn btn-sm btn-primary btn-ver-formulario"
+                                    <button class="btn btn-sm btn-success btn-descargar-pdf"
                                         data-formulario-id="<?= $proceso['id_formulario'] ?>"
-                                        data-bs-toggle="tooltip" title="Ver formulario de adopción">
-                                        <i class="uil uil-file-alt"></i>
+                                        title="Descargar formulario PDF">
+                                        <i class="uil uil-file-download"></i>
                                     </button>
                                     <button class="btn btn-sm btn-danger btn-eliminar-adopcion"
                                         data-formulario-id="<?= $proceso['id_proceso'] ?>"
@@ -179,11 +179,11 @@ if (isset($_SESSION["user"]["id_usuario"])) {
     </div>
 
     <!-- Modal para actualizar estado -->
-    <div class="modal fade" id="modalActualizarEstado" tabindex="-1" aria-hidden="true">
+    <div class="modal fade mt-5" id="modalActualizarEstado" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header" style="background-color: #1a1333; color: white;">
-                    <h5 class="modal-title">
+                    <h5 class="modal-title text-white">
                         <i class="uil uil-traffic-light me-2"></i>
                         Actualizar Estado del Proceso
                     </h5>
@@ -194,7 +194,7 @@ if (isset($_SESSION["user"]["id_usuario"])) {
                         <input type="hidden" id="procesoIdEstado" name="proceso_id">
                         <div class="mb-3">
                             <label for="nuevoEstado" class="form-label">Nuevo Estado</label>
-                            <select class="form-select" id="nuevoEstado" name="nuevo_estado" required>
+                            <select class="form-select" id="nuevoEstadoMascota" name="nuevo_estado" required>
                                 <option value="">Selecciona un estado...</option>
                                 <option value="2">En Trámite</option>
                                 <option value="3">Aceptado</option>
