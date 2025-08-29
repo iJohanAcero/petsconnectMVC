@@ -23,7 +23,6 @@ class AdopcionController
 
     public function registrarSolicitudAdopcion()
     {
-        // 1. Capturar datos del formulario
         $id_usuario        = $_POST['id_usuario']        ?? '';
         $id_mascota        = $_POST['id_mascota']        ?? '';
         $nit_fundacion     = $_POST['nit_fundacion']     ?? '';
@@ -56,7 +55,6 @@ class AdopcionController
             return;
         }
 
-        // 3. Llamar al modelo para ejecutar el SP
         $resultado = $this->modeloAdopcion->crearSolicitudAdopcion(
             $id_usuario,
             $id_mascota,
@@ -99,9 +97,7 @@ class AdopcionController
         }
     }
 
-    /**
-     * ✅ Actualizar estado del proceso de adopción
-     */
+    /* Actualizar estado del proceso de adopción*/
     public function actualizarEstado()
     {
         try {
@@ -109,60 +105,37 @@ class AdopcionController
             // Validar que lleguen los datos necesarios
             $id_proceso = $_POST['proceso_id'] ?? null;
             $nuevo_estado = $_POST['nuevo_estado'] ?? null;
-            $nuevo_estado_mascota = $_POST['nuevo_estado_mascota'] ?? null; // Nuevo parámetro opcional
-
-            error_log("POST recibido: " . print_r($_POST, true));
-            error_log("ID proceso: $id_proceso, Nuevo estado: $nuevo_estado");
-
-            if (empty($id_proceso)) {
-                echo "⚠️ Error: ID de proceso no proporcionado.";
-                return;
-            }
-
-            $estados_validos = [1, 2, 3];
-            if (!in_array((int)$nuevo_estado, $estados_validos)) {
-                echo "⚠️ Error: Estado no válido ($nuevo_estado)";
-                return;
-            }
-
-            // Validar estado de mascota si se proporciona
-            if ($nuevo_estado_mascota !== null && !in_array((int)$nuevo_estado_mascota, $estados_validos)) {
-                echo "⚠️ Error: Estado de mascota no válido ($nuevo_estado_mascota)";
-                return;
-            }
+            $nuevo_estado_mascota = $_POST['nuevo_estado_mascota'] ?? null;
 
             // Llamar al modelo para actualizar (IMPORTANTE: ahora con 3 parámetros)
             $resultado = $this->modeloAdopcion->actualizarEstadoProceso(
                 $id_proceso,
                 $nuevo_estado,
-                $nuevo_estado_mascota  // Puede ser null
+                $nuevo_estado_mascota
             );
 
             if ($resultado) {
                 if ($nuevo_estado_mascota !== null) {
-                    echo "✅ Estado del proceso y mascota actualizados correctamente";
+                    echo "Estado del proceso y mascota actualizados correctamente";
                 } else {
-                    echo "✅ Estado del proceso actualizado correctamente";
+                    echo "Estado del proceso actualizado correctamente";
                 }
             } else {
-                echo "❌ Error: No se pudo actualizar el estado. Verifica los logs para más detalles.";
+                echo "Error: No se pudo actualizar el estado. Verifica los logs para más detalles.";
             }
         } catch (Exception $e) {
-            error_log("Error en actualizarEstado: " . $e->getMessage());
-            echo "❌ Error interno del servidor: " . $e->getMessage();
+            echo "Error interno del servidor: " . $e->getMessage();
         }
     }
 
-    /**
-     * Eliminar proceso de adopción
-     */
+    /**Eliminar proceso de adopción*/
     public function eliminarProceso()
     {
         try {
             $id_proceso = $_POST['proceso_id'] ?? $_POST['id_proceso'] ?? $_POST['id'] ?? null;
 
             if (empty($id_proceso)) {
-                echo "⚠️ Error: ID de proceso no proporcionado.";
+                echo "Error: ID de proceso no proporcionado.";
                 return;
             }
 
@@ -173,16 +146,7 @@ class AdopcionController
                     echo "Proceso de adopción y formulario eliminados correctamente.";
                     break;
                 case "NOT_FOUND":
-                    echo "⚠️ El proceso de adopción no existe.";
-                    break;
-                case "ERROR_DELETE_PROCESO":
-                    echo "Error al intentar eliminar el proceso de adopción.";
-                    break;
-                case "ERROR_DELETE_FORMULARIO":
-                    echo "Error al intentar eliminar el formulario asociado.";
-                    break;
-                case "FK_CONSTRAINT":
-                    echo "⚠️ No se puede eliminar: existen registros relacionados.";
+                    echo "El proceso de adopción no existe.";
                     break;
                 case "DB_ERROR":
                 default:
@@ -190,7 +154,6 @@ class AdopcionController
                     break;
             }
         } catch (Exception $e) {
-            error_log("Error general en eliminarProceso: " . $e->getMessage());
             echo "Error interno del servidor.";
         }
     }
@@ -219,7 +182,6 @@ class AdopcionController
     public function generarFormularioPDF()
     {
         try {
-            // 1. Validar que llegue el ID del formulario
             $id_formulario = $_GET['id_formulario'] ?? null;
 
             if (empty($id_formulario)) {
@@ -240,7 +202,6 @@ class AdopcionController
                 return;
             }
 
-            // 3. Instanciar mPDF
             $mpdf = new \Mpdf\Mpdf([
                 'mode' => 'utf-8',
                 'format' => 'A4',
@@ -251,17 +212,13 @@ class AdopcionController
                 'margin_bottom' => 16,
             ]);
 
-            // 4. Crear el HTML del formulario
             $html = $this->crearPlantillaFormulario($formulario);
 
-            // 5. Escribir HTML al PDF
             $mpdf->WriteHTML($html);
 
-            // 6. Configurar nombre del archivo
             $nombre_archivo = 'formulario_adopcion_' . $id_formulario . '_' . date('Y-m-d') . '.pdf';
 
-            // 7. Generar descarga
-            $mpdf->Output($nombre_archivo, 'D'); // 'D' = Download
+            $mpdf->Output($nombre_archivo, 'D');
 
         } catch (Exception $e) {
             error_log("Error generando PDF: " . $e->getMessage());
@@ -274,7 +231,6 @@ class AdopcionController
 
     private function crearPlantillaFormulario($formulario)
     {
-        // Formatear valores boolean para mostrar
         $tiene_patio = $formulario['tiene_patio'] ? 'Sí' : 'No';
         $seguridad_ventanas = $formulario['seguridad_ventanas'] ? 'Sí' : 'No';
         $mascotas_vacunadas = $formulario['mascotas_vacunadas'] ? 'Sí' : 'No';
@@ -758,7 +714,6 @@ class AdopcionController
     }
 }
 
-//  Router de acciones 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $accion = $_POST['accion'] ?? $_POST['action'] ?? '';
     $controller = new AdopcionController();
@@ -783,8 +738,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 
-
-// Router para peticiones GET
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $accion = $_GET['accion'] ?? $_GET['action'] ?? '';
     $controller = new AdopcionController();

@@ -16,7 +16,6 @@ class GuardianController {
         $this->modeloGuardian = new Guardian();
     }
 
-    // Registrar guardian
     public function registrar() {
         $nombre = htmlspecialchars($_POST['nombre'] ?? '');
         $apellido = htmlspecialchars($_POST['apellido'] ?? '');
@@ -25,7 +24,6 @@ class GuardianController {
         $direccion = htmlspecialchars($_POST['direccion'] ?? '');
         $telefono = htmlspecialchars($_POST['telefono'] ?? '');
 
-        // Validar campos obligatorios
         if (empty($nombre) || empty($apellido) || empty($contrasena) || empty($email)) {
             echo "Todos los campos son obligatorios";
             return;
@@ -43,7 +41,7 @@ class GuardianController {
         echo $resultado ? "Guardian registrado correctamente" : "Error al registrar guardian";
     }
 
-    // Editar guardian - CORREGIDO para usar id_usuario
+    // Editar guardian 
     public function editar() {
         $id_usuario = htmlspecialchars($_POST['id_usuario'] ?? ''); // Cambiado de 'id' a 'id_usuario'
         $nombre = htmlspecialchars($_POST['nombre'] ?? '');
@@ -52,14 +50,13 @@ class GuardianController {
         $direccion = htmlspecialchars($_POST['direccion'] ?? '');
         $telefono = htmlspecialchars($_POST['telefono'] ?? '');
 
-        // Validar campos obligatorios
         if (empty($id_usuario) || empty($nombre) || empty($apellido) || empty($email)) {
             echo "Todos los campos son obligatorios";
             return;
         }
 
         $resultado = $this->modeloGuardian->updateGuardian(
-            $id_usuario, // Usar id_usuario en lugar de id
+            $id_usuario, 
             $nombre,
             $apellido,
             $email,
@@ -70,9 +67,9 @@ class GuardianController {
         echo $resultado ? "Guardian actualizado correctamente" : "Error al actualizar guardian";
     }
 
-    // Eliminar guardian - CORREGIDO para usar id_usuario con validaciones
+    // Eliminar guardian 
     public function eliminar() {
-        $id_usuario = $_POST['id_usuario'] ?? ''; // Cambiado de 'id' a 'id_usuario'
+        $id_usuario = $_POST['id_usuario'] ?? '';
 
         if (empty($id_usuario)) {
             echo "ID de usuario del guardian no proporcionado";
@@ -81,7 +78,6 @@ class GuardianController {
 
         $resultado = $this->modeloGuardian->delete($id_usuario);
 
-        // Manejar diferentes tipos de respuesta (igual que en Fundacion)
         if ($resultado === 'constraint_error') {
             echo "No se puede eliminar el guardian debido a restricciones de base de datos. Verifique que no tenga datos relacionados.";
         } elseif ($resultado) {

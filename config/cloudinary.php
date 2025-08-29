@@ -8,7 +8,6 @@ $dotenv->load();
 use Cloudinary\Configuration\Configuration;
 use Cloudinary\Api\Upload\UploadApi;
 
-// Configurar Cloudinary usando la variable de entorno
 Configuration::instance($_ENV['CLOUDINARY_URL']);
 
 // Función para subir imagen

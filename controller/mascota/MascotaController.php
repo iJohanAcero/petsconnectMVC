@@ -21,13 +21,11 @@ class MascotaController
         $this->modeloMascota = new Mascota();
     }
 
-    /**
-     * Validar archivo de imagen
-     */
+    /** Validar archivo de imagen */
     private function validateImage($file)
     {
         $allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
-        $maxSize = 5 * 1024 * 1024; // 5MB
+        $maxSize = 5 * 1024 * 1024;
 
         if (!in_array($file['type'], $allowedTypes)) {
             return ['valid' => false, 'error' => 'Tipo de archivo no permitido. Solo JPEG, PNG, GIF y WebP.'];
@@ -40,7 +38,7 @@ class MascotaController
         return ['valid' => true];
     }
 
-    // 1️⃣ REGISTRAR mascota
+    // 1️REGISTRAR mascota
     public function registrar()
     {
         $id_mascota = $_POST['id_mascota'] ?? null;
@@ -50,20 +48,19 @@ class MascotaController
         $imagen = null;
         $public_id = null;
 
-        // Procesar imagen si se sube
+    
         if (isset($_FILES['imagen']) && $_FILES['imagen']['error'] === UPLOAD_ERR_OK) {
-            // Validar imagen
+            
             $validation = $this->validateImage($_FILES['imagen']);
             if (!$validation['valid']) {
                 echo "Error: " . $validation['error'];
                 return;
             }
 
-            // Subir a Cloudinary usando la función global
             $uploadResult = uploadImageToCloudinary(
                 $_FILES['imagen']['tmp_name'],
-                'mascotas', // carpeta específica para mascotas
-                null // public_id automático
+                'mascotas',
+                null
             );
 
             if ($uploadResult['success']) {
@@ -79,7 +76,6 @@ class MascotaController
         $id_estado_adopcion = $_POST['id_estado_adopcion'] ?? '';
         $nit_fundacion = $_POST['nit_fundacion'] ?? '';
 
-        // Validación básica
         if (empty($id_tipo_mascota)) {
             echo "Error: Debes seleccionar un tipo de mascota válido";
             return;
@@ -100,7 +96,7 @@ class MascotaController
         echo $resultado ? "Mascota registrada correctamente" : "Error al registrar mascota";
     }
 
-    // 2️⃣ ACTUALIZAR mascota
+    // ACTUALIZAR mascota
     public function editar()
     {
         $id_mascota = $_POST['id_mascota'] ?? null;
@@ -108,29 +104,26 @@ class MascotaController
         $edad_meses = $_POST['edad_meses'] ?? '';
         $sexo = $_POST['sexo'] ?? '';
 
-        // Obtener la mascota actual para conservar datos existentes
         $mascotaActual = $this->modeloMascota->getId($id_mascota);
-        $imagen = $mascotaActual['imagen']; // Mantener la imagen actual por defecto
-        $public_id = $mascotaActual['public_id'] ?? null; // Mantener public_id actual
+        $imagen = $mascotaActual['imagen'];
+        $public_id = $mascotaActual['public_id'] ?? null;
 
-        // Procesar nueva imagen si se sube
         if (isset($_FILES['imagen']) && $_FILES['imagen']['error'] === UPLOAD_ERR_OK) {
-            // Validar imagen
+            
             $validation = $this->validateImage($_FILES['imagen']);
             if (!$validation['valid']) {
                 echo "Error: " . $validation['error'];
                 return;
             }
 
-            // Subir nueva imagen a Cloudinary usando la función global
             $uploadResult = uploadImageToCloudinary(
                 $_FILES['imagen']['tmp_name'],
                 'mascotas',
-                null // Nuevo public_id automático
+                null
             );
 
             if ($uploadResult['success']) {
-                // Eliminar imagen anterior de Cloudinary si existe
+                // Eliminar imagen anterior de Cloudinary
                 if (!empty($mascotaActual['public_id'])) {
                     deleteImageFromCloudinary($mascotaActual['public_id']);
                 }
@@ -160,7 +153,7 @@ class MascotaController
         echo $resultado ? "Mascota actualizada correctamente" : "Error al actualizar mascota";
     }
 
-    // 3️⃣ ELIMINAR mascota 
+    // ELIMINAR mascota 
     public function eliminar()
     {
         $id_mascota = $_POST['id_mascota'] ?? '';
@@ -169,26 +162,21 @@ class MascotaController
             return;
         }
 
-        // Obtener datos de la mascota antes de eliminar para limpiar Cloudinary
         $mascotaActual = $this->modeloMascota->getId($id_mascota);
 
-        // Verificar si se obtuvieron datos válidos
         if (!$mascotaActual || empty($mascotaActual)) {
             echo "No se pudieron obtener los datos de la mascota";
             return;
         }
 
-        // Verificar si es un array de arrays (como [0 => array(...)])
         if (isset($mascotaActual[0]) && is_array($mascotaActual[0])) {
             $mascotaActual = $mascotaActual[0];
         }
 
-        // Eliminar de la base de datos primero
         $resultado = $this->modeloMascota->delete($id_mascota);
 
-        // Si se eliminó correctamente, eliminar también de Cloudinary
         if ($resultado) {
-            // Verificar si existe public_id y no está vacío
+
             $public_id = $mascotaActual['public_id'] ?? ($mascotaActual['public_id'] ?? null);
 
             if (!empty($public_id)) {
@@ -205,7 +193,7 @@ class MascotaController
         echo $resultado ? "Mascota eliminada correctamente" : "Error al eliminar mascota";
     }
 
-    // 4️⃣ OBTENER todas las mascotas para carrusel/cartas
+    // OBTENER todas las mascotas para carrusel/cartas
     public function getAllMascotasCarrusel()
     {
         try {
@@ -221,31 +209,8 @@ class MascotaController
         }
     }
 
-    // 5️⃣ OBTENER detalles de una mascota específica
-    public function getDetallesMascota()
-    {
-        $id = $_GET['id'] ?? '';
 
-        if (empty($id)) {
-            header('Content-Type: application/json');
-            echo json_encode(['error' => 'ID de mascota no proporcionado']);
-            exit;
-        }
-
-        try {
-            $mascota = $this->modeloMascota->getDetallesPorId($id);
-
-            header('Content-Type: application/json');
-            echo json_encode($mascota);
-            exit;
-        } catch (Exception $e) {
-            header('Content-Type: application/json');
-            echo json_encode(['error' => 'Error al obtener detalles: ' . $e->getMessage()]);
-            exit;
-        }
-    }
-
-    // 7️⃣ FILTRAR mascotas por criterios específicos
+    // FILTRAR mascotas por criterios específicos
     public function filtrarMascotas()
     {
         $especie = $_GET['especie'] ?? '';
@@ -265,7 +230,7 @@ class MascotaController
         }
     }
 
-    // 8️⃣ OBTENER perfil completo de mascota con información de fundación
+    //OBTENER perfil completo de mascota con información de fundación
     public function getPerfilCompleto()
     {
         $id = $_GET['id'] ?? '';
@@ -304,15 +269,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } 
 }
 
-// NUEVO: Manejo de peticiones GET para AJAX
+//Manejo de peticiones GET 
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $action = $_GET['action'] ?? '';
     $controller = new MascotaController();
 
     if ($action === 'getAllMascotasCarrusel') {
         $controller->getAllMascotasCarrusel();
-    } elseif ($action === 'getDetallesMascota') {
-        $controller->getDetallesMascota();
     } elseif ($action === 'filtrarMascotas') {
         $controller->filtrarMascotas();
     } elseif ($action === 'getPerfilCompleto') {

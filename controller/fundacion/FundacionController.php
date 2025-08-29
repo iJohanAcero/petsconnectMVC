@@ -31,7 +31,6 @@ class FundacionController
         $nombre_fundacion = htmlspecialchars($_POST['fund_nombre'] ?? '');
         $nit_fundacion = htmlspecialchars($_POST['fund_nit'] ?? '');
 
-        // Validar campos obligatorios
         if (empty($nombre) || empty($apellido) || empty($contrasena) || empty($email) || empty($nombre_fundacion) || empty($nit_fundacion)) {
             echo "Todos los campos son obligatorios";
             return;
@@ -89,7 +88,6 @@ class FundacionController
 
         $resultado = $this->modeloFundacion->delete($nit);
 
-        // Manejar diferentes tipos de respuesta
         if ($resultado === 'mascotas_asociadas') {
             $mascotas = $this->modeloFundacion->getMascotasAsociadas($nit);
             echo "No se puede eliminar la fundación porque tiene " . count($mascotas) . " mascota(s) asociada(s). Primero debe eliminar o reasignar las mascotas.";
@@ -102,7 +100,6 @@ class FundacionController
         }
     }
 
-    // NUEVO MÉTODO para obtener fundaciones para cartelera
     public function getAllFundacionesCarrusel()
     {
         try {
@@ -118,7 +115,6 @@ class FundacionController
         }
     }
 
-    // NUEVO MÉTODO para obtener detalles de una fundación específica
     public function getDetallesFundacion()
     {
         $id = $_GET['id'] ?? '';
@@ -130,7 +126,6 @@ class FundacionController
         }
 
         try {
-            // Podrías crear un método específico en el modelo o usar el existente
             $fundacion = $this->modeloFundacion->getDetallesPorId($id);
 
             header('Content-Type: application/json');
@@ -166,7 +161,7 @@ class FundacionController
         }
     }
 }
-// Router de acciones - ACTUALIZADO para manejar GET y POST
+// GET y POST
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $accion = $_POST['accion'] ?? '';
     $controller = new FundacionController();
@@ -180,8 +175,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-// NUEVO: Manejo de peticiones GET para AJAX
-// En la parte de manejo de peticiones GET
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $action = $_GET['action'] ?? '';
     $controller = new FundacionController();

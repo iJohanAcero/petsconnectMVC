@@ -11,7 +11,6 @@ use App\config\Roles;
 require_once __DIR__ . '/../vendor/autoload.php';
 class AuthController
 {
-    // Mostrar formulario de recuperación
     public function mostrarRecuperar()
     {
         require_once __DIR__ . '/../view/login/recuperarContraseña.php';
@@ -306,7 +305,7 @@ class AuthController
 
             if (isset($google_user->id)) {
                 $usuarioModel = new Usuario();
-                // Usamos el método findOrCreateGoogleUser que ya tienes en tu modelo
+                // Usamos el método findOrCreateGoogleUser
                 $user = $usuarioModel->findOrCreateGoogleUser(
                     $google_user->id,
                     $google_user->givenName ?? '',
