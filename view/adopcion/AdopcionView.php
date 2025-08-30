@@ -10,21 +10,21 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 
 $Modelo = new Adopcion();
-$FundacionModelo = new Fundacion();
-$procesos = $Modelo->getProcesosAdopcion();
-
-$nits = $FundacionModelo->getNitsFundacion();
-
-$nit_fundacion = null;
-
 
 $id_usuario = $_SESSION['user']['id_usuario'] ?? null;
 $esAdmin = $id_usuario && Roles::esAdmin($id_usuario);
 $esFundacion = $id_usuario && Roles::esFundacion($id_usuario);
+$esGuardian = $id_usuario && Roles::esGuardian($id_usuario);
 $nit_sesion = $_SESSION['user']['nit_fundacion'] ?? null;
+$tipo_usuario = $_SESSION['user']['tipo_usuario'] ?? null;
 
-if (isset($_SESSION["user"]["id_usuario"])) {
-    $nit_fundacion = Fundacion::obtenerNitPorUsuario($_SESSION["user"]["id_usuario"]);
+// Obtener procesos filtrados por usuario en sesión
+if ($esFundacion && $nit_sesion) {
+    $procesos = $Modelo->getProcesosAdopcion($nit_sesion, null, 'FUNDACION');
+} elseif (!$esAdmin && !$esFundacion && $id_usuario) {
+    $procesos = $Modelo->getProcesosAdopcion(null, $id_usuario, 'GUARDIAN');
+} else {
+    $procesos = $Modelo->getProcesosAdopcion(null, null, 'ADMIN');
 }
 ?>
 
@@ -139,12 +139,14 @@ if (isset($_SESSION["user"]["id_usuario"])) {
                             </td>
                             <td class="text-center">
                                 <div class="btn-group shadow-sm" role="group">
-                                    <button class="btn btn-sm btn-warning btn-editar-adopcion"
-                                        data-id="<?= $proceso['id_proceso'] ?>"
-                                        data-estado-actual="<?= $proceso['id_estado'] ?>"
-                                        data-bs-toggle="tooltip" title="Actualizar estado">
-                                        <i class="uil uil-edit"></i>
-                                    </button>
+                                    <?php if ($esFundacion): ?>
+                                        <button class="btn btn-sm btn-warning btn-editar-adopcion"
+                                            data-id="<?= $proceso['id_proceso'] ?>"
+                                            data-estado-actual="<?= $proceso['id_estado'] ?>"
+                                            data-bs-toggle="tooltip" title="Actualizar estado">
+                                            <i class="uil uil-edit"></i>
+                                        </button>
+                                    <?php endif; ?>
                                     <button class="btn btn-sm btn-success btn-descargar-pdf"
                                         data-formulario-id="<?= $proceso['id_formulario'] ?>"
                                         title="Descargar formulario PDF">

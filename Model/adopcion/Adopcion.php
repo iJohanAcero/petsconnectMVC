@@ -101,53 +101,88 @@ class Adopcion
         }
     }
 
-    public function getProcesosAdopcion($nit_fundacion = null)
+
+    public function obtenerNitFundacionPorMascota($id_mascota)
+    {
+        $sql = "SELECT nit_fundacion FROM t_mascota WHERE id_mascota = ?";
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindParam(1, $id_mascota, PDO::PARAM_INT);
+        $stmt->execute();
+        $resultado = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if ($fila = $resultado) {
+            return $fila['nit_fundacion'];
+        }
+        return null;
+    }
+
+    /**
+     * Obtener procesos de adopción filtrados por usuario en sesión
+     */
+    public function getProcesosAdopcion($nit_fundacion = null, $id_usuario = null, $tipo_usuario = null)
     {
         try {
             $query = "
-            SELECT 
-                p.id_proceso,
-                p.id_formulario,
-                p.id_estado,
-                p.fecha_inicio,
-                p.fecha_actualizada,
-                
-                -- Datos del usuario
-                u.nombre as nombre_usuario,
-                u.apellido as apellido_usuario,
-                u.email as email_usuario,
-                
-                -- Datos de la mascota
-                m.nombre as nombre_mascota,
-                m.imagen as imagen_mascota,
-                m.id_mascota,
-                
-                -- Estado de adopción
-                e.tipo_estado,
-                
-                -- Datos de la fundación
-                f.nombre as nombre_fundacion,
-                f.nit_fundacion
-                
-            FROM t_proceso_adopcion p
-            INNER JOIN t_formulario_adopcion fa ON p.id_formulario = fa.id_formulario
-            INNER JOIN t_usuario u ON fa.id_usuario = u.id_usuario
-            INNER JOIN t_mascota m ON fa.id_mascota = m.id_mascota
-            INNER JOIN t_estado_adopcion e ON p.id_estado = e.id_estado_adopcion
-            INNER JOIN t_fundacion f ON fa.nit_fundacion = f.nit_fundacion
+        SELECT 
+            p.id_proceso,
+            p.id_formulario,
+            p.id_estado,
+            p.fecha_inicio,
+            p.fecha_actualizada,
+            
+            -- Datos del usuario solicitante
+            u.nombre as nombre_usuario,
+            u.apellido as apellido_usuario,
+            u.email as email_usuario,
+            
+            -- Datos de la mascota
+            m.nombre as nombre_mascota,
+            m.imagen as imagen_mascota,
+            m.id_mascota,
+            
+            -- Estado de adopción
+            e.tipo_estado,
+            
+            -- Datos de la fundación
+            f.nombre as nombre_fundacion,
+            f.nit_fundacion
+            
+        FROM t_proceso_adopcion p
+        INNER JOIN t_formulario_adopcion fa ON p.id_formulario = fa.id_formulario
+        INNER JOIN t_usuario u ON fa.id_usuario = u.id_usuario
+        INNER JOIN t_mascota m ON fa.id_mascota = m.id_mascota
+        INNER JOIN t_estado_adopcion e ON p.id_estado = e.id_estado_adopcion
+        INNER JOIN t_fundacion f ON fa.nit_fundacion = f.nit_fundacion
+        WHERE 1=1
         ";
 
-            // Si es una fundación específica, filtrar por su NIT
-            if ($nit_fundacion !== null) {
-                $query .= " WHERE f.nit_fundacion = :nit_fundacion";
+            $params = [];
+
+            // Filtrar según el tipo de usuario
+            if ($tipo_usuario === 'FUNDACION' && $nit_fundacion !== null) {
+                // Para fundaciones: mostrar procesos de su fundación
+                $query .= " AND f.nit_fundacion = :nit_fundacion";
+                $params[':nit_fundacion'] = $nit_fundacion;
+            } elseif ($tipo_usuario === 'GUARDIAN' && $id_usuario !== null) {
+                // Para guardianes: mostrar solo sus propias solicitudes
+                $query .= " AND fa.id_usuario = :id_usuario";
+                $params[':id_usuario'] = $id_usuario;
+            } elseif ($tipo_usuario === 'ADMIN') {
+                // Para admin: mostrar todos (no agregar filtros adicionales)
+                // Si se pasa nit_fundacion, filtrar por esa fundación específica
+                if ($nit_fundacion !== null) {
+                    $query .= " AND f.nit_fundacion = :nit_fundacion";
+                    $params[':nit_fundacion'] = $nit_fundacion;
+                }
             }
 
             $query .= " ORDER BY p.fecha_inicio DESC";
 
             $stmt = $this->db->prepare($query);
 
-            if ($nit_fundacion !== null) {
-                $stmt->bindParam(':nit_fundacion', $nit_fundacion, PDO::PARAM_STR);
+            // Bind de parámetros dinámicos
+            foreach ($params as $param => $value) {
+                $stmt->bindValue($param, $value);
             }
 
             $stmt->execute();

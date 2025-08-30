@@ -22,39 +22,72 @@ class AdopcionController
     }
 
     public function registrarSolicitudAdopcion()
-    {
-        $id_usuario        = $_POST['id_usuario']        ?? '';
-        $id_mascota        = $_POST['id_mascota']        ?? '';
-        $nit_fundacion     = $_POST['nit_fundacion']     ?? '';
-        $estado_civil      = $_POST['estado_civil']      ?? '';
-        $tipo_documento    = $_POST['tipo_documento']    ?? '';
-        $numero_documento  = $_POST['numero_documento']  ?? '';
-        $ocupacion         = $_POST['ocupacion']         ?? '';
-        $tipo_vivienda     = $_POST['tipo_vivienda']     ?? '';
-        $tiene_patio = isset($_POST['patio']) ? ($_POST['patio'] == 'si' ? 1 : 0) : 0;
-        $seguridad_ventanas = isset($_POST['seguridad']) ? ($_POST['seguridad'] == 'si' ? 1 : 0) : 0;
-        $personas_hogar    = $_POST['personas_hogar']    ?? '';
-        $ninos_adultos     = $_POST['ninos_adultos']     ?? '';
-        $horas_fuera_casa  = $_POST['horas_fuera_casa']  ?? '';
-        $viajes_frecuentes = $_POST['viajes_frecuentes'] ?? '';
-        $experiencia_previas = $_POST['experiencia_previas'] ?? '';
-        $otras_mascotas    = $_POST['otras_mascotas']    ?? '';
-        $mascotas_vacunadas = isset($_POST['vacunas']) ? ($_POST['vacunas'] == 'si' ? 1 : 0) : 0;
-        $compromiso_gastos = isset($_POST['compromiso_gastos']) ? 1 : 0;
-        $situacion_economica = $_POST['situacion_economica'] ?? '';
-        $motivacion        = $_POST['motivacion']        ?? '';
-        $expectativas      = $_POST['expectativas']      ?? '';
-
-        $errores = [];
-
-        if (!empty($errores)) {
-            echo json_encode([
-                'success' => false,
-                'message' => "Error: faltan los siguientes datos obligatorios: " . implode(", ", $errores)
-            ]);
-            return;
-        }
-
+{
+    // OBTENER ID DE USUARIO DE LA SESIÓN CORRECTA
+    $id_usuario = $_SESSION['user']['id_usuario'] ?? null;
+    
+    if (empty($id_usuario)) {
+        echo json_encode([
+            'success' => false,
+            'message' => 'Error: Usuario no autenticado. Por favor, inicia sesión nuevamente.'
+        ]);
+        return;
+    }
+    
+    error_log("ID usuario obtenido: " . $id_usuario);
+    
+    // Resto de parámetros del POST
+    $id_mascota        = $_POST['id_mascota']        ?? '';
+    $nit_fundacion     = $_POST['nit_fundacion']     ?? '';
+    $estado_civil      = $_POST['estado_civil']      ?? '';
+    $tipo_documento    = $_POST['tipo_documento']    ?? '';
+    $numero_documento  = $_POST['numero_documento']  ?? '';
+    $ocupacion         = $_POST['ocupacion']         ?? '';
+    $tipo_vivienda     = $_POST['tipo_vivienda']     ?? '';
+    $tiene_patio = isset($_POST['patio']) ? ($_POST['patio'] == 'si' ? 1 : 0) : 0;
+    $seguridad_ventanas = isset($_POST['seguridad']) ? ($_POST['seguridad'] == 'si' ? 1 : 0) : 0;
+    $personas_hogar    = $_POST['personas_hogar']    ?? '';
+    $ninos_adultos     = $_POST['ninos_adultos']     ?? '';
+    $horas_fuera_casa  = $_POST['horas_fuera_casa']  ?? '';
+    $viajes_frecuentes = $_POST['viajes_frecuentes'] ?? '';
+    $experiencia_previas = $_POST['experiencia_previas'] ?? '';
+    $otras_mascotas    = $_POST['otras_mascotas']    ?? '';
+    $mascotas_vacunadas = isset($_POST['vacunas']) ? ($_POST['vacunas'] == 'si' ? 1 : 0) : 0;
+    $compromiso_gastos = isset($_POST['compromiso_gastos']) ? 1 : 0;
+    $situacion_economica = $_POST['situacion_economica'] ?? '';
+    $motivacion        = $_POST['motivacion']        ?? '';
+    $expectativas      = $_POST['expectativas']      ?? '';
+    
+    // Si el NIT fundación está vacío, obtenerlo de la mascota
+    if (empty($nit_fundacion) && !empty($id_mascota)) {
+        $nit_fundacion = $this->modeloAdopcion->obtenerNitFundacionPorMascota($id_mascota);
+        error_log("NIT fundación obtenido automáticamente: " . $nit_fundacion);
+    }
+    
+    $errores = [];
+    
+    // Validar campos obligatorios  
+    if (empty($id_mascota)) $errores[] = "ID mascota";
+    if (empty($nit_fundacion)) $errores[] = "NIT fundación";
+    if (empty($estado_civil)) $errores[] = "Estado civil";
+    if (empty($tipo_documento)) $errores[] = "Tipo documento";
+    if (empty($numero_documento)) $errores[] = "Número documento";
+    if (empty($ocupacion)) $errores[] = "Ocupación";
+    if (empty($tipo_vivienda)) $errores[] = "Tipo vivienda";
+    if (empty($personas_hogar)) $errores[] = "Personas en hogar";
+    if (empty($motivacion)) $errores[] = "Motivación";
+    
+    if (!empty($errores)) {
+        echo json_encode([
+            'success' => false,
+            'message' => "Error: faltan los siguientes datos obligatorios: " . implode(", ", $errores)
+        ]);
+        return;
+    }
+    
+    try {
+        error_log("Llamando al modelo con ID usuario: " . $id_usuario);
+        
         $resultado = $this->modeloAdopcion->crearSolicitudAdopcion(
             $id_usuario,
             $id_mascota,
@@ -78,24 +111,29 @@ class AdopcionController
             $motivacion,
             $expectativas
         );
-
+        
+        error_log("Resultado del modelo: " . print_r($resultado, true));
+        
         if ($resultado !== false) {
-            if (is_array($resultado)) {
-                echo json_encode([
-                    'message' => 'Solicitud de adopción registrada correctamente.'
-                ]);
-            } else {
-                echo json_encode([
-                    'message' => 'Solicitud de adopción registrada correctamente.'
-                ]);
-            }
+            echo json_encode([
+                'success' => true,
+                'message' => 'Solicitud de adopción registrada correctamente.'
+            ]);
         } else {
             echo json_encode([
                 'success' => false,
                 'message' => 'Error al registrar la solicitud de adopción. Por favor, inténtalo de nuevo.'
             ]);
         }
+        
+    } catch (Exception $e) {
+        error_log("Excepción en registrarSolicitudAdopcion: " . $e->getMessage());
+        echo json_encode([
+            'success' => false,
+            'message' => 'Error interno del servidor: ' . $e->getMessage()
+        ]);
     }
+}
 
     /* Actualizar estado del proceso de adopción*/
     public function actualizarEstado()
@@ -162,9 +200,11 @@ class AdopcionController
     public function listarProcesos()
     {
         try {
-            $nit_fundacion = $_GET['nit_fundacion'] ?? $_POST['nit_fundacion'] ?? null;
+            $tipo_usuario = $_SESSION['tipo_usuario'] ?? null;
+            $nit_fundacion = $_SESSION['nit_fundacion'] ?? null; // Para fundaciones
+            $id_usuario = $_SESSION['id_usuario'] ?? null; // Para guardianes
 
-            $procesos = $this->modeloAdopcion->getProcesosAdopcion($nit_fundacion);
+            $procesos = $this->modeloAdopcion->getProcesosAdopcion($nit_fundacion, $id_usuario, $tipo_usuario);
 
             echo json_encode([
                 'success' => true,
@@ -219,7 +259,6 @@ class AdopcionController
             $nombre_archivo = 'formulario_adopcion_' . $id_formulario . '_' . date('Y-m-d') . '.pdf';
 
             $mpdf->Output($nombre_archivo, 'D');
-
         } catch (Exception $e) {
             error_log("Error generando PDF: " . $e->getMessage());
             echo json_encode([

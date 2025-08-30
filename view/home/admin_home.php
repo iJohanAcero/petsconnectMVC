@@ -3,6 +3,7 @@
 require_once __DIR__ . '/../../vendor/autoload.php';
 
 use App\Config\Config;
+use App\Model\estadistica\estadistica;
 
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
@@ -19,6 +20,8 @@ if (!isset($_SESSION["user"]) || $_SESSION["tipo_usuario"] !== "admin") {
     exit;
 }
 
+$estadisticas = new estadistica();
+$stats = $estadisticas->obtenerEstadisticasNavbar();
 
 ?>
 
@@ -59,11 +62,33 @@ if (!isset($_SESSION["user"]) || $_SESSION["tipo_usuario"] !== "admin") {
             </a>
 
             <div class="collapse navbar-collapse">
-                <form class="d-flex justify-content-center flex-grow-1" role="search" style="max-width: 600px; margin: 0 auto;">
-                    <input class="form-control me-2 flex-grow-1 " type="search" name="busqueda"
-                        id="busqueda" placeholder="Busca en publicaciones, perfiles o intereses..." aria-label="Buscar" style="min-width: 300px;">
-                    <button class="btn btn-outline-dark" type="submit"><i class="uil uil-search"></i></button>
-                </form>
+                <div class="d-flex justify-content-center flex-grow-1 align-items-center">
+
+                    <!-- Solo mostrar las 2-3 estadísticas más importantes -->
+                    <div class="d-flex align-items-center bg-light rounded-pill px-3 py-1 me-3">
+                        <div class="bg-success rounded-circle me-2 pulse" style="width: 8px; height: 8px;"></div>
+                        <small class="text-muted">
+                            <strong><?php echo $stats['mascotas_disponibles']; ?></strong> mascotas disponibles
+                        </small>
+                    </div>
+
+                    <?php if ($stats['solicitudes_tramite'] > 0): ?>
+                        <div class="d-flex align-items-center bg-light rounded-pill px-3 py-1 me-3">
+                            <div class="bg-warning rounded-circle me-2 pulse" style="width: 8px; height: 8px;"></div>
+                            <small class="text-muted">
+                                <strong><?php echo $stats['solicitudes_tramite']; ?></strong> solicitudes pendientes
+                            </small>
+                        </div>
+                    <?php endif; ?>
+
+                    <div class="d-flex align-items-center bg-light rounded-pill px-3 py-1">
+                        <div class="bg-info rounded-circle me-2" style="width: 8px; height: 8px;"></div>
+                        <small class="text-muted">
+                            <strong><?php echo $stats['adopciones_exitosas']; ?></strong> adopciones exitosas
+                        </small>
+                    </div>
+
+                </div>
 
                 <div class="d-flex align-items-center">
                     <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
