@@ -198,7 +198,7 @@ $stats = $estadisticas->obtenerEstadisticasNavbar();
                     </a>
                 </li>
                 <li class="sidebar-item">
-                    <a href="" class="sidebar-link">
+                    <a href="#" class="sidebar-link btn-cargar-cartelCausa">
                         <i class="uil uil-credit-card"></i>
                         <span class="sidebar-text">Donaciones</span>
                     </a>
@@ -226,6 +226,9 @@ $stats = $estadisticas->obtenerEstadisticasNavbar();
                         </li>
                         <li class="sidebar-item">
                             <a href="#" class="sidebar-link" id="btn-cargar-adopcion">✔ Mis Adopciones</a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a href="#" class="sidebar-link" id="btn-cargar-donaciones">✔ Mis Donaciones</a>
                         </li>
                     </ul>
                 </li>
@@ -258,14 +261,22 @@ $stats = $estadisticas->obtenerEstadisticasNavbar();
     <!-- SCRIPTS DE JS CRUDS Y RUTAS -->
     <script src="<?= Config::get('JS_URL') ?>/main.js"></script>
     <script src="<?= Config::get('JS_URL') ?>/config.js"></script>
+
+    <!-- CRUDS DEL APLICATIVO -->
+    <script src="<?= Config::get('JS_URL') ?>/crud/crud_donacion.js"></script>
     <script src="<?= Config::get('JS_URL') ?>/crud/crud_causa.js"></script>
     <script src="<?= Config::get('JS_URL') ?>/crud/crud_fundacion.js"></script>
     <script src="<?= Config::get('JS_URL') ?>/crud/crud_mascota.js"></script>
     <script src="<?= Config::get('JS_URL') ?>/crud/crud_publicacion.js"></script>
+    <script src="<?= Config::get('JS_URL') ?>/crud/crud_proceso.js"></script>
+
+    <!-- PERFIL DEL ROL -->
     <script src="<?= Config::get('JS_URL') ?>/routes/perfilFundacion.js"></script>
+
+    <!-- CARTELERAS -->
     <script src="<?= Config::get('JS_URL') ?>/routes/carteleraFundacion.js"></script>
     <script src="<?= Config::get('JS_URL') ?>/routes/carteleraMascotas.js"></script>
-    <script src="<?= Config::get('JS_URL') ?>/crud/crud_proceso.js"></script>
+    <script src="<?= Config::get('JS_URL') ?>/routes/carteleraCausa.js"></script>
 
 
 

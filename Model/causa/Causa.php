@@ -93,26 +93,6 @@ class Causa
         return $statement->execute(); // Devuelve true o false
     }
 
-    // MOSTRAR causa RECIENTES EN EL INICIO
-    public function getcausaRecientes($limit, $offset)
-    {
-        $statement = $this->db->prepare(
-            "SELECT p.*, f.nombre AS nombre_fundacion 
-         FROM t_causa p
-         INNER JOIN t_fundacion f ON p.nit_fundacion = f.nit_fundacion
-         ORDER BY p.meta DESC LIMIT :limit OFFSET :offset"
-        );
-        $statement->bindValue(':limit', (int)$limit, PDO::PARAM_INT);
-        $statement->bindValue(':offset', (int)$offset, PDO::PARAM_INT);
-        $statement->execute();
-
-        $rows = [];
-        while ($resultado = $statement->fetch(PDO::FETCH_ASSOC)) {
-            $rows[] = $resultado;
-        }
-        return $rows;
-    }
-
     public function getCausasPorFundacion($nit_fundacion)
     {
         $sql = "SELECT * FROM t_causa WHERE nit_fundacion = :nit";
@@ -120,5 +100,53 @@ class Causa
         $statement->bindParam(':nit', $nit_fundacion, PDO::PARAM_STR);
         $statement->execute();
         return $statement->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getAllCausasCarrusel()
+    {
+        $sql = "SELECT 
+                c.id_causa,
+                c.nombre,
+                c.descripcion,
+                c.meta,
+                c.estado_causa,
+                c.fecha_creacion,
+                c.nit_fundacion,
+                c.imagen_url,
+                c.tipo_causa,
+                f.nombre AS nombre_fundacion
+                FROM t_causa c
+                INNER JOIN t_fundacion f ON c.nit_fundacion = f.nit_fundacion
+                ORDER BY c.fecha_creacion DESC
+                LIMIT 5";
+
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getDetallesPorId($id)
+    {
+        $sql = "SELECT
+                c.*,
+                f.nombre as nombre_fundacion,
+                f.nit_fundacion,
+                u.nombre as rep_nombre,
+                u.apellido as rep_apellido,
+                u.telefono as rep_telefono,
+                u.email as rep_email,
+                p.descripcion as fundacion_descripcion,
+                p.imagen as fundacion_imagen,
+                p.public_id as fundacion_public_id
+            FROM t_causa c
+            INNER JOIN t_fundacion f ON c.nit_fundacion = f.nit_fundacion
+            INNER JOIN t_usuario u ON f.id_usuario = u.id_usuario
+            INNER JOIN t_perfil p ON f.id_perfil = p.id_perfil
+            WHERE c.id_causa = :id";
+
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 }

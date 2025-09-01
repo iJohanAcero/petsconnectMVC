@@ -63,7 +63,6 @@ $stats = $estadisticas->obtenerEstadisticasNavbar();
 
             <div class="collapse navbar-collapse">
                 <div class="d-flex justify-content-center flex-grow-1 align-items-center">
-
                     <!-- Solo mostrar las 2-3 estadísticas más importantes -->
                     <div class="d-flex align-items-center bg-light rounded-pill px-3 py-1 me-3">
                         <div class="bg-success rounded-circle me-2 pulse" style="width: 8px; height: 8px;"></div>
@@ -215,6 +214,11 @@ $stats = $estadisticas->obtenerEstadisticasNavbar();
                                         - Mascotas
                                     </a>
                                 </li>
+                                <li class="sidebar-item">
+                                    <a href="#" class="sidebar-link" id="btn-cargar-adopcion">
+                                        - Adopciones
+                                    </a>
+                                </li>
                             </ul>
                         </li>
                         <li class="sidebar-item has-dropdown">
@@ -294,6 +298,7 @@ $stats = $estadisticas->obtenerEstadisticasNavbar();
     <script src="<?= Config::get('JS_URL') ?>/crud/crud_publicacion.js"></script>
     <script src="<?= Config::get('JS_URL') ?>/crud/crud_mascota.js"></script>
     <script src="<?= Config::get('JS_URL') ?>/crud/crud_guardian.js"></script>
+    <script src="<?= Config::get('JS_URL') ?>/crud/crud_proceso.js"></script>
     <script src="<?= Config::get('JS_URL') ?>/routes/routes.js"></script>
     <script src="<?= Config::get('JS_URL') ?>/routes/carteleraFundacion.js"></script>
     <script src="<?= Config::get('JS_URL') ?>/routes/carteleraMascotas.js"></script>
