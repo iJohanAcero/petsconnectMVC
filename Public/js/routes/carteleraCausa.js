@@ -1,21 +1,27 @@
-// Función para cargar causas desde el backend - CORREGIDA
+// Variables globales para Stripe
+let stripe = null;
+let elements = null;
+let cardElement = null;
+
+// Inicializar Stripe cuando se carga la página
+function inicializarStripe() {
+    // clave pública de Stripe
+    stripe = Stripe('pk_test_51S07bKRok1mN1oR6cBRgDpLdB0KLF9QPwT3HAOQAX7IadUqtxNorAczfKRTxh4JVSABRMPnMOgEw5r73ZfF8eEYb00jdLVKzUy'); // ⚠️ Reemplaza con tu clave pública
+}
+
 function cargarCausasDesdeBackend() {
     const loading = document.getElementById('loadingCausa');
     const causasContainer = document.getElementById('causasContainer');
     const mensajeVacio = document.getElementById('mensajeVacioCausa');
 
-    // Verificar que los elementos existan
     if (!loading || !causasContainer || !mensajeVacio) {
-        console.error("⚠️ Elementos del DOM no encontrados para cartelera");
         return;
     }
 
-    // Mostrar loading
     loading.style.display = 'block';
     causasContainer.style.display = 'none';
     mensajeVacio.style.display = 'none';
 
-    // ✅ CORREGIDO: Usar POST con FormData
     const formData = new FormData();
     formData.append('accion', 'getAllCausasCarrusel');
 
@@ -24,42 +30,23 @@ function cargarCausasDesdeBackend() {
         body: formData
     })
         .then(response => {
-            console.log('Response status:', response.status);
-            console.log('Response headers:', response.headers);
-            
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
             return response.text();
         })
         .then(data => {
-            console.log('Datos recibidos:', data); // ✅ Debug
-            
-            if (!data || data.trim() === '') {
-                console.error('Respuesta vacía del servidor');
-                mostrarErrorCarga();
-                return;
-            }
-            
             try {
                 const causas = JSON.parse(data);
                 const fundacion = JSON.parse(data);
-                console.log('Causas parseadas:', causas); // ✅ Debug
-                console.log('Fundación parseada:', fundacion); // ✅ Debug
                 mostrarCausas(causas);
             } catch (e) {
-                console.error('Error al parsear JSON:', e);
-                console.error('Contenido recibido:', data);
-                mostrarErrorCarga();
             }
         })
         .catch(error => {
-            console.error("⚠️ Error completo al cargar causas:", error);
-            mostrarErrorCarga();
         });
 }
 
-// ✅ RESTO DEL CÓDIGO SIN CAMBIOS
 window.cargarCarteleraCausas = function () {
     fetch("view/cartelera/CausasCartelera.php")
         .then(response => {
@@ -80,17 +67,15 @@ window.cargarCarteleraCausas = function () {
             }
         })
         .catch(error => {
-            console.error("⚠️ Error al cargar PHP:", error);
-            mostrarErrorCarga();
         });
 };
 
+// CLOUDINARY FUNCIONES
 function generarUrlCloudinary(publicId, transformaciones = '') {
     if (!publicId || publicId.trim() === '') {
         return generarImagenPorDefecto();
     }
     
-    // Verificar si ya es una URL completa de Cloudinary
     if (publicId.includes('res.cloudinary.com')) {
         if (transformaciones && !publicId.includes('w_')) {
             return publicId.replace('/upload/', `/upload/${transformaciones}/`);
@@ -113,9 +98,10 @@ function generarUrlCloudinary(publicId, transformaciones = '') {
     return url;
 }
 
+// EVENTOS DE LAS CARTAS
+
 function inicializarEventosCarteleraCausas() {
     if (!document.getElementById('causasContainer')) {
-        console.warn("Elementos de cartelera no encontrados");
         return;
     }
 }
@@ -134,28 +120,6 @@ function inicializarFiltrosCausas() {
     }
 }
 
-function mostrarErrorCarga() {
-    const mainContainer = document.getElementById("main-content");
-    if (mainContainer) {
-        mainContainer.innerHTML = `
-            <div class="container my-5">
-                <div class="row">
-                    <div class="col-12">
-                        <div class="alert alert-danger text-center py-5">
-                            <i class="fas fa-exclamation-triangle fa-3x mb-3 text-danger"></i>
-                            <h4>Error al cargar la vista</h4>
-                            <p class="mb-3">No se pudo cargar la cartelera de causas.</p>
-                            <button class="btn btn-primary" onclick="cargarCarteleraCausas()">
-                                <i class="fas fa-redo me-1"></i>
-                                Reintentar
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        `;
-    }
-}
 
 // Función para mostrar las causas en cartas
 function mostrarCausas(causas) {
@@ -174,11 +138,9 @@ function mostrarCausas(causas) {
     causasContainer.style.display = 'flex';
     causasContainer.innerHTML = causas.map(crearCartaCausa).join('');
 
-    // Inicializar eventos de las cartas y botones "Ver más"
     inicializarEventosCartasCausas();
     animarEntradaCartas();
 
-    // ✅ Inicializar eventos para los nuevos botones "Ver más"
     document.querySelectorAll('.btn-ver-causa').forEach(btn => {
         btn.addEventListener('click', function(e) {
             e.stopPropagation();
@@ -188,7 +150,7 @@ function mostrarCausas(causas) {
     });
 }
 
-// Función para crear HTML de cada carta causa
+// Función para crear HTML carta
 function crearCartaCausa(causa) {
     const nombre = causa.nombre;
     const descripcion = causa.descripcion || 'Sin descripción disponible';
@@ -208,12 +170,10 @@ function crearCartaCausa(causa) {
     const iconoCausa = {
         'ALIMENTACION': 'uil uil-utensils-alt',
         'MEDICINA': 'uil uil-heartbeat',
-        'REFUGIO': 'uil uil-home-alt',
-        'EDUCACION': 'uil uil-graduation-cap',
-        'GENERAL': 'uil uil-heart'
+        'ESTERILIZACION': 'uil uil-heart'
     }[tipoCausa?.toUpperCase()] || 'uil uil-heart';
     
-    // Color del badge según estado
+    // Color según estado
     const colorEstado = {
         'ACTIVA': 'bg-success',
         'PAUSADA': 'bg-warning',
@@ -221,7 +181,7 @@ function crearCartaCausa(causa) {
         'CANCELADA': 'bg-danger'
     }[estadoCausa?.toUpperCase()] || 'bg-info';
     
-    // Generar URL de imagen optimizada
+    // Generar URL de imagen 
     const imagenUrl = generarUrlCloudinary(
         causa.imagen_url || causa.public_id,
         'w_300,h_250,c_fill,g_center,q_auto,f_auto'
@@ -322,46 +282,31 @@ function crearCartaCausa(causa) {
 // Función para inicializar eventos de las cartas
 function inicializarEventosCartasCausas() {
 
-    // ✅ EVENTOS PARA BOTONES "DONAR" - CORREGIDO
     document.querySelectorAll('.btn-donar').forEach(btn => {
         btn.addEventListener('click', function() {
             const idCausa = this.getAttribute('data-id');
             mostrarModalDonacion(idCausa);
         });
     });
-
-    // Evento click en toda la carta (opcional)
-    document.querySelectorAll('.carta-causa').forEach(carta => {
-        carta.addEventListener('click', function(e) {
-            // Solo si no se clickeó un botón
-            if (!e.target.classList.contains('btn') && !e.target.closest('.btn')) {
-                const id = this.getAttribute('data-id');
-            }
-        });
-    });
 }
 
-// ✅ EVENTOS PARA BOTONES "VER MÁS" - NUEVO
+// BOTON "VER MÁS"
 document.querySelectorAll('.btn-ver-causa').forEach(btn => {
     btn.addEventListener('click', function(e) {
-        e.stopPropagation(); // Evitar que se dispare el click de la carta
+        e.stopPropagation();
         const idCausa = this.getAttribute('data-id');
-        console.log('Ver más causa ID:', idCausa);
         cargarDetalleCausa(idCausa);
     });
 });
 
-// NUEVA FUNCIÓN: Cargar detalle de causa para el modal
+//Cargar detalle de causa para el modal
 function cargarDetalleCausa(idCausa) {
     if (!idCausa) {
-        console.error('ID de causa no proporcionado');
         return;
     }
-
-    // Mostrar loading en el modal
     mostrarLoadingModal();
 
-    // Preparar datos para enviar al backend
+    // datos para enviar al backend
     const formData = new FormData();
     formData.append('accion', 'obtenerDetalleCausa');
     formData.append('id_causa', idCausa);
@@ -376,46 +321,36 @@ function cargarDetalleCausa(idCausa) {
         }
         return response.text();
     })
-    .then(data => {
-        console.log('Detalle recibido:', data);
-        
+    .then(data => {   
         try {
             const resultado = JSON.parse(data);
             
             if (resultado.error) {
-                console.error('Error del servidor:', resultado.error);
                 mostrarErrorEnModal(resultado.error);
                 return;
             }
             
-            // Mostrar la causa en el modal
             mostrarCausaCompletoEnModal(resultado.causa, resultado.fundacion);
             
         } catch (e) {
-            console.error('Error al parsear respuesta:', e);
-            console.error('Contenido recibido:', data);
             mostrarErrorEnModal('Error al procesar la respuesta del servidor');
         }
     })
     .catch(error => {
-        console.error('Error al cargar detalle:', error);
         mostrarErrorEnModal('Error de conexión al cargar el detalle');
     });
 }
 
-
-// NUEVA FUNCIÓN: Inicializar eventos del modal de causa
+// Inicializar eventos del modal de causa
 function inicializarEventosModalCausa() {
-    // Evento para botón de donar del modal
     const btnDonarModal = document.querySelector('.btn-donar-modal');
     if (btnDonarModal) {
         btnDonarModal.addEventListener('click', function() {
             const idCausa = this.getAttribute('data-id');
-            // Cerrar modal actual primero
+
             const modal = bootstrap.Modal.getInstance(document.getElementById('modal-causa-detalle'));
             if (modal) modal.hide();
             
-            // Mostrar modal de donación
             setTimeout(() => {
                 mostrarModalDonacion(idCausa);
             }, 300);
@@ -423,219 +358,391 @@ function inicializarEventosModalCausa() {
     }
 }
 
-// AÑADIR estas funciones a carteleraCausa.js
-
-// ✅ FUNCIÓN PRINCIPAL: Mostrar modal de donación
+// Mostrar modal de donación CON STRIPE
 function mostrarModalDonacion(idCausa) {
     if (!idCausa) {
-        console.error('ID de causa no proporcionado para donación');
         return;
     }
 
-    console.log('Mostrando modal de donación para causa:', idCausa);
+    // Verificar que Stripe esté inicializado
+    if (!stripe) {
+        alert('Error: Sistema de pagos no disponible');
+        return;
+    }
 
-    // Crear o mostrar modal de donación
     crearModalDonacion(idCausa);
 }
 
-// ✅ FUNCIÓN: Crear modal de donación dinámicamente
+// Crear modal de donación con Stripe
 function crearModalDonacion(idCausa) {
-    // Verificar si ya existe el modal
+
     let modalExistente = document.getElementById('modal-donacion-causa');
     if (modalExistente) {
         modalExistente.remove();
     }
 
-    // Crear nuevo modal
-    const modalHTML = `
-        <div class="modal fade" id="modal-donacion-causa" tabindex="-1" aria-hidden="true">
-            <div class="modal-dialog modal-lg modal-dialog-centered">
-                <div class="modal-content border-0 shadow-lg" style="border-radius: 15px;">
-                    <div class="modal-header bg-gradient text-white" style="background: linear-gradient(135deg, #28a745 0%, #20c997 100%); border-radius: 15px 15px 0 0;">
-                        <h5 class="modal-title fw-bold">
-                            <i class="fas fa-heart me-2"></i>
-                            Realizar Donación
-                        </h5>
-                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+const modalHTML = `
+    <div class="modal fade" id="modal-donacion-causa" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content border-0 shadow-lg" style="border-radius: 15px;">
+                <div class="modal-header bg-gradient text-white" style="background: linear-gradient(135deg, #28a745 0%, #20c997 100%); border-radius: 15px 15px 0 0;">
+                    <h5 class="modal-title fw-bold">
+                        <i class="fas fa-heart me-2"></i>
+                        Realizar Donación
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body p-4">
+                    
+                    <!-- Información de la causa -->
+                    <div class="bg-light rounded-3 p-3 mb-4">
+                        <div class="d-flex align-items-center">
+                            <i class="fas fa-info-circle text-primary me-2"></i>
+                            <small class="text-muted">Donando a la causa ID: <strong>${idCausa}</strong></small>
+                        </div>
                     </div>
-                    <div class="modal-body p-4">
+
+                    <!-- Formulario de donación -->
+                    <form id="form-donacion-causa">
+                        <input type="hidden" name="id_causa" value="${idCausa}">
                         
-                        <!-- Información de la causa -->
-                        <div class="bg-light rounded-3 p-3 mb-4">
-                            <div class="d-flex align-items-center">
-                                <i class="fas fa-info-circle text-primary me-2"></i>
-                                <small class="text-muted">Donando a la causa ID: <strong>${idCausa}</strong></small>
+                        <!-- Monto de donación -->
+                        <div class="mb-4">
+                            <label class="form-label fw-semibold">
+                                <i class="fas fa-dollar-sign me-1"></i>
+                                Monto de donación
+                            </label>
+                            <div class="row g-2 mb-3">
+                                <div class="col-4">
+                                    <button type="button" class="btn btn-outline-success w-100 btn-monto-rapido" data-monto="10000">$10.000</button>
+                                </div>
+                                <div class="col-4">
+                                    <button type="button" class="btn btn-outline-success w-100 btn-monto-rapido" data-monto="25000">$25.000</button>
+                                </div>
+                                <div class="col-4">
+                                    <button type="button" class="btn btn-outline-success w-100 btn-monto-rapido" data-monto="50000">$50.000</button>
+                                </div>
+                            </div>
+                            <div class="input-group">
+                                <span class="input-group-text">$</span>
+                                <input type="number" 
+                                       class="form-control" 
+                                       name="monto" 
+                                       id="monto-donacion"
+                                       placeholder="Ingresa tu monto personalizado"
+                                       min="1000"
+                                       step="1000"
+                                       required>
+                                <span class="input-group-text">COP</span>
+                            </div>
+                            <small class="text-muted">Monto mínimo: $1.000 COP</small>
+                        </div>
+
+                        <!-- Método de pago con Stripe -->
+                        <div class="mb-4">
+                            <label class="form-label fw-semibold">
+                                <i class="fas fa-credit-card me-1"></i>
+                                Información de tarjeta
+                            </label>
+                            <!-- Campo de tarjeta Stripe -->
+                            <div id="card-element" class="form-control p-3" style="min-height: 40px;">
+                                <!-- Stripe inyecta aquí el campo de tarjeta -->
+                            </div>
+                            <div id="card-errors" class="text-danger small mt-2"></div>
+                        </div>
+
+                        <!-- Información del donante -->
+                        <div class="mb-4">
+                            <label class="form-label fw-semibold">
+                                <i class="fas fa-user me-1"></i>
+                                Información del donante
+                            </label>
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <input type="text" class="form-control" name="nombre_donante" placeholder="Nombre completo" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <input type="email" class="form-control" name="email_donante" placeholder="Correo electrónico" required>
+                                </div>
                             </div>
                         </div>
 
-                        <!-- Formulario de donación -->
-                        <form id="form-donacion-causa">
-                            <input type="hidden" name="id_causa" value="${idCausa}">
-                            
-                            <!-- Monto de donación -->
-                            <div class="mb-4">
-                                <label class="form-label fw-semibold">
-                                    <i class="fas fa-dollar-sign me-1"></i>
-                                    Monto de donación
+                        <!-- Mensaje opcional -->
+                        <div class="mb-4">
+                            <label class="form-label fw-semibold">
+                                <i class="fas fa-comment me-1"></i>
+                                Mensaje de apoyo (opcional)
+                            </label>
+                            <textarea class="form-control" 
+                                      name="mensaje" 
+                                      rows="3" 
+                                      placeholder="Escribe un mensaje de apoyo para esta causa..."></textarea>
+                        </div>
+
+                        <!-- Términos y condiciones -->
+                        <div class="mb-4">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="terminos-donacion" required>
+                                <label class="form-check-label small" for="terminos-donacion">
+                                    Acepto los <a href="#" class="text-decoration-none">términos y condiciones</a> 
+                                    y autorizo el procesamiento de mis datos personales para esta donación.
                                 </label>
-                                
-                                <!-- Botones de montos rápidos -->
-                                <div class="row g-2 mb-3">
-                                    <div class="col-4">
-                                        <button type="button" class="btn btn-outline-success w-100 btn-monto-rapido" data-monto="10000">
-                                            $10.000
-                                        </button>
-                                    </div>
-                                    <div class="col-4">
-                                        <button type="button" class="btn btn-outline-success w-100 btn-monto-rapido" data-monto="25000">
-                                            $25.000
-                                        </button>
-                                    </div>
-                                    <div class="col-4">
-                                        <button type="button" class="btn btn-outline-success w-100 btn-monto-rapido" data-monto="50000">
-                                            $50.000
-                                        </button>
-                                    </div>
-                                </div>
-                                
-                                <!-- Input personalizado -->
-                                <div class="input-group">
-                                    <span class="input-group-text">$</span>
-                                    <input type="number" 
-                                           class="form-control" 
-                                           name="monto" 
-                                           id="monto-donacion"
-                                           placeholder="Ingresa tu monto personalizado"
-                                           min="1000"
-                                           step="1000"
-                                           required>
-                                    <span class="input-group-text">COP</span>
-                                </div>
-                                <small class="text-muted">Monto mínimo: $1.000 COP</small>
                             </div>
-
-                            <!-- Método de pago -->
-                            <div class="mb-4">
-                                <label class="form-label fw-semibold">
-                                    <i class="fas fa-credit-card me-1"></i>
-                                    Método de pago
-                                </label>
-                                <div class="row g-2">
-                                    <div class="col-6">
-                                        <div class="form-check p-3 border rounded-3 h-100">
-                                            <input class="form-check-input" type="radio" name="metodo_pago" id="tarjeta" value="tarjeta" checked>
-                                            <label class="form-check-label w-100" for="tarjeta">
-                                                <i class="fas fa-credit-card me-2 text-primary"></i>
-                                                Tarjeta de crédito/débito
-                                            </label>
-                                        </div>
-                                    </div>
-                                    <div class="col-6">
-                                        <div class="form-check p-3 border rounded-3 h-100">
-                                            <input class="form-check-input" type="radio" name="metodo_pago" id="transferencia" value="transferencia">
-                                            <label class="form-check-label w-100" for="transferencia">
-                                                <i class="fas fa-university me-2 text-success"></i>
-                                                Transferencia bancaria
-                                            </label>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Información del donante -->
-                            <div class="mb-4">
-                                <label class="form-label fw-semibold">
-                                    <i class="fas fa-user me-1"></i>
-                                    Información del donante
-                                </label>
-                                <div class="row g-3">
-                                    <div class="col-md-6">
-                                        <input type="text" class="form-control" name="nombre_donante" placeholder="Nombre completo" required>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <input type="email" class="form-control" name="email_donante" placeholder="Correo electrónico" required>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Mensaje opcional -->
-                            <div class="mb-4">
-                                <label class="form-label fw-semibold">
-                                    <i class="fas fa-comment me-1"></i>
-                                    Mensaje de apoyo (opcional)
-                                </label>
-                                <textarea class="form-control" 
-                                          name="mensaje" 
-                                          rows="3" 
-                                          placeholder="Escribe un mensaje de apoyo para esta causa..."></textarea>
-                            </div>
-
-                            <!-- Términos y condiciones -->
-                            <div class="mb-4">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" id="terminos-donacion" required>
-                                    <label class="form-check-label small" for="terminos-donacion">
-                                        Acepto los <a href="#" class="text-decoration-none">términos y condiciones</a> 
-                                        y autorizo el procesamiento de mis datos personales para esta donación.
-                                    </label>
-                                </div>
-                            </div>
-
-                        </form>
-                    </div>
-                    
-                    <!-- Footer con botones -->
-                    <div class="modal-footer bg-light" style="border-radius: 0 0 15px 15px;">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                            <i class="fas fa-times me-1"></i>
-                            Cancelar
-                        </button>
-                        <button type="button" class="btn btn-success btn-lg" id="btn-procesar-donacion">
-                            <i class="fas fa-heart me-2"></i>
-                            Procesar Donación
-                        </button>
-                    </div>
+                        </div>
+                    </form>
+                </div>
+                
+                <!-- Footer con botones -->
+                <div class="modal-footer bg-light" style="border-radius: 0 0 15px 15px;">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        <i class="fas fa-times me-1"></i>
+                        Cancelar
+                    </button>
+                    <button type="button" class="btn btn-success btn-lg" id="btn-procesar-donacion" disabled>
+                        <i class="fas fa-heart me-2"></i>
+                        <span class="btn-text">Procesar Donación</span>
+                        <span class="spinner-border spinner-border-sm ms-2 d-none" role="status"></span>
+                    </button>
                 </div>
             </div>
         </div>
-    `;
+    </div>
+`;
 
-    // Insertar modal en el DOM
     document.body.insertAdjacentHTML('beforeend', modalHTML);
 
-    // Inicializar eventos del modal
-    inicializarEventosModalDonacion();
-
-    // Mostrar modal
     const modal = new bootstrap.Modal(document.getElementById('modal-donacion-causa'));
     modal.show();
 
-    // Limpiar modal cuando se cierre
+    // INICIALIZAR STRIPE DESPUÉS DE QUE SE MUESTRE EL MODAL
+    modal._element.addEventListener('shown.bs.modal', function() {
+        inicializarStripeElements();
+        inicializarEventosModalDonacion();
+    });
+
     document.getElementById('modal-donacion-causa').addEventListener('hidden.bs.modal', function () {
+        if (cardElement) {
+            cardElement.destroy();
+            cardElement = null;
+        }
+        if (elements) {
+            elements = null;
+        }
         this.remove();
     });
 }
 
-// ✅ FUNCIÓN: Inicializar eventos del modal de donación
+// Inicializar Stripe en el modal
+function inicializarStripeElements() {
+    if (!stripe) {
+        return;
+    }
+
+    elements = stripe.elements();
+
+    cardElement = elements.create('card', {
+        style: {
+            base: {
+                fontSize: '16px',
+                color: '#424770',
+                '::placeholder': {
+                    color: '#aab7c4',
+                },
+                fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
+                fontSmoothing: 'antialiased',
+            },
+            invalid: {
+                color: '#fa755a',
+                iconColor: '#fa755a'
+            }
+        },
+        hidePostalCode: true
+    });
+
+    cardElement.mount('#card-element');
+
+    cardElement.on('change', function(event) {
+        const displayError = document.getElementById('card-errors');
+        const btnProcesar = document.getElementById('btn-procesar-donacion');
+        
+        if (event.error) {
+            displayError.textContent = event.error.message;
+            btnProcesar.disabled = true;
+        } else {
+            displayError.textContent = '';
+
+            const monto = document.getElementById('monto-donacion').value;
+            btnProcesar.disabled = !monto || monto < 1000;
+        }
+    });
+}
+
+// Inicializar eventos del modal de donación CON STRIPE
 function inicializarEventosModalDonacion() {
-    // Eventos para botones de monto rápido
     document.querySelectorAll('.btn-monto-rapido').forEach(btn => {
         btn.addEventListener('click', function() {
             const monto = this.getAttribute('data-monto');
             document.getElementById('monto-donacion').value = monto;
             
-            // Resaltar botón seleccionado
             document.querySelectorAll('.btn-monto-rapido').forEach(b => {
                 b.classList.remove('btn-success');
                 b.classList.add('btn-outline-success');
             });
             this.classList.remove('btn-outline-success');
             this.classList.add('btn-success');
+
+            habilitarBotonProcesar();
         });
     });
+
+    const montoInput = document.getElementById('monto-donacion');
+    if (montoInput) {
+        montoInput.addEventListener('input', function() {
+
+            document.querySelectorAll('.btn-monto-rapido').forEach(b => {
+                b.classList.remove('btn-success');
+                b.classList.add('btn-outline-success');
+            });
+            
+            habilitarBotonProcesar();
+        });
+    }
+
+    // Procesar donación con Stripe
+    const btnProcesar = document.getElementById('btn-procesar-donacion');
+    if (btnProcesar) {
+        btnProcesar.addEventListener('click', function() {
+            procesarDonacionStripe();
+        });
+    }
 }
 
-// ✅ FUNCIÓN: Mostrar loading en modal
+// Habilitar/deshabilitar botón según validaciones
+function habilitarBotonProcesar() {
+    const btnProcesar = document.getElementById('btn-procesar-donacion');
+    const monto = document.getElementById('monto-donacion').value;
+    const terminos = document.getElementById('terminos-donacion').checked;
+    
+    if (btnProcesar) {
+        btnProcesar.disabled = !monto || monto < 1000 || !terminos;
+    }
+}
+
+// Procesar donación con Stripe
+async function procesarDonacionStripe() {
+    const btnProcesar = document.getElementById('btn-procesar-donacion');
+    const btnText = btnProcesar.querySelector('.btn-text');
+    const spinner = btnProcesar.querySelector('.spinner-border');
+    
+    btnProcesar.disabled = true;
+    btnText.textContent = 'Procesando...';
+    spinner.classList.remove('d-none');
+
+    try {
+        // 1. Obtener datos del formulario
+        const formData = new FormData(document.getElementById('form-donacion-causa'));
+        const monto = parseInt(formData.get('monto'));
+        const idCausa = formData.get('id_causa');
+        const nombreDonante = formData.get('nombre_donante');
+        const emailDonante = formData.get('email_donante');
+
+        // Validaciones básicas
+        if (!monto || monto < 1000) {
+            throw new Error('El monto debe ser mínimo $1.000 COP');
+        }
+
+        if (!nombreDonante || !emailDonante) {
+            throw new Error('Nombre y email son obligatorios');
+        }
+
+        // 2. Crear PaymentIntent en el backend
+        const paymentData = new FormData();
+        paymentData.append('accion', 'crearDonacion');
+        paymentData.append('id_causa', idCausa);
+        paymentData.append('monto', monto);
+        paymentData.append('nombre_donante', nombreDonante);
+        paymentData.append('email_donante', emailDonante);
+
+        const response = await fetch('controller/Donacion/DonacionController.php', {
+            method: 'POST',
+            body: paymentData
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const responseText = await response.text();
+
+        let resultado;
+        try {
+            resultado = JSON.parse(responseText);
+        } catch (e) {
+            throw new Error('Respuesta inválida del servidor');
+        }
+
+        if (!resultado || resultado.status === 'error') {
+            throw new Error(resultado?.message || 'Error al crear la donación');
+        }
+
+        // 3. Confirmar pago con Stripe
+        const {error, paymentIntent} = await stripe.confirmCardPayment(resultado.clientSecret, {
+            payment_method: {
+                card: cardElement,
+                billing_details: {
+                    name: nombreDonante,
+                    email: emailDonante
+                }
+            }
+        });
+
+        if (error) {
+            throw new Error(error.message || 'Error al procesar el pago');
+        }
+
+        // 4. Pago exitoso
+        if (paymentIntent.status === 'succeeded') {
+            mostrarExitoDonacion(paymentIntent, monto);
+        }
+
+    } catch (error) {
+        
+    } finally {
+        btnProcesar.disabled = false;
+        btnText.textContent = 'Procesar Donación';
+        spinner.classList.add('d-none');
+    }
+}
+
+//Mostrar éxito de donación
+function mostrarExitoDonacion(paymentIntent, monto) {
+    const modalBody = document.querySelector('#modal-donacion-causa .modal-body');
+    const modalFooter = document.querySelector('#modal-donacion-causa .modal-footer');
+    const modalTitle = document.querySelector('#modal-donacion-causa .modal-title');
+
+    modalTitle.innerHTML = '<i class="fas fa-check-circle me-2"></i>¡Donación Exitosa!';
+
+    modalBody.innerHTML = `
+        <div class="text-center py-5">
+            <i class="fas fa-check-circle fa-4x text-success mb-4"></i>
+            <h4 class="text-success mb-3">¡Gracias por tu donación!</h4>
+            <p class="lead mb-3">Tu donación de <strong>${new Intl.NumberFormat('es-CO').format(monto)} COP</strong> ha sido procesada exitosamente.</p>
+            <div class="bg-light rounded-3 p-3 mb-4">
+                <small class="text-muted">ID de transacción: <strong>${paymentIntent.id}</strong></small>
+            </div>
+            <p class="text-muted">Recibirás un comprobante por correo electrónico.</p>
+        </div>
+    `;
+
+    modalFooter.innerHTML = `
+        <button type="button" class="btn btn-success" data-bs-dismiss="modal">
+            <i class="fas fa-check me-1"></i>
+            Entendido
+        </button>
+    `;
+}
+
+//Mostrar loading 
 function mostrarLoadingModal() {
     const modalBody = document.getElementById('contenido-causa');
     if (modalBody) {
@@ -649,12 +756,11 @@ function mostrarLoadingModal() {
         `;
     }
     
-    // Mostrar el modal
     const modal = new bootstrap.Modal(document.getElementById('modal-causa-detalle'));
     modal.show();
 }
 
-// ✅ FUNCIÓN: Mostrar error en modal
+// Mostrar error en modal
 function mostrarErrorEnModal(mensaje) {
     const modalBody = document.getElementById('contenido-causa');
     if (modalBody) {
@@ -671,7 +777,7 @@ function mostrarErrorEnModal(mensaje) {
     }
 }
 
-// ✅ FUNCIÓN COMPLETA: Mostrar causa en modal (CORREGIDA)
+// Mostrar causa en modal
 function mostrarCausaCompletoEnModal(causa, fundacion) {
     const modalBody = document.getElementById('contenido-causa');
     
@@ -680,7 +786,6 @@ function mostrarCausaCompletoEnModal(causa, fundacion) {
         return;
     }
 
-    // Generar imagen optimizada
     const imagenUrl = generarUrlCloudinary(
         causa.imagen_url || causa.public_id,
         'w_400,h_300,c_fill,g_center,q_auto,f_auto'
@@ -691,7 +796,6 @@ function mostrarCausaCompletoEnModal(causa, fundacion) {
         'w_60,h_60,c_fill,g_face,q_auto,f_auto'
     );
 
-    // Formatear meta
     const metaFormateada = causa.meta ? 
         new Intl.NumberFormat('es-CO', { 
             style: 'currency', 
@@ -702,9 +806,7 @@ function mostrarCausaCompletoEnModal(causa, fundacion) {
     const iconoCausa = {
         'ALIMENTACION': 'uil fa-utensils',
         'MEDICINA': 'uil fa-heartbeat',
-        'REFUGIO': 'uil fa-home',
-        'EDUCACION': 'uil fa-graduation-cap',
-        'GENERAL': 'uil fa-heart'
+        'ESTERILIZACION': 'uil fa-heart'
     }[causa.tipo_causa?.toUpperCase()] || 'uil uil-heart';
 
     // Color del badge según estado
@@ -717,7 +819,6 @@ function mostrarCausaCompletoEnModal(causa, fundacion) {
 
 const contenidoModal = `
 <div class="card shadow border-0">
-
   <!-- Imagen principal con estado -->
   <div class="position-relative">
     <img src="${imagenUrl}" class="card-img-top" alt="${causa.nombre}" style="height: 240px; object-fit: cover;">
@@ -780,16 +881,12 @@ const contenidoModal = `
 
   </div>
 </div>
-
-
     `;
 
     modalBody.innerHTML = contenidoModal;
 
-    // ✅ INICIALIZAR EVENTOS DEL MODAL
     inicializarEventosModalCausa();
     
-    // Mostrar el modal si no está visible
     const modalElement = document.getElementById('modal-causa-detalle');
     const modal = bootstrap.Modal.getInstance(modalElement) || new bootstrap.Modal(modalElement);
     modal.show();
@@ -810,14 +907,20 @@ function animarEntradaCartas() {
     });
 }
 
-// ✅ INICIALIZACIÓN DE EVENTOS DEL DOM - LIMPIADO
 document.addEventListener("DOMContentLoaded", () => {
-    const botones = document.querySelectorAll(".btn-cargar-cartelCausa");
+    inicializarStripe();
 
+    const botones = document.querySelectorAll(".btn-cargar-cartelCausa");
     botones.forEach((btn) => {
         btn.addEventListener("click", function (e) {
             e.preventDefault();
             cargarCarteleraCausas();
         });
+    });
+
+    document.addEventListener('change', function(e) {
+        if (e.target && e.target.id === 'terminos-donacion') {
+            habilitarBotonProcesar();
+        }
     });
 });

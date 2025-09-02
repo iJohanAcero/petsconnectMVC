@@ -257,6 +257,8 @@ $stats = $estadisticas->obtenerEstadisticasNavbar();
     <!--==============================================CONFIGURACION DE FONDO===========================================-->
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://js.stripe.com/v3/"></script>
+
 
     <!-- SCRIPTS DE JS CRUDS Y RUTAS -->
     <script src="<?= Config::get('JS_URL') ?>/main.js"></script>

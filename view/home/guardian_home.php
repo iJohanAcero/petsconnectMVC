@@ -233,6 +233,9 @@ $stats = $estadisticas->obtenerEstadisticasNavbar();
     <!--==============================================CONFIGURACION DE FONDO===========================================-->
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://js.stripe.com/v3/"></script>
+
+
 
     <!-- SCRIPTS DE JS CRUDS Y RUTAS -->
     <script src="<?= Config::get('JS_URL') ?>/config.js"></script>
@@ -240,6 +243,7 @@ $stats = $estadisticas->obtenerEstadisticasNavbar();
     <script src="<?= Config::get('JS_URL') ?>/routes/perfilGuardian.js"></script>
     <script src="<?= Config::get('JS_URL') ?>/routes/carteleraFundacion.js"></script>
     <script src="<?= Config::get('JS_URL') ?>/routes/carteleraMascotas.js"></script>
+    <script src="<?= Config::get('JS_URL') ?>/routes/carteleraCausa.js"></script>
     <script src="<?= Config::get('JS_URL') ?>/crud/crud_proceso.js"></script>
 
     <script>
