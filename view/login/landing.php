@@ -710,8 +710,7 @@
                                 </div>
                                 <div class="ud-info-meta">
                                     <h5>¿Cómo podemos ayudarte?</h5>
-                                    <p>informacion@petsconnect.com</p>
-                                    <p>ayuda@petsconnect.com</p>
+                                    <p>petsconnectcol@gmail.com</p>
                                 </div>
                             </div>
                         </div>

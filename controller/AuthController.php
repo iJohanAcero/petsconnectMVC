@@ -58,13 +58,13 @@ class AuthController
                     $mail->isSMTP();
                     $mail->Host = 'smtp.gmail.com';
                     $mail->SMTPAuth = true;
-                    $mail->Username = 'pablovela.upn@gmail.com'; // Tu correo de Gmail
-                    $mail->Password = 'azky mxkm gqwa awvt';
+                    $mail->Username = 'petsconnectcol@gmail.com'; // Tu correo de Gmail
+                    $mail->Password = 'slwz wdtl dsxi jqih';
                     // Contraseña de aplicación de Gmail
                     $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
                     $mail->Port = 587;
 
-                    $mail->setFrom('pablovela.upn@gmail.com', 'PetsConnect');
+                    $mail->setFrom('petsconnectcol@gmail.com', 'PetsConnect');
                     $mail->addAddress($email); // $email es el destinatario
 
                     $mail->Subject = 'Recuperación de contraseña - Soporte ';
@@ -238,25 +238,176 @@ class AuthController
                     $mail->isSMTP();
                     $mail->Host = 'smtp.gmail.com';
                     $mail->SMTPAuth = true;
-                    $mail->Username = 'pablovela.upn@gmail.com';
-                    $mail->Password = 'azky mxkm gqwa awvt';
+                    $mail->Username = 'petsconnectcol@gmail.com';
+                    $mail->Password = 'slwz wdtl dsxi jqih';
                     $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
                     $mail->Port = 587;
 
                     // Mejor práctica: setFrom seguro y addReplyTo para el usuario
-                    $mail->setFrom('pablovela.upn@gmail.com', 'Notificaciones PetsConnect');
+                    $mail->setFrom('petsconnectcol@gmail.com', 'Notificaciones PetsConnect');
                     $mail->addReplyTo($email, $fullname);
-                    $mail->addAddress("pablovela.upn@gmail.com");
+                    $mail->addAddress("petsconnectcol@gmail.com");
 
                     $mail->isHTML(true);
-                    $mail->Subject = 'Solicitud para pertenecer a PetsConnect';
+                    $mail->Subject = 'Nueva Solicitud para PetsConnect - ' . $fullname;
                     $mail->Body = "
-                        <h3>Solicitud de Tutorial</h3>
-                        <p><strong>Nombre:</strong> $fullname</p>
-                        <p><strong>Email:</strong> $email</p>
-                        <p><strong>Teléfono:</strong> $phone</p>
-                        <p><strong>Mensaje:</strong><br>$message</p>
-                    ";
+<!DOCTYPE html>
+<html lang='es'>
+<head>
+    <meta charset='UTF-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+    <title>Solicitud PetsConnect</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+        .email-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px 20px;
+            text-align: center;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 28px;
+            font-weight: 300;
+        }
+        .header .subtitle {
+            margin-top: 10px;
+            font-size: 16px;
+            opacity: 0.9;
+        }
+        .content {
+            padding: 30px;
+        }
+        .info-card {
+            background-color: #f8f9fa;
+            border-left: 4px solid #667eea;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+        .field {
+            margin-bottom: 15px;
+            display: flex;
+            flex-wrap: wrap;
+        }
+        .field-label {
+            font-weight: 600;
+            color: #555;
+            min-width: 100px;
+            margin-bottom: 5px;
+        }
+        .field-value {
+            color: #333;
+            flex: 1;
+            min-width: 200px;
+        }
+        .message-section {
+            background-color: #fff;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+        .message-label {
+            font-weight: 600;
+            color: #555;
+            margin-bottom: 10px;
+            display: block;
+        }
+        .message-content {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 6px;
+            border-left: 3px solid #28a745;
+            white-space: pre-line;
+            line-height: 1.6;
+        }
+        .footer {
+            background-color: #f8f9fa;
+            padding: 20px;
+            text-align: center;
+            border-top: 1px solid #e9ecef;
+            color: #6c757d;
+            font-size: 14px;
+        }
+        .timestamp {
+            color: #6c757d;
+            font-size: 12px;
+            text-align: right;
+            margin-top: 20px;
+            font-style: italic;
+        }
+        @media (max-width: 600px) {
+            .email-container {
+                margin: 0 10px;
+            }
+            .content {
+                padding: 20px;
+            }
+            .field {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class='email-container'>
+        <div class='header'>
+            <h1>🐾 PetsConnect</h1>
+            <div class='subtitle'>Nueva Solicitud de Registro</div>
+        </div>
+        
+        <div class='content'>
+            <div class='info-card'>
+                <div class='field'>
+                    <span class='field-label'>👤 Nombre:</span>
+                    <span class='field-value'>$fullname</span>
+                </div>
+                
+                <div class='field'>
+                    <span class='field-label'>📧 Email:</span>
+                    <span class='field-value'>$email</span>
+                </div>
+                
+                <div class='field'>
+                    <span class='field-label'>📱 Teléfono:</span>
+                    <span class='field-value'>$phone</span>
+                </div>
+            </div>
+            
+            <div class='message-section'>
+                <span class='message-label'>💬 Mensaje del solicitante:</span>
+                <div class='message-content'>$message</div>
+            </div>
+            
+            <div class='timestamp'>
+                Solicitud recibida el " . date('d/m/Y \a \l\a\s H:i') . "
+            </div>
+        </div>
+        
+        <div class='footer'>
+            <p>Esta es una notificación automática de PetsConnect.<br>
+            Por favor, responde a esta solicitud en un plazo de 24-48 horas.</p>
+        </div>
+    </div>
+</body>
+</html>
+";
 
                     $mail->send();
                     $mensaje .= "<br>El mensaje ha sido enviado correctamente. Nos pondremos en contacto contigo pronto.";
