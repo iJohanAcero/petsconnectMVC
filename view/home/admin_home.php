@@ -169,7 +169,7 @@ $stats = $estadisticas->obtenerEstadisticasNavbar();
                     </a>
                 </li>
                 <li class="sidebar-item">
-                    <a href="#" class="sidebar-link">
+                    <a href="#" class="sidebar-link btn-cargar-cartelCausa">
                         <i class="uil uil-credit-card"></i>
                         <span class="sidebar-text">Donaciones</span>
                     </a>
@@ -294,6 +294,8 @@ $stats = $estadisticas->obtenerEstadisticasNavbar();
     <!-- SCRIPTS DE JS CRUDS Y RUTAS -->
     <script src="<?= Config::get('JS_URL') ?>/config.js"></script>
     <script src="<?= Config::get('JS_URL') ?>/main.js"></script>
+
+    <!-- CRUDS DEL APLICATIVO -->
     <script src="<?= Config::get('JS_URL') ?>/crud/crud_donacion.js"></script>
     <script src="<?= Config::get('JS_URL') ?>/crud/crud_causa.js"></script>
     <script src="<?= Config::get('JS_URL') ?>/crud/crud_fundacion.js"></script>
@@ -301,9 +303,11 @@ $stats = $estadisticas->obtenerEstadisticasNavbar();
     <script src="<?= Config::get('JS_URL') ?>/crud/crud_mascota.js"></script>
     <script src="<?= Config::get('JS_URL') ?>/crud/crud_guardian.js"></script>
     <script src="<?= Config::get('JS_URL') ?>/crud/crud_proceso.js"></script>
-    <script src="<?= Config::get('JS_URL') ?>/routes/routes.js"></script>
+
+    <!-- CARTELERAS -->
     <script src="<?= Config::get('JS_URL') ?>/routes/carteleraFundacion.js"></script>
     <script src="<?= Config::get('JS_URL') ?>/routes/carteleraMascotas.js"></script>
+    <script src="<?= Config::get('JS_URL') ?>/routes/carteleraCausa.js"></script>
 
     <script>
         let page = 1;
@@ -323,53 +327,53 @@ $stats = $estadisticas->obtenerEstadisticasNavbar();
                     if (Array.isArray(res) && res.length > 0) {
                         res.forEach(pub => {
                             $('#publicaciones-container').append(`
-                        <div class="card mb-4 shadow-sm border-0 overflow-hidden" style="border-radius: 16px;">
-                            <!-- Header con información de la fundación -->
-                            <div class="card-header bg-white border-0 py-3">
-                                <div class="d-flex align-items-center justify-content-between">
-                                    <div class="d-flex align-items-center">
-                                        <div class="bg-primary rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 48px; height: 48px;">
-                                            <img src="${pub.imagen_fundacion}" class="img-fluid rounded-circle" alt="Imagen fundación">
-                                        </div>
-                                        <div>
-                                            <h6 class="mb-0 fw-bold text-dark">${pub.nombre_fundacion}</h6>
-                                            <small class="text-muted">Fundación</small>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Contenido principal -->
-                            <div class="card-body px-4 py-3">
-                                <!-- Título de la publicación -->
-                                <h5 class="card-title fw-bold mb-3 text-dark lh-base">${pub.titulo}</h5>
-                                
-                                <!-- Descripción -->
-                                <p class="card-text text-secondary lh-lg mb-3" style="font-size: 0.95rem;">${pub.contenido}</p>
-                            </div>
-
-                            <!-- Imagen (si existe) -->
-                            ${pub.imagen ? `
-                                <div class="position-relative">
-                                    <img src="${pub.imagen}"
-                                         class="card-img w-100"
-                                         style="height: 280px;"
-                                         alt="Imagen publicación">
-                                </div>
-                            ` : ''}
-
-                            <!-- Footer con acciones y fecha -->
-                            <div class="card-footer bg-white border-0 py-3">
-                                <div class="d-flex align-items-center justify-content-between">
-                                    
-                                    <!-- Fecha -->
-                                    <div class="d-flex align-items-center text-muted">
-                                        <i class="far fa-clock me-2"></i>
-                                        <small class="fw-medium">${pub.fecha}</small>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        <div class="card mb-4 shadow-sm border-0 overflow-hidden rounded-4">
+    <!-- Header con información de la fundación -->
+    <div class="card-header bg-white border-0 py-3">
+        <div class="d-flex align-items-center justify-content-between">
+            <div class="d-flex align-items-center">
+                <div class="bg-primary rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 48px; height: 48px;">
+                    <img src="${pub.imagen_fundacion}" class="img-fluid rounded-circle w-100 h-100 object-fit-cover" alt="Imagen fundación">
+                </div>
+                <div>
+                    <h6 class="mb-0 fw-bold text-dark">${pub.nombre_fundacion}</h6>
+                    <small class="text-muted">Fundación</small>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Imagen (si existe) - Movida arriba para mejor adaptación -->
+    ${pub.imagen ? `
+        <div class="position-relative">
+            <img src="${pub.imagen}"
+                 class="card-img-top w-100 object-fit-cover"
+                 style="max-height: 400px; min-height: 200px;"
+                 alt="Imagen publicación">
+        </div>
+    ` : ''}
+    
+    <!-- Contenido principal -->
+    <div class="card-body px-4 py-3">
+        <!-- Título de la publicación -->
+        <h5 class="card-title fw-bold mb-3 text-dark lh-base">${pub.titulo}</h5>
+       
+        <!-- Descripción -->
+        <p class="card-text text-secondary lh-lg mb-3 fs-6">${pub.contenido}</p>
+    </div>
+    
+    <!-- Footer con acciones y fecha -->
+    <div class="card-footer bg-white border-0 py-3">
+        <div class="d-flex align-items-center justify-content-between">
+           
+            <!-- Fecha -->
+            <div class="d-flex align-items-center text-muted">
+                <i class="far fa-clock me-2"></i>
+                <small class="fw-medium">${pub.fecha}</small>
+            </div>
+        </div>
+    </div>
+</div>
                     `);
                         });
                         page++;
@@ -399,6 +403,7 @@ $stats = $estadisticas->obtenerEstadisticasNavbar();
             });
         });
     </script>
+
 
 
 </body>

@@ -38,7 +38,7 @@ function generarUrlCloudinary(publicId, transformaciones = '') {
         return publicId;
     }
     
-    const CLOUDINARY_CLOUD_NAME = 'dhyowmhw6';
+    const CLOUDINARY_CLOUD_NAME = 'dzhg8fznk';
     
     const cleanPublicId = publicId.replace(/\.(jpg|jpeg|png|gif|webp)$/i, '');
     

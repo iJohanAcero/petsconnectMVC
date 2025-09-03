@@ -6,7 +6,7 @@ let cardElement = null;
 // Inicializar Stripe cuando se carga la página
 function inicializarStripe() {
     // clave pública de Stripe
-    stripe = Stripe('pk_test_51S07bKRok1mN1oR6cBRgDpLdB0KLF9QPwT3HAOQAX7IadUqtxNorAczfKRTxh4JVSABRMPnMOgEw5r73ZfF8eEYb00jdLVKzUy'); // ⚠️ Reemplaza con tu clave pública
+    stripe = Stripe('pk_test_51S37XRRvWIJHWRYjyP4skV97jocTLdVtZEy34wu2vCPy2a9V3vpengsX0hE9G9sLgaasA54MpkZGg2eOovd0W5gJ00ckt6LW7E');
 }
 
 function cargarCausasDesdeBackend() {
@@ -83,7 +83,7 @@ function generarUrlCloudinary(publicId, transformaciones = '') {
         return publicId;
     }
     
-    const CLOUDINARY_CLOUD_NAME = 'dhyowmhw6';
+    const CLOUDINARY_CLOUD_NAME = 'dzhg8fznk';
     
     const cleanPublicId = publicId.replace(/\.(jpg|jpeg|png|gif|webp)$/i, '');
     
@@ -729,8 +729,7 @@ function mostrarExitoDonacion(paymentIntent, monto) {
             <p class="lead mb-3">Tu donación de <strong>${new Intl.NumberFormat('es-CO').format(monto)} COP</strong> ha sido procesada exitosamente.</p>
             <div class="bg-light rounded-3 p-3 mb-4">
                 <small class="text-muted">ID de transacción: <strong>${paymentIntent.id}</strong></small>
-            </div>
-            <p class="text-muted">Recibirás un comprobante por correo electrónico.</p>
+            </div
         </div>
     `;
 

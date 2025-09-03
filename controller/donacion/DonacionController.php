@@ -28,7 +28,7 @@ class DonacionController
 
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             http_response_code(405);
-            echo json_encode(['error' => 'Método no permitido']);
+            echo json_encode(['error' => 'MÃ©todo no permitido']);
             return;
         }
 
@@ -41,12 +41,12 @@ class DonacionController
 
             default:
                 http_response_code(400);
-                echo json_encode(['error' => 'Acción no válida']);
+                echo json_encode(['error' => 'AcciÃ³n no vÃ¡lida']);
                 break;
         }
     }
 
-    /*Procesar creación de donación*/
+    /*Procesar creaciÃ³n de donaciÃ³n*/
     private function procesarCrearDonacion()
     {
         try {
@@ -59,7 +59,7 @@ class DonacionController
             $nombreDonante = $_POST['nombre_donante'] ?? '';
             $emailDonante = $_POST['email_donante'] ?? '';
 
-            // Obtener ID de usuario de la sesión
+            // Obtener ID de usuario de la sesiÃ³n
             $idUsuario = $_SESSION['user']['id_usuario'];
 
             if (empty($idCausa) || empty($monto)) {
@@ -70,22 +70,33 @@ class DonacionController
                 exit;
             }
 
-            // Obtener NIT de la fundación
+            // Validar email del donante para el recibo
+            if (empty($emailDonante) || !filter_var($emailDonante, FILTER_VALIDATE_EMAIL)) {
+                echo json_encode([
+                    'status' => 'error',
+                    'message' => 'Email del donante es requerido y debe ser válido para enviar el recibo'
+                ]);
+                exit;
+            }
+
+            // Obtener NIT de la fundaciÃ³n
             $nitFundacion = $this->obtenerNitFundacionPorCausa($idCausa);
 
             try {
-                // 1. Crear PaymentIntent en Stripe
+                // 1. Crear PaymentIntent en Stripe con envío automático de recibo
                 $paymentIntent = \Stripe\PaymentIntent::create([
                     'amount' => $monto * 100,
                     'currency' => 'cop',
+                    'payment_method_types' => ['card'],
                     'metadata' => [
                         'id_causa' => $idCausa,
                         'nombre_donante' => $nombreDonante,
-                        'email_donante' => $emailDonante
+                        'email_donante' => $emailDonante,
+                        'nit_fundacion' => $nitFundacion
                     ]
                 ]);
 
-                // 2. Guardar en la base de datos
+                // Guardar en la base de datos 
                 $this->Donacion->crearDonacion(
                     $idUsuario,
                     $idCausa,
@@ -99,10 +110,11 @@ class DonacionController
                     'clientSecret' => $paymentIntent->client_secret
                 ]);
                 exit;
+
             } catch (\Stripe\Exception\ApiErrorException $e) {
                 echo json_encode([
                     'status' => 'error',
-                    'message' => $e->getMessage()
+                    'message' => 'Error de Stripe: ' . $e->getMessage()
                 ]);
                 exit;
             }
@@ -115,7 +127,7 @@ class DonacionController
         }
     }
 
-    /* Obtener NIT de fundación */
+    /* Obtener NIT de fundaciÃ³n */
     private function obtenerNitFundacionPorCausa($idCausa)
     {
         try {
@@ -125,11 +137,11 @@ class DonacionController
         }
     }
 
-    /* Crear un PaymentIntent y registrar la donación en estado pagado */
-    public function crearDonacion($idUsuario, $idCausa, $nitFundacion, $monto)
+    /* Crear un PaymentIntent y registrar la donaciÃ³n en estado pagado */
+    public function crearDonacion($idUsuario, $idCausa, $nitFundacion, $monto, $emailDonante = null)
     {
         try {
-            $paymentIntent = \Stripe\PaymentIntent::create([
+            $paymentIntentData = [
                 'amount' => (int) $monto,
                 'currency' => 'cop',
                 'payment_method_types' => ['card'],
@@ -138,7 +150,9 @@ class DonacionController
                     'causa_id' => $idCausa,
                     'fundacion' => $nitFundacion
                 ]
-            ]);
+            ];
+
+            $paymentIntent = \Stripe\PaymentIntent::create($paymentIntentData);
 
             // Guardar en BD como "pagado"
             $this->Donacion->crearDonacion(
