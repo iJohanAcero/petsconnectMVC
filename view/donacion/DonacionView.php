@@ -49,7 +49,8 @@ if (isset($_SESSION["user"]["id_usuario"])) {
                         <i class="uil uil-calendar me-1"></i>Fecha
                     </th>
                     <th class="py-3 border-0 text-center" style="min-width: 120px;">
-                        <i class="uil uil-building me-1"></i>Fundación
+                        <i class="uil uil-building me-1"></i>
+                        <?php if ($esFundacion || $esAdmin): ?>Donante<?php else: ?>Fundación<?php endif; ?>
                     </th>
                     <th class="py-3 border-0 text-center" style="min-width: 120px;">
                         <i class="uil uil-gear me-1"></i>Acciones
@@ -58,9 +59,18 @@ if (isset($_SESSION["user"]["id_usuario"])) {
             </thead>
             <tbody>
                 <?php
-                // Obtener todas las donaciones del usuario logueado
+                // LÓGICA CORREGIDA SEGÚN ROL
                 if ($id_usuario) {
-                    $Donaciones = $Modelo->obtenerTodasDonacionesUsuario($id_usuario);
+                    if ($esAdmin) {
+                        // Admin ve TODAS las donaciones
+                        $Donaciones = $Modelo->obtenerTodasLasDonaciones();
+                    } elseif ($esFundacion && $nit_fundacion) {
+                        // Fundación ve donaciones RECIBIDAS
+                        $Donaciones = $Modelo->obtenerDonacionesPorFundacion($nit_fundacion);
+                    } else {
+                        // Usuario normal ve donaciones que ÉL hizo
+                        $Donaciones = $Modelo->obtenerTodasDonacionesUsuario($id_usuario);
+                    }
                 } else {
                     $Donaciones = [];
                 }
@@ -108,8 +118,17 @@ if (isset($_SESSION["user"]["id_usuario"])) {
                             </td>
                             <td class="text-center">
                                 <div class="d-flex flex-column align-items-center">
-                                    <span class="fw-medium" style="font-size: 0.85rem;"><?= htmlspecialchars($donacion['fundacion_nombre'] ?? 'N/A') ?></span>
-                                    <small class="text-muted"><?= $donacion['nit_fundacion'] ?></small>
+                                    <?php if ($esFundacion || $esAdmin): ?>
+                                        <!-- Para fundaciones y admin: mostrar info del donante -->
+                                        <span class="fw-medium" style="font-size: 0.85rem;">
+                                            <?= htmlspecialchars(($donacion['donante_nombre'] ?? '') . ' ' . ($donacion['donante_apellidos'] ?? '')) ?>
+                                        </span>
+                                        <small class="text-muted"><?= htmlspecialchars($donacion['donante_email'] ?? 'N/A') ?></small>
+                                    <?php else: ?>
+                                        <!-- Para usuarios normales: mostrar fundación -->
+                                        <span class="fw-medium" style="font-size: 0.85rem;"><?= htmlspecialchars($donacion['fundacion_nombre'] ?? 'N/A') ?></span>
+                                        <small class="text-muted"><?= $donacion['nit_fundacion'] ?></small>
+                                    <?php endif; ?>
                                 </div>
                             </td>
                             <td class="text-center">
@@ -139,8 +158,13 @@ if (isset($_SESSION["user"]["id_usuario"])) {
                         <td colspan="8" class="text-center py-5">
                             <div class="d-flex flex-column align-items-center">
                                 <i class="uil uil-heart display-4 mb-3" style="color: #1a1333; opacity: 0.3;"></i>
-                                <h5 class="text-muted mb-2">No hay donaciones registradas</h5>
-                                <p class="text-muted mb-0">¡Realiza tu primera donación para ayudar a una causa!</p>
+                                <?php if ($esFundacion): ?>
+                                    <h5 class="text-muted mb-2">No hay donaciones recibidas</h5>
+                                    <p class="text-muted mb-0">Aún no has recibido donaciones para tus causas</p>
+                                <?php else: ?>
+                                    <h5 class="text-muted mb-2">No hay donaciones registradas</h5>
+                                    <p class="text-muted mb-0">¡Realiza tu primera donación para ayudar a una causa!</p>
+                                <?php endif; ?>
                             </div>
                         </td>
                     </tr>

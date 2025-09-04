@@ -163,21 +163,15 @@ $stats = $estadisticas->obtenerEstadisticasNavbar();
                     </a>
                 </li>
                 <li class="sidebar-item">
-                    <a href="#" class="sidebar-link btn-cargar-cartelFundacion">
-                        <i class="uil uil-building"></i>
-                        <span class="sidebar-text">Fundaciones</span>
+                    <a href="#" class="sidebar-link" id="btn-cargar-dashboardAdmin">
+                        <i class="uil uil-dashboard"></i>
+                        <span class="sidebar-text">Dashboard</span>
                     </a>
                 </li>
                 <li class="sidebar-item">
-                    <a href="#" class="sidebar-link btn-cargar-cartelCausa">
-                        <i class="uil uil-credit-card"></i>
-                        <span class="sidebar-text">Donaciones</span>
-                    </a>
-                </li>
-                <li class="sidebar-item has-dropdown btn-cargar-cartelMascota">
-                    <a href="#" class="sidebar-link">
-                        <i class="uil uil-heart"></i>
-                        <span class="sidebar-text">Mascotas</span>
+                    <a href="#" class="sidebar-link" id="btn-cargar-informeAdmin">
+                        <i class="uil uil-info-circle"></i>
+                        <span class="sidebar-text">Informes</span>
                     </a>
                 </li>
                 <li class="sidebar-item has-dropdown">
@@ -260,9 +254,21 @@ $stats = $estadisticas->obtenerEstadisticasNavbar();
                     </ul>
                 </li>
                 <li class="sidebar-item">
-                    <a href="#" class="sidebar-link" onclick="cargarDashboard()">
-                        <i class="uil uil-dashboard"></i>
-                        <span class="sidebar-text">Dashboard</span>
+                    <a href="#" class="sidebar-link btn-cargar-cartelFundacion">
+                        <i class="uil uil-building"></i>
+                        <span class="sidebar-text">Fundaciones</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="#" class="sidebar-link btn-cargar-cartelCausa">
+                        <i class="uil uil-credit-card"></i>
+                        <span class="sidebar-text">Donaciones</span>
+                    </a>
+                </li>
+                <li class="sidebar-item has-dropdown btn-cargar-cartelMascota">
+                    <a href="#" class="sidebar-link">
+                        <i class="uil uil-heart"></i>
+                        <span class="sidebar-text">Mascotas</span>
                     </a>
                 </li>
                 <li class="sidebar-item">
@@ -289,6 +295,7 @@ $stats = $estadisticas->obtenerEstadisticasNavbar();
     <script src="https://cdn.datatables.net/v/bs5/dt-2.3.2/af-2.7.0/b-3.2.3/b-html5-3.2.3/r-3.0.4/sc-2.4.3/datatables.min.js" integrity="sha384-4VpbDpy9RZDSYGLIgJCxbBN42Ze5hcM/B+OOSuW3hSAukOTfsuar7+79mYTohU6M" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://js.stripe.com/v3/"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 
     <!-- SCRIPTS DE JS CRUDS Y RUTAS -->
@@ -304,10 +311,12 @@ $stats = $estadisticas->obtenerEstadisticasNavbar();
     <script src="<?= Config::get('JS_URL') ?>/crud/crud_guardian.js"></script>
     <script src="<?= Config::get('JS_URL') ?>/crud/crud_proceso.js"></script>
 
-    <!-- CARTELERAS -->
+    <!-- CARTELERAS - INFORMES - DASHBOARD -->
     <script src="<?= Config::get('JS_URL') ?>/routes/carteleraFundacion.js"></script>
     <script src="<?= Config::get('JS_URL') ?>/routes/carteleraMascotas.js"></script>
     <script src="<?= Config::get('JS_URL') ?>/routes/carteleraCausa.js"></script>
+    <script src="<?= Config::get('JS_URL') ?>/routes/informesAdmin.js"></script>
+    <script src="<?= Config::get('JS_URL') ?>/routes/dashboardAdmin.js"></script>
 
     <script>
         let page = 1;

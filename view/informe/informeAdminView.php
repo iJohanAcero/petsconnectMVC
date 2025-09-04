@@ -52,7 +52,7 @@ if (isset($_SESSION["user"]["id_usuario"])) {
     <div class="container py-4">
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h1 class="h2 mb-0">
-                <i class="uil uil-bag"></i> Reportes de Fundación
+                <i class="uil uil-bag"></i> Reportes de Administrador
             </h1>
         </div>
 
@@ -61,22 +61,18 @@ if (isset($_SESSION["user"]["id_usuario"])) {
             <div class="card-header text-white py-3" style="background-color: #a3bced;">
                 <div class="d-flex align-items-center">
                     <i class="bi bi-heart-fill me-2"></i>
-                    <h5 class="mb-0 text-dark">Mascotas adultas en adopción</h5>
-                    <span class="badge bg-light text-dark ms-2" id="contadorMascotas">0</span>
+                    <h5 class="mb-0 text-dark">Donaciones por fundación</h5>
                 </div>
             </div>
             <div class="card-body p-0">
                 <div class="table-responsive">
-                    <table id="tablaAdultas" class="table table-hover table-striped mb-0">
+                    <table id="tablaDonacionesFundacion" class="table table-hover table-striped mb-0">
                         <thead class="table-light">
                             <tr>
-                                <th class="text-center">ID</th>
                                 <th>Nombre</th>
-                                <th>Especie</th>
-                                <th class="text-center">Sexo</th>
-                                <th class="text-center">Edad (meses)</th>
-                                <th>Fundación</th>
-                                <th class="text-center">Estado</th>
+                                <th>Total Donaciones</th>
+                                <th>Total Recaudado</th>
+                                <th>Promedio Donación</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -87,26 +83,24 @@ if (isset($_SESSION["user"]["id_usuario"])) {
         </div>
     </div>
 
-    <!-- Mascotas con mas procesos de adopción -->
+    <!-- Especies mas adoptadas en la plataforma  -->
     <div class="container py-4">
         <div class="card shadow-sm mb-4 border-0">
             <div class="card-header text-white py-3" style="background-color: hsl(252, 30%, 17%);">
                 <div class="d-flex align-items-center">
                     <i class="bi bi-heart-fill me-2"></i>
-                    <h5 class="mb-0 text-white">Mascotas con mas procesos de adopción</h5>
-                    <span class="badge bg-light text-dark ms-2" id="contadorMascotasPopulares">0</span>
+                    <h5 class="mb-0 text-white">Especies más adoptadas</h5>
                 </div>
             </div>
             <div class="card-body p-0">
                 <div class="table-responsive">
-                    <table id="tablaPopulares" class="table table-hover table-striped mb-0">
+                    <table id="tablaAdopcionesEspecie" class="table table-hover table-striped mb-0">
                         <thead class="table-light">
                             <tr>
-                                <th class="text-center">ID</th>
-                                <th>Nombre</th>
-                                <th>Especie</th>
-                                <th>Fundación</th>
-                                <th>total_solicitudes</th>
+                                <th class="text-center">Especie</th>
+                                <th>Adopciones Completadas</th>
+                                <th>Adopciones Pendientes</th>
+                                <th>En Adopción</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -123,22 +117,17 @@ if (isset($_SESSION["user"]["id_usuario"])) {
             <div class="card-header text-white py-3" style="background-color: #fdaac4">
                 <div class="d-flex align-items-center">
                     <i class="bi bi-heart-fill me-2"></i>
-                    <h5 class="mb-0 text-dark">Porcentaje de causa completada</h5>
+                    <h5 class="mb-0 text-dark">Publicaciones por fundación</h5>
                 </div>
             </div>
             <div class="card-body p-0">
                 <div class="table-responsive">
-                    <table id="tablaCausas" class="table table-hover table-striped mb-0">
+                    <table id="tablaPublicacionesFundacion" class="table table-hover table-striped mb-0">
                         <thead class="table-light">
                             <tr>
-                                <th class="text-center">ID</th>
-                                <th>Nombre Causa</th>
-                                <th>Fundación</th>
-                                <th>Meta</th>
-                                <th>Total recaudado</th>
-                                <th>Porcentaje avance</th>
-                                <th>Estado causa</th>
-                                <th>Fecha creación</th>
+                                <th class="text-center">Fundación</th>
+                                <th>Total Publicaciones</th>
+                                <th>Última Publicación</th>
                             </tr>
                         </thead>
                         <tbody>

@@ -1,7 +1,7 @@
 <?php
 require_once __DIR__ . '/../../vendor/autoload.php';
 
-use App\Model\Informe\Informe;
+use App\Model\dashboard\DashboardAdmin;
 use App\Model\Fundacion\Fundacion;
 use App\Config\Roles;
 
@@ -9,13 +9,13 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-class InformeController
+class dashboardAdminController
 {
     private $model;
 
     public function __construct()
     {
-        $this->model = new Informe();
+        $this->model = new DashboardAdmin();
     }
 
     // Método para verificar sesión y obtener NIT (igual que tu validación)
@@ -55,71 +55,34 @@ class InformeController
         return $nit_fundacion;
     }
 
-    public function mascotasAdultas()
+    public function donacionesPorMes()
     {
         try {
-            $nitFundacion = $this->verificarSesion();
-            header('Content-Type: application/json');
-            $data = $this->model->getMascotasAdultas($nitFundacion); // PASAR EL NIT
+            // Verificar sesión y obtener NIT si no es admin
+            $this->verificarSesion();
+
+            $data = $this->model->getDonacionesPorMes();
+
             echo json_encode([
                 'data' => $data,
-                'success' => true
+                'success' => true,
+                'message' => 'Datos de donaciones por mes obtenidos correctamente'
             ]);
         } catch (Exception $e) {
+            header('HTTP/1.1 500 Internal Server Error');
             echo json_encode([
                 'data' => [],
                 'success' => false,
-                'message' => $e->getMessage()
+                'message' => 'Error al obtener datos: ' . $e->getMessage()
             ]);
         }
     }
 
-    public function mascotasPopulares()
-    {
-        try {
-            $nitFundacion = $this->verificarSesion();
-            header('Content-Type: application/json');
-            $data = $this->model->getMascotasPopulares($nitFundacion); // PASAR EL NIT
-            echo json_encode([
-                'data' => $data,
-                'success' => true
-            ]);
-        } catch (Exception $e) {
-            echo json_encode([
-                'data' => [],
-                'success' => false,
-                'message' => $e->getMessage()
-            ]);
-        }
-    }
-
-    public function causasProgreso()
-    {
-        try {
-            $nitFundacion = $this->verificarSesion();
-            header('Content-Type: application/json');
-            $data = $this->model->getCausasProgreso($nitFundacion); // PASAR EL NIT
-            echo json_encode([
-                'data' => $data,
-                'success' => true
-            ]);
-        } catch (Exception $e) {
-            echo json_encode([
-                'data' => [],
-                'success' => false,
-                'message' => $e->getMessage()
-            ]);
-        }
-    }
-
-    // metodos para informes de administradores
-    public function donacionFundacion()
+    public function guardianesPorMes()
     {
         try {
             header('Content-Type: application/json');
-            $nitFundacion = $this->verificarSesion();
-
-            $data = $this->model->getDonacionFundacion($nitFundacion);
+            $data = $this->model->getGuardianesPorMes();
 
             echo json_encode([
                 'data' => $data,
@@ -127,20 +90,17 @@ class InformeController
             ]);
         } catch (Exception $e) {
             echo json_encode([
-                'data' => [],
                 'success' => false,
                 'message' => $e->getMessage()
             ]);
         }
     }
 
-    public function adopcionEspecie()
+    public function mascotasFelinasCaninas()
     {
         try {
             header('Content-Type: application/json');
-            $nitFundacion = $this->verificarSesion();
-
-            $data = $this->model->getAdopcionEspecie($nitFundacion);
+            $data = $this->model->getMascotasFelinasCaninas();
 
             echo json_encode([
                 'data' => $data,
@@ -148,58 +108,139 @@ class InformeController
             ]);
         } catch (Exception $e) {
             echo json_encode([
-                'data' => [],
                 'success' => false,
                 'message' => $e->getMessage()
             ]);
         }
     }
 
-    public function publicacionesFundacion() {
-    try {
-        header('Content-Type: application/json');
-        $data = $this->model->getPublicacionesFundacion();
+    public function publicacionesPorMes()
+    {
+        try {
+            header('Content-Type: application/json');
+            $data = $this->model->getPublicacionesPorMes();
 
-        echo json_encode([
-            'data' => $data,
-            'success' => true
-        ]);
-    } catch (Exception $e) {
-        echo json_encode([
-            'data' => [],
-            'success' => false,
-            'message' => $e->getMessage()
-        ]);
+            echo json_encode([
+                'data' => $data,
+                'success' => true
+            ]);
+        } catch (Exception $e) {
+            echo json_encode([
+                'success' => false,
+                'message' => $e->getMessage()
+            ]);
+        }
+    }
+
+    public function mascotasPorEstado()
+    {
+        try {
+            header('Content-Type: application/json');
+            $data = $this->model->getMascotasPorEstado();
+
+            echo json_encode([
+                'data' => $data,
+                'success' => true
+            ]);
+        } catch (Exception $e) {
+            echo json_encode([
+                'success' => false,
+                'message' => $e->getMessage()
+            ]);
+        }
+    }
+
+    public function rankingFundaciones()
+    {
+        try {
+            header('Content-Type: application/json');
+            $data = $this->model->getRankingFundaciones();
+
+            echo json_encode([
+                'data' => $data,
+                'success' => true
+            ]);
+        } catch (Exception $e) {
+            echo json_encode([
+                'success' => false,
+                'message' => $e->getMessage()
+            ]);
+        }
+    }
+
+    public function tiposCausas()
+    {
+        try {
+            header('Content-Type: application/json');
+            $data = $this->model->getTiposCausas();
+
+            echo json_encode([
+                'data' => $data,
+                'success' => true
+            ]);
+        } catch (Exception $e) {
+            echo json_encode([
+                'success' => false,
+                'message' => $e->getMessage()
+            ]);
+        }
+    }
+
+    public function usuariosRegistrados()
+    {
+        try {
+            header('Content-Type: application/json');
+            $data = $this->model->getUsuariosRegistrados();
+
+            echo json_encode([
+                'data' => $data,
+                'success' => true
+            ]);
+        } catch (Exception $e) {
+            echo json_encode([
+                'success' => false,
+                'message' => $e->getMessage()
+            ]);
+        }
     }
 }
-}
 
-// Router
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-    $controller = new informeController();
+    $controller = new dashboardAdminController();
     $accion = $_GET['accion'] ?? '';
 
     switch ($accion) {
-        case 'mascotas_adultas':
-            $controller->mascotasAdultas();
+        case 'donacionesPorMes':
+            $controller->donacionesPorMes();
             break;
-        case 'mascotas_populares':
-            $controller->mascotasPopulares();
+        case 'guardianesPorMes':
+            $controller->guardianesPorMes();
             break;
-        case 'causas_donaciones':
-            $controller->causasProgreso();
+        case 'mascotasFelinasCaninas':
+            $controller->mascotasFelinasCaninas();
             break;
-        case 'donacion_fundacion':
-            $controller->donacionFundacion();
+        case 'publicacionesPorMes':
+            $controller->publicacionesPorMes();
             break;
-        case 'adopcion_especie':
-            $controller->adopcionEspecie();
+        case 'mascotasPorEstado':
+            $controller->mascotasPorEstado();
             break;
-        case 'publicaciones_fundacion':
-            $controller->publicacionesFundacion();
+        case 'rankingFundaciones':
+            $controller->rankingFundaciones();
+            break;
+        case 'tiposCausas':
+            $controller->tiposCausas();
+            break;
+        case 'usuariosRegistrados':
+            $controller->usuariosRegistrados();
             break;
         default:
             header('HTTP/1.1 400 Bad Request');
-            echo json_encode(['error' => 'Acción no válida']);
+            echo json_encode([
+                'data' => [],
+                'success' => false,
+                'message' => 'Acción no válida'
+            ]);
+            break;
     }
 }

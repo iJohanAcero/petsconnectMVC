@@ -118,4 +118,67 @@ class Donacion
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    /* Obtener todas las donaciones RECIBIDAS por una fundación */
+    public function obtenerDonacionesPorFundacion($nitFundacion)
+    {
+        $sql = "SELECT 
+            d.id_donacion,
+            d.id_usuario,
+            d.id_causa,
+            d.nit_fundacion,
+            d.stripe_payment_id,
+            d.monto,
+            d.metodo_pago,
+            d.estado,
+            d.fecha,
+            c.nombre as causa_nombre,
+            c.descripcion as causa_descripcion,
+            c.imagen_url as causa_imagen,
+            f.nombre as fundacion_nombre,
+            u.nombre as donante_nombre,
+            u.apellido as donante_apellido,
+            u.email as donante_email
+        FROM t_donacion d
+        LEFT JOIN t_causa c ON d.id_causa = c.id_causa
+        LEFT JOIN t_fundacion f ON d.nit_fundacion = f.nit_fundacion
+        LEFT JOIN t_usuario u ON d.id_usuario = u.id_usuario
+        WHERE d.nit_fundacion = :nit_fundacion
+        ORDER BY d.fecha DESC";
+
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindParam(':nit_fundacion', $nitFundacion, PDO::PARAM_STR);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    /* Obtener TODAS las donaciones (para admin) */
+    public function obtenerTodasLasDonaciones()
+    {
+        $sql = "SELECT 
+            d.id_donacion,
+            d.id_usuario,
+            d.id_causa,
+            d.nit_fundacion,
+            d.stripe_payment_id,
+            d.monto,
+            d.metodo_pago,
+            d.estado,
+            d.fecha,
+            c.nombre as causa_nombre,
+            c.descripcion as causa_descripcion,
+            c.imagen_url as causa_imagen,
+            f.nombre as fundacion_nombre,
+            u.nombre as donante_nombre,
+            u.apellido as donante_apellido,
+            u.email as donante_email
+        FROM t_donacion d
+        LEFT JOIN t_causa c ON d.id_causa = c.id_causa
+        LEFT JOIN t_fundacion f ON d.nit_fundacion = f.nit_fundacion
+        LEFT JOIN t_usuario u ON d.id_usuario = u.id_usuario
+        ORDER BY d.fecha DESC";
+
+        $stmt = $this->db->query($sql);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 }

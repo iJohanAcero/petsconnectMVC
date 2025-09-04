@@ -161,7 +161,7 @@ function initializeDataTable() {
             buttons: buttons
         },
         language: {
-            url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/es-ES.json'
+            url: 'https://cdn.datatables.net/plug-ins/1.13.6/i18n/es-ES.json'
         },
         responsive: true,
         pageLength: 10,
@@ -235,7 +235,7 @@ function initializeDataTable() {
         buttons: buttons
     },
     language: {
-        url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/es-ES.json'
+        url: 'https://cdn.datatables.net/plug-ins/1.13.6/i18n/es-ES.json'
     },
     responsive: true,
     pageLength: 10,
@@ -271,7 +271,131 @@ function initializeDataTable() {
             }
         });
     }
-});
+    });
+
+    const tableCausas = $('#tablaCausas').DataTable({
+    ajax: {
+        url: '/petsconnectMVC/Controller/informe/informeController.php?accion=causas_donaciones',
+        dataSrc: 'data'
+    },
+    columns: [
+        {
+            data: 'id_causa',
+            className: 'text-center fw-bold'
+        },
+        {
+            data: 'causa',
+            render: function(data) {
+                return '<span class="text-capitalize fw-semibold">' + data + '</span>';
+            }
+        },
+        {
+            data: 'fundacion',
+            render: function(data) {
+                return '<span class="text-capitalize">' + data + '</span>';
+            }
+        },
+        {
+            data: 'meta',
+            className: 'text-end',
+            render: function(data) {
+                return '<span class="fw-semibold">$' + new Intl.NumberFormat('es-CO').format(data) + '</span>';
+            }
+        },
+        {
+            data: 'total_recaudado',
+            className: 'text-end',
+            render: function(data) {
+                return '<span class="text-success fw-semibold">$' + new Intl.NumberFormat('es-CO').format(data) + '</span>';
+            }
+        },
+        {
+            data: 'porcentaje_avance',
+            className: 'text-center',
+            render: function(data, type, row) {
+                // Badge con color según el porcentaje de avance
+                let badgeClass = 'bg-secondary';
+                let percentage = parseFloat(data);
+                if (percentage >= 100) badgeClass = 'bg-success';
+                else if (percentage >= 75) badgeClass = 'bg-primary';
+                else if (percentage >= 50) badgeClass = 'bg-info';
+                else if (percentage >= 25) badgeClass = 'bg-warning';
+                else badgeClass = 'bg-danger';
+               
+                return '<span class="badge ' + badgeClass + ' fs-6">' + percentage.toFixed(1) + '%</span>';
+            }
+        },
+        {
+            data: 'estado_causa',
+            className: 'text-center',
+            render: function(data) {
+                const statusClass = data === 'activa' ? 'bg-success' : 'bg-secondary';
+                return '<span class="badge ' + statusClass + '">' + data.toUpperCase() + '</span>';
+            }
+        },
+        {
+            data: 'fecha_creacion',
+            className: 'text-center',
+            render: function(data) {
+                const fecha = new Date(data);
+                return fecha.toLocaleDateString('es-CO');
+            }
+        }
+    ],
+    dom: "<'row'<'col-md-6'B><'col-md-6'f>>" +
+         "<'row'<'col-sm-12'tr>>" +
+         "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+    buttons: {
+        dom: {
+            container: {
+                className: 'btn-group btn-group-sm'
+            },
+            button: {
+                className: 'btn'
+            }
+        },
+        buttons: buttons
+    },
+    language: {
+        url: 'https://cdn.datatables.net/plug-ins/1.13.6/i18n/es-ES.json'
+    },
+    responsive: true,
+    pageLength: 10,
+    lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "Todos"]],
+    order: [[7, 'desc']], // Ordenar por fecha de creación descendente
+    initComplete: function() {
+        // Actualizar contador de causas
+        const count = this.api().data().count();
+        $('#contadorCausas').text(count);
+        // Añadir título personalizado
+        this.api().columns().every(function() {
+            if (this.index() === 5) {
+                const column = this;
+                const title = $('#tituloCausas');
+                if (title.length) {
+                    title.text('Resumen de ' + count + ' Causas Registradas');
+                }
+            }
+        });
+    },
+    drawCallback: function() {
+        // Ajustar estilos después de dibujar la tabla
+        $('.dt-buttons').addClass('btn-group btn-group-sm');
+        // Resaltar las causas según su porcentaje de avance
+        this.api().rows().every(function() {
+            const data = this.data();
+            const percentage = parseFloat(data.porcentaje_avance);
+            if (percentage >= 100) {
+                $(this.node()).addClass('table-success');
+            } else if (percentage >= 75) {
+                $(this.node()).addClass('table-primary');
+            } else if (percentage < 25) {
+                $(this.node()).addClass('table-danger');
+            }
+        });
+    }
+    });
+    
 }
 // ===================== INICIALIZACIÓN ===================== //
 document.addEventListener("DOMContentLoaded", function () {
