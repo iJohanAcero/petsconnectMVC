@@ -22,7 +22,7 @@ window.cargarDashboardAdmin = function () {
 // Función para inicializar gráficos
 function initializeCharts() {
     // Donaciones por mes
-    fetch('/petsconnectMVC/Controller/dashboard/dashboardAdminController.php?accion=donacionesPorMes')
+    fetch('/petsconnectMVC/Controller/dashboard/dashboard.php?accion=donacionesPorMes')
         .then(res => res.json())
         .then(json => {
             const labels = json.data.map(row => row.mes);
@@ -48,7 +48,7 @@ function initializeCharts() {
         })
         .catch(err => console.error("Error cargando donaciones por mes:", err));
 //  Guardianes registrados por mes
-        fetch('/petsconnectMVC/Controller/dashboard/dashboardAdminController.php?accion=guardianesPorMes')
+        fetch('/petsconnectMVC/Controller/dashboard/dashboard.php?accion=guardianesPorMes')
     .then(res => res.json())
     .then(json => {
         const labels = json.data.map(row => row.mes);
@@ -79,7 +79,7 @@ function initializeCharts() {
     .catch(err => console.error("Error cargando guardianes por mes:", err));
 
     // Mascotas registradas por especie (felinas vs caninas)
-    fetch('/petsconnectMVC/Controller/dashboard/dashboardAdminController.php?accion=mascotasFelinasCaninas')
+    fetch('/petsconnectMVC/Controller/dashboard/dashboard.php?accion=mascotasFelinasCaninas')
     .then(res => res.json())
     .then(json => {
         const labels = json.data.map(row => row.especie);
@@ -108,7 +108,7 @@ function initializeCharts() {
     .catch(err => console.error("Error cargando mascotas por especie:", err));
 
     // Publicaciones por mes
-    fetch('/petsconnectMVC/Controller/dashboard/dashboardAdminController.php?accion=publicacionesPorMes')
+    fetch('/petsconnectMVC/Controller/dashboard/dashboard.php?accion=publicacionesPorMes')
     .then(res => res.json())
     .then(json => {
         const labels = json.data.map(row => row.mes);
@@ -142,7 +142,7 @@ function initializeCharts() {
     .catch(err => console.error("Error cargando publicaciones por mes:", err));
 
 // Mascotas por estado (adoptado, en adopción, en trámite)
-    fetch('/petsconnectMVC/Controller/dashboard/dashboardAdminController.php?accion=mascotasPorEstado')
+    fetch('/petsconnectMVC/Controller/dashboard/dashboard.php?accion=mascotasPorEstado')
         .then(res => res.json())
     .then(json => {
         const labels = json.data.map(row => row.tipo_estado); // ['ADOPTADO', 'EN ADOPCION', 'EN TRAMITE']
@@ -180,7 +180,7 @@ function initializeCharts() {
     .catch(err => console.error("Error cargando mascotas por estado:", err));
 
     // Ranking de fundaciones por total recaudado
-    fetch('/petsconnectMVC/Controller/dashboard/dashboardAdminController.php?accion=rankingFundaciones')
+    fetch('/petsconnectMVC/Controller/dashboard/dashboard.php?accion=rankingFundaciones')
     .then(res => res.json())
     .then(json => {
         const labels = json.data.map(row => row.fundacion);
@@ -232,7 +232,7 @@ function initializeCharts() {
     .catch(err => console.error("Error cargando ranking de fundaciones:", err));
 
     // Tipos de causas de adopción
-    fetch('/petsconnectMVC/Controller/dashboard/dashboardAdminController.php?accion=tiposCausas')
+    fetch('/petsconnectMVC/Controller/dashboard/dashboard.php?accion=tiposCausas')
     .then(res => res.json())
     .then(json => {
         const labels = json.data.map(row => row.tipo_causa);
@@ -265,7 +265,7 @@ function initializeCharts() {
     .catch(err => console.error("Error cargando tipos de causas:", err));
 
 // Usuarios registrados por tipo (guardian vs fundación)
-    fetch('/petsconnectMVC/Controller/dashboard/dashboardAdminController.php?accion=usuariosRegistrados')
+    fetch('/petsconnectMVC/Controller/dashboard/dashboard.php?accion=usuariosRegistrados')
     .then(res => res.json())
     .then(json => {
         const labels = json.data.map(row => row.tipo_usuario);

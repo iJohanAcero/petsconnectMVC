@@ -1,7 +1,7 @@
 <?php
 require_once __DIR__ . '/../../vendor/autoload.php';
 
-use App\Model\dashboard\DashboardAdmin;
+use App\Model\dashboard\Dashboard;
 use App\Model\Fundacion\Fundacion;
 use App\Config\Roles;
 
@@ -15,7 +15,7 @@ class dashboardAdminController
 
     public function __construct()
     {
-        $this->model = new DashboardAdmin();
+        $this->model = new Dashboard();
     }
 
     // Método para verificar sesión y obtener NIT (igual que tu validación)
