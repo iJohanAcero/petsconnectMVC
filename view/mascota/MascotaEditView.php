@@ -70,16 +70,16 @@ try {
                 <label for="id_mascota" class="form-label fw-semibold">
                     <i class="uil uil-tag me-1" style="color: #1a1333;"></i>ID Mascota
                 </label>
-                <input type="text" class="form-control border-2" id="id_mascota" name="id_mascota" 
-                    style="border-color: rgba(26, 19, 51, 0.3);"
-                    value="<?= htmlspecialchars($mascota['id_mascota']) ?>" readonly>
+                <input type="text" class="form-control border-2" id="id_mascota" name="id_mascota"
+                    style="border-color: rgba(26, 19, 51, 0.3);" value="<?= htmlspecialchars($mascota['id_mascota']) ?>"
+                    readonly>
             </div>
             <div class="col-md-6 mb-3">
                 <label for="nombre" class="form-label fw-semibold">
                     <i class="uil uil-tag me-1" style="color: #1a1333;"></i>
                     Nombre <span class="text-danger">*</span>
                 </label>
-                <input type="text" class="form-control border-2" id="nombre" name="nombre" 
+                <input type="text" class="form-control border-2" id="nombre" name="nombre"
                     style="border-color: rgba(26, 19, 51, 0.3);"
                     value="<?= htmlspecialchars($mascota['nombre'] ?? '') ?>" required>
             </div>
@@ -91,17 +91,17 @@ try {
                     <i class="uil uil-calendar-alt me-1" style="color: #1a1333;"></i>
                     Edad (en meses) <span class="text-danger">*</span>
                 </label>
-                <input type="number" class="form-control border-2" id="edad_meses" name="edad_meses" 
-                    style="border-color: rgba(26, 19, 51, 0.3);"
-                    min="0" value="<?= htmlspecialchars($mascota['edad_meses'] ?? '') ?>" required>
+                <input type="number" class="form-control border-2" id="edad_meses" name="edad_meses"
+                    style="border-color: rgba(26, 19, 51, 0.3);" min="0"
+                    value="<?= htmlspecialchars($mascota['edad_meses'] ?? '') ?>" required>
             </div>
             <div class="col-md-6 mb-3">
                 <label for="sexo" class="form-label fw-semibold">
                     <i class="uil uil-venus-mars me-1" style="color: #1a1333;"></i>
                     Sexo <span class="text-danger">*</span>
                 </label>
-                <select class="form-select border-2" id="sexo" name="sexo" 
-                    style="border-color: rgba(26, 19, 51, 0.3);" required>
+                <select class="form-select border-2" id="sexo" name="sexo" style="border-color: rgba(26, 19, 51, 0.3);"
+                    required>
                     <option value="">Seleccione...</option>
                     <option value="macho" <?= ($mascota['sexo'] ?? '') == 'macho' ? 'selected' : '' ?>>Macho</option>
                     <option value="hembra" <?= ($mascota['sexo'] ?? '') == 'hembra' ? 'selected' : '' ?>>Hembra</option>
@@ -115,16 +115,16 @@ try {
                     <i class="uil uil-bookmark me-1" style="color: #1a1333;"></i>
                     Tipo de Mascota <span class="text-danger">*</span>
                 </label>
-                <select class="form-select border-2" id="id_tipo_mascota" name="id_tipo_mascota" 
+                <select class="form-select border-2" id="id_tipo_mascota" name="id_tipo_mascota"
                     style="border-color: rgba(26, 19, 51, 0.3);" required>
                     <option value="">Seleccione...</option>
                     <?php if (!empty($tipos)): ?>
-                        <?php foreach ($tipos as $tipo): ?>
-                            <option value="<?= htmlspecialchars($tipo['id_tipo_mascota']) ?>"
-                                <?= ($tipo['id_tipo_mascota'] ?? '') == ($mascota['id_tipo_mascota'] ?? '') ? 'selected' : '' ?>>
-                                <?= htmlspecialchars($tipo['especie'] ?? 'N/A') ?>
-                            </option>
-                        <?php endforeach; ?>
+                    <?php foreach ($tipos as $tipo): ?>
+                    <option value="<?= htmlspecialchars($tipo['id_tipo_mascota']) ?>"
+                        <?= ($tipo['id_tipo_mascota'] ?? '') == ($mascota['id_tipo_mascota'] ?? '') ? 'selected' : '' ?>>
+                        <?= htmlspecialchars($tipo['especie'] ?? 'N/A') ?>
+                    </option>
+                    <?php endforeach; ?>
                     <?php endif; ?>
                 </select>
             </div>
@@ -143,16 +143,16 @@ try {
                     <i class="uil uil-shield-check me-1" style="color: #1a1333;"></i>
                     Estado Actual <span class="text-danger">*</span>
                 </label>
-                <select class="form-select border-2" id="id_estado_adopcion" name="id_estado_adopcion" 
-                    style="border-color: rgba(26, 19, 51, 0.3);" required>
+                <select class="form-select border-2" id="id_estado_adopcion" name="id_estado_adopcion"
+                    style="border-color: rgba(26, 19, 51, 0.3);" required disabled>
                     <option value="">Seleccione...</option>
                     <?php if (!empty($estados)): ?>
-                        <?php foreach ($estados as $estado): ?>
-                            <option value="<?= htmlspecialchars($estado['id_estado_adopcion']) ?>"
-                                <?= ($estado['id_estado_adopcion'] ?? '') == ($mascota['id_estado_adopcion'] ?? '') ? 'selected' : '' ?>>
-                                <?= htmlspecialchars($estado['tipo_estado'] ?? '') ?>
-                            </option>
-                        <?php endforeach; ?>
+                    <?php foreach ($estados as $estado): ?>
+                    <option value="<?= htmlspecialchars($estado['id_estado_adopcion']) ?>"
+                        <?= ($estado['id_estado_adopcion'] ?? '') == ($mascota['id_estado_adopcion'] ?? '') ? 'selected' : '' ?>>
+                        <?= htmlspecialchars($estado['tipo_estado'] ?? '') ?>
+                    </option>
+                    <?php endforeach; ?>
                     <?php endif; ?>
                 </select>
             </div>
@@ -161,7 +161,7 @@ try {
                     <i class="uil uil-image me-1" style="color: #1a1333;"></i>
                     Imagen de la mascota
                 </label>
-                <input type="file" name="imagen" id="input-imagen" class="form-control border-2" 
+                <input type="file" name="imagen" id="input-imagen" class="form-control border-2"
                     style="border-color: rgba(26, 19, 51, 0.3);" accept="image/*">
                 <div class="form-text mt-2">
                     <i class="uil uil-info-circle me-1" style="color: #1a1333;"></i>
@@ -179,9 +179,7 @@ try {
                 $nombreImagen = !empty($mascota['imagen']) ? $mascota['imagen'] : 'default.jpg';
                 $rutaImagen = htmlspecialchars($nombreImagen);
                 ?>
-                <img id="preview-imagen"
-                    src="<?= $rutaImagen ?>"
-                    alt="Imagen de la mascota"
+                <img id="preview-imagen" src="<?= $rutaImagen ?>" alt="Imagen de la mascota"
                     style="object-fit: cover; max-height: 300px; border: 3px solid #1a1333;"
                     class="img-fluid rounded shadow-sm">
                 <figcaption class="mt-2 text-muted fw-semibold">Vista previa de la imagen actual</figcaption>
@@ -190,7 +188,8 @@ try {
     </div>
 
     <!-- Información adicional destacada -->
-    <div class="alert border-0" style="background-color: rgba(26, 19, 51, 0.05); border-left: 4px solid #1a1333 !important;">
+    <div class="alert border-0"
+        style="background-color: rgba(26, 19, 51, 0.05); border-left: 4px solid #1a1333 !important;">
         <div class="d-flex">
             <div class="flex-shrink-0">
                 <i class="uil uil-lightbulb fs-4" style="color: #1a1333;"></i>
@@ -217,7 +216,7 @@ try {
 document.addEventListener('DOMContentLoaded', function() {
     const inputImagen = document.getElementById('input-imagen');
     const previewImagen = document.getElementById('preview-imagen');
-    
+
     if (inputImagen && previewImagen) {
         inputImagen.addEventListener('change', function(e) {
             const file = e.target.files[0];
