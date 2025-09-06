@@ -12,11 +12,12 @@ if (session_status() === PHP_SESSION_NONE) {
     header("Pragma: no-cache");
 }
 
-$perfil = new Perfil();
+$perfilModel = new Perfil();
 
 $id_usuario = $_SESSION['user']['id_usuario'] ?? null;
 
-$perfil = $perfil->getPerfilPorUsuario($id_usuario);
+$perfilData = $perfilModel->getPerfilPorUsuario($id_usuario);
+$mascotas = $perfilModel->mascotasFundacion($id_usuario);
 ?>
 
 <!DOCTYPE html>
@@ -35,7 +36,7 @@ $perfil = $perfil->getPerfilPorUsuario($id_usuario);
                 <div class="col-md-2 text-center mb-3 mb-md-0">
                     <?php
 
-                    $nombreImagen = !empty($perfil['imagen']) ? $perfil['imagen'] : 'default.jpg';
+                    $nombreImagen = !empty($perfilData['imagen']) ? $perfilData['imagen'] : 'default.jpg';
                     $rutaImagen = htmlspecialchars($nombreImagen);
                     ?>
                     <img src="<?= $rutaImagen ?>"
@@ -44,10 +45,10 @@ $perfil = $perfil->getPerfilPorUsuario($id_usuario);
                         style="width: 100px; height: 100px; object-fit: cover;">
                 </div>
                 <div class="col-md-7">
-                    <h1 class="h3 mb-2"><?php echo htmlspecialchars($perfil['nombre']); ?></h1>
+                    <h1 class="h3 mb-2"><?php echo htmlspecialchars($perfilData['nombre']); ?></h1>
                     <div class="d-flex align-items-center text-muted small">
                         <i class="fas fa-map-marker-alt me-2"></i>
-                        <span><?php echo htmlspecialchars($perfil['direccion']); ?></span>
+                        <span><?php echo htmlspecialchars($perfilData['direccion']); ?></span>
                     </div>
                 </div>
                 <div class="col-md-3 text-md-end">
@@ -55,41 +56,15 @@ $perfil = $perfil->getPerfilPorUsuario($id_usuario);
                         <?php
                         // Verificar si el usuario logueado es el dueño del perfil
                         $usuario_logueado = $_SESSION['user']['id_usuario'] ?? null;
-                        $dueño_perfil = $perfil['id_usuario'] ?? null;
+                        $dueño_perfil = $perfilData['id_usuario'] ?? null;
 
                         if ($usuario_logueado && $usuario_logueado == $dueño_perfil): ?>
                             <button class="btn btn-outline-primary2 btn-sm btn-editar-perfilFundacion"
-                                data-id="<?php echo htmlspecialchars($perfil['id_usuario']); ?>">
+                                data-id="<?php echo htmlspecialchars($perfilData['id_usuario']); ?>">
                                 <i class="fas fa-edit me-1"></i>
                                 Editar
                             </button>
                         <?php endif; ?>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Stats Section -->
-    <section class="py-3 bg-white mt-2" style="width: 70vw;">
-        <div class="container-fluid px-3">
-            <div class="row text-center">
-                <div class="col-4">
-                    <div class="p-2">
-                        <h4 class="mb-1 text-primary">0</h4>
-                        <p class="text-muted mb-0 small">Mascotas en adopción</p>
-                    </div>
-                </div>
-                <div class="col-4 border-start border-end">
-                    <div class="p-2">
-                        <h4 class="mb-1 text-success">0</h4>
-                        <p class="text-muted mb-0 small">Adopciones exitosas</p>
-                    </div>
-                </div>
-                <div class="col-4">
-                    <div class="p-2">
-                        <h4 class="mb-1 text-info">0</h4>
-                        <p class="text-muted mb-0 small">Años de experiencia</p>
                     </div>
                 </div>
             </div>
@@ -110,7 +85,7 @@ $perfil = $perfil->getPerfilPorUsuario($id_usuario);
                                 Sobre nosotros
                             </h5>
                             <p class="text-muted">
-                                <?php echo htmlspecialchars($perfil['descripcion']); ?>
+                                <?php echo htmlspecialchars($perfilData['descripcion']); ?>
                             </p>
                         </div>
                     </div>
@@ -123,12 +98,11 @@ $perfil = $perfil->getPerfilPorUsuario($id_usuario);
                                 Especialidades
                             </h5>
                             <p class="text-muted">
-                                <?php echo htmlspecialchars($perfil['preferencia']); ?>
+                                <?php echo htmlspecialchars($perfilData['preferencia']); ?>
                             </p>
                         </div>
                     </div>
 
-                    <!-- Mascotas en Adopción -->
                     <div class="card border-0 shadow-sm mb-3">
                         <div class="card-body p-3">
                             <div class="d-flex justify-content-between align-items-center mb-3">
@@ -136,23 +110,37 @@ $perfil = $perfil->getPerfilPorUsuario($id_usuario);
                                     <i class="fas fa-paw text-primary me-2"></i>
                                     Nuestras mascotas
                                 </h5>
-                                <button class="btn btn-outline-primary2 btn-sm">
-                                    Ver todas
-                                </button>
                             </div>
 
-                            <!-- Grid de mascotas - Espacio vacío para la lógica -->
+                            <!-- Grid de mascotas -->
                             <div class="row g-3" id="mascotas-container">
-                                <!-- Aquí se cargarán las mascotas dinámicamente -->
-                                <div class="col-12 text-center py-4">
-                                    <div class="text-muted">
-                                        <i class="fas fa-paw fa-2x mb-3"></i>
-                                        <p>Las mascotas aparecerán aquí</p>
+                                <?php if (!empty($mascotas)): ?>
+                                    <?php foreach ($mascotas as $mascota): ?>
+                                        <div class="col-6 col-md-4 col-lg-3">
+                                            <div class="card h-100 border-0 shadow-sm">
+                                                <img src="<?= htmlspecialchars($mascota['imagen']) ?>"
+                                                    class="card-img-top"
+                                                    alt="<?= htmlspecialchars($mascota['nombre']) ?>"
+                                                    style="height:180px;object-fit:cover;">
+                                                <div class="card-body text-center p-2">
+                                                    <h6 class="mb-0"><?= htmlspecialchars($mascota['nombre']) ?></h6>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    <?php endforeach; ?>
+                                <?php else: ?>
+                                    <div class="col-12 text-center py-4">
+                                        <div class="text-muted">
+                                            <i class="fas fa-paw fa-2x mb-3"></i>
+                                            <p>Las mascotas aparecerán aquí</p>
+                                        </div>
                                     </div>
-                                </div>
+                                <?php endif; ?>
                             </div>
                         </div>
                     </div>
+
+
                 </div>
 
                 <!-- Sidebar -->
@@ -169,8 +157,8 @@ $perfil = $perfil->getPerfilPorUsuario($id_usuario);
                                     <i class="fas fa-envelope text-muted me-2"></i>
                                     <small class="text-muted">Email</small>
                                 </div>
-                                <a href="mailto:<?php echo htmlspecialchars($perfil['email']); ?>" class="text-decoration-none small">
-                                    <?php echo htmlspecialchars($perfil['email']); ?>
+                                <a href="mailto:<?php echo htmlspecialchars($perfilData['email']); ?>" class="text-decoration-none small">
+                                    <?php echo htmlspecialchars($perfilData['email']); ?>
                                 </a>
                             </div>
                             <div class="mb-3">
@@ -178,8 +166,8 @@ $perfil = $perfil->getPerfilPorUsuario($id_usuario);
                                     <i class="fas fa-phone text-muted me-2"></i>
                                     <small class="text-muted">Teléfono</small>
                                 </div>
-                                <a href="tel:<?php echo htmlspecialchars($perfil['telefono']); ?>" class="text-decoration-none small">
-                                    <?php echo htmlspecialchars($perfil['telefono']); ?>
+                                <a href="tel:<?php echo htmlspecialchars($perfilData['telefono']); ?>" class="text-decoration-none small">
+                                    <?php echo htmlspecialchars($perfilData['telefono']); ?>
                                 </a>
                             </div>
                             <div>
@@ -187,13 +175,13 @@ $perfil = $perfil->getPerfilPorUsuario($id_usuario);
                                     <i class="fas fa-map-marker-alt text-muted me-2"></i>
                                     <small class="text-muted">Ubicación</small>
                                 </div>
-                                <span class="text-muted small"><?php echo htmlspecialchars($perfil['direccion']); ?></span>
+                                <span class="text-muted small"><?php echo htmlspecialchars($perfilData['direccion']); ?></span>
                             </div>
                         </div>
                     </div>
 
                     <!-- Redes Sociales -->
-                    <?php if (isset($perfil['redes_sociales']) && !empty($perfil['redes_sociales'])): ?>
+                    <?php if (isset($perfilData['redes_sociales']) && !empty($perfilData['redes_sociales'])): ?>
                         <div class="card border-0 shadow-sm mb-3">
                             <div class="card-body p-3">
                                 <h5 class="card-title mb-3">
@@ -201,7 +189,7 @@ $perfil = $perfil->getPerfilPorUsuario($id_usuario);
                                     Síguenos
                                 </h5>
                                 <div class="d-flex gap-2">
-                                    <?php foreach ($perfil['redes_sociales'] as $red): ?>
+                                    <?php foreach ($perfilData['redes_sociales'] as $red): ?>
                                         <?php
                                         // Definir clases y iconos según el tipo de red
                                         $claseBoton = '';

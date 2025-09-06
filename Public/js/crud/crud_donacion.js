@@ -150,7 +150,24 @@ function inicializarDonacion() {
             }
         });
     });
+
+     // ✅ BOTONES RECIBO (Factura PDF)
+    const botonesRecibo = document.querySelectorAll(".btn-recibo-donacion");
+    botonesRecibo.forEach(btn => {
+        btn.addEventListener("click", function () {
+            const idDonacion = this.dataset.id;
+
+            if (!idDonacion) {
+                alert("ID de donación no válido");
+                return;
+            }
+
+            // 🔹 Redirige al controlador que genera el PDF
+            window.location.href = `${window.BASE_URL}/controller/donacion/DonacionController.php?action=generarFacturaDonacionPDF&id_donacion=${idDonacion}`;
+        });
+    });
 }
+
 
 // Inicializar cuando el DOM esté listo
 document.addEventListener("DOMContentLoaded", function () {

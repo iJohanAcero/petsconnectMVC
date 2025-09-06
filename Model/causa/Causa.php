@@ -115,15 +115,18 @@ class Causa
                 c.imagen_url,
                 c.tipo_causa,
                 f.nombre AS nombre_fundacion
-                FROM t_causa c
-                INNER JOIN t_fundacion f ON c.nit_fundacion = f.nit_fundacion
-                ORDER BY c.fecha_creacion DESC
-                LIMIT 5";
+            FROM t_causa c
+            INNER JOIN t_fundacion f 
+                ON c.nit_fundacion = f.nit_fundacion
+            WHERE c.estado_causa = 'ACTIVA'
+            ORDER BY c.fecha_creacion DESC
+            LIMIT 5";
 
         $stmt = $this->db->prepare($sql);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
 
     public function getDetallesPorId($id)
     {

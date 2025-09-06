@@ -262,7 +262,7 @@ function verDetallesFundacion(idPerfil) {
 }
 
 // Función para mostrar el perfil en el modal - ACTUALIZADA PARA CLOUDINARY
-function mostrarPerfilEnModal(perfil) {
+function mostrarPerfilEnModal(perfil, mascotas = []) {
     // 🔥 CAMBIO: Usar Cloudinary para la imagen del modal
     const rutaImagen = generarUrlCloudinary(
         perfil.imagen, 
@@ -345,32 +345,6 @@ function mostrarPerfilEnModal(perfil) {
             </div>
         </section>
 
-        <!-- Stats Section -->
-        <section class="py-3 bg-white mt-2 shadow-sm mb-3"">
-            <div class="container-fluid px-3">
-                <div class="row text-center">
-                    <div class="col-4">
-                        <div class="p-2">
-                            <h4 class="mb-1 text-primary">0</h4>
-                            <p class="text-muted mb-0 small">Mascotas en adopción</p>
-                        </div>
-                    </div>
-                    <div class="col-4 border-start border-end">
-                        <div class="p-2">
-                            <h4 class="mb-1 text-success">0</h4>
-                            <p class="text-muted mb-0 small">Adopciones exitosas</p>
-                        </div>
-                    </div>
-                    <div class="col-4">
-                        <div class="p-2">
-                            <h4 class="mb-1 text-info">0</h4>
-                            <p class="text-muted mb-0 small">Años de experiencia</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
         <!-- Información Detallada -->
         <section class="py-4">
             <div class="container-fluid">
@@ -411,9 +385,6 @@ function mostrarPerfilEnModal(perfil) {
                                         <i class="fas fa-paw text-primary me-2"></i>
                                         Nuestras mascotas
                                     </h5>
-                                    <button class="btn btn-outline-primary2 btn-sm">
-                                        Ver todas
-                                    </button>
                                 </div>
 
                                 <!-- Grid de mascotas - Espacio vacío para la lógica -->
@@ -475,7 +446,37 @@ function mostrarPerfilEnModal(perfil) {
         </section>
     `;
 
+    
     document.getElementById('contenido-perfil-fundacion').innerHTML = contenidoModal;
+    
+    const mascotasContainer = document.getElementById('mascotas-container');
+
+if (perfil.mascotas && perfil.mascotas.length > 0) {
+    mascotasContainer.innerHTML = perfil.mascotas.map(m => `
+        <div class="col-6 col-md-4 col-lg-3">
+            <div class="card h-100 border-0 shadow-sm">
+                <img src="${generarUrlCloudinary(m.imagen, 'w_200,h_150,c_fill,g_center,q_auto,f_auto')}" 
+                     class="card-img-top" 
+                     alt="${m.nombre}" 
+                     style="height:150px;object-fit:cover;"
+                     onerror="this.src='${generarImagenPorDefecto()}'">
+                <div class="card-body text-center p-2">
+                    <h6 class="mb-0">${m.nombre}</h6>
+                </div>
+            </div>
+        </div>
+    `).join('');
+} else {
+    mascotasContainer.innerHTML = `
+        <div class="col-12 text-center py-4">
+            <div class="text-muted">
+                <i class="fas fa-paw fa-2x mb-3"></i>
+                <p>No hay mascotas registradas</p>
+            </div>
+        </div>
+    `;
+}
+    
 }
 
 // Función para mostrar error en el modal

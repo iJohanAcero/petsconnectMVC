@@ -221,12 +221,12 @@ $stats = $estadisticas->obtenerEstadisticasNavbar();
                     </a>
                 </li>
                 
-                <li class="sidebar-item">
+                <!-- <li class="sidebar-item">
                     <a href="" class="sidebar-link">
                         <i class="uil uil-setting "></i>
                         <span class="sidebar-text">Configuración</span>
                     </a>
-                </li>
+                </li> -->
             </ul>
         </aside>
         <!--============================================ MAIN =============================================-->
@@ -255,98 +255,98 @@ $stats = $estadisticas->obtenerEstadisticasNavbar();
     <script src="<?= Config::get('JS_URL') ?>/crud/crud_donacion.js"></script>
 
     <script>
-        let page = 1;
-        let loading = false;
-        let finished = false;
+let page = 1;
+let loading = false;
+let finished = false;
 
-        function cargarPublicaciones() {
-            if (loading || finished) return;
-            loading = true;
-            $('#loader').show();
-
-            $.ajax({
-                url: '/petsconnectmvc/index.php?action=recientes&page=' + page,
-                method: 'GET',
-                dataType: 'json',
-                success: function(res) {
-                    if (Array.isArray(res) && res.length > 0) {
-                        res.forEach(pub => {
-                            $('#publicaciones-container').append(`
-                        <div class="card mb-4 shadow-sm border-0 overflow-hidden rounded-4">
-    <!-- Header con información de la fundación -->
-    <div class="card-header bg-white border-0 py-3">
-        <div class="d-flex align-items-center justify-content-between">
-            <div class="d-flex align-items-center">
-                <div class="bg-primary rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 48px; height: 48px;">
-                    <img src="${pub.imagen_fundacion}" class="img-fluid rounded-circle w-100 h-100 object-fit-cover" alt="Imagen fundación">
-                </div>
-                <div>
-                    <h6 class="mb-0 fw-bold text-dark">${pub.nombre_fundacion}</h6>
-                    <small class="text-muted">Fundación</small>
-                </div>
-            </div>
-        </div>
-    </div>
-    
-    <!-- Imagen (si existe) - Movida arriba para mejor adaptación -->
-    ${pub.imagen ? `
-        <div class="position-relative">
-            <img src="${pub.imagen}"
-                 class="card-img-top w-100 object-fit-cover"
-                 style="max-height: 400px; min-height: 200px;"
-                 alt="Imagen publicación">
-        </div>
-    ` : ''}
-    
-    <!-- Contenido principal -->
-    <div class="card-body px-4 py-3">
-        <!-- Título de la publicación -->
-        <h5 class="card-title fw-bold mb-3 text-dark lh-base">${pub.titulo}</h5>
-       
-        <!-- Descripción -->
-        <p class="card-text text-secondary lh-lg mb-3 fs-6">${pub.contenido}</p>
-    </div>
-    
-    <!-- Footer con acciones y fecha -->
-    <div class="card-footer bg-white border-0 py-3">
-        <div class="d-flex align-items-center justify-content-between">
-           
-            <!-- Fecha -->
-            <div class="d-flex align-items-center text-muted">
-                <i class="far fa-clock me-2"></i>
-                <small class="fw-medium">${pub.fecha}</small>
-            </div>
-        </div>
-    </div>
-</div>
+function cargarPublicaciones() {
+    if (loading || finished) return;
+    loading = true;
+    $('#loader').show();
+    $.ajax({
+        url: '/petsconnectmvc/index.php?action=recientes&page=' + page,
+        method: 'GET',
+        dataType: 'json',
+        success: function(res) {
+            if (Array.isArray(res) && res.length > 0) {
+                res.forEach(pub => {
+                    $('#publicaciones-container').append(`
+                        <div class="row justify-content-center mb-5">
+                            <div class="col-12 col-md-10 col-lg-8">
+                                <div class="card border-0 shadow-lg rounded-4 overflow-hidden">
+                                    
+                                    <!-- Imagen principal -->
+                                    ${pub.imagen ? `
+                                        <div class="position-relative bg-light" style="min-height: 300px;">
+                                            <img src="${pub.imagen}"
+                                                 class="w-100 h-100"
+                                                 style="object-fit: contain; height: 300px;"
+                                                 alt="Imagen publicación">
+                                        </div>
+                                    ` : ''}
+                                    
+                                    <!-- Contenido de la tarjeta -->
+                                    <div class="card-body p-0">
+                                        
+                                        <!-- Header con fundación -->
+                                        <div class="border-bottom p-4">
+                                            <div class="d-flex align-items-center">
+                                                <div class="me-3">
+                                                    <img src="${pub.imagen_fundacion}" 
+                                                         class="rounded-circle border" 
+                                                         style="width: 50px; height: 50px; object-fit: cover;" 
+                                                         alt="Imagen fundación">
+                                                </div>
+                                                <div class="flex-grow-1">
+                                                    <h6 class="mb-0 fw-bold text-primary">${pub.nombre_fundacion}</h6>
+                                                    <small class="text-muted">Fundación</small>
+                                                </div>
+                                                <div class="text-end">
+                                                    <small class="text-muted d-flex align-items-center">
+                                                        <i class="far fa-clock me-2"></i>
+                                                        ${pub.fecha}
+                                                    </small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Contenido principal -->
+                                        <div class="p-4">
+                                            <h4 class="fw-bold text-dark mb-3">${pub.titulo}</h4>
+                                            <p class="text-secondary lh-lg mb-0">${pub.contenido}</p>
+                                        </div>
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     `);
-                        });
-                        page++;
-                    } else {
-                        finished = true;
-                    }
-                },
-                error: function(xhr, status, error) {
-                    console.error('Error al cargar publicaciones:', status, error);
-                    console.warn('Detalles:', xhr.responseText);
-                },
-                complete: function() {
-                    loading = false;
-                    $('#loader').hide();
-                }
-            });
+                });
+                page++;
+            } else {
+                finished = true;
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error('Error al cargar publicaciones:', status, error);
+            console.warn('Detalles:', xhr.responseText);
+        },
+        complete: function() {
+            loading = false;
+            $('#loader').hide();
         }
+    });
+}
 
-        // Inicializar carga y scroll infinito
-        $(document).ready(function() {
+// Inicializar carga y scroll infinito
+$(document).ready(function() {
+    cargarPublicaciones();
+    $(window).on('scroll', function() {
+        if ($(window).scrollTop() + $(window).height() >= $(document).height() - 150) {
             cargarPublicaciones();
-
-            $(window).on('scroll', function() {
-                if ($(window).scrollTop() + $(window).height() >= $(document).height() - 150) {
-                    cargarPublicaciones();
-                }
-            });
-        });
+        }
+    });
+});
     </script>
 
 

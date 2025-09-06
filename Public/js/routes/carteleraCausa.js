@@ -131,7 +131,11 @@ function mostrarCausas(causas) {
 
     if (!causas || causas.length === 0) {
         mensajeVacio.style.display = 'block';
-        mensajeVacio.innerHTML = `...`;
+        mensajeVacio.innerHTML = `
+            <div class="text-center py-5">
+                <i class="fas fa-info-circle fa-3x text-muted mb-3"></i>
+                <p class="fs-5">No hay causas disponibles en este momento.</p>
+            </div>`;
         return;
     }
 
@@ -818,68 +822,78 @@ function mostrarCausaCompletoEnModal(causa, fundacion) {
 
 const contenidoModal = `
 <div class="card shadow border-0">
-  <!-- Imagen principal con estado -->
-  <div class="position-relative">
-    <img src="${imagenUrl}" class="card-img-top" alt="${causa.nombre}" style="height: 240px; object-fit: cover;">
-    <span class="badge ${colorEstado} position-absolute top-0 end-0 m-2 fs-6 px-3 py-2">
-      ${causa.estado_causa}
-    </span>
-  </div>
-
-  <!-- Contenido -->
-  <div class="card-body">
-
-    <!-- Título y tipo -->
-    <h4 class="fw-bold text-dark mb-2">
-      <i class="${iconoCausa} me-2 text-danger"></i>${causa.nombre}
-    </h4>
-    <span class="badge bg-light text-dark border mb-3">${causa.tipo_causa || 'General'}</span>
-
-    <!-- Fundación -->
-    ${fundacion ? `
-    <div class="d-flex align-items-center mb-4">
-      <img src="${imagenFundacionUrl}" 
-           class="rounded-circle border border-primary me-3"
-           alt="${fundacion.nombre}"
-           style="width: 45px; height: 45px; object-fit: cover;">
-      <div>
-        <h6 class="mb-1 fw-semibold text-dark">${fundacion.nombre}</h6>
-        <small class="text-muted"><i class="fas fa-building me-1"></i>NIT: ${causa.nit_fundacion}</small>
-      </div>
+  <div class="row g-0">
+    
+    <!-- Imagen principal -->
+    <div class="col-md-5 position-relative">
+      <img src="${imagenUrl}" 
+           class="img-fluid h-100 w-100 rounded-start" 
+           alt="${causa.nombre}" 
+           style="object-fit: cover; min-height: 100%;">
+      <span class="badge ${colorEstado} position-absolute top-0 end-0 m-2 fs-6 px-3 py-2">
+        ${causa.estado_causa}
+      </span>
     </div>
-    ` : ''}
 
-    <!-- Descripción -->
-    <p class="card-text text-muted mb-4">
-      ${causa.descripcion || 'Sin descripción disponible'}
-    </p>
+    <!-- Contenido -->
+    <div class="col-md-7">
+      <div class="card-body">
 
-    <!-- Bloque de detalles (meta y fecha) -->
-    <ul class="list-group list-group-flush mb-4">
-      <li class="list-group-item d-flex justify-content-between align-items-center">
-        <span class="fw-semibold text-dark">Meta de Recaudación</span>
-        <span class="fw-bold text-dark">${metaFormateada}</span>
-      </li>
-      <li class="list-group-item d-flex justify-content-between align-items-center">
-        <span class="fw-semibold text-dark">Fecha de Creación</span>
-        <span class="fw-bold text-dark">
-          ${new Date(causa.fecha_creacion).toLocaleDateString('es-CO')}
-        </span>
-      </li>
-    </ul>
+        <!-- Título y tipo -->
+        <h4 class="fw-bold text-dark mb-2">
+          <i class="${iconoCausa} me-2 text-danger"></i>${causa.nombre}
+        </h4>
+        <span class="badge bg-light text-dark border mb-3">${causa.tipo_causa || 'General'}</span>
 
-    <!-- Botón -->
-    <div class="d-grid">
-      <button type="button"
-              class="btn btn-lg btn-donar-modal fw-semibold"
-              style="background-color: hsl(252, 30%, 17%); color: white; border-radius: 8px;"
-              data-id="${causa.id_causa}">
-        <i class="fas fa-heart me-2 text-danger"></i> Donar a esta causa
-      </button>
+        <!-- Fundación -->
+        ${fundacion ? `
+        <div class="d-flex align-items-center mb-4">
+          <img src="${imagenFundacionUrl}" 
+               class="rounded-circle border border-primary me-3"
+               alt="${fundacion.nombre}"
+               width="45" height="45"
+               style="object-fit: cover;">
+          <div>
+            <h6 class="mb-0 fw-semibold">${fundacion.nombre}</h6>
+            <small class="text-muted"><i class="fas fa-building me-1"></i>NIT: ${causa.nit_fundacion}</small>
+          </div>
+        </div>
+        ` : ''}
+
+        <!-- Descripción -->
+        <p class="text-muted mb-4">
+          ${causa.descripcion || 'Sin descripción disponible'}
+        </p>
+
+        <!-- Bloque de detalles -->
+        <ul class="list-group list-group-flush mb-4">
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+            <span class="fw-semibold text-dark">Meta de Recaudación</span>
+            <span class="fw-bold text-success">${metaFormateada}</span>
+          </li>
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+            <span class="fw-semibold text-dark">Fecha de Creación</span>
+            <span class="fw-bold text-dark">
+              ${new Date(causa.fecha_creacion).toLocaleDateString('es-CO')}
+            </span>
+          </li>
+        </ul>
+
+        <!-- Botón -->
+        <div class="d-grid">
+          <button type="button"
+                  class="btn btn-primary2 btn-lg fw-semibold"
+                  data-id="${causa.id_causa}">
+            <i class="fas fa-heart me-2"></i> Donar a esta causa
+          </button>
+        </div>
+
+      </div>
     </div>
 
   </div>
 </div>
+
     `;
 
     modalBody.innerHTML = contenidoModal;

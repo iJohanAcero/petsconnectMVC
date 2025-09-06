@@ -181,4 +181,45 @@ class Donacion
         $stmt = $this->db->query($sql);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    public function getDonacionPorId(int $id_donacion): ?array
+    {
+        $sql = "SELECT 
+                d.id_donacion, 
+                d.fecha, 
+                d.monto, 
+                d.metodo_pago, 
+                d.estado, 
+
+                -- Donante (usuario que hizo la donación)
+                u.id_usuario AS id_donante,
+                u.nombre AS nombre_donante, 
+                u.email AS email_donante, 
+                u.telefono AS telefono_donante,
+                u.direccion AS direccion_donante,
+                
+                -- Fundación receptora
+                f.nit_fundacion,
+                f.nombre AS nombre_fundacion,
+                uf.nombre AS responsable_fundacion,
+                uf.email AS email_fundacion,
+                uf.telefono AS telefono_fundacion,
+                uf.direccion AS direccion_fundacion
+                
+            FROM t_donacion d
+            INNER JOIN t_usuario u 
+                ON d.id_usuario = u.id_usuario
+            INNER JOIN t_fundacion f 
+                ON d.nit_fundacion = f.nit_fundacion
+            INNER JOIN t_usuario uf 
+                ON f.id_usuario = uf.id_usuario
+            WHERE d.id_donacion = :id
+            LIMIT 1";
+
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindParam(':id', $id_donacion, PDO::PARAM_INT);
+        $stmt->execute();
+
+        return $stmt->fetch(PDO::FETCH_ASSOC) ?: null;
+    }
 }

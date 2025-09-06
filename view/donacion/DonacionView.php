@@ -143,7 +143,7 @@ if (isset($_SESSION["user"]["id_usuario"])) {
                                         <button class="btn btn-sm btn-success btn-recibo-donacion"
                                             data-id="<?= $donacion['id_donacion'] ?>"
                                             data-bs-toggle="tooltip"
-                                            title="Descargar recibo de Stripe">
+                                            title="Descargar recibo de donación">
                                             <i class="uil uil-receipt"></i>
                                         </button>
                                     <?php endif; ?>

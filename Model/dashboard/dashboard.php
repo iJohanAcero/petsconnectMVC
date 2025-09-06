@@ -152,11 +152,15 @@ class Dashboard
     {
         $sql = "SELECT tm.especie AS especie,
                    COUNT(pa.id_proceso) AS total_adopciones
-            FROM t_tipo_mascota tm
-            INNER JOIN t_mascota m ON tm.id_tipo_mascota = m.id_tipo_mascota
-            INNER JOIN t_proceso_adopcion pa ON pa.id_formulario = m.id_mascota
-            WHERE m.nit_fundacion = :nit
-              AND pa.id_estado = 3 
+            FROM t_proceso_adopcion pa
+            INNER JOIN t_formulario_adopcion fa 
+                ON pa.id_formulario = fa.id_formulario
+            INNER JOIN t_mascota m 
+                ON fa.id_mascota = m.id_mascota
+            INNER JOIN t_tipo_mascota tm 
+                ON m.id_tipo_mascota = tm.id_tipo_mascota
+            WHERE pa.id_estado = 3
+              AND m.nit_fundacion = :nit
             GROUP BY tm.especie
             ORDER BY total_adopciones DESC";
 
@@ -166,6 +170,7 @@ class Dashboard
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
 
     public function getCausasActivasPorTipo(string $nitFundacion): array
     {

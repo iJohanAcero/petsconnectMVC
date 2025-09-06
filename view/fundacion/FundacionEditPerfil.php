@@ -208,7 +208,7 @@ if (!$perfil || empty($perfil)) {
 
                                     <!-- Botones de acción -->
                                     <div class="d-grid gap-2 d-md-flex justify-content-md-start">
-                                        <button type="submit" class="btn btn-primary btn-lg me-md-2" id="btn-guardar">
+                                        <button type="submit" class="btn btn-primary2 btn-lg me-md-2" id="btn-guardar">
                                             <i class="uil uil-save"></i> Guardar cambios
                                         </button>
                                         <button type="button" class="btn btn-secondary ms-2" data-bs-dismiss="modal" aria-label="Close">← Volver</button>

@@ -43,26 +43,31 @@ class PerfilController
     public function getPerfilPorId()
     {
         try {
-
             if (!isset($_GET['id']) || empty($_GET['id'])) {
                 throw new Exception('ID de perfil no proporcionado');
             }
 
             $idPerfil = (int)$_GET['id'];
 
+            // 🔹 Obtener perfil
+            // En getPerfilPorId()
             $perfil = $this->perfilModel->getPerfilPorIdPerfil($idPerfil);
 
             if (!$perfil) {
                 throw new Exception('Perfil no encontrado');
             }
 
+            // ✅ Usar id_usuario (no idPerfil)
+            $perfil['mascotas'] = $this->perfilModel->mascotasFundacion($perfil['id_usuario']);
+
+
+            // 🔹 Respuesta final
             header('Content-Type: application/json');
             echo json_encode([
                 'success' => true,
                 'perfil' => $perfil
             ]);
         } catch (Exception $e) {
-
             header('Content-Type: application/json');
             http_response_code(400);
             echo json_encode([
@@ -71,6 +76,8 @@ class PerfilController
             ]);
         }
     }
+
+
 
     public function editar()
     {
@@ -98,7 +105,7 @@ class PerfilController
 
                 $uploadResult = uploadImageToCloudinary(
                     $_FILES['imagen']['tmp_name'],
-                    'perfiles', 
+                    'perfiles',
                     null
                 );
 
@@ -151,7 +158,7 @@ class PerfilController
     {
         try {
             header('Content-Type: application/json');
-            
+
             $id = $_POST['id'] ?? $this->id_usuario;
             if (empty($id)) {
                 echo json_encode(['success' => false, 'message' => 'ID de perfil no proporcionado']);
@@ -159,9 +166,9 @@ class PerfilController
             }
 
             $perfilActual = $this->perfilModel->getPerfilPorUsuario($id);
-            
+
             $resultado = $this->perfilModel->eliminarPerfil($id);
-            
+
             // Si se eliminó correctamente, eliminar también de Cloudinary
             if ($resultado && !empty($perfilActual['public_id'])) {
                 deleteImageFromCloudinary($perfilActual['public_id']);

@@ -75,27 +75,7 @@ class Perfil
 
     // Agregar ESTE método nuevo, sin tocar el existente
     public function getPerfilPorIdPerfil($id_perfil)
-    {
-        // Buscar en guardian usando id_perfil
-        $stmt = $this->db->prepare("
-        SELECT p.*, g.id_usuario, u.telefono, u.direccion, u.email
-        FROM t_guardian g
-        INNER JOIN t_perfil p ON g.id_perfil = p.id_perfil
-        INNER JOIN t_usuario u ON g.id_usuario = u.id_usuario
-        WHERE p.id_perfil = :id_perfil
-        LIMIT 1
-    ");
-        $stmt->bindParam(':id_perfil', $id_perfil, PDO::PARAM_INT);
-        $stmt->execute();
-        $perfil = $stmt->fetch(PDO::FETCH_ASSOC);
-
-        if ($perfil) {
-            // Obtener redes sociales del perfil
-            $perfil['redes_sociales'] = $this->getRedesSocialesPorPerfil($perfil['id_perfil']);
-            return $perfil;
-        }
-
-        // Buscar en fundacion usando id_perfil
+    {   // Buscar en fundacion usando id_perfil
         $stmt = $this->db->prepare("
         SELECT p.*, f.id_usuario, u.telefono, u.direccion, u.email
         FROM t_fundacion f
@@ -191,6 +171,42 @@ class Perfil
         }
     }
 
+    public function mascotasFundacion($id_usuario)
+    {
+        // 1. Obtener el nit_fundacion desde el id_usuario
+        $stmt = $this->db->prepare("
+        SELECT nit_fundacion 
+        FROM t_fundacion 
+        WHERE id_usuario = :id_usuario
+        LIMIT 1
+    ");
+        $stmt->bindParam(':id_usuario', $id_usuario, PDO::PARAM_INT);
+        $stmt->execute();
+        $fundacion = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if (!$fundacion) {
+            return []; // si no hay fundación asociada, retornar vacío
+        }
+
+        $nit_fundacion = $fundacion['nit_fundacion'];
+
+        // 2. Obtener solo las mascotas EN ADOPCION de esa fundación
+        $stmt = $this->db->prepare("
+        SELECT m.id_mascota, m.nombre, m.edad_meses, m.sexo, m.imagen, 
+               t.especie, e.tipo_estado
+        FROM t_mascota m
+        JOIN t_tipo_mascota t ON m.id_tipo_mascota = t.id_tipo_mascota
+        JOIN t_estado_adopcion e ON m.id_estado_adopcion = e.id_estado_adopcion
+        WHERE m.nit_fundacion = :nit_fundacion
+          AND e.tipo_estado = 'EN ADOPCION'
+    ");
+        $stmt->bindParam(':nit_fundacion', $nit_fundacion, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+
+
     // Método mejorado para actualizar redes sociales
     private function actualizarRedesSociales($id_perfil, $redes_sociales)
     {
@@ -282,7 +298,7 @@ class Perfil
 
             // Lógica para eliminar el perfil según el tipo de usuario
             // (debes implementar esto según tu estructura de base de datos)
-            
+
             $this->db->commit();
             return ['success' => true, 'public_id' => $public_id];
         } catch (Exception $e) {
