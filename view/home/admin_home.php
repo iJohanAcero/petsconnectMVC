@@ -318,7 +318,29 @@ $stats = $estadisticas->obtenerEstadisticasNavbar();
     <script src="<?= Config::get('JS_URL') ?>/routes/informesAdmin.js"></script>
     <script src="<?= Config::get('JS_URL') ?>/routes/dashboardAdmin.js"></script>
 
-    <script>
+    <style>
+/* 🔹 Imagen estilo Instagram (cuadrada) */
+.imagen-publicacion {
+    width: 100%;          /* ocupa todo el ancho disponible */
+    height: auto;         /* mantiene proporción original */
+    max-height: 450px;    /* límite máximo para no deformar el layout */
+    object-fit: contain;  /* 🔑 muestra toda la imagen completa */
+    display: block;       /* elimina espacios extra */
+    margin: 0 auto;       /* centra dentro del contenedor */
+    background-color: #f8f9fa; /* opcional: relleno gris alrededor */
+}
+
+/* 🔹 Limitar descripción a 4 líneas */
+.descripcion-publicacion {
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+</style>
+
+<script>
 let page = 1;
 let loading = false;
 let finished = false;
@@ -339,12 +361,11 @@ function cargarPublicaciones() {
                             <div class="col-12 col-md-10 col-lg-8">
                                 <div class="card border-0 shadow-lg rounded-4 overflow-hidden">
                                     
-                                    <!-- Imagen principal -->
+                                    <!-- Imagen principal estilo Instagram -->
                                     ${pub.imagen ? `
-                                        <div class="position-relative bg-light" style="min-height: 300px;">
+                                        <div class="bg-light text-center">
                                             <img src="${pub.imagen}"
-                                                 class="w-100 h-100"
-                                                 style="object-fit: contain; height: 300px;"
+                                                 class="imagen-publicacion"
                                                  alt="Imagen publicación">
                                         </div>
                                     ` : ''}
@@ -377,7 +398,9 @@ function cargarPublicaciones() {
                                         <!-- Contenido principal -->
                                         <div class="p-4">
                                             <h4 class="fw-bold text-dark mb-3">${pub.titulo}</h4>
-                                            <p class="text-secondary lh-lg mb-0">${pub.contenido}</p>
+                                            <p class="text-secondary lh-lg mb-0 descripcion-publicacion">
+                                                ${pub.contenido}
+                                            </p>
                                         </div>
                                         
                                     </div>
@@ -411,7 +434,7 @@ $(document).ready(function() {
         }
     });
 });
-    </script>
+</script>
 
 
 

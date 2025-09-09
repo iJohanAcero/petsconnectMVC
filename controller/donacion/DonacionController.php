@@ -80,7 +80,7 @@ class DonacionController
             if (empty($idCausa) || empty($monto)) {
                 echo json_encode([
                     'status' => 'error',
-                    'message' => 'Faltan datos requeridos'
+                     'Faltan datos requeridos'
                 ]);
                 exit;
             }
@@ -89,7 +89,7 @@ class DonacionController
             if (empty($emailDonante) || !filter_var($emailDonante, FILTER_VALIDATE_EMAIL)) {
                 echo json_encode([
                     'status' => 'error',
-                    'message' => 'Email del donante es requerido y debe ser válido para enviar el recibo'
+                     'Email del donante es requerido y debe ser válido para enviar el recibo'
                 ]);
                 exit;
             }
@@ -128,14 +128,14 @@ class DonacionController
             } catch (\Stripe\Exception\ApiErrorException $e) {
                 echo json_encode([
                     'status' => 'error',
-                    'message' => 'Error de Stripe: ' . $e->getMessage()
+                     'Error de Stripe: ' . $e->getMessage()
                 ]);
                 exit;
             }
         } catch (Exception $e) {
             echo json_encode([
                 'status' => 'error',
-                'message' => 'Error interno del servidor: ' . $e->getMessage()
+                 'Error interno del servidor: ' . $e->getMessage()
             ]);
             exit;
         }
@@ -185,7 +185,7 @@ class DonacionController
         } catch (Exception $e) {
             return [
                 'status' => 'error',
-                'message' => $e->getMessage()
+                 $e->getMessage()
             ];
         }
     }
@@ -198,7 +198,7 @@ class DonacionController
             if (empty($id_donacion)) {
                 echo json_encode([
                     'success' => false,
-                    'message' => 'ID de donación no proporcionado'
+                     'ID de donación no proporcionado'
                 ]);
                 return;
             }
@@ -209,24 +209,27 @@ class DonacionController
             if (!$donacion) {
                 echo json_encode([
                     'success' => false,
-                    'message' => 'Donación no encontrada'
+                     'Donación no encontrada'
                 ]);
                 return;
             }
 
-            // 🔹 Configuración de PDF
+            // 🔹 Configuración de PDF mejorada
             $mpdf = new \Mpdf\Mpdf([
                 'mode' => 'utf-8',
-                'format' => 'A4',
+                'format' => [180, 280], // Tamaño personalizado para factura
                 'orientation' => 'P',
-                'margin_left' => 0,
-                'margin_right' => 0,
-                'margin_top' => 10,       // Reducido para dar más espacio al contenido
-                'margin_bottom' => 10,    // Reducido para dar más espacio al contenido
+                'margin_left' => 10,
+                'margin_right' => 10,
+                'margin_top' => 10,
+                'margin_bottom' => 10,
                 'margin_header' => 5,
                 'margin_footer' => 5,
-                'default_font_size' => 10, // Tamaño de fuente por defecto
-                'default_font' => 'helvetica', // Fuente compatible con PDF
+                'default_font_size' => 10,
+                'default_font' => 'helvetica',
+                'display_mode' => 'fullpage',
+                'setAutoTopMargin' => 'stretch',
+                'setAutoBottomMargin' => 'stretch'
             ]);
 
             // 🔹 Crear la plantilla HTML de la factura
@@ -244,15 +247,21 @@ class DonacionController
             error_log("Error generando PDF: " . $e->getMessage());
             echo json_encode([
                 'success' => false,
-                'message' => 'Error al generar el PDF: ' . $e->getMessage()
+                 'Error al generar el PDF: ' . $e->getMessage()
             ]);
         }
     }
 
-
     private function crearPlantillaFactura(array $donacion): string
-    {
-        return "
+{
+    // Format the amount with thousand separator and decimals
+    $monto_formateado = number_format($donacion['monto'], 2, ',', '.');
+
+    // Format the dates
+    $fecha_donacion = date('Y-m-d H:i:s', strtotime($donacion['fecha']));
+    $fecha_impresion = date('d/m/Y H:i:s');
+
+    return "
 <!DOCTYPE html>
 <html lang='es'>
 <head>
@@ -260,237 +269,274 @@ class DonacionController
     <title>Factura de Donación</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            font-size: 12px;
+            font-family: 'Helvetica', Arial, sans-serif;
+            font-size: 10px;
             margin: 0;
             padding: 0;
             color: #333;
+            background-color: #f5f5f5;
         }
-        .factura-container {
-            width: 100%;
-            padding: 0;
+        .pagina {
+            width: 180mm;
+            min-height: 280mm;
+            margin: 0 auto;
+            padding: 10mm;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            background: white;
             box-sizing: border-box;
         }
-        .header {
+        .encabezado {
             text-align: center;
-            margin-bottom: 15px;
-            padding-bottom: 10px;
-            border-bottom: 2px solid #2e518f;
+            margin-bottom: 5mm;
+            padding-bottom: 3mm;
+            border-bottom: 1px solid #ddd;
         }
-        h2 {
+        .titulo-principal {
+            font-size: 16px;
+            font-weight: bold;
             color: #2e518f;
-            margin-bottom: 5px;
+            margin-bottom: 2mm;
             text-transform: uppercase;
-            font-size: 18px;
         }
-        .document-type {
+        .subtitulo {
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 3mm;
+        }
+        .documento-tipo {
             font-size: 14px;
             font-weight: bold;
-            color: #666;
-            margin-bottom: 10px;
+            background-color: #2e518f;
+            color: white;
+            padding: 2mm;
+            border-radius: 3px;
+            margin-bottom: 3mm;
+        }
+        .info-factura {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 4mm;
+            font-size: 9px;
         }
         .resolucion-dian {
             text-align: center;
-            font-size: 10px;
-            margin-bottom: 15px;
+            font-size: 8px;
             color: #666;
-        }
-        .two-columns {
-            width: 100%;
-            margin-bottom: 15px;
+            margin-bottom: 4mm;
+            padding: 2mm;
+            border: 1px dashed #ccc;
+            background-color: #f9f9f9;
         }
         .column-container {
-            width: 100%;
-            display: block;
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 4mm;
         }
-        .column {
-            width: 48%;
-            display: inline-block;
-            vertical-align: top;
-            box-sizing: border-box;
-        }
-        .left-column {
-            padding-right: 2%;
+        .columna {
+            width: 49%;
         }
         .seccion {
-            margin-bottom: 15px;
+            margin-bottom: 4mm;
+            padding: 3mm;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+            background-color: #fff;
         }
         h3 {
-            background-color: #f5f5f5;
-            padding: 8px;
-            border-left: 4px solid #2e518f;
-            margin: 10px 0 8px 0;
-            font-size: 13px;
+            font-size: 11px;
+            color: #2e518f;
+            border-bottom: 1px solid #2e518f;
+            padding-bottom: 1mm;
+            margin-top: 0;
+            margin-bottom: 2mm;
         }
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 5px;
+            margin-top: 1mm;
+            font-size: 9px;
         }
         th, td {
-            padding: 7px;
+            padding: 2mm;
             border: 1px solid #ddd;
             text-align: left;
+            vertical-align: top;
         }
         th {
-            background-color: #f9f9f9;
-            width: 35%;
+            background-color: #f5f5f5;
             font-weight: bold;
+            width: 35%;
         }
         .monto {
-            font-size: 14px;
+            font-size: 12px;
             font-weight: bold;
-            color: #2c3e50;
+            color: #2e518f;
         }
-        .status {
+        .estado {
             display: inline-block;
-            padding: 3px 8px;
-            border-radius: 4px;
+            padding: 1mm 2mm;
+            border-radius: 3px;
             font-weight: bold;
-            font-size: 11px;
             background-color: #dff0d8;
             color: #3c763d;
+            font-size: 9px;
         }
-        .legal {
-            font-size: 10px;
-            margin-top: 20px;
-            color: #777;
-            text-align: justify;
+        .detalle-pago {
+            margin-top: 4mm;
         }
-        .footer {
-            text-align: center;
-            margin-top: 25px;
-            padding-top: 15px;
+        .codigos {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 5mm;
+            padding-top: 3mm;
             border-top: 1px solid #ddd;
-            font-size: 11px;
+        }
+        .codigo-barras {
+            text-align: center;
+            font-family: 'Libre Barcode 128', cursive;
+            font-size: 28px;
+            margin-bottom: 2mm;
+        }
+        .leyenda {
+            font-size: 8px;
             color: #666;
-        }
-        .qr-section {
             text-align: center;
-            margin: 15px 0;
+            margin-top: 3mm;
         }
-        .qr-placeholder {
-            display: inline-block;
-            width: 100px;
-            height: 100px;
-            border: 1px dashed #ccc;
-            line-height: 100px;
+        .pie-pagina {
             text-align: center;
-            color: #999;
-            margin-bottom: 8px;
+            margin-top: 5mm;
+            padding-top: 3mm;
+            border-top: 1px solid #ddd;
+            color: #666;
+            font-size: 8px;
+        }
+        .nota-legal {
+            font-size: 7px;
+            color: #888;
+            margin-top: 2mm;
+            text-align: justify;
         }
     </style>
 </head>
 <body>
-    <div class='factura-container'>
-        <div class='resolucion-dian'>
-            Resolución DIAN No. 18764000000000 - Facturación por donación - Régimen simplificado
-        </div>
-        
-        <div class='header'>
-            <h2>FACTURA DE DONACIÓN</h2>
-            <div class='document-type'>Documento Equivalente</div>
-            <p><strong>N° Factura:</strong> 13 &nbsp; | &nbsp; <strong>Fecha:</strong> 2025-09-03 00:04:50</p>
+    <div class='pagina'>
+        <div class='encabezado'>
+            <div class='titulo-principal'>{$donacion['nombre_fundacion']}</div>
+            <div class='subtitulo'>NIT: {$donacion['nit_fundacion']}</div>
+            <div class='documento-tipo'>FACTURA DE DONACIÓN</div>
+            
+            <div class='info-factura'>
+                <div><strong>N° Factura:</strong> {$donacion['id_donacion']}</div>
+                <div><strong>Fecha de emisión:</strong> {$fecha_donacion}</div>
+            </div>
+            
+            <div class='resolucion-dian'>
+                Resolución DIAN: 18764009847834 - Número: 1000 - Fecha: 2023-11-15<br>
+                Rango autorizado: 1 - 5000 - Prefijo: SET - Vigencia: 2024-12-31
+            </div>
         </div>
 
         <div class='column-container'>
-            <div class='column left-column'>
-                <!-- Datos del Donante -->
+            <div class='columna'>
                 <div class='seccion'>
                     <h3>Datos del Donante</h3>
                     <table>
                         <tr>
-                            <th>Nombre</th>
-                            <td>Admin</td>
+                            <th>Nombre/Razón Social</th>
+                            <td>{$donacion['nombre_donante']}</td>
                         </tr>
                         <tr>
                             <th>Identificación</th>
-                            <td>31</td>
+                            <td>{$donacion['id_donante']}</td>
                         </tr>
                         <tr>
-                            <th>Email</th>
-                            <td>admin@gmail.com</td>
+                            <th>Correo electrónico</th>
+                            <td>{$donacion['email_donante']}</td>
                         </tr>
                         <tr>
-                            <th>Teléfono</th>
-                            <td>123456</td>
+                            <th>Teléfono de contacto</th>
+                            <td>{$donacion['telefono_donante']}</td>
                         </tr>
                         <tr>
                             <th>Dirección</th>
-                            <td>Bogotá</td>
+                            <td>{$donacion['direccion_donante']}</td>
                         </tr>
                     </table>
                 </div>
             </div>
             
-            <div class='column'>
-                <!-- Datos de la Fundación -->
+            <div class='columna'>
                 <div class='seccion'>
-                    <h3>Datos de la Fundación</h3>
+                    <h3>Datos del Receptor</h3>
                     <table>
                         <tr>
-                            <th>Nombre</th>
-                            <td>Fundacion1</td>
+                            <th>Nombre/Razón Social</th>
+                            <td>{$donacion['nombre_fundacion']}</td>
                         </tr>
                         <tr>
                             <th>NIT</th>
-                            <td>11111</td>
+                            <td>{$donacion['nit_fundacion']}</td>
                         </tr>
                         <tr>
                             <th>Responsable</th>
-                            <td>Jhon</td>
+                            <td>{$donacion['responsable_fundacion']}</td>
+                        </tr>
+                        <tr>
+                            <th>Correo electrónico</th>
+                            <td>{$donacion['email_fundacion']}</td>
+                        </tr>
+                        <tr>
+                            <th>Teléfono de contacto</th>
+                            <td>{$donacion['telefono_fundacion']}</td>
                         </tr>
                         <tr>
                             <th>Dirección</th>
-                            <td>Bogotá, calle12</td>
-                        </tr>
-                        <tr>
-                            <th>Email</th>
-                            <td>fundacion@gmail.com</td>
-                        </tr>
-                        <tr>
-                            <th>Teléfono</th>
-                            <td>111111</td>
+                            <td>{$donacion['direccion_fundacion']}</td>
                         </tr>
                     </table>
                 </div>
             </div>
         </div>
 
-        <!-- Detalle de la Donación -->
-        <div class='seccion'>
-            <h3>Detalle de la Donación</h3>
+        <div class='seccion detalle-pago'>
+            <h3>Detalles del Pago</h3>
             <table>
                 <tr>
-                    <th>Monto donado</th>
-                    <td class='monto'>$50.000 COP</td>
+                    <th>Descripción</th>
+                    <th>Valor</th>
                 </tr>
                 <tr>
-                    <th>Método de Pago</th>
-                    <td>stripe</td>
+                    <td>Donación a {$donacion['nombre_fundacion']}</td>
+                    <td class='monto'>\${$monto_formateado} COP</td>
                 </tr>
                 <tr>
-                    <th>Estado</th>
-                    <td><span class='status'>pagado</span></td>
+                    <td>Método de Pago</td>
+                    <td>{$donacion['metodo_pago']}</td>
+                </tr>
+                <tr>
+                    <td>Estado</td>
+                    <td><span class='estado'>{$donacion['estado']}</span></td>
                 </tr>
             </table>
         </div>
 
-        <div class='legal'>
-            <p>De acuerdo con el artículo 437 del Estatuto Tributario, las donaciones a entidades sin ánimo de lucro debidamente reconocidas pueden ser deducibles de impuestos. Consulte con su contador para más detalles.</p>
-            <p>Esta factura de donación es un documento equivalente que cumple con los requisitos establecidos por la DIAN para operaciones de donación.</p>
+        <div class='nota-legal'>
+            Este documento es una factura de donación equivalente según lo establecido en el artículo 617 del Estatuto Tributario.
+            La presente factura equivale a un documento equivalente según Resolución 007 de 2021 de la DIAN.
+            Valor recibido conforme, no hay lugar a reclamos posteriores.
         </div>
 
-        <div class='footer'>
-            <p>¡Gracias por tu apoyo! Tu aporte ayuda a cambiar vidas 🐾</p>
-            <p>Fundacion1 - NIT: 11111</p>
-            <p>Impreso el: 06/09/2025 08:03:21</p>
+        <div class='pie-pagina'>
+            <p>¡Gracias por tu apoyo! Tu generosidad ayuda a transformar vidas 🐾</p>
+            <p>{$donacion['nombre_fundacion']} - NIT: {$donacion['nit_fundacion']}</p>
+            <p>Documento impreso el: {$fecha_impresion}</p>
         </div>
     </div>
 </body>
 </html>
 ";
-    }
+}
 }
 
 

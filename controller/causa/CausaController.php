@@ -153,25 +153,21 @@ class CausaController
 
     public function eliminar()
     {
-        $id_causa = $_POST['id_causa'] ?? '';
-        if (empty($id_causa)) {
-            echo "ID de causa no proporcionado";
-            return;
+        if (isset($_POST['id_causa'])) {
+            $id = $_POST['id_causa'];
+            try {
+                $this->modeloCausa->delete($id);
+                echo json_encode([
+                    "Causa eliminada correctamente."
+                ]);
+            } catch (\Exception $e) {
+                echo json_encode([
+                    $e->getMessage()
+                ]);
+            }
         }
-
-        // Obtener datos de la causa antes de eliminar para limpiar Cloudinary
-        $causaActual = $this->modeloCausa->getId($id_causa);
-
-        // Eliminar de la base de datos
-        $resultado = $this->modeloCausa->delete($id_causa);
-
-        // eliminar también de Cloudinary
-        if ($resultado && !empty($causaActual['public_id'])) {
-            deleteImageFromCloudinary($causaActual['public_id']);
-        }
-
-        echo $resultado ? "Causa eliminada correctamente" : "Error al eliminar Causa";
     }
+
 
     // ✅ MÉTODO CORREGIDO
     public function getAllCausasCarrusel()

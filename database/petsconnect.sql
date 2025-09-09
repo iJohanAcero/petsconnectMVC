@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 02-09-2025 a las 07:11:13
+-- Tiempo de generación: 09-09-2025 a las 06:57:54
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -231,7 +231,8 @@ CREATE TABLE `t_causa` (
 --
 
 INSERT INTO `t_causa` (`id_causa`, `nombre`, `descripcion`, `meta`, `estado_causa`, `fecha_creacion`, `nit_fundacion`, `imagen_url`, `tipo_causa`, `public_id`) VALUES
-(18, 'Jornada de medicamentos', 'medicamentos para mascortas', 1000.00, 'activa', '2025-08-24 07:41:01', '11111', 'https://res.cloudinary.com/dhyowmhw6/image/upload/v1756014063/causas/php755D.jpg', 'medicamentos', 'causas/php755D');
+(21, 'Comida especial para Charlie', 'Ayuda a nuestro querido amigo Charlie a poder comprar su alimento especial ya que solo puede consumir este por su condicion.', 300000.00, 'activa', '2025-09-03 04:58:37', '11111', 'https://res.cloudinary.com/dzhg8fznk/image/upload/v1757386053/causas/php1F96.jpg', 'alimentación', 'causas/php1F96'),
+(22, 'Botiquín Animal', 'Buscamos reunir fondos para adquirir medicamentos esenciales (antibióticos, antiparasitarios y analgésicos) destinados al cuidado de más de 60 animales rescatados en Bogotá. Con tu aporte aseguramos tratamientos oportunos y una recuperación digna.', 2000000.00, 'activa', '2025-09-09 05:05:26', '11111', 'https://res.cloudinary.com/dzhg8fznk/image/upload/v1757387127/causas/php85AA.jpg', 'medicamentos', 'causas/php85AA');
 
 -- --------------------------------------------------------
 
@@ -256,8 +257,9 @@ CREATE TABLE `t_donacion` (
 --
 
 INSERT INTO `t_donacion` (`id_donacion`, `id_usuario`, `id_causa`, `nit_fundacion`, `stripe_payment_id`, `monto`, `metodo_pago`, `estado`, `fecha`) VALUES
-(1, 32, 18, 11111, 'pi_3S2llQRok1mN1oR60krVGWhe', 50000.00, 'stripe', 'pagado', '2025-09-01 23:24:12'),
-(2, 32, 18, 11111, 'pi_3S2lxpRok1mN1oR6120igdM9', 25000.00, 'stripe', 'pagado', '2025-09-01 23:37:01');
+(12, 31, 21, 11111, 'pi_3S38qjRvWIJHWRYj09sAvyHq', 50000.00, 'stripe', 'pagado', '2025-09-03 00:03:13'),
+(13, 31, 21, 11111, 'pi_3S38sIRvWIJHWRYj1lQO6xJx', 50000.00, 'stripe', 'pagado', '2025-09-03 00:04:50'),
+(14, 38, 22, 11111, 'pi_3S5IKgRvWIJHWRYj0SgiEt3B', 10000.00, 'stripe', 'pagado', '2025-09-08 22:35:05');
 
 -- --------------------------------------------------------
 
@@ -311,13 +313,6 @@ CREATE TABLE `t_formulario_adopcion` (
   `fecha_respuesta` datetime DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Volcado de datos para la tabla `t_formulario_adopcion`
---
-
-INSERT INTO `t_formulario_adopcion` (`id_formulario`, `id_usuario`, `id_mascota`, `nit_fundacion`, `estado_civil`, `tipo_documento`, `numero_documento`, `ocupacion`, `tipo_vivienda`, `tiene_patio`, `seguridad_ventanas`, `personas_hogar`, `ninos_adultos`, `horas_fuera_casa`, `viajes_frecuentes`, `experiencia_previas`, `otras_mascotas`, `mascotas_vacunadas`, `compromiso_gastos`, `situacion_economica`, `motivacion`, `expectativas`, `fecha_respuesta`) VALUES
-(20, 32, 76767, 11111, 'Casado/a', 'CC', '12313123', 'dasdasd', 'Casa propia', 1, 1, 1231, '2', '2', 'dadas', 'dasd', '2', 1, 1, 'dasds', 'dasdsa', 'dasda', '2025-08-30 00:21:33');
-
 -- --------------------------------------------------------
 
 --
@@ -336,7 +331,7 @@ CREATE TABLE `t_fundacion` (
 --
 
 INSERT INTO `t_fundacion` (`nit_fundacion`, `nombre`, `id_usuario`, `id_perfil`) VALUES
-(11111, 'Fundacion1', 33, 21);
+(11111, 'Fundación Peludos', 33, 21);
 
 -- --------------------------------------------------------
 
@@ -355,23 +350,7 @@ CREATE TABLE `t_guardian` (
 --
 
 INSERT INTO `t_guardian` (`id_registro`, `id_usuario`, `id_perfil`) VALUES
-(24, 32, 20);
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `t_informe`
---
-
-CREATE TABLE `t_informe` (
-  `id_informe` int(11) NOT NULL,
-  `fecha` date DEFAULT NULL,
-  `contenido` varchar(255) NOT NULL,
-  `nombre` varchar(100) NOT NULL,
-  `id_mascota` int(11) NOT NULL,
-  `nit_fundacion` bigint(20) NOT NULL,
-  `id_estado_adopcion` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+(29, 38, 25);
 
 -- --------------------------------------------------------
 
@@ -382,6 +361,7 @@ CREATE TABLE `t_informe` (
 CREATE TABLE `t_mascota` (
   `id_mascota` int(11) NOT NULL,
   `nombre` varchar(100) NOT NULL,
+  `numero_chip` varchar(50) DEFAULT NULL,
   `edad_meses` int(11) DEFAULT NULL CHECK (`edad_meses` >= 0),
   `sexo` enum('macho','hembra') NOT NULL,
   `imagen` varchar(255) NOT NULL,
@@ -395,8 +375,10 @@ CREATE TABLE `t_mascota` (
 -- Volcado de datos para la tabla `t_mascota`
 --
 
-INSERT INTO `t_mascota` (`id_mascota`, `nombre`, `edad_meses`, `sexo`, `imagen`, `id_tipo_mascota`, `nit_fundacion`, `id_estado_adopcion`, `public_id`) VALUES
-(76767, 'Mateo', 21, 'macho', 'https://res.cloudinary.com/dhyowmhw6/image/upload/v1756181258/mascotas/phpA3FD.jpg', 13, 11111, 1, 'mascotas/phpA3FD');
+INSERT INTO `t_mascota` (`id_mascota`, `nombre`, `numero_chip`, `edad_meses`, `sexo`, `imagen`, `id_tipo_mascota`, `nit_fundacion`, `id_estado_adopcion`, `public_id`) VALUES
+(655, 'Max', '312', 5, 'macho', 'https://res.cloudinary.com/dzhg8fznk/image/upload/v1757386650/mascotas/php3D07.jpg', 13, 11111, 1, 'mascotas/php3D07'),
+(667, 'Lola', NULL, 34, 'hembra', 'https://res.cloudinary.com/dzhg8fznk/image/upload/v1757386897/mascotas/php377.jpg', 12, 11111, 1, 'mascotas/php377'),
+(4454, 'Tomi', NULL, 4, 'macho', 'https://res.cloudinary.com/dzhg8fznk/image/upload/v1757386582/mascotas/php325D.jpg', 13, 11111, 1, 'mascotas/php325D');
 
 -- --------------------------------------------------------
 
@@ -418,10 +400,8 @@ CREATE TABLE `t_perfil` (
 --
 
 INSERT INTO `t_perfil` (`id_perfil`, `nombre`, `preferencia`, `descripcion`, `imagen`, `public_id`) VALUES
-(20, 'Johan Acero', 'Todos los animales', 'me gustaria adoptar gatos en bogotaa', 'https://res.cloudinary.com/dhyowmhw6/image/upload/v1756445067/perfiles/php1AF1.jpg', 'perfiles/php1AF1'),
-(21, 'Fundacion Valentina', 'Gatos', 'fundacion de gatos ', 'https://res.cloudinary.com/dhyowmhw6/image/upload/v1756267115/perfiles/phpBF73.jpg', 'perfiles/phpBF73'),
-(23, 'Perfil Fundación', '', '', 'fundacion_default.jpg', NULL),
-(24, 'Perfil Fundación', '', '', 'fundacion_default.jpg', NULL);
+(21, 'Fundación Peludos', 'Todos los animales', 'Organización sin ánimo de lucro en Bogotá dedicada al rescate, rehabilitación, esterilización y adopción responsable de animales vulnerables, promoviendo la tenencia consciente y respetuosa.', 'https://res.cloudinary.com/dzhg8fznk/image/upload/v1757384083/perfiles/phpA29.jpg', 'perfiles/phpA29'),
+(25, 'Johan Acero', 'Todos los animales', 'Quiero darle un hogar lleno de amor y cuidado a una mascota rescatada. Busco compañía, alegría y la oportunidad de cambiar su vida mientras me comprometo a su bienestar.', 'https://res.cloudinary.com/dzhg8fznk/image/upload/v1757388447/perfiles/phpAB15.jpg', 'perfiles/phpAB15');
 
 -- --------------------------------------------------------
 
@@ -441,7 +421,9 @@ CREATE TABLE `t_perfil_redes` (
 --
 
 INSERT INTO `t_perfil_redes` (`id_red`, `id_perfil`, `tipo_red`, `url_red`) VALUES
-(50, 21, 'facebook', 'https://www.youtube.com/');
+(62, 21, 'facebook', 'https://www.facebook.com/'),
+(63, 21, 'pagina_web', 'https://petsconnectcol.com/'),
+(64, 21, 'instagram', 'https://www.instagram.com/');
 
 -- --------------------------------------------------------
 
@@ -457,13 +439,6 @@ CREATE TABLE `t_proceso_adopcion` (
   `fecha_actualizada` datetime NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Volcado de datos para la tabla `t_proceso_adopcion`
---
-
-INSERT INTO `t_proceso_adopcion` (`id_proceso`, `id_formulario`, `id_estado`, `fecha_inicio`, `fecha_actualizada`) VALUES
-(6, 20, 2, '2025-08-30 00:21:33', '2025-08-30 00:21:33');
-
 -- --------------------------------------------------------
 
 --
@@ -473,7 +448,7 @@ INSERT INTO `t_proceso_adopcion` (`id_proceso`, `id_formulario`, `id_estado`, `f
 CREATE TABLE `t_publicacion` (
   `id_publicacion` int(11) NOT NULL,
   `titulo` varchar(100) NOT NULL,
-  `contenido` varchar(100) NOT NULL,
+  `contenido` varchar(600) NOT NULL,
   `imagen` varchar(255) NOT NULL,
   `fecha` datetime DEFAULT NULL,
   `nit_fundacion` bigint(20) NOT NULL,
@@ -485,7 +460,8 @@ CREATE TABLE `t_publicacion` (
 --
 
 INSERT INTO `t_publicacion` (`id_publicacion`, `titulo`, `contenido`, `imagen`, `fecha`, `nit_fundacion`, `public_id`) VALUES
-(27, 'Jornada de adopcion', 'perros en adopcion', 'https://res.cloudinary.com/dhyowmhw6/image/upload/v1755927648/publicaciones/phpE8D6.jpg', '2025-08-23 07:40:49', 11111, 'publicaciones/phpE8D6');
+(30, 'Jornada de Adopción en el Parque Simón Bolívar 🐶🐱', 'Este domingo 22 de septiembre de 2025 acompáñanos en una jornada especial para encontrar un hogar a perros y gatos rescatados. Habrá vacunación básica gratuita y charlas de tenencia responsable.\r\n📍 Parque Simón Bolívar – Entrada principal\r\n🕘 9:00 a.m. – 4:00 p.m.', 'https://res.cloudinary.com/dzhg8fznk/image/upload/v1757385564/publicaciones/phpAD36.jpg', '2025-09-09 04:39:24', 11111, 'publicaciones/phpAD36'),
+(31, '✂️🐾 Jornada de Esterilización Gratuita 🐶🐱', 'El próximo sábado 18 de octubre de 2025, realizaremos una campaña de esterilización para perros y gatos en condición de vulnerabilidad. ¡Un paso clave para reducir el abandono y mejorar su calidad de vida!\r\n📍 Localidad de Kennedy – Casa de la Cultura\r\n🕘 8:00 a.m. – 3:00 p.m.\r\n📌 Cupos limitados – Inscripciones previas en nuestra página web.', 'https://res.cloudinary.com/dzhg8fznk/image/upload/v1757387259/publicaciones/php888F.jpg', '2025-09-09 05:07:39', 11111, 'publicaciones/php888F');
 
 -- --------------------------------------------------------
 
@@ -520,10 +496,8 @@ CREATE TABLE `t_registro` (
 
 INSERT INTO `t_registro` (`id_registro`, `fecha`, `tipo_usuario`) VALUES
 (23, '2025-07-04', 'ADMIN'),
-(24, '2025-07-04', 'GUARDIAN'),
 (25, '2025-07-04', 'FUNDACION'),
-(27, '2025-07-09', 'FUNDACION'),
-(28, '2025-08-02', 'FUNDACION');
+(29, '2025-09-08', 'GUARDIAN');
 
 -- --------------------------------------------------------
 
@@ -566,9 +540,9 @@ CREATE TABLE `t_usuario` (
 --
 
 INSERT INTO `t_usuario` (`id_usuario`, `nombre`, `apellido`, `contrasena`, `email`, `direccion`, `telefono`, `google_id`) VALUES
-(31, 'Admin', 'pets', '$2y$10$kpFsZAIko71tAkZIlPRhvegAe./rAO1/8TPpK0cGZWngfvkwh8Ls.', 'admin@gmail.com', 'Bogotá', '123456', NULL),
-(32, 'Johan David', 'Acero Pirajan', NULL, 'johanacero8@gmail.com', '', '123123123', '110443786294827582324'),
-(33, 'Jhon', 'Doe', '$2y$10$hd0SPDHn1f5Ob312a.Es..tylEKiK55r22FWaHNae57s4TYGomfe6', 'fundacion@gmail.com', 'Bogotá, calle12', '111111', NULL);
+(31, 'Pablo', 'Vela', '$2y$10$kpFsZAIko71tAkZIlPRhvegAe./rAO1/8TPpK0cGZWngfvkwh8Ls.', 'admin@gmail.com', 'Bogotá', '123456', NULL),
+(33, 'Alberto', 'Rodriguez', '$2y$10$hd0SPDHn1f5Ob312a.Es..tylEKiK55r22FWaHNae57s4TYGomfe6', 'fundacionPeludos@gmail.com', 'Bogotá, calle24a Sur#34-12', '6734590', NULL),
+(38, 'Johan David', 'Acero', NULL, 'johanacero8@gmail.com', '', '', '110443786294827582324');
 
 --
 -- Índices para tablas volcadas
@@ -631,19 +605,11 @@ ALTER TABLE `t_guardian`
   ADD KEY `fk_guardian_id_perfil` (`id_perfil`);
 
 --
--- Indices de la tabla `t_informe`
---
-ALTER TABLE `t_informe`
-  ADD PRIMARY KEY (`id_informe`),
-  ADD KEY `fk_infor_id_mascota` (`id_mascota`),
-  ADD KEY `fk_infor_nit_fundacion` (`nit_fundacion`),
-  ADD KEY `fk_infor_id_estado_adopcion` (`id_estado_adopcion`);
-
---
 -- Indices de la tabla `t_mascota`
 --
 ALTER TABLE `t_mascota`
   ADD PRIMARY KEY (`id_mascota`),
+  ADD UNIQUE KEY `idx_numero_chip` (`numero_chip`),
   ADD KEY `fk_id_tipo_mascota` (`id_tipo_mascota`),
   ADD KEY `fk_mascota_nit_fundacion` (`nit_fundacion`),
   ADD KEY `id_estado_adopcion` (`id_estado_adopcion`);
@@ -710,13 +676,13 @@ ALTER TABLE `t_usuario`
 -- AUTO_INCREMENT de la tabla `t_causa`
 --
 ALTER TABLE `t_causa`
-  MODIFY `id_causa` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `id_causa` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- AUTO_INCREMENT de la tabla `t_donacion`
 --
 ALTER TABLE `t_donacion`
-  MODIFY `id_donacion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_donacion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT de la tabla `t_estado_adopcion`
@@ -728,37 +694,37 @@ ALTER TABLE `t_estado_adopcion`
 -- AUTO_INCREMENT de la tabla `t_formulario_adopcion`
 --
 ALTER TABLE `t_formulario_adopcion`
-  MODIFY `id_formulario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `id_formulario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
--- AUTO_INCREMENT de la tabla `t_informe`
+-- AUTO_INCREMENT de la tabla `t_mascota`
 --
-ALTER TABLE `t_informe`
-  MODIFY `id_informe` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `t_mascota`
+  MODIFY `id_mascota` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4455;
 
 --
 -- AUTO_INCREMENT de la tabla `t_perfil`
 --
 ALTER TABLE `t_perfil`
-  MODIFY `id_perfil` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+  MODIFY `id_perfil` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
 -- AUTO_INCREMENT de la tabla `t_perfil_redes`
 --
 ALTER TABLE `t_perfil_redes`
-  MODIFY `id_red` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
+  MODIFY `id_red` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=65;
 
 --
 -- AUTO_INCREMENT de la tabla `t_proceso_adopcion`
 --
 ALTER TABLE `t_proceso_adopcion`
-  MODIFY `id_proceso` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id_proceso` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT de la tabla `t_publicacion`
 --
 ALTER TABLE `t_publicacion`
-  MODIFY `id_publicacion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
+  MODIFY `id_publicacion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
 
 --
 -- AUTO_INCREMENT de la tabla `t_recuperar_constrasena`
@@ -770,7 +736,7 @@ ALTER TABLE `t_recuperar_constrasena`
 -- AUTO_INCREMENT de la tabla `t_registro`
 --
 ALTER TABLE `t_registro`
-  MODIFY `id_registro` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
+  MODIFY `id_registro` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
 
 --
 -- AUTO_INCREMENT de la tabla `t_tipo_mascota`
@@ -782,7 +748,7 @@ ALTER TABLE `t_tipo_mascota`
 -- AUTO_INCREMENT de la tabla `t_usuario`
 --
 ALTER TABLE `t_usuario`
-  MODIFY `id_usuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=38;
+  MODIFY `id_usuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
 
 --
 -- Restricciones para tablas volcadas
@@ -825,14 +791,6 @@ ALTER TABLE `t_guardian`
   ADD CONSTRAINT `fk_guardian_id_perfil` FOREIGN KEY (`id_perfil`) REFERENCES `t_perfil` (`id_perfil`),
   ADD CONSTRAINT `fk_guardian_id_registro` FOREIGN KEY (`id_registro`) REFERENCES `t_registro` (`id_registro`),
   ADD CONSTRAINT `fk_guardian_id_usuario` FOREIGN KEY (`id_usuario`) REFERENCES `t_usuario` (`id_usuario`);
-
---
--- Filtros para la tabla `t_informe`
---
-ALTER TABLE `t_informe`
-  ADD CONSTRAINT `fk_infor_id_estado_adopcion` FOREIGN KEY (`id_estado_adopcion`) REFERENCES `t_estado_adopcion` (`id_estado_adopcion`),
-  ADD CONSTRAINT `fk_infor_id_mascota` FOREIGN KEY (`id_mascota`) REFERENCES `t_mascota` (`id_mascota`),
-  ADD CONSTRAINT `fk_infor_nit_fundacion` FOREIGN KEY (`nit_fundacion`) REFERENCES `t_fundacion` (`nit_fundacion`);
 
 --
 -- Filtros para la tabla `t_mascota`

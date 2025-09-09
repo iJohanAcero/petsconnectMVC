@@ -52,16 +52,18 @@ class Informe
             FROM t_mascota m
             INNER JOIN t_tipo_mascota t ON m.id_tipo_mascota = t.id_tipo_mascota
             INNER JOIN t_fundacion f ON m.nit_fundacion = f.nit_fundacion
-            LEFT JOIN t_formulario_adopcion fa ON m.id_mascota = fa.id_mascota";
+            LEFT JOIN t_formulario_adopcion fa ON m.id_mascota = fa.id_mascota
+            INNER JOIN t_estado_adopcion e ON m.id_estado_adopcion = e.id_estado_adopcion
+            WHERE e.tipo_estado = 'EN ADOPCION'";
 
         // Si no es admin, filtrar por fundación
         if ($nitFundacion !== null) {
-            $sql .= " WHERE m.nit_fundacion = ?";
+            $sql .= " AND m.nit_fundacion = ?";
         }
 
         $sql .= " GROUP BY m.id_mascota, m.nombre, t.especie, f.nombre
-                 HAVING COUNT(fa.id_formulario) > 0
-                 ORDER BY total_solicitudes DESC";
+              HAVING COUNT(fa.id_formulario) > 0
+              ORDER BY total_solicitudes DESC";
 
         if ($nitFundacion !== null) {
             $stmt = $this->db->prepare($sql);
@@ -145,8 +147,9 @@ class Informe
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function getPublicacionesFundacion() {
-    $sql = "SELECT 
+    public function getPublicacionesFundacion()
+    {
+        $sql = "SELECT 
                 f.nombre AS fundacion,
                 COUNT(p.id_publicacion) AS total_publicaciones,
                 COALESCE(MAX(p.fecha), 'Sin publicaciones') AS ultima_publicacion
@@ -155,7 +158,7 @@ class Informe
             GROUP BY f.nombre
             ORDER BY total_publicaciones DESC";
 
-    $stmt = $this->db->query($sql);
-    return $stmt->fetchAll(PDO::FETCH_ASSOC);
-}
+        $stmt = $this->db->query($sql);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 }

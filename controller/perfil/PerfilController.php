@@ -72,7 +72,7 @@ class PerfilController
             http_response_code(400);
             echo json_encode([
                 'success' => false,
-                'message' => $e->getMessage()
+                 $e->getMessage()
             ]);
         }
     }
@@ -99,7 +99,7 @@ class PerfilController
 
                 $validation = $this->validateImage($_FILES['imagen']);
                 if (!$validation['valid']) {
-                    echo json_encode(['success' => false, 'message' => $validation['error']]);
+                    echo json_encode(['success' => false,  $validation['error']]);
                     exit;
                 }
 
@@ -136,19 +136,19 @@ class PerfilController
             if ($resultadoGuardian || $resultadoFundacion) {
                 echo json_encode([
                     'success' => true,
-                    'message' => 'Perfil actualizado correctamente.'
+                     'Perfil actualizado correctamente.'
                 ]);
             } else {
                 echo json_encode([
                     'success' => false,
-                    'message' => 'Error al actualizar el perfil.'
+                     'Error al actualizar el perfil.'
                 ]);
             }
         } catch (Exception $e) {
             header('Content-Type: application/json');
             echo json_encode([
                 'success' => false,
-                'message' => 'Error: ' . $e->getMessage()
+                 'Error: ' . $e->getMessage()
             ]);
         }
     }
@@ -176,12 +176,12 @@ class PerfilController
 
             echo json_encode([
                 'success' => $resultado,
-                'message' => $resultado ? 'Perfil eliminado correctamente' : 'Error al eliminar perfil'
+                 $resultado ? 'Perfil eliminado correctamente' : 'Error al eliminar perfil'
             ]);
         } catch (Exception $e) {
             echo json_encode([
                 'success' => false,
-                'message' => 'Error: ' . $e->getMessage()
+                 'Error: ' . $e->getMessage()
             ]);
         }
     }

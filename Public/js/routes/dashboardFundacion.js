@@ -109,7 +109,7 @@ fetch('/petsconnectMVC/Controller/dashboard/dashboardFundacion.php?accion=donaci
         if (!json.success) throw new Error(json.message);
 
         const labels = json.data.map(row => row.mes);
-        const values = json.data.map(row => row.total_publicaciones);
+        const values = json.data.map(row => row.total); 
 
         new Chart(document.getElementById('chartPublicacionesMes'), {
             type: 'line',
@@ -118,10 +118,9 @@ fetch('/petsconnectMVC/Controller/dashboard/dashboardFundacion.php?accion=donaci
                 datasets: [{
                     label: 'Publicaciones',
                     data: values,
+                    backgroundColor: 'rgba(54, 162, 235, 0.6)',
                     borderColor: '#36a2eb',
-                    backgroundColor: 'rgba(54,162,235,0.2)',
-                    fill: true,
-                    tension: 0.3
+                    borderWidth: 1
                 }]
             },
             options: {
@@ -137,6 +136,8 @@ fetch('/petsconnectMVC/Controller/dashboard/dashboardFundacion.php?accion=donaci
         });
     })
     .catch(err => console.error("Error cargando publicaciones por mes:", err));
+
+
 
 // Gráfico de dona: Adopciones por especie
 fetch('/petsconnectMVC/Controller/dashboard/dashboardFundacion.php?accion=adopcionesPorEspecie')

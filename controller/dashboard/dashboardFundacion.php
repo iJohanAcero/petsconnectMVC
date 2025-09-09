@@ -28,7 +28,7 @@ class dashboardFundacionController
             echo json_encode([
                 'data' => [],
                 'success' => false,
-                'message' => 'Usuario no autenticado'
+                 'Usuario no autenticado'
             ]);
             exit;
         }
@@ -47,7 +47,7 @@ class dashboardFundacionController
             echo json_encode([
                 'data' => [],
                 'success' => false,
-                'message' => 'Usuario sin fundación asignada'
+                 'Usuario sin fundación asignada'
             ]);
             exit;
         }
@@ -65,7 +65,7 @@ class dashboardFundacionController
                 echo json_encode([
                     'data' => [],
                     'success' => false,
-                    'message' => 'Este recurso es solo para fundaciones'
+                     'Este recurso es solo para fundaciones'
                 ]);
                 return;
             }
@@ -74,13 +74,13 @@ class dashboardFundacionController
             echo json_encode([
                 'data' => $data,
                 'success' => true,
-                'message' => 'Datos de donaciones por causa obtenidos correctamente'
+                 'Datos de donaciones por causa obtenidos correctamente'
             ], JSON_PRETTY_PRINT);
         } catch (Exception $e) {
             echo json_encode([
                 'data' => [],
                 'success' => false,
-                'message' => 'Error al obtener datos: ' . $e->getMessage()
+                 'Error al obtener datos: ' . $e->getMessage()
             ], JSON_PRETTY_PRINT);
         }
     }
@@ -95,7 +95,7 @@ class dashboardFundacionController
                 echo json_encode([
                     'data' => [],
                     'success' => false,
-                    'message' => 'Este recurso es solo para fundaciones'
+                     'Este recurso es solo para fundaciones'
                 ], JSON_PRETTY_PRINT);
                 return;
             }
@@ -104,13 +104,13 @@ class dashboardFundacionController
             echo json_encode([
                 'data' => $data,
                 'success' => true,
-                'message' => 'Datos de publicaciones por mes obtenidos correctamente'
+                 'Datos de publicaciones por mes obtenidos correctamente'
             ], JSON_PRETTY_PRINT);
         } catch (Exception $e) {
             echo json_encode([
                 'data' => [],
                 'success' => false,
-                'message' => 'Error al obtener datos: ' . $e->getMessage()
+                 'Error al obtener datos: ' . $e->getMessage()
             ], JSON_PRETTY_PRINT);
         }
     }
@@ -125,7 +125,7 @@ class dashboardFundacionController
                 echo json_encode([
                     'data' => [],
                     'success' => false,
-                    'message' => 'Este recurso es solo para fundaciones'
+                     'Este recurso es solo para fundaciones'
                 ], JSON_PRETTY_PRINT);
                 return;
             }
@@ -134,13 +134,13 @@ class dashboardFundacionController
             echo json_encode([
                 'data' => $data,
                 'success' => true,
-                'message' => 'Datos de adopciones por especie obtenidos correctamente'
+                 'Datos de adopciones por especie obtenidos correctamente'
             ], JSON_PRETTY_PRINT);
         } catch (Exception $e) {
             echo json_encode([
                 'data' => [],
                 'success' => false,
-                'message' => 'Error al obtener datos: ' . $e->getMessage()
+                 'Error al obtener datos: ' . $e->getMessage()
             ], JSON_PRETTY_PRINT);
         }
     }
@@ -155,7 +155,7 @@ class dashboardFundacionController
                 echo json_encode([
                     'data' => [],
                     'success' => false,
-                    'message' => 'Este recurso es solo para fundaciones'
+                     'Este recurso es solo para fundaciones'
                 ], JSON_PRETTY_PRINT);
                 return;
             }
@@ -164,13 +164,13 @@ class dashboardFundacionController
             echo json_encode([
                 'data' => $data,
                 'success' => true,
-                'message' => 'Datos de causas activas por tipo obtenidos correctamente'
+                 'Datos de causas activas por tipo obtenidos correctamente'
             ], JSON_PRETTY_PRINT);
         } catch (Exception $e) {
             echo json_encode([
                 'data' => [],
                 'success' => false,
-                'message' => 'Error al obtener datos: ' . $e->getMessage()
+                 'Error al obtener datos: ' . $e->getMessage()
             ], JSON_PRETTY_PRINT);
         }
     }
@@ -185,7 +185,7 @@ class dashboardFundacionController
                 echo json_encode([
                     'data' => [],
                     'success' => false,
-                    'message' => 'Este recurso es solo para fundaciones'
+                     'Este recurso es solo para fundaciones'
                 ], JSON_PRETTY_PRINT);
                 return;
             }
@@ -194,13 +194,13 @@ class dashboardFundacionController
             echo json_encode([
                 'data' => $data,
                 'success' => true,
-                'message' => 'Datos de mascotas adoptadas por mes obtenidos correctamente'
+                 'Datos de mascotas adoptadas por mes obtenidos correctamente'
             ], JSON_PRETTY_PRINT);
         } catch (Exception $e) {
             echo json_encode([
                 'data' => [],
                 'success' => false,
-                'message' => 'Error al obtener datos: ' . $e->getMessage()
+                 'Error al obtener datos: ' . $e->getMessage()
             ], JSON_PRETTY_PRINT);
         }
     }
@@ -215,7 +215,7 @@ class dashboardFundacionController
             echo json_encode([
                 'data' => [],
                 'success' => false,
-                'message' => 'Este recurso es solo para fundaciones'
+                 'Este recurso es solo para fundaciones'
             ], JSON_PRETTY_PRINT);
             return;
         }
@@ -224,13 +224,13 @@ class dashboardFundacionController
         echo json_encode([
             'data' => $data,
             'success' => true,
-            'message' => 'Datos de donaciones por mes obtenidos correctamente'
+             'Datos de donaciones por mes obtenidos correctamente'
         ], JSON_PRETTY_PRINT);
     } catch (Exception $e) {
         echo json_encode([
             'data' => [],
             'success' => false,
-            'message' => 'Error al obtener datos: ' . $e->getMessage()
+             'Error al obtener datos: ' . $e->getMessage()
         ], JSON_PRETTY_PRINT);
     }
 }
@@ -265,7 +265,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             echo json_encode([
                 'data' => [],
                 'success' => false,
-                'message' => 'Acción no válida'
+                 'Acción no válida'
             ]);
             break;
     }

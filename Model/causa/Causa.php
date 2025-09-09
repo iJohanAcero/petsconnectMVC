@@ -87,10 +87,18 @@ class Causa
     // Eliminar causa
     public function delete($id)
     {
-        $statement = $this->db->prepare("DELETE FROM t_causa WHERE id_causa = :id");
-        $statement->bindParam(':id', $id);
-
-        return $statement->execute(); // Devuelve true o false
+        try {
+            $sql = "DELETE FROM t_causa WHERE id_causa = :id";
+            $stmt = $this->db->prepare($sql);
+            $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+            return $stmt->execute();
+        } catch (\PDOException $e) {
+            // Verifica si es un error de clave foránea
+            if ($e->getCode() == "23000") {
+                throw new \Exception("No se puede eliminar esta causa porque tiene donaciones asociadas.");
+            }
+            throw $e; // otros errores se lanzan normalmente
+        }
     }
 
     public function getCausasPorFundacion($nit_fundacion)

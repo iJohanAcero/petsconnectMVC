@@ -68,6 +68,9 @@ if (isset($_SESSION["user"]["id_usuario"])) {
                     <th class="py-3 border-0 text-center" style="min-width: 120px;">
                         <i class="uil uil-building me-1"></i>Nit Fundación
                     </th>
+                    <th class="py-3 border-0 text-center" style="min-width: 120px;">
+                        <i class="uil uil-microchip me-1"></i>Chip <!-- ✅ Nueva columna -->
+                    </th>
                     <th class="py-3 border-0 text-center" style="min-width: 100px;">
                         <i class="uil uil-image me-1"></i>Imagen
                     </th>
@@ -75,6 +78,7 @@ if (isset($_SESSION["user"]["id_usuario"])) {
                         <i class="uil uil-gear me-1"></i>Acciones
                     </th>
                 </tr>
+
             </thead>
             <tbody>
                 <?php
@@ -92,7 +96,6 @@ if (isset($_SESSION["user"]["id_usuario"])) {
                             <td class="fw-bold" style="color: #1a1333;"><?= $mascota['id_mascota'] ?></td>
                             <td>
                                 <div class="d-flex align-items-center">
-        
                                     <span class="fw-semibold"><?= htmlspecialchars($mascota['nombre']) ?></span>
                                 </div>
                             </td>
@@ -138,10 +141,20 @@ if (isset($_SESSION["user"]["id_usuario"])) {
                             <td class="text-center">
                                 <small class="text-muted fw-medium"><?= $mascota['nit_fundacion'] ?></small>
                             </td>
+
+                            <!-- ✅ Nueva columna CHIP -->
+                            <td class="text-center">
+                                <?php if (!empty($mascota['numero_chip'])): ?>
+                                    <span class="fw-semibold text-dark"><?= htmlspecialchars($mascota['numero_chip']) ?></span>
+                                <?php else: ?>
+                                    <span class="text-muted fst-italic">Sin chip</span>
+                                <?php endif; ?>
+                            </td>
+
                             <td class="text-center">
                                 <?php if (!empty($mascota['imagen'])): ?>
                                     <div class="position-relative d-inline-block">
-                                        <img src="<?= htmlspecialchars($mascota['imagen']) ?>"
+                                        <img src="<?=($mascota['imagen']) ?>"
                                             alt="Mascota"
                                             class="img-thumbnail border-2 shadow-sm"
                                             style="width: 50px; height: 50px; object-fit: cover; border-color: #1a1333 !important; border-radius: 10px !important;">
@@ -174,6 +187,7 @@ if (isset($_SESSION["user"]["id_usuario"])) {
                                 </div>
                             </td>
                         </tr>
+
                     <?php
                     }
                 } else {
@@ -223,16 +237,17 @@ if (isset($_SESSION["user"]["id_usuario"])) {
                             </h6>
                         </div>
 
+                        <!-- ✅ Número de chip -->
                         <div class="col-md-6 mb-3">
                             <label class="form-label fw-semibold">
-                                <i class="uil uil-credit-card-2-front text-primary me-1"></i>
-                                ID Número de chip
-                                <span class="text-danger">*</span>
+                                <i class="uil uil-microchip text-primary me-1"></i>
+                                Número de chip
                             </label>
-                            <input type="text" name="id_mascota" class="form-control form-control border-2"
-                                placeholder="Ej: 123456789" required>
+                            <input type="text" name="numero_chip" class="form-control form-control border-2"
+                                placeholder="Ej: 123456789">
                         </div>
 
+                        <!-- Nombre -->
                         <div class="col-md-6 mb-3">
                             <label class="form-label fw-semibold">
                                 <i class="uil uil-tag text-primary me-1"></i>
@@ -272,7 +287,6 @@ if (isset($_SESSION["user"]["id_usuario"])) {
                                 Tipo de Mascota
                                 <span class="text-danger">*</span>
                             </label>
-
                             <select name="id_tipo_mascota" class="form-select form-select border-2" required>
                                 <option value="">Seleccione...</option>
                                 <?php if (!empty($tipos) && is_array($tipos)): ?>
@@ -302,7 +316,6 @@ if (isset($_SESSION["user"]["id_usuario"])) {
                                 Estado Actual
                                 <span class="text-danger">*</span>
                             </label>
-
                             <select name="id_estado_adopcion" class="form-select form-select border-2" required>
                                 <option value="">Seleccione...</option>
                                 <?php foreach ($estados as $estado): ?>
@@ -341,8 +354,11 @@ if (isset($_SESSION["user"]["id_usuario"])) {
                         </div>
                     </div>
 
+                    <!-- Hidden inputs -->
                     <input type="hidden" name="nit_fundacion" value="<?php echo htmlspecialchars($nit_fundacion); ?>">
+                    <input type="hidden" name="id_mascota" value=""> <!-- ✅ Hidden para edición -->
                 </div>
+
 
                 <!-- Footer con botones mejorados -->
                 <div class="modal-footer bg-light border-0 p-4">
@@ -372,9 +388,9 @@ if (isset($_SESSION["user"]["id_usuario"])) {
                 </h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            
+
             <div class="modal-body p-0" id="contenido-editar">
-                
+
             </div>
         </div>
     </div>

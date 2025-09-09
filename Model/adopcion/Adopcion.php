@@ -415,11 +415,21 @@ class Adopcion
             f.motivacion,
             f.expectativas,
             f.fecha_respuesta,
+
             -- Datos de la mascota
-            m.nombre as nombre_mascota,
-            m.imagen as imagen_mascota
+            m.nombre AS nombre_mascota,
+            m.imagen AS imagen_mascota,
+
+            -- Datos del usuario (contacto)
+            u.nombre AS nombre_usuario,
+            u.apellido AS apellido_usuario,
+            u.email AS email_usuario,
+            u.telefono AS telefono_usuario,
+            u.direccion AS direccion_usuario
+
         FROM t_formulario_adopcion f
         INNER JOIN t_mascota m ON f.id_mascota = m.id_mascota
+        INNER JOIN t_usuario u ON f.id_usuario = u.id_usuario
         WHERE f.id_formulario = ?";
 
             // Ejecutar la consulta

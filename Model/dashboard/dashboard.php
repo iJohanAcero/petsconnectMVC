@@ -99,11 +99,14 @@ class Dashboard
 
     public function getUsuariosRegistrados()
     {
-        $sql = "SELECT tipo_usuario,
-                   COUNT(*) AS total
-            FROM t_registro
-            WHERE tipo_usuario IN ('GUARDIAN','FUNDACION')
-            GROUP BY tipo_usuario";
+        $sql = "
+        SELECT 'GUARDIAN' AS tipo_usuario, COUNT(*) AS total
+        FROM t_guardian
+        UNION ALL
+        SELECT 'FUNDACION' AS tipo_usuario, COUNT(*) AS total
+        FROM t_fundacion
+    ";
+
         $stmt = $this->db->query($sql);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }

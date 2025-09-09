@@ -66,14 +66,19 @@ try {
         </legend>
 
         <div class="row">
+            <!-- ✅ Nuevo campo Número de Chip -->
             <div class="col-md-6 mb-3">
-                <label for="id_mascota" class="form-label fw-semibold">
-                    <i class="uil uil-tag me-1" style="color: #1a1333;"></i>ID Mascota
+                <label for="numero_chip" class="form-label fw-semibold">
+                    <i class="uil uil-microchip me-1" style="color: #1a1333;"></i>
+                    Número de Chip
                 </label>
-                <input type="text" class="form-control border-2" id="id_mascota" name="id_mascota"
-                    style="border-color: rgba(26, 19, 51, 0.3);" value="<?= htmlspecialchars($mascota['id_mascota']) ?>"
-                    readonly>
+                <input type="text" class="form-control border-2" id="numero_chip" name="numero_chip"
+                    style="border-color: rgba(26, 19, 51, 0.3);"
+                    value="<?= htmlspecialchars($mascota['numero_chip'] ?? '') ?>"
+                    placeholder="Ej: 123456789">
             </div>
+
+            <!-- Nombre -->
             <div class="col-md-6 mb-3">
                 <label for="nombre" class="form-label fw-semibold">
                     <i class="uil uil-tag me-1" style="color: #1a1333;"></i>
@@ -100,8 +105,7 @@ try {
                     <i class="uil uil-venus-mars me-1" style="color: #1a1333;"></i>
                     Sexo <span class="text-danger">*</span>
                 </label>
-                <select class="form-select border-2" id="sexo" name="sexo" style="border-color: rgba(26, 19, 51, 0.3);"
-                    required>
+                <select class="form-select border-2" id="sexo" name="sexo" style="border-color: rgba(26, 19, 51, 0.3);" required>
                     <option value="">Seleccione...</option>
                     <option value="macho" <?= ($mascota['sexo'] ?? '') == 'macho' ? 'selected' : '' ?>>Macho</option>
                     <option value="hembra" <?= ($mascota['sexo'] ?? '') == 'hembra' ? 'selected' : '' ?>>Hembra</option>
@@ -119,12 +123,12 @@ try {
                     style="border-color: rgba(26, 19, 51, 0.3);" required>
                     <option value="">Seleccione...</option>
                     <?php if (!empty($tipos)): ?>
-                    <?php foreach ($tipos as $tipo): ?>
-                    <option value="<?= htmlspecialchars($tipo['id_tipo_mascota']) ?>"
-                        <?= ($tipo['id_tipo_mascota'] ?? '') == ($mascota['id_tipo_mascota'] ?? '') ? 'selected' : '' ?>>
-                        <?= htmlspecialchars($tipo['especie'] ?? 'N/A') ?>
-                    </option>
-                    <?php endforeach; ?>
+                        <?php foreach ($tipos as $tipo): ?>
+                            <option value="<?= htmlspecialchars($tipo['id_tipo_mascota']) ?>"
+                                <?= ($tipo['id_tipo_mascota'] ?? '') == ($mascota['id_tipo_mascota'] ?? '') ? 'selected' : '' ?>>
+                                <?= htmlspecialchars($tipo['especie'] ?? 'N/A') ?>
+                            </option>
+                        <?php endforeach; ?>
                     <?php endif; ?>
                 </select>
             </div>
@@ -143,18 +147,23 @@ try {
                     <i class="uil uil-shield-check me-1" style="color: #1a1333;"></i>
                     Estado Actual <span class="text-danger">*</span>
                 </label>
-                <select class="form-select border-2" id="id_estado_adopcion" name="id_estado_adopcion"
-                    style="border-color: rgba(26, 19, 51, 0.3);" required disabled>
+
+                <!-- Select deshabilitado (solo visual) -->
+                <select class="form-select border-2" id="id_estado_adopcion_disabled"
+                    style="border-color: rgba(26, 19, 51, 0.3);" disabled>
                     <option value="">Seleccione...</option>
                     <?php if (!empty($estados)): ?>
-                    <?php foreach ($estados as $estado): ?>
-                    <option value="<?= htmlspecialchars($estado['id_estado_adopcion']) ?>"
-                        <?= ($estado['id_estado_adopcion'] ?? '') == ($mascota['id_estado_adopcion'] ?? '') ? 'selected' : '' ?>>
-                        <?= htmlspecialchars($estado['tipo_estado'] ?? '') ?>
-                    </option>
-                    <?php endforeach; ?>
+                        <?php foreach ($estados as $estado): ?>
+                            <option value="<?= htmlspecialchars($estado['id_estado_adopcion']) ?>"
+                                <?= ($estado['id_estado_adopcion'] ?? '') == ($mascota['id_estado_adopcion'] ?? '') ? 'selected' : '' ?>>
+                                <?= htmlspecialchars($estado['tipo_estado'] ?? '') ?>
+                            </option>
+                        <?php endforeach; ?>
                     <?php endif; ?>
                 </select>
+
+                <!-- Hidden que sí envía el valor real -->
+                <input type="hidden" name="id_estado_adopcion" value="<?= htmlspecialchars($mascota['id_estado_adopcion']) ?>">
             </div>
             <div class="col-md-6 mb-3">
                 <label for="input-imagen" class="form-label fw-semibold">
@@ -212,22 +221,23 @@ try {
     </div>
 </form>
 
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    const inputImagen = document.getElementById('input-imagen');
-    const previewImagen = document.getElementById('preview-imagen');
 
-    if (inputImagen && previewImagen) {
-        inputImagen.addEventListener('change', function(e) {
-            const file = e.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    previewImagen.src = e.target.result;
-                };
-                reader.readAsDataURL(file);
-            }
-        });
-    }
-});
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const inputImagen = document.getElementById('input-imagen');
+        const previewImagen = document.getElementById('preview-imagen');
+
+        if (inputImagen && previewImagen) {
+            inputImagen.addEventListener('change', function(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        previewImagen.src = e.target.result;
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+        }
+    });
 </script>

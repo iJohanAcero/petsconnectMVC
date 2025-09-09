@@ -28,7 +28,7 @@ class InformeController
             echo json_encode([
                 'data' => [],
                 'success' => false,
-                'message' => 'Usuario no autenticado'
+                 'Usuario no autenticado'
             ]);
             exit;
         }
@@ -47,7 +47,7 @@ class InformeController
             echo json_encode([
                 'data' => [],
                 'success' => false,
-                'message' => 'Usuario sin fundación asignada'
+                 'Usuario sin fundación asignada'
             ]);
             exit;
         }
@@ -69,7 +69,7 @@ class InformeController
             echo json_encode([
                 'data' => [],
                 'success' => false,
-                'message' => $e->getMessage()
+                 $e->getMessage()
             ]);
         }
     }
@@ -88,7 +88,7 @@ class InformeController
             echo json_encode([
                 'data' => [],
                 'success' => false,
-                'message' => $e->getMessage()
+                 $e->getMessage()
             ]);
         }
     }
@@ -107,7 +107,7 @@ class InformeController
             echo json_encode([
                 'data' => [],
                 'success' => false,
-                'message' => $e->getMessage()
+                 $e->getMessage()
             ]);
         }
     }
@@ -129,7 +129,7 @@ class InformeController
             echo json_encode([
                 'data' => [],
                 'success' => false,
-                'message' => $e->getMessage()
+                 $e->getMessage()
             ]);
         }
     }
@@ -150,7 +150,7 @@ class InformeController
             echo json_encode([
                 'data' => [],
                 'success' => false,
-                'message' => $e->getMessage()
+                 $e->getMessage()
             ]);
         }
     }
@@ -168,7 +168,7 @@ class InformeController
         echo json_encode([
             'data' => [],
             'success' => false,
-            'message' => $e->getMessage()
+             $e->getMessage()
         ]);
     }
 }

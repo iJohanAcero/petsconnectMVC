@@ -38,19 +38,18 @@ class MascotaController
         return ['valid' => true];
     }
 
-    // 1️REGISTRAR mascota
+    //REGISTRAR mascota
     public function registrar()
     {
-        $id_mascota = $_POST['id_mascota'] ?? null;
         $nombre = $_POST['nombre'] ?? '';
         $edad_meses = $_POST['edad_meses'] ?? '';
         $sexo = $_POST['sexo'] ?? '';
+        $numero_chip = $_POST['numero_chip'] ?? null; // Nuevo campo
         $imagen = null;
         $public_id = null;
 
-    
+        // 📌 Validación y subida de imagen
         if (isset($_FILES['imagen']) && $_FILES['imagen']['error'] === UPLOAD_ERR_OK) {
-            
             $validation = $this->validateImage($_FILES['imagen']);
             if (!$validation['valid']) {
                 echo "Error: " . $validation['error'];
@@ -81,8 +80,8 @@ class MascotaController
             return;
         }
 
+        // ✅ Llamada al modelo con el nuevo método add() (sin id_mascota)
         $resultado = $this->modeloMascota->add(
-            $id_mascota,
             $nombre,
             $edad_meses,
             $sexo,
@@ -90,11 +89,13 @@ class MascotaController
             $id_tipo_mascota,
             $nit_fundacion,
             $id_estado_adopcion,
-            $public_id 
+            $numero_chip,
+            $public_id
         );
 
         echo $resultado ? "Mascota registrada correctamente" : "Error al registrar mascota";
     }
+
 
     // ACTUALIZAR mascota
     public function editar()
@@ -103,13 +104,16 @@ class MascotaController
         $nombre = $_POST['nombre'] ?? '';
         $edad_meses = $_POST['edad_meses'] ?? '';
         $sexo = $_POST['sexo'] ?? '';
+        $numero_chip = $_POST['numero_chip'] ?? null;
 
+        // Buscar datos actuales de la mascota
         $mascotaActual = $this->modeloMascota->getId($id_mascota);
         $imagen = $mascotaActual['imagen'];
         $public_id = $mascotaActual['public_id'] ?? null;
 
+        // 📌 Si se sube nueva imagen
         if (isset($_FILES['imagen']) && $_FILES['imagen']['error'] === UPLOAD_ERR_OK) {
-            
+
             $validation = $this->validateImage($_FILES['imagen']);
             if (!$validation['valid']) {
                 echo "Error: " . $validation['error'];
@@ -139,6 +143,7 @@ class MascotaController
         $id_tipo_mascota = $_POST['id_tipo_mascota'] ?? null;
         $id_estado_adopcion = $_POST['id_estado_adopcion'] ?? null;
 
+        // ✅ Llamada al modelo con numero_chip incluido
         $resultado = $this->modeloMascota->update(
             $id_mascota,
             $nombre,
@@ -147,11 +152,13 @@ class MascotaController
             $imagen,
             $id_tipo_mascota,
             $id_estado_adopcion,
+            $numero_chip,
             $public_id
         );
 
         echo $resultado ? "Mascota actualizada correctamente" : "Error al actualizar mascota";
     }
+
 
     // ELIMINAR mascota 
     public function eliminar()
@@ -266,7 +273,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $controller->editar();
     } elseif ($accion === 'eliminar') {
         $controller->eliminar();
-    } 
+    }
 }
 
 //Manejo de peticiones GET 
