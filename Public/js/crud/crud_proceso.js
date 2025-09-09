@@ -26,14 +26,14 @@ function abrirModalCrearAdopcion() {
 }
 
 function inicializarAdopcion() {
-    // ✅ BOTONES EDITAR - Actualizar Estado
+    // BOTONES EDITAR 
     const botonesEditar = document.querySelectorAll(".btn-editar-adopcion");
     botonesEditar.forEach(btn => {
         btn.addEventListener("click", function () {
             const idAdopcion = this.dataset.id;
             const estadoActual = this.dataset.estadoActual;
             
-            // ✅ VERIFICAR QUE EL MODAL EXISTE ANTES DE USARLO
+            //VERIFICAR QUE EL MODAL EXISTE ANTES DE USARLO
             const modalElement = document.getElementById("modalActualizarEstado");
             const procesoIdInput = document.getElementById("procesoIdEstado");
             const nuevoEstadoSelect = document.getElementById("nuevoEstadoMascota");
@@ -104,7 +104,6 @@ function inicializarAdopcion() {
                     if (modal) modal.hide();
                 }
                 
-                // Recargar el CRUD
                 cargarCrudAdopcion();
             })
             .catch(error => {
@@ -128,7 +127,7 @@ botonesDescargarPDF.forEach(btn => {
     });
 });
 
-    // ✅ BOTONES ELIMINAR
+    // BOTONES ELIMINAR
     const botonesEliminar = document.querySelectorAll(".btn-eliminar-adopcion");
     botonesEliminar.forEach(btn => {
         btn.addEventListener("click", function () {
@@ -166,5 +165,4 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 });
 
-// Solo si estás usando type="module"
 window.cargarCrudAdopcion = cargarCrudAdopcion;

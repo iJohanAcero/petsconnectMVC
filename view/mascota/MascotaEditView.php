@@ -66,7 +66,6 @@ try {
         </legend>
 
         <div class="row">
-            <!-- ✅ Nuevo campo Número de Chip -->
             <div class="col-md-6 mb-3">
                 <label for="numero_chip" class="form-label fw-semibold">
                     <i class="uil uil-microchip me-1" style="color: #1a1333;"></i>
@@ -148,7 +147,7 @@ try {
                     Estado Actual <span class="text-danger">*</span>
                 </label>
 
-                <!-- Select deshabilitado (solo visual) -->
+                <!-- Select deshabilitado-->
                 <select class="form-select border-2" id="id_estado_adopcion_disabled"
                     style="border-color: rgba(26, 19, 51, 0.3);" disabled>
                     <option value="">Seleccione...</option>
@@ -161,8 +160,7 @@ try {
                         <?php endforeach; ?>
                     <?php endif; ?>
                 </select>
-
-                <!-- Hidden que sí envía el valor real -->
+>
                 <input type="hidden" name="id_estado_adopcion" value="<?= htmlspecialchars($mascota['id_estado_adopcion']) ?>">
             </div>
             <div class="col-md-6 mb-3">

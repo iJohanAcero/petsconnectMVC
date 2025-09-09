@@ -49,19 +49,16 @@ class PerfilController
 
             $idPerfil = (int)$_GET['id'];
 
-            // 🔹 Obtener perfil
-            // En getPerfilPorId()
+            // Obtener perfil
             $perfil = $this->perfilModel->getPerfilPorIdPerfil($idPerfil);
 
             if (!$perfil) {
                 throw new Exception('Perfil no encontrado');
             }
 
-            // ✅ Usar id_usuario (no idPerfil)
+            // Usar id_usuario
             $perfil['mascotas'] = $this->perfilModel->mascotasFundacion($perfil['id_usuario']);
 
-
-            // 🔹 Respuesta final
             header('Content-Type: application/json');
             echo json_encode([
                 'success' => true,
@@ -72,7 +69,7 @@ class PerfilController
             http_response_code(400);
             echo json_encode([
                 'success' => false,
-                 $e->getMessage()
+                $e->getMessage()
             ]);
         }
     }
@@ -123,7 +120,6 @@ class PerfilController
                 }
             }
 
-            // Validar campos obligatorios
             if (empty($nombre) || empty($descripcion) || empty($preferencia)) {
                 echo json_encode(['success' => false, 'message' => 'Todos los campos son obligatorios.']);
                 exit;
@@ -136,19 +132,19 @@ class PerfilController
             if ($resultadoGuardian || $resultadoFundacion) {
                 echo json_encode([
                     'success' => true,
-                     'Perfil actualizado correctamente.'
+                    'Perfil actualizado correctamente.'
                 ]);
             } else {
                 echo json_encode([
                     'success' => false,
-                     'Error al actualizar el perfil.'
+                    'Error al actualizar el perfil.'
                 ]);
             }
         } catch (Exception $e) {
             header('Content-Type: application/json');
             echo json_encode([
                 'success' => false,
-                 'Error: ' . $e->getMessage()
+                'Error: ' . $e->getMessage()
             ]);
         }
     }
@@ -176,12 +172,12 @@ class PerfilController
 
             echo json_encode([
                 'success' => $resultado,
-                 $resultado ? 'Perfil eliminado correctamente' : 'Error al eliminar perfil'
+                $resultado ? 'Perfil eliminado correctamente' : 'Error al eliminar perfil'
             ]);
         } catch (Exception $e) {
             echo json_encode([
                 'success' => false,
-                 'Error: ' . $e->getMessage()
+                'Error: ' . $e->getMessage()
             ]);
         }
     }

@@ -30,8 +30,7 @@ class Informe
                 INNER JOIN t_estado_adopcion ea ON m.id_estado_adopcion = ea.id_estado_adopcion
                 WHERE m.edad_meses >= 36
                   AND ea.tipo_estado = 'En adopción'";
-
-        // Filtrar por fundación
+                  
         if ($nitFundacion !== null) {
             $sql .= " AND m.nit_fundacion = ?";
             $stmt = $this->db->prepare($sql);

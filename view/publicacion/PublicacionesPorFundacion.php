@@ -92,7 +92,7 @@ if (isset($_SESSION["user"]["id_usuario"])) {
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <!-- ✅ Formulario sin method ni action -->
+                    <!-- Formulario sin method ni action -->
                     <form id="form-registrar-publicacion" enctype="multipart/form-data">
                         <input type="hidden" name="accion" value="registrar">
                         <div class="mb-3">

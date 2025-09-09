@@ -31,7 +31,7 @@ function inicializarDonacion() {
         btnAbrirModal.addEventListener("click", abrirModalCrearDonacion);
     }
 
-    // ✅ REGISTRAR DONACION
+    //REGISTRAR DONACION
     const formRegistrar = document.getElementById("form-registrar-donacion");
 
     if (formRegistrar) {
@@ -64,7 +64,7 @@ function inicializarDonacion() {
         };
     }
 
-    // ✅ BOTONES EDITAR
+    // BOTONES EDITAR
     const botonesEditar = document.querySelectorAll(".btn-editar-donacion");
 
     botonesEditar.forEach(btn => {
@@ -125,7 +125,7 @@ function inicializarDonacion() {
         });
     });
 
-    // ✅ BOTONES ELIMINAR
+    // BOTONES ELIMINAR
     const botonesEliminar = document.querySelectorAll(".btn-eliminar-donacion");
     botonesEliminar.forEach(btn => {
         btn.addEventListener("click", function () {
@@ -151,7 +151,7 @@ function inicializarDonacion() {
         });
     });
 
-     // ✅ BOTONES RECIBO (Factura PDF)
+     // BOTONES RECIBO (Factura PDF)
     const botonesRecibo = document.querySelectorAll(".btn-recibo-donacion");
     botonesRecibo.forEach(btn => {
         btn.addEventListener("click", function () {
@@ -162,7 +162,7 @@ function inicializarDonacion() {
                 return;
             }
 
-            // 🔹 Redirige al controlador que genera el PDF
+            // Redirige al controlador que genera el PDF
             window.location.href = `${window.BASE_URL}/controller/donacion/DonacionController.php?action=generarFacturaDonacionPDF&id_donacion=${idDonacion}`;
         });
     });

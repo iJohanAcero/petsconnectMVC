@@ -59,7 +59,6 @@ class FundacionController
         $direccion = htmlspecialchars($_POST['direccion'] ?? '');
         $telefono = htmlspecialchars($_POST['telefono'] ?? '');
 
-        // Validar campos obligatorios
         if (empty($nit) || empty($nombre) || empty($apellido) || empty($email)) {
             echo "Todos los campos son obligatorios";
             return;

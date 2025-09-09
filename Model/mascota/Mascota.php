@@ -16,7 +16,7 @@ class Mascota
         $this->db = (new Conexion())->getConexion();
     }
 
-    // 1️⃣ Agregar nueva mascota 
+    //Agregar nueva mascota 
     public function add($nombre, $edad_meses, $sexo, $imagen, $id_tipo_mascota, $nit_fundacion, $id_estado_adopcion, $numero_chip = null, $public_id = null)
     {
         $statement = $this->db->prepare("INSERT INTO t_mascota
@@ -37,7 +37,7 @@ class Mascota
     }
 
 
-    // 2️⃣ Obtener todas las mascotas con JOINs para mostrar datos legibles
+    //Obtener todas las mascotas con JOINs para mostrar datos legibles
     public function getMascota()
     {
         $sql = "SELECT 
@@ -57,8 +57,6 @@ class Mascota
             LEFT JOIN t_tipo_mascota tm ON m.id_tipo_mascota = tm.id_tipo_mascota
             LEFT JOIN t_estado_adopcion ea ON m.id_estado_adopcion = ea.id_estado_adopcion";
 
-        error_log("Consulta SQL ejecutada: " . $sql);
-
         $stmt = $this->db->prepare($sql);
         $stmt->execute();
 
@@ -66,7 +64,7 @@ class Mascota
     }
 
 
-    // 3️⃣ Obtener mascota por ID (CORREGIDO - devuelve un solo array)
+    //Obtener mascota por ID (CORREGIDO - devuelve un solo array)
     public function getId($id)
     {
         $sql = "SELECT 
@@ -82,11 +80,10 @@ class Mascota
         $stmt->bindParam(':id', $id);
         $stmt->execute();
 
-        // ✅ CORREGIDO: Devuelve un solo registro, no array de arrays
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    // 4️⃣ Actualizar mascota
+    // Actualizar mascota
     public function update($id_mascota, $nombre, $edad_meses, $sexo, $imagen, $id_tipo_mascota, $id_estado_adopcion, $numero_chip = null, $public_id = null)
     {
         $statement = $this->db->prepare("UPDATE t_mascota SET
@@ -113,7 +110,7 @@ class Mascota
         return $statement->execute();
     }
 
-    // 5️⃣ Eliminar mascota 
+    // Eliminar mascota 
     public function delete($id_mascota)
     {
         $stmt = $this->db->prepare("DELETE FROM t_mascota WHERE id_mascota = :id");
@@ -122,7 +119,7 @@ class Mascota
         return $stmt->execute();
     }
 
-    // 6️⃣ NUEVO: Obtener todas las mascotas para carrusel/cartas
+    // Obtener todas las mascotas para carrusel/cartas
     public function getAllMascotasCarrusel()
     {
         $sql = "SELECT 
@@ -154,7 +151,7 @@ class Mascota
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    // 7️⃣ NUEVO: Obtener detalles específicos de una mascota
+    // Obtener detalles específicos de una mascota
     public function getDetallesPorId($id)
     {
         $sql = "SELECT 
@@ -189,7 +186,7 @@ class Mascota
     }
 
 
-    // 9️⃣ NUEVO: Filtrar mascotas por criterios
+    // Filtrar mascotas por criterios
     public function filtrarMascotas($especie = '', $edad = '', $genero = '')
     {
         $sql = "SELECT 
@@ -255,7 +252,7 @@ class Mascota
             }
         }
 
-        // Agregar HAVING si hay condiciones
+        // Agregar HAVING
         if (!empty($havingConditions)) {
             $sql .= " HAVING " . implode(' AND ', $havingConditions);
         }
@@ -264,7 +261,6 @@ class Mascota
 
         $stmt = $this->db->prepare($sql);
 
-        // Vincular parámetros
         foreach ($params as $key => $value) {
             $stmt->bindValue($key, $value);
         }
@@ -273,7 +269,7 @@ class Mascota
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    // 🔟 NUEVO: Obtener perfil completo de mascota
+    // Obtener perfil completo de mascota
     public function getPerfilCompletoPorId($id)
     {
         $sql = "SELECT 
@@ -296,6 +292,7 @@ class Mascota
                         WHEN m.edad_meses BETWEEN 37 AND 84 THEN 'adulto'
                         ELSE 'senior'
                     END as categoria_edad,
+                    
                     -- Contar otras mascotas de la misma fundación
                     (SELECT COUNT(*) FROM t_mascota m2 
                      WHERE m2.nit_fundacion = m.nit_fundacion 
@@ -319,7 +316,7 @@ class Mascota
     }
 
 
-    // Obtener todos los tipos de mascota (para llenar selects)
+    // Obtener todos los tipos de mascota
     public function getTiposMascota()
     {
         $rows = null;
@@ -334,7 +331,6 @@ class Mascota
     }
 
     // Obtener mascotas por fundación específica
-    // Obtener mascotas por fundación específica
     public function getMascotasPorFundacion($nit_fundacion)
     {
         $sql = "SELECT 
@@ -344,7 +340,7 @@ class Mascota
                 m.sexo,
                 m.imagen,
                 m.nit_fundacion,
-                m.numero_chip,      -- ✅ Campo agregado
+                m.numero_chip,  
                 m.public_id,
                 tm.especie,
                 ea.tipo_estado
@@ -361,7 +357,7 @@ class Mascota
     }
 
 
-    // Obtener todos los estados de adopción (para el select)
+    // Obtener todos los estados de adopción
     public function getEstadosAdopcion()
     {
         $rows = [];
@@ -375,7 +371,7 @@ class Mascota
         return $rows;
     }
 
-    // Obtener todos los NIT de fundaciones (solo para admin)
+    // Obtener todos los NIT de fundaciones
     public function getNitsFundacion()
     {
         $rows = [];

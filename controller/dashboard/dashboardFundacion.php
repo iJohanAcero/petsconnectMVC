@@ -18,7 +18,7 @@ class dashboardFundacionController
         $this->model = new Dashboard();
     }
 
-    // Método para verificar sesión y obtener NIT (igual que tu validación)
+    // Método para verificar sesión y obtener NIT
     private function verificarSesion()
     {
         $id_usuario = $_SESSION['user']['id_usuario'] ?? null;
@@ -36,7 +36,7 @@ class dashboardFundacionController
         // Verificar si es admin (admin ve todo)
         $esAdmin = Roles::esAdmin($id_usuario);
         if ($esAdmin) {
-            return null; // null significa "mostrar todo"
+            return null;
         }
 
         // Si no es admin, obtener NIT de la fundación
@@ -61,7 +61,7 @@ class dashboardFundacionController
 
         try {
             $nit = $this->verificarSesion();
-            if ($nit === null) { // admin
+            if ($nit === null) {
                 echo json_encode([
                     'data' => [],
                     'success' => false,
@@ -117,11 +117,10 @@ class dashboardFundacionController
 
     public function adopcionesPorEspecie()
     {
-        header('Content-Type: application/json'); // Siempre al inicio
-
+        header('Content-Type: application/json');
         try {
             $nit = $this->verificarSesion();
-            if ($nit === null) { // admin no puede
+            if ($nit === null) {
                 echo json_encode([
                     'data' => [],
                     'success' => false,
@@ -147,11 +146,11 @@ class dashboardFundacionController
 
     public function causasActivasPorTipo()
     {
-        header('Content-Type: application/json'); // Siempre al inicio
+        header('Content-Type: application/json'); 
 
         try {
             $nit = $this->verificarSesion();
-            if ($nit === null) { // admin no accede
+            if ($nit === null) {
                 echo json_encode([
                     'data' => [],
                     'success' => false,
@@ -207,11 +206,11 @@ class dashboardFundacionController
 
     public function donacionesPorMes()
 {
-    header('Content-Type: application/json'); // Siempre al inicio
+    header('Content-Type: application/json'); 
 
     try {
         $nit = $this->verificarSesion();
-        if ($nit === null) { // admin no accede
+        if ($nit === null) {
             echo json_encode([
                 'data' => [],
                 'success' => false,

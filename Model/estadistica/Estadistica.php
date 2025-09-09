@@ -48,7 +48,6 @@ public function obtenerEstadisticasNavbar() {
         return $estadisticas;
         
     } catch (Exception $e) {
-        error_log("Error obteniendo estadísticas navbar: " . $e->getMessage());
         return [
             'mascotas_disponibles' => 0,
             'adopciones_exitosas' => 0,

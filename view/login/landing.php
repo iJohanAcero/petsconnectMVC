@@ -901,20 +901,17 @@
             </div>
         </div>
     </footer>
-    <!-- ====== Footer End ====== -->
+    <!-- ====== Footer ====== -->
 
-    <!-- ====== Back To Top Start ====== -->
     <a href="javascript:void(0)" class="back-to-top">
         <i class="uil uil-angle-double-up"></i>
     </a>
-    <!-- ====== Back To Top End ====== -->
 
-    <!-- ====== All Javascript Files ====== -->
+    <!-- ======  Javascript  ====== -->
     <script src="Public/js/bootstrap.bundle.min.js"></script>
     <script src="Public/js/wow.min.js"></script>
     <script src="Public/js/main.js"></script>
     <script>
-        // ==== for menu scroll
         const pageLink = document.querySelectorAll(".ud-menu-scroll");
 
         pageLink.forEach((elem) => {
@@ -927,7 +924,6 @@
             });
         });
 
-        // section menu active
         function onScroll(event) {
             const sections = document.querySelectorAll(".ud-menu-scroll");
             const scrollPos =

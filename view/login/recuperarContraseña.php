@@ -34,7 +34,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['email'])) {
     <link rel="stylesheet" href="Public/css/ud-styles.css" />
 </head>
 
-<!-- <body style="background-color: f3f4fe; background-image: url('Public/images/login/background.jpg'); background-size:contain;"> -->
 <body id="hero">
         <video class="video-desktop" muted autoplay loop>
             <source src="Public/images/login/videobg.mp4" 

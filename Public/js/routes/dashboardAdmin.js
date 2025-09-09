@@ -78,7 +78,7 @@ function initializeCharts() {
     })
     .catch(err => console.error("Error cargando guardianes por mes:", err));
 
-    // Mascotas registradas por especie (felinas vs caninas)
+    // Mascotas registradas por especie
     fetch('/petsconnectMVC/Controller/dashboard/dashboard.php?accion=mascotasFelinasCaninas')
     .then(res => res.json())
     .then(json => {
@@ -165,7 +165,7 @@ function initializeCharts() {
             options: {
                 responsive: true,
                 plugins: {
-                    legend: { display: false }, // no es necesario para barras simples
+                    legend: { display: false },
                     tooltip: { enabled: true }
                 },
                 scales: {
@@ -197,7 +197,7 @@ function initializeCharts() {
                 }]
             },
             options: {
-                indexAxis: 'y', // 🔥 barras horizontales
+                indexAxis: 'y',
                 responsive: true,
                 plugins: {
                     legend: { display: false },

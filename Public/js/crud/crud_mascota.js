@@ -32,7 +32,7 @@ function inicializarMascota() {
         btnAbrirModal.addEventListener("click", abrirModalCrearMascota);
     }
 
-    // ✅ REGISTRAR MASCOTA
+    // REGISTRAR MASCOTA
     const formRegistrar = document.getElementById("form-registrar-mascota");
 
     if (formRegistrar) {
@@ -65,7 +65,7 @@ function inicializarMascota() {
         };
     }
 
-    // ✅ BOTONES EDITAR
+    // BOTONES EDITAR
     const botonesEditar = document.querySelectorAll(".btn-editar-mascota");
 
     botonesEditar.forEach(btn => {
@@ -126,7 +126,7 @@ function inicializarMascota() {
         });
     });
 
-    // ✅ BOTONES ELIMINAR
+    // BOTONES ELIMINAR
     const botonesEliminar = document.querySelectorAll(".btn-eliminar-mascota");
     botonesEliminar.forEach(btn => {
         btn.addEventListener("click", function () {

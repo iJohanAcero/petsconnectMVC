@@ -48,18 +48,18 @@ class Publicacion
         return $rows;
     }
 
-    // ✅ CORREGIDO: Obtener Publicacion por ID (devuelve un solo array)
+    //Obtener Publicacion por ID 
     public function getId($id)
     {
         $statement = $this->db->prepare("SELECT * FROM t_publicacion WHERE id_publicacion = :id");
         $statement->bindParam(':id', $id);
         $statement->execute();
         
-        // Devolver un solo registro, no un array de arrays
+        // Devolver un solo registro
         return $statement->fetch(PDO::FETCH_ASSOC);
     }
 
-    // ✅ CORREGIDO: Método para actualizar - ahora incluye imagen
+    //Método para actualizar - ahora incluye imagen
     public function update($id, $titulo, $contenido, $imagen, $public_id = null)
     {
         $statement = $this->db->prepare("UPDATE t_publicacion 

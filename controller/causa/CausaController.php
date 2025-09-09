@@ -106,7 +106,6 @@ class CausaController
         $imagen_url = $causaActual['imagen_url'];
         $public_id = $causaActual['public_id'] ?? null;
 
-        // Procesar nueva imagen si se sube
         if (isset($_FILES['imagen']) && $_FILES['imagen']['error'] === UPLOAD_ERR_OK) {
 
             $validation = $this->validateImage($_FILES['imagen']);
@@ -169,29 +168,17 @@ class CausaController
     }
 
 
-    // ✅ MÉTODO CORREGIDO
     public function getAllCausasCarrusel()
     {
         try {
-            // ✅ Agregamos logs para debug
-            error_log("Método getAllCausasCarrusel ejecutado");
-
             $causas = $this->modeloCausa->getAllCausasCarrusel();
 
-            error_log("Número de causas encontradas: " . count($causas));
-
-            // ✅ Limpiar cualquier output previo
             ob_clean();
-
             header('Content-Type: application/json');
             echo json_encode($causas);
             exit;
         } catch (Exception $e) {
-            error_log("Error en getAllCausasCarrusel: " . $e->getMessage());
-
-            // ✅ Limpiar output previo
             ob_clean();
-
             header('Content-Type: application/json');
             echo json_encode(['error' => 'Error al obtener causas: ' . $e->getMessage()]);
             exit;
@@ -263,8 +250,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if ($accion === 'getAllCausasCarrusel') {
         $controller->getAllCausasCarrusel();
-    } elseif ($accion === 'obtenerDetalleCausa') {  // ✅ NUEVA LÍNEA
-        $controller->obtenerDetalleCausa();          // ✅ NUEVA LÍNEA
+    } elseif ($accion === 'obtenerDetalleCausa') { 
+        $controller->obtenerDetalleCausa();          
     } elseif ($accion === 'registrar') {
         $controller->registrar();
     } elseif ($accion === 'editar') {

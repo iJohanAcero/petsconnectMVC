@@ -73,7 +73,6 @@ class Perfil
         return false;
     }
 
-    // Agregar ESTE método nuevo, sin tocar el existente
     public function getPerfilPorIdPerfil($id_perfil)
     {   // Buscar en fundacion usando id_perfil
         $stmt = $this->db->prepare("
@@ -97,7 +96,7 @@ class Perfil
         return false;
     }
 
-    // Versión mejorada del método actualizarPerfilFundacion con public_id
+    // actualizarPerfilFundacion con public_id
     public function actualizarPerfilFundacion($id, $nombre, $descripcion, $preferencia, $imagen, $redes_sociales = [], $public_id = null)
     {
         try {
@@ -127,7 +126,7 @@ class Perfil
             // Obtener el id_perfil
             $id_perfil = $this->getIdPerfilPorUsuario($id);
 
-            // Actualizar redes sociales usando el método mejorado
+            // Actualizar redes sociales
             if (!$this->actualizarRedesSociales($id_perfil, $redes_sociales)) {
                 $this->db->rollBack();
                 return false;
@@ -137,7 +136,6 @@ class Perfil
             return true;
         } catch (Exception $e) {
             $this->db->rollBack();
-            error_log("Error actualizando perfil fundación: " . $e->getMessage());
             return false;
         }
     }
@@ -163,7 +161,6 @@ class Perfil
 
             return $stmt->execute();
         } catch (PDOException $e) {
-            // Si es el error personalizado del procedimiento
             if ($e->getCode() == '45000') {
                 throw new Exception($e->getMessage());
             }
@@ -185,7 +182,7 @@ class Perfil
         $fundacion = $stmt->fetch(PDO::FETCH_ASSOC);
 
         if (!$fundacion) {
-            return []; // si no hay fundación asociada, retornar vacío
+            return [];
         }
 
         $nit_fundacion = $fundacion['nit_fundacion'];
@@ -207,7 +204,7 @@ class Perfil
 
 
 
-    // Método mejorado para actualizar redes sociales
+    // actualizar redes sociales
     private function actualizarRedesSociales($id_perfil, $redes_sociales)
     {
         try {
@@ -232,12 +229,11 @@ class Perfil
 
             return true;
         } catch (Exception $e) {
-            error_log("Error actualizando redes sociales: " . $e->getMessage());
             return false;
         }
     }
 
-    // Método actualizado para guardian con public_id
+    // actualizar perfil guardian con public_id
     public function actualizarPerfilGuardian($id, $nombre, $descripcion, $preferencia, $imagen, $redes_sociales = [], $public_id = null)
     {
         try {
@@ -281,30 +277,7 @@ class Perfil
             return true;
         } catch (Exception $e) {
             $this->db->rollBack();
-            error_log("Error actualizando perfil guardián: " . $e->getMessage());
             return false;
-        }
-    }
-
-    // Método para eliminar perfil (si es necesario)
-    public function eliminarPerfil($id_usuario)
-    {
-        try {
-            $this->db->beginTransaction();
-
-            // Primero obtener el public_id antes de eliminar
-            $perfil = $this->getPerfilPorUsuario($id_usuario);
-            $public_id = $perfil['public_id'] ?? null;
-
-            // Lógica para eliminar el perfil según el tipo de usuario
-            // (debes implementar esto según tu estructura de base de datos)
-
-            $this->db->commit();
-            return ['success' => true, 'public_id' => $public_id];
-        } catch (Exception $e) {
-            $this->db->rollBack();
-            error_log("Error eliminando perfil: " . $e->getMessage());
-            return ['success' => false, 'public_id' => null];
         }
     }
 }

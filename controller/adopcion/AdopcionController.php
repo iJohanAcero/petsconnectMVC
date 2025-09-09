@@ -36,7 +36,6 @@ class AdopcionController
     
     error_log("ID usuario obtenido: " . $id_usuario);
     
-    // Resto de parámetros del POST
     $id_mascota        = $_POST['id_mascota']        ?? '';
     $nit_fundacion     = $_POST['nit_fundacion']     ?? '';
     $estado_civil      = $_POST['estado_civil']      ?? '';
@@ -58,15 +57,12 @@ class AdopcionController
     $motivacion        = $_POST['motivacion']        ?? '';
     $expectativas      = $_POST['expectativas']      ?? '';
     
-    // Si el NIT fundación está vacío, obtenerlo de la mascota
     if (empty($nit_fundacion) && !empty($id_mascota)) {
         $nit_fundacion = $this->modeloAdopcion->obtenerNitFundacionPorMascota($id_mascota);
-        error_log("NIT fundación obtenido automáticamente: " . $nit_fundacion);
     }
     
     $errores = [];
     
-    // Validar campos obligatorios  
     if (empty($id_mascota)) $errores[] = "ID mascota";
     if (empty($nit_fundacion)) $errores[] = "NIT fundación";
     if (empty($estado_civil)) $errores[] = "Estado civil";
@@ -140,12 +136,10 @@ class AdopcionController
     {
         try {
 
-            // Validar que lleguen los datos necesarios
             $id_proceso = $_POST['proceso_id'] ?? null;
             $nuevo_estado = $_POST['nuevo_estado'] ?? null;
             $nuevo_estado_mascota = $_POST['nuevo_estado_mascota'] ?? null;
 
-            // Llamar al modelo para actualizar (IMPORTANTE: ahora con 3 parámetros)
             $resultado = $this->modeloAdopcion->actualizarEstadoProceso(
                 $id_proceso,
                 $nuevo_estado,
@@ -201,9 +195,9 @@ class AdopcionController
     {
         try {
             $tipo_usuario = $_SESSION['tipo_usuario'] ?? null;
-            $nit_fundacion = $_SESSION['nit_fundacion'] ?? null; // Para fundaciones
-            $id_usuario = $_SESSION['id_usuario'] ?? null; // Para guardianes
-
+            $nit_fundacion = $_SESSION['nit_fundacion'] ?? null; 
+            $id_usuario = $_SESSION['id_usuario'] ?? null;
+            
             $procesos = $this->modeloAdopcion->getProcesosAdopcion($nit_fundacion, $id_usuario, $tipo_usuario);
 
             echo json_encode([

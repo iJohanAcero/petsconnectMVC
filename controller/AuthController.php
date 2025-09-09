@@ -50,7 +50,7 @@ class AuthController
                 $url = "http://localhost/petsconnectMVC/index.php?page=restablecer_contrasena&token=$token";
                 $mensaje = 'Haz clic en el siguiente enlace para cambiar tu contraseña: <a href="' . $url . '">Cambiar contraseña</a>';
 
-                // Envío de correo (opcional)
+                // Envío de correo
                 $mail = new PHPMailer(true);
 
                 try {
@@ -210,7 +210,6 @@ class AuthController
                 }
             }
         }
-        // SIEMPRE muestra la vista al final, así los mensajes se ven
         require __DIR__ . '/../view/login/restablecerContraseña.php';
     }
 
@@ -243,7 +242,6 @@ class AuthController
                     $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
                     $mail->Port = 587;
 
-                    // Mejor práctica: setFrom seguro y addReplyTo para el usuario
                     $mail->setFrom('petsconnectcol@gmail.com', 'Notificaciones PetsConnect');
                     $mail->addReplyTo($email, $fullname);
                     $mail->addAddress("petsconnectcol@gmail.com");

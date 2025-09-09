@@ -33,10 +33,10 @@ class InformeController
             exit;
         }
 
-        // Verificar si es admin (admin ve todo)
+        // Verificar si es admin 
         $esAdmin = Roles::esAdmin($id_usuario);
         if ($esAdmin) {
-            return null; // null significa "mostrar todo"
+            return null;
         }
 
         // Si no es admin, obtener NIT de la fundación
@@ -60,7 +60,7 @@ class InformeController
         try {
             $nitFundacion = $this->verificarSesion();
             header('Content-Type: application/json');
-            $data = $this->model->getMascotasAdultas($nitFundacion); // PASAR EL NIT
+            $data = $this->model->getMascotasAdultas($nitFundacion);
             echo json_encode([
                 'data' => $data,
                 'success' => true
@@ -79,7 +79,7 @@ class InformeController
         try {
             $nitFundacion = $this->verificarSesion();
             header('Content-Type: application/json');
-            $data = $this->model->getMascotasPopulares($nitFundacion); // PASAR EL NIT
+            $data = $this->model->getMascotasPopulares($nitFundacion);
             echo json_encode([
                 'data' => $data,
                 'success' => true
@@ -98,7 +98,7 @@ class InformeController
         try {
             $nitFundacion = $this->verificarSesion();
             header('Content-Type: application/json');
-            $data = $this->model->getCausasProgreso($nitFundacion); // PASAR EL NIT
+            $data = $this->model->getCausasProgreso($nitFundacion);
             echo json_encode([
                 'data' => $data,
                 'success' => true

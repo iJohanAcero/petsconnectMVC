@@ -18,7 +18,7 @@ class dashboardAdminController
         $this->model = new Dashboard();
     }
 
-    // Método para verificar sesión y obtener NIT (igual que tu validación)
+    // Método para verificar sesión y obtener NIT
     private function verificarSesion()
     {
         $id_usuario = $_SESSION['user']['id_usuario'] ?? null;
@@ -36,7 +36,7 @@ class dashboardAdminController
         // Verificar si es admin (admin ve todo)
         $esAdmin = Roles::esAdmin($id_usuario);
         if ($esAdmin) {
-            return null; // null significa "mostrar todo"
+            return null;
         }
 
         // Si no es admin, obtener NIT de la fundación

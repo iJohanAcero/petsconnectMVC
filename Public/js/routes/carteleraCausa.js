@@ -192,8 +192,8 @@ function crearCartaCausa(causa) {
     );
     
     // Truncar descripción para vista previa
-    const descripcionCorta = descripcion.length > 100 ? 
-        descripcion.substring(0, 100) + '...' : descripcion;
+    const descripcionCorta = descripcion.length > 70 ? 
+        descripcion.substring(0, 70) + '...' : descripcion;
     
     return `
 <div class="col-lg-6 col-md-6 col-12 mb-4">

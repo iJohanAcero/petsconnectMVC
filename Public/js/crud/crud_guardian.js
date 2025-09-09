@@ -17,7 +17,7 @@ window.cargarCrudGuardian = function () {
             }
         })
         .catch(error => {
-            console.error("❌ Error al cargar PHP:", error);
+            console.error("Error al cargar PHP:", error);
         });
 };
 
@@ -32,13 +32,13 @@ function abrirModalCrearGuardian() {
 
 // ===================== EVENTOS DEL CRUD ===================== //
 function inicializarEventosGuardian() {
-    // ➕ Abrir modal de registro
+    // Abrir modal de registro
     const btnAbrirModal = document.getElementById("btn-abrir-modal-guardian");
     if (btnAbrirModal) {
         btnAbrirModal.addEventListener("click", abrirModalCrearGuardian);
     }
 
-    // ✅ FORMULARIO DE REGISTRO
+    // FORMULARIO DE REGISTRO
     const formRegistrar = document.getElementById("form-registrar-guardian");
 
     if (formRegistrar) {
@@ -65,7 +65,7 @@ function inicializarEventosGuardian() {
         };
     }
 
-    // ✏️ BOTONES DE EDITAR
+    // BOTONES DE EDITAR
     const botonesEditar = document.querySelectorAll(".btn-editar-guardian");
     botonesEditar.forEach(boton => {
         boton.addEventListener("click", function () {
@@ -106,12 +106,12 @@ function inicializarEventosGuardian() {
                     }
                 })
                 .catch(error => {
-                    console.error("❌ Error al cargar GuardianEdit.php:", error);
+                    console.error("Error al cargar GuardianEdit.php:", error);
                 });
         });
     });
 
-    // 🗑️ BOTONES DE ELIMINAR - CORREGIDO
+    // BOTONES DE ELIMINAR - CORREGIDO
     const botonesEliminar = document.querySelectorAll(".btn-eliminar-guardian");
     botonesEliminar.forEach(btn => {
         btn.addEventListener("click", function () {
@@ -131,7 +131,7 @@ function inicializarEventosGuardian() {
                         cargarCrudGuardian();
                     })
                     .catch(error => {
-                        console.error("❌ Error al eliminar:", error);
+                        console.error("Error al eliminar:", error);
                     });
             }
         });

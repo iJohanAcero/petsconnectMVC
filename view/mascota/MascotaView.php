@@ -69,7 +69,7 @@ if (isset($_SESSION["user"]["id_usuario"])) {
                         <i class="uil uil-building me-1"></i>Nit Fundación
                     </th>
                     <th class="py-3 border-0 text-center" style="min-width: 120px;">
-                        <i class="uil uil-microchip me-1"></i>Chip <!-- ✅ Nueva columna -->
+                        <i class="uil uil-microchip me-1"></i>Chip
                     </th>
                     <th class="py-3 border-0 text-center" style="min-width: 100px;">
                         <i class="uil uil-image me-1"></i>Imagen
@@ -142,7 +142,6 @@ if (isset($_SESSION["user"]["id_usuario"])) {
                                 <small class="text-muted fw-medium"><?= $mascota['nit_fundacion'] ?></small>
                             </td>
 
-                            <!-- ✅ Nueva columna CHIP -->
                             <td class="text-center">
                                 <?php if (!empty($mascota['numero_chip'])): ?>
                                     <span class="fw-semibold text-dark"><?= htmlspecialchars($mascota['numero_chip']) ?></span>
@@ -237,7 +236,6 @@ if (isset($_SESSION["user"]["id_usuario"])) {
                             </h6>
                         </div>
 
-                        <!-- ✅ Número de chip -->
                         <div class="col-md-6 mb-3">
                             <label class="form-label fw-semibold">
                                 <i class="uil uil-microchip text-primary me-1"></i>
@@ -356,7 +354,7 @@ if (isset($_SESSION["user"]["id_usuario"])) {
 
                     <!-- Hidden inputs -->
                     <input type="hidden" name="nit_fundacion" value="<?php echo htmlspecialchars($nit_fundacion); ?>">
-                    <input type="hidden" name="id_mascota" value=""> <!-- ✅ Hidden para edición -->
+                    <input type="hidden" name="id_mascota" value="">
                 </div>
 
 

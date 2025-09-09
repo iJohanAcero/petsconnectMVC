@@ -12,7 +12,6 @@ window.cargarCarteleraFundacion = function () {
             if (mainContainer) {
                 mainContainer.innerHTML = data;
 
-                // Esperar a que el HTML se cargue antes de inicializar eventos
                 setTimeout(() => {
                     inicializarEventosCarteleraFundacion();
                     cargarFundacionesDesdeBackend();
@@ -133,21 +132,17 @@ function mostrarFundaciones(fundaciones) {
     fundacionesContainer.style.display = 'flex';
     fundacionesContainer.innerHTML = fundaciones.map(crearCartaFundacion).join('');
 
-    // Inicializar eventos de las cartas
     inicializarEventosCartasFundacion();
-    
-    // Animación de entrada
     animarEntradaCartas();
 }
 
-// Función para crear HTML de cada carta - ACTUALIZADA PARA CLOUDINARY
+// Función para crear HTML de cada carta 
 function crearCartaFundacion(fundacion) {
     // Validar que la fundación tenga los campos necesarios
     const nombre = fundacion.nombre || 'Nombre no disponible';
     const descripcion = fundacion.descripcion || 'Descripción no disponible';
     const idPerfil = fundacion.id_perfil || fundacion.idPerfil || 0;
     
-    // 🔥 CAMBIO PRINCIPAL: Usar Cloudinary para las imágenes
     const imagenUrl = generarUrlCloudinary(
         fundacion.imagen, 
         'w_300,h_200,c_fill,g_center,q_auto,f_auto' // Transformaciones para optimizar
@@ -216,7 +211,7 @@ function inicializarEventosCartasFundacion() {
         });
     });
 
-    // Evento click en toda la carta (opcional)
+    // Evento click en toda la carta
     document.querySelectorAll('.carta-fundacion').forEach(carta => {
         carta.addEventListener('click', function(e) {
             // Solo si no se clickeó un botón
@@ -245,7 +240,7 @@ function verDetallesFundacion(idPerfil) {
     const modal = new bootstrap.Modal(document.getElementById('modal-perfil-fundacion'));
     modal.show();
 
-    // Hacer petición AJAX para obtener los datos del perfil
+    // Hacer petición para obtener los datos del perfil
     fetch(`${window.BASE_URL}/Controller/Perfil/perfilController.php?action=getPerfilPorId&id=${idPerfil}`)
         .then(response => response.json())
         .then(data => {
@@ -261,9 +256,9 @@ function verDetallesFundacion(idPerfil) {
         });
 }
 
-// Función para mostrar el perfil en el modal - ACTUALIZADA PARA CLOUDINARY
+// Función para mostrar el perfil en el modal
 function mostrarPerfilEnModal(perfil, mascotas = []) {
-    // 🔥 CAMBIO: Usar Cloudinary para la imagen del modal
+    // Usar Cloudinary para la imagen del modal
     const rutaImagen = generarUrlCloudinary(
         perfil.imagen, 
         'w_100,h_100,c_fill,g_face,q_auto,f_auto' // Transformaciones específicas para avatar
@@ -534,7 +529,6 @@ function contactarFundacion(idPerfil) {
                 Contactar: ${fundacion.nombre || 'Fundación'}
             `;
             
-            // 🔥 CAMBIO: Usar Cloudinary para la imagen del modal de contacto
             const imagenContactoUrl = generarUrlCloudinary(
                 fundacion.imagen, 
                 'w_80,h_80,c_fill,g_face,q_auto,f_auto'
@@ -618,7 +612,7 @@ function contactarFundacion(idPerfil) {
         });
 }
 
-// Función auxiliar para copiar texto al portapapeles
+// Función para copiar texto al portapapeles
 function copiarTexto(texto) {
     navigator.clipboard.writeText(texto).then(function() {
         // Mostrar mensaje de éxito

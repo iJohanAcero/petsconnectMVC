@@ -130,17 +130,6 @@ if (isset($_SESSION["user"]["id_usuario"])) {
                         </div>
                     </div>
                 </div>
-
-                <div class="col-md-4">
-                    <div class="card">
-                        <div class="card-header">
-                            <h5 class="card-title">Futuro grafico</h5><small class="text-muted">En desarrollo...</small>
-                        </div>
-                        <div class="mt-2">
-                            <canvas id="chartUsuariosRegistrados" height="100"></canvas>
-                        </div>
-                    </div>
-                </div>
             </div>
 </body>
 

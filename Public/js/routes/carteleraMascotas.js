@@ -182,10 +182,7 @@ function mostrarMascotas(mascotas) {
     mascotasContainer.style.display = 'flex';
     mascotasContainer.innerHTML = mascotas.map(crearCartaMascota).join('');
 
-    // Inicializar eventos de las cartas
     inicializarEventosCartasMascotas();
-
-    // Animación de entrada
     animarEntradaCartas();
 }
 
@@ -206,10 +203,10 @@ function crearCartaMascota(mascota) {
     // Icono según especie
     const iconoEspecie = especie.toLowerCase() === 'canino' ? 'fas fa-dog' : 'fas fa-cat';
 
-    // Color del badge según estado
+    // Color según estado
     const colorEstado = tipoEstado === 'EN ADOPCION' ? 'bg-success' : 'bg-warning';
 
-    // Generar URL de imagen optimizada
+    // Generar URL de imagen
     const imagenUrl = generarUrlCloudinary(
         mascota.imagen || mascota.public_id,
         'w_300,h_250,c_fill,g_center,q_auto,f_auto'
@@ -286,7 +283,7 @@ function inicializarEventosCartasMascotas() {
         });
     });
 
-    // ✅ EVENTOS PARA BOTONES "ADOPTAR" - CORREGIDO
+    // EVENTOS PARA BOTONES "ADOPTAR"
     document.querySelectorAll('.btn-adoptar').forEach(btn => {
         btn.addEventListener('click', function() {
             const idMascota = this.getAttribute('data-id');
@@ -294,7 +291,7 @@ function inicializarEventosCartasMascotas() {
         });
     });
 
-    // Evento click en toda la carta (opcional)
+    // Evento click en toda la carta
     document.querySelectorAll('.carta-mascota').forEach(carta => {
         carta.addEventListener('click', function(e) {
             // Solo si no se clickeó un botón
@@ -439,7 +436,7 @@ function mostrarPerfilCompletoEnModal(mascota, fundacion) {
                     </div>
                 </div>
 
-                <!-- ✅ BOTÓN DE ADOPTAR EN EL MODAL PERFIL -->
+                <!-- BOTÓN DE ADOPTAR EN EL MODAL PERFIL -->
                 <div class="d-grid">
                     <button type="button" 
                             class="btn btn-primary2 btn-lg btn-adoptar-modal" 
@@ -454,7 +451,7 @@ function mostrarPerfilCompletoEnModal(mascota, fundacion) {
 
     modalBody.innerHTML = contenidoModal;
 
-    // ✅ AGREGAR EVENTO AL BOTÓN DE ADOPTAR DEL MODAL PERFIL
+    // AGREGAR EVENTO AL BOTÓN DE ADOPTAR DEL MODAL PERFIL
     const btnAdoptarModal = document.querySelector('.btn-adoptar-modal');
     if (btnAdoptarModal) {
         btnAdoptarModal.addEventListener('click', function() {
@@ -464,7 +461,7 @@ function mostrarPerfilCompletoEnModal(mascota, fundacion) {
     }
 }
 
-// ✅ FUNCIÓN PARA INICIALIZAR FORMULARIO DE ADOPCIÓN
+// FUNCIÓN PARA INICIALIZAR FORMULARIO DE ADOPCIÓN
 function inicializarFormularioAdopcion() {
     const formRegistrar = document.getElementById("form-registrar-adopcion");
 
@@ -506,7 +503,7 @@ function inicializarFormularioAdopcion() {
     }
 }
 
-// ✅ FUNCIÓN MEJORADA PARA MOSTRAR MODAL DE ADOPCIÓN
+// FUNCIÓN PARA MOSTRAR MODAL DE ADOPCIÓN
 function mostrarModalAdopcion(idMascota) {
     // Cerrar el modal de perfil si está abierto
     const modalPerfil = document.getElementById('modal-perfil-mascota');
@@ -549,7 +546,7 @@ function animarEntradaCartas() {
     });
 }
 
-// ✅ INICIALIZACIÓN DE EVENTOS DEL DOM - LIMPIADO
+//  INICIALIZACIÓN DE EVENTOS DEL DOM 
 document.addEventListener("DOMContentLoaded", () => {
     const botones = document.querySelectorAll(".btn-cargar-cartelMascota");
 
@@ -560,6 +557,5 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
     
-    // Inicializar formulario de adopción al cargar la página
     inicializarFormularioAdopcion();
 });

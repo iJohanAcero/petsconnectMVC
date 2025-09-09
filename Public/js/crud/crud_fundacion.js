@@ -33,13 +33,13 @@ function abrirModalCrearFundacion() {
 
 // ===================== EVENTOS DEL CRUD ===================== //
 function inicializarEventosFundacion() {
-    // ➕ Abrir modal de registro
+    // Abrir modal de registro
     const btnAbrirModal = document.getElementById("btn-abrir-modal-fundacion");
     if (btnAbrirModal) {
         btnAbrirModal.addEventListener("click", abrirModalCrearFundacion);
     }
 
-    // ✅ FORMULARIO DE REGISTRO
+    // FORMULARIO DE REGISTRO
     const formRegistrar = document.getElementById("form-registrar-fundacion");
 
     if (formRegistrar) {
@@ -66,7 +66,7 @@ function inicializarEventosFundacion() {
         };
     }
 
-    // ✏️ BOTONES DE EDITAR
+    //BOTONES DE EDITAR
     const botonesEditar = document.querySelectorAll(".btn-editar-fundacion");
     botonesEditar.forEach(boton => {
         boton.addEventListener("click", function () {
@@ -107,12 +107,12 @@ function inicializarEventosFundacion() {
                     }
                 })
                 .catch(error => {
-                    console.error("❌ Error al cargar FundacionEdit.php:", error);
+                    console.error("Error al cargar FundacionEdit.php:", error);
                 });
         });
     });
 
-    // 🗑️ BOTONES DE ELIMINAR
+    // BOTONES DE ELIMINAR
     const botonesEliminar = document.querySelectorAll(".btn-eliminar-fundacion");
     botonesEliminar.forEach(btn => {
         btn.addEventListener("click", function () {
@@ -132,7 +132,7 @@ function inicializarEventosFundacion() {
                         cargarCrudFundacion();
                     })
                     .catch(error => {
-                        console.error("❌ Error al eliminar:", error);
+                        console.error("Error al eliminar:", error);
                     });
             }
         });

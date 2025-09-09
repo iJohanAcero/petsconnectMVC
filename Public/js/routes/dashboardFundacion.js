@@ -46,7 +46,7 @@ fetch('/petsconnectMVC/Controller/dashboard/dashboard.php?accion=mascotasPorEsta
             options: {
                 responsive: true,
                 plugins: {
-                    legend: { display: false }, // no es necesario para barras simples
+                    legend: { display: false },
                     tooltip: { enabled: true }
                 },
                 scales: {
@@ -185,7 +185,7 @@ fetch('/petsconnectMVC/Controller/dashboard/dashboardFundacion.php?accion=adopci
                 datasets: [{
                     label: 'Causas Activas',
                     data: values,
-                    backgroundColor: ['#ff6384', '#36a2eb', '#ffce56', '#4bc0c0']
+                    backgroundColor: ['#ff6384', '#36a2eb', '#ffce56']
                 }]
             },
             options: {

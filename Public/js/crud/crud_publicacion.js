@@ -18,7 +18,7 @@ window.cargarCrudPublicacion = function () {
             }
         })
         .catch(error => {
-            console.error("❌ Error al cargar PHP:", error);
+            console.error("Error al cargar PHP:", error);
         });
 };
 
@@ -33,13 +33,13 @@ function abrirModalCrearPublicacion() {
 
 // ===================== EVENTOS DEL CRUD ===================== //
 function inicializarEventosPublicacion() {
-    // ➕ Abrir modal de registro
+    // Abrir modal de registro
     const btnAbrirModal = document.getElementById("btn-abrir-modal-publicacion");
     if (btnAbrirModal) {
         btnAbrirModal.addEventListener("click", abrirModalCrearPublicacion);
     }
 
-    // ✅ FORMULARIO DE REGISTRO
+    // FORMULARIO DE REGISTRO
     const formRegistrar = document.getElementById("form-registrar-publicacion");
 
     if (formRegistrar) {
@@ -61,12 +61,12 @@ function inicializarEventosPublicacion() {
                     cargarCrudPublicacion();
                 })
                 .catch(error => {
-                    console.error("❌ Error:", error);
+                    console.error("Error:", error);
                 });
         };
     }
 
-    // ✏️ BOTONES DE EDITAR
+    // BOTONES DE EDITAR
     const botonesEditar = document.querySelectorAll(".btn-editar-publicacion");
 
     botonesEditar.forEach(boton => {
@@ -124,12 +124,12 @@ if (inputImagen && previewImagen) {
                     }
                 })
                 .catch(error => {
-                    console.error("❌ Error al cargar PublicacionEdit.php:", error);
+                    console.error("Error al cargar PublicacionEdit.php:", error);
                 });
         });
     });
 
-    // 🗑️ BOTONES DE ELIMINAR
+    // BOTONES DE ELIMINAR
     const botonesEliminar = document.querySelectorAll(".btn-eliminar-publicacion");
     botonesEliminar.forEach(btn => {
         btn.addEventListener("click", function () {
@@ -149,7 +149,7 @@ if (inputImagen && previewImagen) {
                         cargarCrudPublicacion();
                     })
                     .catch(error => {
-                        console.error("❌ Error al eliminar:", error);
+                        console.error("Error al eliminar:", error);
                     });
             }
         });

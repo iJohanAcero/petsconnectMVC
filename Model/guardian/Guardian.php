@@ -13,13 +13,11 @@ class Guardian {
         $this->db = (new Conexion())->getConexion();
     }
 
-    // Registrar nuevo guardian - CORREGIDO
+    // Registrar nuevo guardian
     public function registrarGuardian($nombre, $apellido, $contrasena, $email, $direccion, $telefono) {
         try {
-            // Iniciar transacción
             $this->db->beginTransaction();
 
-            // 1. Insertar usuario primero
             $stmt = $this->db->prepare("INSERT INTO t_usuario (nombre, apellido, contrasena, email, direccion, telefono) 
                                        VALUES (:nombre, :apellido, :contrasena, :email, :direccion, :telefono)");
             
@@ -36,7 +34,6 @@ class Guardian {
                 return false;
             }
 
-            // Obtener el ID del usuario recién creado
             $id_usuario = $this->db->lastInsertId();
 
             // 2. Llamar al procedimiento almacenado con el id_usuario
@@ -48,7 +45,6 @@ class Guardian {
                 return false;
             }
 
-            // Confirmar transacción
             $this->db->commit();
             return true;
 
@@ -108,7 +104,7 @@ class Guardian {
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    // Actualizar guardian - CORREGIDO para usar id_usuario
+    // Actualizar guardian 
     public function updateGuardian($id_usuario, $nombre, $apellido, $email, $direccion, $telefono) {
         // Verificar que el guardian existe
         if (!$this->getGuardianById($id_usuario)) {
@@ -133,7 +129,7 @@ class Guardian {
         return $stmt->execute();
     }
 
-    // Eliminar guardian - CORREGIDO para usar id_usuario y con validaciones
+    // Eliminar guardian
     public function delete($id_usuario) {
         try {
             // Obtener datos del guardian antes de eliminar
@@ -141,8 +137,6 @@ class Guardian {
             if (!$guardian) {
                 return false;
             }
-
-            // Iniciar transacción
             $this->db->beginTransaction();
 
             // 1. Eliminar de t_guardian
@@ -153,18 +147,18 @@ class Guardian {
                 return false;
             }
 
-            // 2. Eliminar de t_perfil (si existe)
+            // 2. Eliminar de t_perfil
             if ($guardian['id_perfil']) {
                 $stmt = $this->db->prepare("DELETE FROM t_perfil WHERE id_perfil = :id_perfil");
                 $stmt->bindParam(':id_perfil', $guardian['id_perfil']);
-                $stmt->execute(); // No es crítico si falla
+                $stmt->execute();
             }
 
-            // 3. Eliminar de t_registro (si existe)
+            // 3. Eliminar de t_registro
             if ($guardian['id_registro']) {
                 $stmt = $this->db->prepare("DELETE FROM t_registro WHERE id_registro = :id_registro");
                 $stmt->bindParam(':id_registro', $guardian['id_registro']);
-                $stmt->execute(); // No es crítico si falla
+                $stmt->execute();
             }
 
             // 4. Eliminar usuario
@@ -175,7 +169,6 @@ class Guardian {
                 return false;
             }
 
-            // Confirmar transacción
             $this->db->commit();
             return true;
 

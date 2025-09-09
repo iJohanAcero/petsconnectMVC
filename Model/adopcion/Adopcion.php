@@ -76,27 +76,22 @@ class Adopcion
 
             if ($stmt->execute()) {
                 $result = $stmt->fetch(PDO::FETCH_ASSOC);
-                error_log("Resultado SP: " . print_r($result, true));
 
                 if ($result && isset($result['formulario_id']) && isset($result['proceso_id'])) {
                     return $result;
                 } else if ($result && isset($result['status']) && $result['status'] === 'success') {
                     return $result;
                 } else {
-                    error_log("Resultado inesperado del SP: " . print_r($result, true));
                     return true;
                 }
             } else {
                 $errorInfo = $stmt->errorInfo();
-                error_log("Error en execute(): " . print_r($errorInfo, true));
                 return false;
             }
         } catch (PDOException $e) {
-            error_log("PDOException en crearSolicitudAdopcion: " . $e->getMessage());
-            error_log("Código de error: " . $e->getCode());
+
             return false;
         } catch (Exception $e) {
-            error_log("Exception general en crearSolicitudAdopcion: " . $e->getMessage());
             return false;
         }
     }
@@ -116,9 +111,7 @@ class Adopcion
         return null;
     }
 
-    /**
-     * Obtener procesos de adopción filtrados por usuario en sesión
-     */
+    /* Obtener procesos de adopción filtrados por usuario en sesión */
     public function getProcesosAdopcion($nit_fundacion = null, $id_usuario = null, $tipo_usuario = null)
     {
         try {
@@ -160,16 +153,18 @@ class Adopcion
 
             // Filtrar según el tipo de usuario
             if ($tipo_usuario === 'FUNDACION' && $nit_fundacion !== null) {
+
                 // Para fundaciones: mostrar procesos de su fundación
                 $query .= " AND f.nit_fundacion = :nit_fundacion";
                 $params[':nit_fundacion'] = $nit_fundacion;
             } elseif ($tipo_usuario === 'GUARDIAN' && $id_usuario !== null) {
+
                 // Para guardianes: mostrar solo sus propias solicitudes
                 $query .= " AND fa.id_usuario = :id_usuario";
                 $params[':id_usuario'] = $id_usuario;
             } elseif ($tipo_usuario === 'ADMIN') {
+
                 // Para admin: mostrar todos (no agregar filtros adicionales)
-                // Si se pasa nit_fundacion, filtrar por esa fundación específica
                 if ($nit_fundacion !== null) {
                     $query .= " AND f.nit_fundacion = :nit_fundacion";
                     $params[':nit_fundacion'] = $nit_fundacion;
@@ -180,7 +175,6 @@ class Adopcion
 
             $stmt = $this->db->prepare($query);
 
-            // Bind de parámetros dinámicos
             foreach ($params as $param => $value) {
                 $stmt->bindValue($param, $value);
             }
@@ -188,21 +182,14 @@ class Adopcion
             $stmt->execute();
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
         } catch (PDOException $e) {
-            error_log("Error en getProcesosAdopcion: " . $e->getMessage());
             return [];
         }
     }
 
-    /**
-     * ✅ Actualizar estado de proceso de adopción y mascota asociada
-     */
+    /*Actualizar estado de proceso de adopción y mascota asociada*/
     public function actualizarEstadoProceso($id_proceso, $nuevo_estado, $nuevo_estado_mascota = null)
     {
         try {
-            // Log para debugging
-            error_log("Actualizando proceso ID: $id_proceso con estado: $nuevo_estado");
-
-            // Iniciar transacción para asegurar integridad
             $this->db->beginTransaction();
 
             // Primero verificar que el proceso existe y obtener el id_mascota
@@ -219,7 +206,6 @@ class Adopcion
 
             if (!$proceso) {
                 $this->db->rollback();
-                error_log("No se encontró el proceso ID: $id_proceso");
                 return false;
             }
 
@@ -235,11 +221,10 @@ class Adopcion
 
             if (!$resultadoProceso || $stmtProceso->rowCount() === 0) {
                 $this->db->rollback();
-                error_log("Error al actualizar el proceso o no se actualizó ninguna fila");
                 return false;
             }
 
-            // Actualizar el estado de la mascota asociada (si se proporciona nuevo estado)
+            // Actualizar el estado de la mascota asociada
             if (!empty($proceso['id_mascota']) && $nuevo_estado_mascota !== null) {
                 $queryMascota = "UPDATE t_mascota
                             SET id_estado_adopcion = :nuevo_estado_mascota
@@ -251,33 +236,23 @@ class Adopcion
 
                 if (!$resultadoMascota) {
                     $this->db->rollback();
-                    error_log("Error al actualizar el estado de la mascota ID: " . $proceso['id_mascota']);
                     return false;
                 }
 
                 $filasAfectadasMascota = $stmtMascota->rowCount();
-                error_log("Filas afectadas en mascota: $filasAfectadasMascota");
             }
-
-            // Confirmar la transacción
             $this->db->commit();
 
             $filasAfectadasProceso = $stmtProceso->rowCount();
-            error_log("Filas afectadas en proceso: $filasAfectadasProceso");
-            error_log("Actualización exitosa - Proceso y mascota actualizados");
 
             return true;
         } catch (PDOException $e) {
-            // Revertir transacción en caso de error
             $this->db->rollback();
-            error_log("PDOException en actualizarEstadoProceso: " . $e->getMessage());
             return false;
         }
     }
 
-    /**
-     * ✅ Obtener detalles de un proceso específico
-     */
+    /*Obtener detalles de un proceso específico*/
     public function obtenerProcesoPorId($id_proceso)
     {
         try {
@@ -323,18 +298,14 @@ class Adopcion
 
             return $stmt->fetch(PDO::FETCH_ASSOC);
         } catch (PDOException $e) {
-            error_log("Error en obtenerProcesoPorId: " . $e->getMessage());
             return false;
         }
     }
 
-    /**
-     * ✅ Eliminar proceso de adopción y su formulario asociado
-     */
+    /*Eliminar proceso de adopción y su formulario asociado*/
     public function eliminarProceso($id_proceso)
     {
         try {
-            // Iniciar transacción para asegurar integridad
             $this->db->beginTransaction();
 
             // Verificar que el proceso existe y obtener el id_formulario
@@ -356,10 +327,10 @@ class Adopcion
 
             if (!$stmtProceso->execute()) {
                 $this->db->rollback();
-                return "ERROR_DELETE_PROCESO"; // 🚨 Error al eliminar proceso
+                return "ERROR_DELETE_PROCESO";
             }
 
-            // Eliminar el formulario asociado (si existe)
+            // Eliminar el formulario asociado
             if (!empty($proceso['id_formulario'])) {
                 $queryFormulario = "DELETE FROM t_formulario_adopcion WHERE id_formulario = :id_formulario";
                 $stmtFormulario = $this->db->prepare($queryFormulario);
@@ -367,23 +338,21 @@ class Adopcion
 
                 if (!$stmtFormulario->execute()) {
                     $this->db->rollback();
-                    return "ERROR_DELETE_FORMULARIO"; // 🚨 Error al eliminar formulario
+                    return "ERROR_DELETE_FORMULARIO";
                 }
             }
 
-            // Confirmar la transacción
             $this->db->commit();
-            return "SUCCESS"; // 🎉 Eliminado correctamente (proceso y formulario)
+            return "SUCCESS"; 
 
         } catch (PDOException $e) {
             // Revertir transacción en caso de error
             $this->db->rollback();
 
             if ($e->getCode() === "23000") {
-                return "FK_CONSTRAINT"; // 🚨 Restricción de clave foránea
+                return "FK_CONSTRAINT";
             }
-            error_log("Error en eliminarProceso: " . $e->getMessage());
-            return "DB_ERROR"; // 🚨 Otro error de base de datos
+            return "DB_ERROR";
         }
     }
 
@@ -443,14 +412,11 @@ class Adopcion
             if ($formulario) {
                 return $formulario;
             } else {
-                error_log("No se encontró formulario con ID: $id_formulario");
                 return false;
             }
         } catch (PDOException $e) {
-            error_log("Error en getFormularioAdopcion: " . $e->getMessage());
             return false;
         } catch (Exception $e) {
-            error_log("Error general en getFormularioAdopcion: " . $e->getMessage());
             return false;
         }
     }

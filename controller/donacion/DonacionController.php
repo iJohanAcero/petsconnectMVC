@@ -22,7 +22,6 @@ class DonacionController
     }
 
     /* Endpoint principal */
-
     public function manejarPeticion()
     {
         $method = $_SERVER['REQUEST_METHOD'];
@@ -60,8 +59,7 @@ class DonacionController
         }
     }
 
-
-    /*Procesar creaciÃ³n de donaciÃ³n*/
+    /* Procesar creación de donación */
     private function procesarCrearDonacion()
     {
         try {
@@ -74,7 +72,7 @@ class DonacionController
             $nombreDonante = $_POST['nombre_donante'] ?? '';
             $emailDonante = $_POST['email_donante'] ?? '';
 
-            // Obtener ID de usuario de la sesiÃ³n
+            // Obtener ID de usuario de la sesión
             $idUsuario = $_SESSION['user']['id_usuario'];
 
             if (empty($idCausa) || empty($monto)) {
@@ -94,7 +92,7 @@ class DonacionController
                 exit;
             }
 
-            // Obtener NIT de la fundaciÃ³n
+            // Obtener NIT de la fundación
             $nitFundacion = $this->obtenerNitFundacionPorCausa($idCausa);
 
             try {
@@ -141,7 +139,7 @@ class DonacionController
         }
     }
 
-    /* Obtener NIT de fundaciÃ³n */
+    /* Obtener NIT de fundación */
     private function obtenerNitFundacionPorCausa($idCausa)
     {
         try {
@@ -151,7 +149,7 @@ class DonacionController
         }
     }
 
-    /* Crear un PaymentIntent y registrar la donaciÃ³n en estado pagado */
+    /* Crear un PaymentIntent y registrar la donación en estado pagado */
     public function crearDonacion($idUsuario, $idCausa, $nitFundacion, $monto, $emailDonante = null)
     {
         try {
@@ -203,7 +201,7 @@ class DonacionController
                 return;
             }
 
-            // 🔹 Obtener datos de la donación desde el modelo
+            // Obtener datos de la donación desde el modelo
             $donacion = $this->Donacion->getDonacionPorId($id_donacion);
 
             if (!$donacion) {
@@ -214,10 +212,10 @@ class DonacionController
                 return;
             }
 
-            // 🔹 Configuración de PDF mejorada
+            // Configuración de PDF 
             $mpdf = new \Mpdf\Mpdf([
                 'mode' => 'utf-8',
-                'format' => [180, 280], // Tamaño personalizado para factura
+                'format' => [180, 280],
                 'orientation' => 'P',
                 'margin_left' => 10,
                 'margin_right' => 10,
@@ -232,16 +230,16 @@ class DonacionController
                 'setAutoBottomMargin' => 'stretch'
             ]);
 
-            // 🔹 Crear la plantilla HTML de la factura
+            //Crear la plantilla HTML de la factura
             $html = $this->crearPlantillaFactura($donacion);
 
-            // 🔹 Escribir el contenido en el PDF
+            // Escribir el contenido en el PDF
             $mpdf->WriteHTML($html);
 
-            // 🔹 Nombre del archivo
+            // Nombre del archivo
             $nombre_archivo = 'factura_donacion_' . $id_donacion . '_' . date('Y-m-d') . '.pdf';
 
-            // 🔹 Descargar el PDF
+            // Descargar el PDF
             $mpdf->Output($nombre_archivo, 'D');
         } catch (Exception $e) {
             error_log("Error generando PDF: " . $e->getMessage());
@@ -254,10 +252,8 @@ class DonacionController
 
     private function crearPlantillaFactura(array $donacion): string
 {
-    // Format the amount with thousand separator and decimals
     $monto_formateado = number_format($donacion['monto'], 2, ',', '.');
 
-    // Format the dates
     $fecha_donacion = date('Y-m-d H:i:s', strtotime($donacion['fecha']));
     $fecha_impresion = date('d/m/Y H:i:s');
 

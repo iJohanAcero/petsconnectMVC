@@ -172,7 +172,6 @@ function initializeDataTable() {
             $('#contadorMascotas').text(count);
         },
         drawCallback: function() {
-            // Ajustar estilos después de dibujar la tabla
             $('.dt-buttons').addClass('btn-group btn-group-sm');
         }
     });

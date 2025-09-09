@@ -146,7 +146,7 @@ window.previewImagen = function(input) {
 
 // ===================== EVENTOS DEL PERFIL ===================== //
 function inicializarEventosPerfilFundacion() {
-    // ✏️ BOTONES DE EDITAR
+    // BOTONES DE EDITAR
     const botonesEditar = document.querySelectorAll(".btn-editar-perfilFundacion");
 
     botonesEditar.forEach(boton => {
@@ -221,13 +221,8 @@ function configurarEventosFormulario() {
         });
     }
 
-    // CONFIGURAR BOTONES ELIMINAR EXISTENTES
     configurarBotonesEliminar();
-
-    // Configurar eventos para redes sociales existentes
     configurarEventosRedesSociales();
-
-    // Actualizar preview inicial
     actualizarPreviewRedes();
 
     // Configurar envío del formulario
@@ -306,7 +301,7 @@ function configurarEventosFormulario() {
     }
 }
 
-// NUEVA FUNCIÓN PARA AGREGAR RED SOCIAL CON EVENT LISTENERS
+//  FUNCIÓN PARA AGREGAR RED SOCIAL
 function agregarRedSocialConEventListeners() {
     const container = document.getElementById('redes-sociales-container');
     if (!container) {
@@ -371,7 +366,7 @@ function agregarRedSocialConEventListeners() {
     }, 10);
 }
 
-// NUEVA FUNCIÓN PARA ELIMINAR RED SOCIAL CON EVENT LISTENERS
+//  FUNCIÓN PARA ELIMINAR RED SOCIAL
 function eliminarRedSocialConEventListeners(button) {
     const redSocialItem = button.closest('.red-social-item');
     
@@ -402,7 +397,6 @@ function configurarBotonesEliminar() {
     const botonesEliminar = document.querySelectorAll('.btn-eliminar-red');
     
     botonesEliminar.forEach((boton, index) => {
-        // Remover event listeners anteriores si existen
         boton.replaceWith(boton.cloneNode(true));
         const nuevoBoton = document.querySelectorAll('.btn-eliminar-red')[index];
         

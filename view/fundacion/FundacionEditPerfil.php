@@ -266,8 +266,6 @@ if (!$perfil || empty($perfil)) {
             </div>
         </div>
     </section>
-
-    <!-- Los scripts de Bootstrap se mantienen -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 

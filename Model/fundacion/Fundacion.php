@@ -16,19 +16,18 @@ class Fundacion
         $this->db = (new Conexion())->getConexion();
     }
 
-    // Método para agregar una nueva fundación (dejé igual porque funciona bien)
+    // Método para agregar una nueva fundación
     public function registrarFundacion($nombre_rep, $apellido_rep, $contrasena, $email, $direccion, $telefono, $nombre_fundacion, $nit_fundacion)
     {
-        // Se encripta la contraseña antes de enviarla al procedimiento
+        // Se encripta la contraseña
         $hash = password_hash($contrasena, PASSWORD_BCRYPT);
 
-        // Llamamos el procedimiento almacenado con los mismos parámetros que definimos
+        // Llamamos el procedimiento almacenado
         $call = $this->db->prepare("CALL crear_fundacion(
         :rep_nombre, :rep_apellido, :rep_contrasena, :rep_email,
         :rep_direccion, :rep_telefono, :fund_nombre, :fund_nit
     )");
 
-        // Se enlazan los parámetros
         $call->bindParam(':rep_nombre', $nombre_rep);
         $call->bindParam(':rep_apellido', $apellido_rep);
         $call->bindParam(':rep_contrasena', $hash);
@@ -43,7 +42,7 @@ class Fundacion
 
 
 
-    // Obtener todas las fundaciones (dejé igual porque funciona bien)
+    // Obtener todas las fundaciones
     public function getFundacion()
     {
         $rows = [];
@@ -105,7 +104,8 @@ class Fundacion
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
         return $row ? $row["nit_fundacion"] : null;
     }
-    // ACTUALIZAR FUNDACIÓN - CORREGIDO (cambié los parámetros y consulta)
+
+
     public function updateFundacion($nit, $nombre, $apellido, $email, $direccion, $telefono)
     {
         // Primero obtenemos el id_usuario asociado
@@ -137,7 +137,7 @@ class Fundacion
         return $statement->execute();
     }
 
-    // Eliminar fundación (dejé igual porque funciona bien)
+    // Eliminar fundación
     public function tieneMascotasAsociadas($nit)
     {
         $stmt = $this->db->prepare("SELECT COUNT(*) as total FROM t_mascota WHERE nit_fundacion = :nit");

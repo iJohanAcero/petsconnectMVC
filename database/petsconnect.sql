@@ -81,7 +81,6 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `crear_fundacion` (IN `p_rep_nombre`
         nombre, 
         id_usuario, 
         id_perfil
-        -- NOTA: Se quitó id_registro porque no existe en tu tabla t_fundacion
     ) VALUES (
         p_fund_nit, 
         p_fund_nombre, 
@@ -94,26 +93,23 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `crear_guardian` (IN `p_id_usuario` 
   DECLARE v_id_perfil INT;
   DECLARE v_id_registro INT;
 
-  -- Insertar en perfil
   INSERT INTO t_perfil (nombre, preferencia, descripcion, imagen)
   VALUES ('Perfil Guardian', 'Ninguna', 'Auto-generado', 'default.jpg');
 
   SET v_id_perfil = LAST_INSERT_ID();
 
-  -- Insertar en registro
   INSERT INTO t_registro (fecha, tipo_usuario)
   VALUES (CURDATE(), 'GUARDIAN');
 
   SET v_id_registro = LAST_INSERT_ID();
 
-  -- Insertar en guardian
   INSERT INTO t_guardian (id_usuario, id_registro, id_perfil)
 VALUES (p_id_usuario, v_id_registro, v_id_perfil);
 
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_agregar_red_social` (IN `p_id_perfil` INT, IN `p_tipo_red` VARCHAR(50), IN `p_url_red` VARCHAR(255))   BEGIN
-    -- Validar que el perfil exista
+
     DECLARE v_perfil_existe INT;
     SELECT COUNT(*) INTO v_perfil_existe FROM t_perfil WHERE id_perfil = p_id_perfil;
     
@@ -121,7 +117,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_agregar_red_social` (IN `p_id_pe
         SIGNAL SQLSTATE '45000' 
         SET MESSAGE_TEXT = 'El perfil especificado no existe';
     ELSE
-        -- Insertar red social
+
         INSERT INTO t_perfil_redes (
             id_perfil, 
             tipo_red, 
@@ -147,7 +143,6 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_crear_solicitud_adopcion` (IN `p
     
     START TRANSACTION;
     
-    -- 1) Insertar formulario
     INSERT INTO t_formulario_adopcion (
         id_usuario, id_mascota, nit_fundacion, estado_civil, tipo_documento, numero_documento,
         ocupacion, tipo_vivienda, tiene_patio, seguridad_ventanas, personas_hogar, ninos_adultos,
@@ -162,19 +157,16 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_crear_solicitud_adopcion` (IN `p
 
     SET v_id_formulario = LAST_INSERT_ID();
 
-    -- 2) Buscar el estado "EN TRAMITE" (corregido el campo)
     SELECT id_estado_adopcion
       INTO v_id_estado
       FROM t_estado_adopcion
-     WHERE tipo_estado = 'EN TRAMITE'  -- ✅ Ahora usa el campo correcto
+     WHERE tipo_estado = 'EN TRAMITE' 
      LIMIT 1;
 
-    -- Si no encuentra el estado, usar un fallback
     IF v_id_estado IS NULL THEN
-        SET v_id_estado = 2; -- ID que corresponde a 'EN TRAMITE' según tu BD
+        SET v_id_estado = 2;
     END IF;
 
-    -- 3) Crear proceso de adopción
     INSERT INTO t_proceso_adopcion (id_formulario, id_estado)
     VALUES (v_id_formulario, v_id_estado);
 
@@ -182,7 +174,6 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_crear_solicitud_adopcion` (IN `p
     
     COMMIT;
 
-    -- 4) Devolver IDs
     SELECT v_id_formulario AS formulario_id, v_id_proceso AS proceso_id, 'success' AS status;
 END$$
 

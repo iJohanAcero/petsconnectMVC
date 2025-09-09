@@ -190,7 +190,6 @@ function configurarEventosFormulario() {
                 }
             })
             .finally(() => {
-                // Restaurar estado del botón
                 if (btnGuardar) {
                     btnGuardar.disabled = false;
                     btnGuardar.innerHTML = '<i class="uil uil-save me-1"></i>Guardar cambios';
@@ -202,7 +201,7 @@ function configurarEventosFormulario() {
 
 // ===================== EVENTOS DEL PERFIL ===================== //
 function inicializarEventosPerfilGuardian() {
-    // ✏️ BOTONES DE EDITAR
+    // BOTONES DE EDITAR
     const botonesEditar = document.querySelectorAll(".btn-editar-perfilGuardian");
 
     botonesEditar.forEach(boton => {

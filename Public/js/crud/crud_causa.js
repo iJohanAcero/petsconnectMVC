@@ -1,5 +1,4 @@
 // =========== CRUD DE CAUSAS =========== //
-
 function cargarCrudCausa() {
     fetch("view/causa/CausaView.php")
         .then(response => response.text())
@@ -32,7 +31,7 @@ function inicializarCausa() {
         btnAbrirModal.addEventListener("click", abrirModalCrearCausa);
     }
 
-    // ✅ REGISTRAR CAUSA
+    // REGISTRAR CAUSA
     const formRegistrar = document.getElementById("form-registrar-causa");
 
     if (formRegistrar) {
@@ -65,7 +64,7 @@ function inicializarCausa() {
         };
     }
 
-    // ✅ BOTONES EDITAR
+    // BOTONES EDITAR
     const botonesEditar = document.querySelectorAll(".btn-editar-causa");
 
     botonesEditar.forEach(btn => {
@@ -126,7 +125,7 @@ if (inputImagen && previewImagen) {
         });
     });
 
-    // ✅ BOTONES ELIMINAR
+    // BOTONES ELIMINAR
     const botonesEliminar = document.querySelectorAll(".btn-eliminar-causa");
     botonesEliminar.forEach(btn => {
         btn.addEventListener("click", function () {
@@ -164,6 +163,5 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 });
 
-// Solo si estás usando type="module"
 window.cargarCrudCausa = cargarCrudCausa;
 

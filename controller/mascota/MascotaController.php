@@ -44,11 +44,10 @@ class MascotaController
         $nombre = $_POST['nombre'] ?? '';
         $edad_meses = $_POST['edad_meses'] ?? '';
         $sexo = $_POST['sexo'] ?? '';
-        $numero_chip = $_POST['numero_chip'] ?? null; // Nuevo campo
+        $numero_chip = $_POST['numero_chip'] ?? null;
         $imagen = null;
         $public_id = null;
 
-        // 📌 Validación y subida de imagen
         if (isset($_FILES['imagen']) && $_FILES['imagen']['error'] === UPLOAD_ERR_OK) {
             $validation = $this->validateImage($_FILES['imagen']);
             if (!$validation['valid']) {
@@ -80,7 +79,6 @@ class MascotaController
             return;
         }
 
-        // ✅ Llamada al modelo con el nuevo método add() (sin id_mascota)
         $resultado = $this->modeloMascota->add(
             $nombre,
             $edad_meses,
@@ -111,7 +109,7 @@ class MascotaController
         $imagen = $mascotaActual['imagen'];
         $public_id = $mascotaActual['public_id'] ?? null;
 
-        // 📌 Si se sube nueva imagen
+        // Si se sube nueva imagen
         if (isset($_FILES['imagen']) && $_FILES['imagen']['error'] === UPLOAD_ERR_OK) {
 
             $validation = $this->validateImage($_FILES['imagen']);
@@ -143,7 +141,7 @@ class MascotaController
         $id_tipo_mascota = $_POST['id_tipo_mascota'] ?? null;
         $id_estado_adopcion = $_POST['id_estado_adopcion'] ?? null;
 
-        // ✅ Llamada al modelo con numero_chip incluido
+        // Llamada al modelo
         $resultado = $this->modeloMascota->update(
             $id_mascota,
             $nombre,
@@ -262,7 +260,7 @@ class MascotaController
     }
 }
 
-// Router de acciones - ACTUALIZADO para manejar GET y POST
+// Router de acciones
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $accion = $_POST['accion'] ?? '';
     $controller = new MascotaController();
