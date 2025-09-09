@@ -1,1 +1,6 @@
+# Dependencias de PHP
+/vendor/
+
+# Archivos de configuración sensibles
 .env
+config.php
