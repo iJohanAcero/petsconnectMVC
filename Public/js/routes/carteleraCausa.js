@@ -879,15 +879,6 @@ const contenidoModal = `
           </li>
         </ul>
 
-        <!-- Botón -->
-        <div class="d-grid">
-          <button type="button"
-                  class="btn btn-primary2 btn-lg fw-semibold"
-                  data-id="${causa.id_causa}">
-            <i class="fas fa-heart me-2"></i> Donar a esta causa
-          </button>
-        </div>
-
       </div>
     </div>
 
