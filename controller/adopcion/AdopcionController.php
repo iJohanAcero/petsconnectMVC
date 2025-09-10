@@ -546,6 +546,34 @@ class AdopcionController
         <div class="seccion-contenido">
             <table class="campo-tabla">
                 <tr>
+                    <td class="campo-label">Nombre Usuario:</td>
+                    <td class="campo-valor">' . htmlspecialchars($formulario['nombre_usuario']) . '</td>
+                </tr>
+                <tr>
+                    <td class="campo-label">Apellido Usuario:</td>
+                    <td class="campo-valor campo-destacado">' . htmlspecialchars($formulario['apellido_usuario']) . '</td>
+                </tr>
+                <tr>
+                    <td class="campo-label">Email Usuario:</td>
+                    <td class="campo-valor campo-destacado">' . htmlspecialchars($formulario['email_usuario']) . '</td>
+                </tr>
+                <tr>
+                    <td class="campo-label">Telefono Usuario:</td>
+                    <td class="campo-valor">' . htmlspecialchars($formulario['telefono_usuario']) . '</td>
+                </tr>
+                <tr>
+                    <td class="campo-label">Direccion Usuario:</td>
+                    <td class="campo-valor">' . htmlspecialchars($formulario['direccion_usuario']) . '</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <div class="seccion">
+        <div class="seccion-titulo">Información Personal del Solicitante</div>
+        <div class="seccion-contenido">
+            <table class="campo-tabla">
+                <tr>
                     <td class="campo-label">ID Usuario:</td>
                     <td class="campo-valor">' . htmlspecialchars($formulario['id_usuario']) . '</td>
                 </tr>
