@@ -262,7 +262,7 @@
                             </ul>
                         </div>
                         <div class="ud-pricing-footer">
-                            <a href="javascript:void(0)" class="ud-main-btn ud-border-btn">
+                            <a href="index.php?page=login" class="ud-main-btn ud-border-btn">
                                 Quiero donar
                             </a>
                         </div>
@@ -284,7 +284,7 @@
                             </ul>
                         </div>
                         <div class="ud-pricing-footer">
-                            <a href="javascript:void(0)" class="ud-main-btn ud-white-btn">
+                            <a href="index.php?page=login" class="ud-main-btn ud-white-btn">
                                 Ver publicaciones
                             </a>
                         </div>
@@ -304,7 +304,7 @@
                             </ul>
                         </div>
                         <div class="ud-pricing-footer">
-                            <a href="javascript:void(0)" class="ud-main-btn ud-border-btn">
+                            <a href="index.php?page=login" class="ud-main-btn ud-border-btn">
                                 Actualizar perfil
                             </a>
                         </div>

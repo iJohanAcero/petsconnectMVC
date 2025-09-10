@@ -133,12 +133,12 @@ if (isset($_SESSION["user"]["id_usuario"])) {
                             </td>
                             <td class="text-center">
                                 <div class="btn-group shadow-sm" role="group">
-                                    <button class="btn btn-sm btn-ver-donacion"
+                                    <!-- <button class="btn btn-sm btn-ver-donacion"
                                         style="background-color: #1a1333; color: white; border-color: #1a1333;"
                                         data-id="<?= $donacion['id_donacion'] ?>"
                                         data-bs-toggle="tooltip" title="Ver detalles">
                                         <i class="uil uil-eye"></i>
-                                    </button>
+                                    </button> -->
                                     <?php if ($donacion['estado'] === 'pagado'): ?>
                                         <button class="btn btn-sm btn-success btn-recibo-donacion"
                                             data-id="<?= $donacion['id_donacion'] ?>"
