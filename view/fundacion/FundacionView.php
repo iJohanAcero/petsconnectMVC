@@ -1,9 +1,10 @@
 <?php
 require_once __DIR__ . '/../../vendor/autoload.php';
+
 use App\Model\Fundacion\Fundacion;
 
 $Modelo = new Fundacion();
-$Fundaciones = $Modelo->getFundacion(); 
+$Fundaciones = $Modelo->getFundacion();
 ?>
 
 <div class="container crud-container">
@@ -14,8 +15,8 @@ $Fundaciones = $Modelo->getFundacion();
         </button>
     </div>
 
-    <div class="table-responsive shadow-sm" style="border-radius: 10px; overflow: hidden;">
-        <table class="table table-hover table-bordered mb-0" id="tabla_fundaciones">
+    <div class="table-responsive shadow-sm" style="border-radius: 10px;">
+        <table class="table table-hover table-bordered mb-0 table-mobile-cards" id="tabla_fundaciones">
             <thead style="background: linear-gradient(135deg, #1a1333 0%, #2d1b4e 100%); color: white;">
                 <tr>
                     <th class="py-3 border-0">
@@ -42,22 +43,24 @@ $Fundaciones = $Modelo->getFundacion();
                 <?php if ($Fundaciones): ?>
                     <?php foreach ($Fundaciones as $fundacion): ?>
                         <tr class="align-middle">
-                            <td class="fw-bold" style="color: #1a1333;"><?= htmlspecialchars($fundacion['nit']) ?></td>
-                            <td>
+                            <td class="fw-bold" style="color: #1a1333;" data-label="NIT:">
+                                <?= htmlspecialchars($fundacion['nit']) ?>
+                            </td>
+                            <td data-label="Fundación:">
                                 <span class="fw-semibold"><?= htmlspecialchars($fundacion['nombre_fundacion']) ?></span>
                             </td>
-                            <td>
+                            <td data-label="Representante:">
                                 <span class="fw-medium"><?= htmlspecialchars($fundacion['nombre_representante']) ?> <?= htmlspecialchars($fundacion['apellido_representante']) ?></span>
                             </td>
-                            <td>
+                            <td data-label="Correo:">
                                 <span class="fw-medium"><?= htmlspecialchars($fundacion['correo']) ?></span>
                             </td>
-                            <td>
+                            <td data-label="Teléfono:">
                                 <span class="fw-medium"><?= htmlspecialchars($fundacion['telefono']) ?></span>
                             </td>
                             <td class="text-center">
                                 <div class="btn-group shadow-sm" role="group">
-                                    <button class="btn btn-sm btn-editar-fundacion" 
+                                    <button class="btn btn-sm btn-editar-fundacion"
                                         style="background-color: #1a1333; color: white; border-color: #1a1333;"
                                         data-id="<?= $fundacion['nit'] ?>"
                                         data-bs-toggle="tooltip" title="Editar fundación">
@@ -182,7 +185,7 @@ $Fundaciones = $Modelo->getFundacion();
                             </div>
                         </div>
                     </fieldset>
-                    
+
                     <div class="modal-footer bg-light border-0 p-3">
                         <div class="d-flex gap-2 w-100 justify-content-end">
                             <button type="button" class="btn btn-outline-secondary px-4" data-bs-dismiss="modal">

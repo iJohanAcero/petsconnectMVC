@@ -195,8 +195,7 @@ try {
     </div>
 
     <!-- Información adicional destacada -->
-    <div class="alert border-0"
-        style="background-color: rgba(26, 19, 51, 0.05); border-left: 4px solid #1a1333 !important;">
+    <div class="alert border-0" style="background-color: rgba(26, 19, 51, 0.05); border-left: 4px solid #1a1333 !important;">
         <div class="d-flex">
             <div class="flex-shrink-0">
                 <i class="uil uil-lightbulb fs-4" style="color: #1a1333;"></i>

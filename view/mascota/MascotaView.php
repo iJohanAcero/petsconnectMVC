@@ -44,7 +44,7 @@ if (isset($_SESSION["user"]["id_usuario"])) {
 
 
     <div class="table-responsive">
-        <table class="table table-hover table-bordered mb-0 shadow" id="tabla_mascotas" style="border-radius: 10px; overflow: hidden;">
+        <table class="table table-hover table-bordered mb-0 shadow table-mobile-cards" id="tabla_mascotas" style="border-radius: 10px; overflow: hidden;">
             <thead style="background: linear-gradient(135deg, #1a1333 0%, #2d1b4e 100%); color: white;">
                 <tr>
                     <th class="py-3 border-0" style="min-width: 80px;">
@@ -93,26 +93,26 @@ if (isset($_SESSION["user"]["id_usuario"])) {
                     foreach ($mascotas as $mascota) {
                 ?>
                         <tr class="align-middle">
-                            <td class="fw-bold" style="color: #1a1333;"><?= $mascota['id_mascota'] ?></td>
-                            <td>
+                            <td class="fw-bold" style="color: #1a1333;" data-label="ID:"><?= $mascota['id_mascota'] ?></td>
+                            <td data-label="Nombre:">
                                 <div class="d-flex align-items-center">
                                     <span class="fw-semibold"><?= htmlspecialchars($mascota['nombre']) ?></span>
                                 </div>
                             </td>
-                            <td class="text-center">
+                            <td class="text-center" data-label="Edad(meses):">
                                 <span class="badge bg-info bg-opacity-15 border border-info border-opacity-25 px-3 py-2">
                                     <?= $mascota['edad_meses'] ?> meses
                                 </span>
                             </td>
-                            <td class="text-center">
+                            <td class="text-center" data-label="Sexo:">
                                 <span class="badge px-3 py-2" style="background-color: rgba(26, 19, 51, 0.1); color: #1a1333; border: 1px solid rgba(26, 19, 51, 0.25);">
                                     <?= $mascota['sexo'] === 'macho' ? '🐕' : '🐱' ?> <?= ucfirst($mascota['sexo']) ?>
                                 </span>
                             </td>
-                            <td>
+                            <td data-label="Especie:">
                                 <span class="fw-medium"><?= htmlspecialchars($mascota['especie']) ?></span>
                             </td>
-                            <td class="text-center">
+                            <td class="text-center" data-label="Estado:">
                                 <?php
                                 $estadoClass = '';
                                 $estadoIcon = '';
@@ -138,11 +138,11 @@ if (isset($_SESSION["user"]["id_usuario"])) {
                                     <?= $estadoIcon ?> <?= htmlspecialchars($mascota['tipo_estado']) ?>
                                 </span>
                             </td>
-                            <td class="text-center">
+                            <td class="text-center" data-label="NIT Fundación:">
                                 <small class="text-muted fw-medium"><?= $mascota['nit_fundacion'] ?></small>
                             </td>
 
-                            <td class="text-center">
+                            <td class="text-center" data-label="Chip:">
                                 <?php if (!empty($mascota['numero_chip'])): ?>
                                     <span class="fw-semibold text-dark"><?= htmlspecialchars($mascota['numero_chip']) ?></span>
                                 <?php else: ?>
@@ -150,7 +150,7 @@ if (isset($_SESSION["user"]["id_usuario"])) {
                                 <?php endif; ?>
                             </td>
 
-                            <td class="text-center">
+                            <td class="text-center" data-label="Imagen:">
                                 <?php if (!empty($mascota['imagen'])): ?>
                                     <div class="position-relative d-inline-block">
                                         <img src="<?=($mascota['imagen']) ?>"

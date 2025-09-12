@@ -35,7 +35,7 @@ if (isset($_SESSION["user"]["id_usuario"])) {
     </div>
 
     <div class="table-responsive">
-        <table class="table table-hover table-bordered mb-0 shadow" id="tabla_causas" style="border-radius: 10px; overflow: hidden;">
+        <table class="table table-hover table-bordered mb-0 shadow table-mobile-cards" id="tabla_causas" style="border-radius: 10px; overflow: hidden;">
             <thead style="background: linear-gradient(135deg, #1a1333 0%, #2d1b4e 100%); color: white;">
                 <tr>
                     <th class="py-3 border-0" style="min-width: 80px;">
@@ -85,21 +85,21 @@ if (isset($_SESSION["user"]["id_usuario"])) {
                     foreach ($Causa as $causa) {
                 ?>
                         <tr class="align-middle">
-                            <td class="fw-bold" style="color: #1a1333;"><?= $causa['id_causa'] ?></td>
-                            <td>
+                            <td class="fw-bold" style="color: #1a1333;" data-label="ID:"><?= $causa['id_causa'] ?></td>
+                            <td datal-label="Nombre:">
                                 <div class="d-flex align-items-center">
                                     <span class="fw-semibold"><?= htmlspecialchars($causa['nombre']) ?></span>
                                 </div>
                             </td>
-                            <td>
+                            <td data-label="Descripción:">
                                 <span class="fw-medium"><?= htmlspecialchars($causa['descripcion']) ?></span>
                             </td>
-                            <td class="text-center">
+                            <td class="text-center" data-label="Meta:">
                                 <span class="badge bg-info bg-opacity-15 border border-info border-opacity-25 px-3 py-2">
                                     $<?= number_format($causa['meta']) ?>
                                 </span>
                             </td>
-                            <td class="text-center">
+                            <td class="text-center" data-label="Estado:">
                                 <?php
                                 $estadoClass = '';
                                 $estadoIcon = '';
@@ -129,13 +129,13 @@ if (isset($_SESSION["user"]["id_usuario"])) {
                                     <?= $estadoIcon ?> <?= htmlspecialchars($causa['estado_causa']) ?>
                                 </span>
                             </td>
-                            <td class="text-center">
+                            <td class="text-center" data-label="Fecha Creación:">
                                 <small class="text-muted fw-medium"><?= $causa['fecha_creacion'] ?></small>
                             </td>
-                            <td class="text-center">
+                            <td class="text-center" data-label="Fundación:">
                                 <small class="text-muted fw-medium"><?= $causa['nit_fundacion'] ?></small>
                             </td>
-                            <td class="text-center">
+                            <td class="text-center" data-label="Imagen:">
                                 <?php if (!empty($causa['imagen_url'])): ?>
                                     <div class="position-relative d-inline-block">
                                         <img src="<?= htmlspecialchars($causa['imagen_url']) ?>"
@@ -155,7 +155,7 @@ if (isset($_SESSION["user"]["id_usuario"])) {
                                     </div>
                                 <?php endif; ?>
                             </td>
-                            <td>
+                            <td data-label="Tipo:">
                                 <span class="fw-medium"><?= htmlspecialchars($causa['tipo_causa']) ?></span>
                             </td>
                             <td class="text-center">

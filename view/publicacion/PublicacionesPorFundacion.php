@@ -29,7 +29,7 @@ if (isset($_SESSION["user"]["id_usuario"])) {
 
         <!-- Tabla de publicacion -->
         <div class="table-responsive">
-            <table class="table table-striped table-hover table-bordered" id="tabla_publicacion">
+            <table class="table table-striped table-hover table-bordered table-mobile-cards" id="tabla_publicacion">
                 <thead class="table-dark">
                     <tr>
                         <th>ID</th>

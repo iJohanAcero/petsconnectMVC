@@ -42,9 +42,6 @@ $causas = $causa->getAllCausasCarrusel();
 <head>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <script src="https://js.stripe.com/v3/"></script>
-    <script>
-        window.STRIPE_PUBLIC_KEY = "<?php echo $stripePublicKey; ?>";
-    </script>
 </head>
 
 <body>

@@ -34,7 +34,7 @@ if ($esFundacion && $nit_sesion) {
     </div>
 
     <div class="table-responsive">
-        <table class="table table-hover table-bordered mb-0 shadow" id="tabla_procesos_adopcion" style="border-radius: 10px; overflow: hidden;">
+        <table class="table table-hover table-bordered mb-0 shadow table-mobile-cards" id="tabla_procesos_adopcion" style="border-radius: 10px; overflow: hidden;">
             <thead style="background: linear-gradient(135deg, #1a1333 0%, #2d1b4e 100%); color: white;">
                 <tr>
                     <th class="py-3 border-0" style="min-width: 80px;">
@@ -72,13 +72,13 @@ if ($esFundacion && $nit_sesion) {
                     foreach ($procesos as $proceso) {
                 ?>
                         <tr class="align-middle">
-                            <td class="fw-bold" style="color: #1a1333;"><?= $proceso['id_proceso'] ?></td>
-                            <td class="text-center">
+                            <td class="fw-bold" style="color: #1a1333;" data-label="ID:"><?= $proceso['id_proceso'] ?></td>
+                            <td class="text-center" data-label="ID Formulario:">
                                 <span class="badge bg-info bg-opacity-15 border border-info border-opacity-25 px-3 py-2">
                                     #<?= $proceso['id_formulario'] ?>
                                 </span>
                             </td>
-                            <td>
+                            <td data-label="Nombre:">
                                 <div class="d-flex align-items-center">
                                     <div>
                                         <span class="fw-semibold d-block"><?= htmlspecialchars($proceso['nombre_usuario'] . ' ' . $proceso['apellido_usuario']) ?></span>
@@ -86,7 +86,7 @@ if ($esFundacion && $nit_sesion) {
                                     </div>
                                 </div>
                             </td>
-                            <td>
+                            <td data-label="Mascota:">
                                 <div class="d-flex align-items-center">
                                     <?php if (!empty($proceso['imagen_mascota'])): ?>
                                         <img src="<?= htmlspecialchars($proceso['imagen_mascota']) ?>"
@@ -97,7 +97,7 @@ if ($esFundacion && $nit_sesion) {
                                     <span class="fw-medium"><?= htmlspecialchars($proceso['nombre_mascota']) ?></span>
                                 </div>
                             </td>
-                            <td class="text-center">
+                            <td class="text-center" data-label="Estado:">
                                 <?php
                                 $estadoClass = '';
                                 $estadoIcon = '';
@@ -123,17 +123,17 @@ if ($esFundacion && $nit_sesion) {
                                     <?= $estadoIcon ?> <?= htmlspecialchars($proceso['tipo_estado']) ?>
                                 </span>
                             </td>
-                            <td class="text-center">
+                            <td class="text-center" data-label="Fundacion:">
                                 <div>
                                     <span class="fw-medium d-block"><?= htmlspecialchars($proceso['nombre_fundacion']) ?></span>
                                     <small class="text-muted">NIT: <?= $proceso['nit_fundacion'] ?></small>
                                 </div>
                             </td>
-                            <td class="text-center">
+                            <td class="text-center" data-label="Fecha Incio:">
                                 <span class="fw-medium"><?= date('d/m/Y', strtotime($proceso['fecha_inicio'])) ?></span><br>
                                 <small class="text-muted"><?= date('H:i', strtotime($proceso['fecha_inicio'])) ?></small>
                             </td>
-                            <td class="text-center">
+                            <td class="text-center" data-label="Fecha actualización:">
                                 <span class="fw-medium"><?= date('d/m/Y', strtotime($proceso['fecha_actualizada'])) ?></span><br>
                                 <small class="text-muted"><?= date('H:i', strtotime($proceso['fecha_actualizada'])) ?></small>
                             </td>

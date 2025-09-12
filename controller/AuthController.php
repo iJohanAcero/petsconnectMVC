@@ -1,12 +1,12 @@
 <?php
-
 namespace App\Controller;
 
-use App\Model\usuario\Usuario;
+use App\Model\Usuario\Usuario;
 use Google\Service\Oauth2;
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
-use App\config\Roles;
+use App\Config\Roles;
+use PDO;
 
 require_once __DIR__ . '/../vendor/autoload.php';
 class AuthController
@@ -22,32 +22,38 @@ class AuthController
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $email = $_POST['email'] ?? '';
 
-            $conn = new \mysqli("localhost", "root", "", "petsconnect");
-            if ($conn->connect_error) {
-                $error = "Error de conexión a la base de datos.";
-                return;
-            }
+            // Usar tu clase de conexión (PDO)
+            $conexion = new \App\Model\Conexion();
+            $db = $conexion->getConexion();
 
             // Buscar usuario por email
-            $stmt = $conn->prepare("SELECT id_usuario FROM t_usuario WHERE email = ?");
-            $stmt->bind_param("s", $email);
+            $stmt = $db->prepare("SELECT id_usuario FROM t_usuario WHERE email = :email");
+            $stmt->bindParam(':email', $email, PDO::PARAM_STR);
             $stmt->execute();
-            $stmt->bind_result($id_usuario);
-            if ($stmt->fetch()) {
-                $stmt->close();
+            $usuario = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            if ($usuario) {
+                $id_usuario = $usuario['id_usuario'];
+
                 // Generar token y fechas
                 $token = bin2hex(random_bytes(16));
                 $fecha_solicitud = date('Y-m-d');
                 $fecha_expiracion = date('Y-m-d', strtotime('+1 day'));
 
+
                 // Guardar token
-                $stmt = $conn->prepare("INSERT INTO t_recuperar_constrasena (codigo_recuperacion, email, fecha_solicitud, fecha_expiracion, id_usuario) VALUES (?, ?, ?, ?, ?)");
-                $stmt->bind_param("ssssi", $token, $email, $fecha_solicitud, $fecha_expiracion, $id_usuario);
-                $stmt->execute();
-                $stmt->close();
+                $stmt = $db->prepare("INSERT INTO t_recuperar_constrasena (codigo_recuperacion, email, fecha_solicitud, fecha_expiracion, id_usuario) 
+                                      VALUES (:token, :email, :fecha_solicitud, :fecha_expiracion, :id_usuario)");
+                $stmt->execute([
+                    ':token' => $token,
+                    ':email' => $email,
+                    ':fecha_solicitud' => $fecha_solicitud,
+                    ':fecha_expiracion' => $fecha_expiracion,
+                    ':id_usuario' => $id_usuario
+                ]);
 
                 // Enlace de restablecimiento
-                $url = "http://localhost/petsconnectMVC/index.php?page=restablecer_contrasena&token=$token";
+                $url = "https://petsconnectcol.com/index.php?page=restablecer_contrasena&token=$token";
                 $mensaje = 'Haz clic en el siguiente enlace para cambiar tu contraseña: <a href="' . $url . '">Cambiar contraseña</a>';
 
                 // Envío de correo
@@ -147,7 +153,7 @@ class AuthController
                     $mensaje .= "<br><span style='color:red;'>No se pudo enviar el correo. Usa el enlace de arriba.<br>Error: {$mail->ErrorInfo}</span>";
                 }
             }
-            $conn->close();
+            $conexion = null;
         }
     }
 
@@ -161,6 +167,7 @@ class AuthController
     public function guardar_nueva_contrasena()
     {
         global $mensaje, $error;
+
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $token = $_POST['token'] ?? '';
             $email = $_POST['email'] ?? '';
@@ -172,46 +179,57 @@ class AuthController
             } elseif ($contrasena !== $contrasena2) {
                 $error = "Las contraseñas no coinciden.";
             } else {
-                $conn = new \mysqli("localhost", "root", "", "petsconnect");
-                if ($conn->connect_error) {
-                    $error = "Error de conexión a la base de datos.";
-                } else {
-                    $stmt = $conn->prepare("SELECT id_usuario, email, fecha_expiracion FROM t_recuperar_constrasena WHERE codigo_recuperacion = ?");
-                    $stmt->bind_param("s", $token);
-                    $stmt->execute();
-                    $stmt->bind_result($id_usuario, $email_token, $fecha_expiracion);
-                    if ($stmt->fetch()) {
-                        if (strtotime($fecha_expiracion) < strtotime(date('Y-m-d'))) {
+                try {
+                    // Conectar con PDO
+                    $conexion = new \App\Model\Conexion();
+                    $db = $conexion->getConexion();
+
+                    // Verificar token
+                    $stmt = $db->prepare("SELECT id_usuario, email, fecha_expiracion 
+                                      FROM t_recuperar_constrasena 
+                                      WHERE codigo_recuperacion = :token");
+                    $stmt->execute([':token' => $token]);
+                    $recuperacion = $stmt->fetch(PDO::FETCH_ASSOC);
+
+                    if ($recuperacion) {
+                        if (strtotime($recuperacion['fecha_expiracion']) < strtotime(date('Y-m-d'))) {
                             $error = "El enlace ha expirado.";
-                        } elseif ($email !== $email_token) {
+                        } elseif ($email !== $recuperacion['email']) {
                             $error = "El correo no coincide con el de la solicitud.";
                         } else {
-                            $stmt->close();
+                            // Actualizar contraseña
                             $hash = password_hash($contrasena, PASSWORD_DEFAULT);
-                            $stmt = $conn->prepare("UPDATE t_usuario SET contrasena = ? WHERE email = ?");
-                            $stmt->bind_param("ss", $hash, $email);
-                            $stmt->execute();
-                            if ($stmt->affected_rows > 0) {
+                            $stmt = $db->prepare("UPDATE t_usuario SET contrasena = :contrasena WHERE email = :email");
+                            $stmt->execute([
+                                ':contrasena' => $hash,
+                                ':email' => $email
+                            ]);
+
+                            if ($stmt->rowCount() > 0) {
                                 $mensaje = "¡Contraseña restablecida correctamente! Ya puedes iniciar sesión.";
                             } else {
                                 $error = "No se pudo actualizar la contraseña. Verifica tus datos.";
                             }
-                            $stmt->close();
+
                             // Eliminar token usado
-                            $stmt = $conn->prepare("DELETE FROM t_recuperar_constrasena WHERE codigo_recuperacion = ?");
-                            $stmt->bind_param("s", $token);
-                            $stmt->execute();
-                            $stmt->close();
+                            $stmt = $db->prepare("DELETE FROM t_recuperar_constrasena WHERE codigo_recuperacion = :token");
+                            $stmt->execute([':token' => $token]);
                         }
                     } else {
                         $error = "El enlace no es válido o ha expirado.";
                     }
-                    $conn->close();
+
+                    // Cerrar conexión explícitamente
+                    $db = null;
+                } catch (\PDOException $e) {
+                    $error = "Error de conexión a la base de datos: " . $e->getMessage();
                 }
             }
         }
+
         require __DIR__ . '/../view/login/restablecerContraseña.php';
     }
+
 
     public function enviar_tutorial()
     {
@@ -417,6 +435,25 @@ class AuthController
         print_r($mensaje);
     }
 
+    public function logout()
+    {
+        session_start();
+        // Si existe token de Google, revocarlo
+        if (isset($_SESSION['google_access_token'])) {
+            $client = new \Google_Client();
+            $client->setClientId($_ENV['GOOGLE_CLIENT_ID']);
+            $client->setClientSecret($_ENV['GOOGLE_CLIENT_SECRET']);
+            $client->setAccessToken($_SESSION['google_access_token']);
+            // Revocar el token de acceso
+            $client->revokeToken();
+        }
+        // Destruir sesión
+        session_destroy();
+        // Redirigir
+        header("Location: https://petsconnectcol.com/index.php");
+        exit;
+    }
+
     public function loginGoogle()
     {
         $client = new \Google_Client();
@@ -425,6 +462,9 @@ class AuthController
         $client->setRedirectUri($_ENV['GOOGLE_REDIRECT_URI']);
         $client->addScope('email');
         $client->addScope('profile');
+        // CLAVE: Forzar prompt de selección de cuenta
+        $client->setPrompt('select_account');
+        
         $login_url = $client->createAuthUrl();
         header('Location: ' . $login_url);
         exit;
@@ -446,7 +486,11 @@ class AuthController
                 echo "<p><strong>Descripción:</strong> " . htmlspecialchars($token['error_description'] ?? 'Sin descripción') . "</p>";
                 exit;
             }
+            
             $client->setAccessToken($token['access_token']);
+            
+            session_start();
+            $_SESSION['google_access_token'] = $token;
 
             // Obtener información del usuario
             $oauth2 = new Oauth2($client);

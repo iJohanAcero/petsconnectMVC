@@ -427,3 +427,99 @@ a.sidebar-link:hover {
         padding: 0;
     }
 }
+
+/* Tabla responsive genérica - Cards en móvil */
+@media (max-width: 768px) {
+    .table-mobile-cards {
+        border: 0;
+    }
+    
+    .table-mobile-cards thead {
+        display: none;
+    }
+    
+    .table-mobile-cards,
+    .table-mobile-cards tbody,
+    .table-mobile-cards tr {
+        display: block;
+    }
+    
+    .table-mobile-cards tr {
+        background: white;
+        border: 1px solid #dee2e6;
+        border-radius: 12px;
+        margin-bottom: 1rem;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        padding: 1rem;
+    }
+    
+    .table-mobile-cards td {
+        border: none;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0.5rem 0;
+        border-bottom: 1px solid #f8f9fa;
+    }
+    
+    .table-mobile-cards td:last-child {
+        border-bottom: none;
+        justify-content: center;
+        padding-top: 1rem;
+    }
+    
+    /* Labels dinámicos usando data-label */
+    .table-mobile-cards td:before {
+        content: attr(data-label);
+        font-weight: bold;
+        color: #1a1333;
+        min-width: 100px;
+    }
+    
+    .table-mobile-cards td span {
+    font-size: 0.9rem;
+    text-align: right;
+    max-width: 60%;
+}
+
+/* Específico para emails */
+.table-mobile-cards td[data-label*="Correo"] span,
+.table-mobile-cards td[data-label*="Email"] span {
+    word-break: break-all;
+    font-size: 0.85rem; /* Texto más pequeño para emails */
+}
+    
+    /* Mejorar botones en móvil */
+    .table-mobile-cards .btn-group {
+        gap: 0.5rem;
+    }
+    
+    .table-mobile-cards .btn-sm {
+        padding: 0.5rem;
+        min-width: 40px;
+    }
+    
+    /* Estado vacío responsive */
+    .table-mobile-cards td[colspan] {
+        display: block !important;
+        text-align: center;
+        padding: 2rem;
+    }
+    
+    .table-mobile-cards td[colspan]:before {
+        display: none;
+    }
+}
+
+/* Mejorar en pantallas muy pequeñas */
+@media (max-width: 576px) {
+    .table-mobile-cards td span {
+        font-size: 0.85rem;
+        max-width: 55%;
+    }
+    
+    .table-mobile-cards td:before {
+        font-size: 0.85rem;
+        min-width: 80px;
+    }
+}

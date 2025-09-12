@@ -15,8 +15,8 @@ $guardianes = $Modelo->getGuardian();
         </button>
     </div>
 
-    <div class="table-responsive shadow-sm" style="border-radius: 10px; overflow: hidden;">
-        <table class="table table-hover table-bordered mb-0" id="tabla_guardianes">
+    <div class="table-responsive shadow-sm" style="border-radius: 10px;">
+        <table class="table table-hover table-bordered mb-0 table-mobile-cards" id="tabla_guardianes">
             <thead style="background: linear-gradient(135deg, #1a1333 0%, #2d1b4e 100%); color: white;">
                 <tr>
                     <th class="py-3 border-0">
@@ -49,21 +49,21 @@ $guardianes = $Modelo->getGuardian();
                 <?php if ($guardianes): ?>
                     <?php foreach ($guardianes as $guardian): ?>
                         <tr class="align-middle">
-                            <td class="fw-bold" style="color: #1a1333;"><?= htmlspecialchars($guardian['id_usuario']) ?></td>
-                            <td><?= htmlspecialchars($guardian['id_perfil']) ?></td>
-                            <td>
+                            <td class="fw-bold" style="color: #1a1333;" data-label="ID: "><?= htmlspecialchars($guardian['id_usuario']) ?></td>
+                            <td data-label="ID Perfil:"><?= htmlspecialchars($guardian['id_perfil']) ?></td>
+                            <td data-label="Nombre:">
                                 <span class="fw-semibold"><?= htmlspecialchars($guardian['nombre_guardian']) ?> <?= htmlspecialchars($guardian['apellido_guardian']) ?></span>
                             </td>
-                            <td>
+                            <td data-label="Email:">
                                 <span class="fw-medium"><?= htmlspecialchars($guardian['correo']) ?></span>
                             </td>
-                            <td>
+                            <td data-label="Telefono:">
                                 <span class="fw-medium"><?= htmlspecialchars($guardian['telefono_guardian']) ?></span>
                             </td>
-                            <td>
+                            <td data-label="Direccion:">
                                 <span class="fw-medium"><?= htmlspecialchars($guardian['direccion_guardian']) ?></span>
                             </td>
-                            <td class="text-center">
+                            <td class="text-center" data-label="Imagen:">
                                 <?php if (!empty($guardian['imagen_guardian'])): ?>
                                     <div class="position-relative d-inline-block">
                                         <img src="<?php echo htmlspecialchars($guardian['imagen_guardian']); ?>"

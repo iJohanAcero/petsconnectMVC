@@ -27,7 +27,7 @@ if (isset($_SESSION["user"]["id_usuario"])) {
     </div>
 
     <div class="table-responsive">
-        <table class="table table-hover table-bordered mb-0 shadow" id="tabla_donaciones" style="border-radius: 10px; overflow: hidden;">
+        <table class="table table-hover table-bordered mb-0 shadow table-mobile-cards" id="tabla_donaciones" style="border-radius: 10px; overflow: hidden;">
             <thead style="background: linear-gradient(135deg, #1a1333 0%, #2d1b4e 100%); color: white;">
                 <tr>
                     <th class="py-3 border-0" style="min-width: 80px;">
@@ -79,19 +79,19 @@ if (isset($_SESSION["user"]["id_usuario"])) {
                     foreach ($Donaciones as $donacion) {
                 ?>
                         <tr class="align-middle">
-                            <td class="fw-bold" style="color: #1a1333;"><?= $donacion['id_donacion'] ?></td>
-                            <td>
+                            <td class="fw-bold" style="color: #1a1333;" data-label="ID:"><?= $donacion['id_donacion'] ?></td>
+                            <td data-label="Monto:">
                                 <div class="d-flex align-items-center">
                                     <span class="fw-semibold text-success">$<?= number_format($donacion['monto'], 2, ',', '.') ?></span>
                                 </div>
                             </td>
-                            <td>
+                            <td data-label="Nombre:">
                                 <div class="d-flex flex-column">
                                     <span class="fw-medium"><?= htmlspecialchars($donacion['causa_nombre'] ?? 'Causa #' . $donacion['id_causa']) ?></span>
                                     <small class="text-muted">ID: <?= $donacion['id_causa'] ?></small>
                                 </div>
                             </td>
-                            <td class="text-center">
+                            <td class="text-center" data-label="Estado:">
                                 <?php
                                 $estado_color = '';
                                 $estado_icon = '';
@@ -110,13 +110,13 @@ if (isset($_SESSION["user"]["id_usuario"])) {
                                     <?= ucfirst($donacion['estado']) ?>
                                 </span>
                             </td>
-                            <td class="text-center">
+                            <td class="text-center" data-label="Metodo Pago:">
                                 <span class="fw-medium text-muted"><?= htmlspecialchars($donacion['metodo_pago']) ?></span>
                             </td>
-                            <td class="text-center">
+                            <td class="text-center" data-label="Fecha:">
                                 <small class="text-muted fw-medium"><?= date('d/m/Y H:i', strtotime($donacion['fecha'])) ?></small>
                             </td>
-                            <td class="text-center">
+                            <td class="text-center" data-label="Donante:">
                                 <div class="d-flex flex-column align-items-center">
                                     <?php if ($esFundacion || $esAdmin): ?>
                                         <!-- Para fundaciones y admin: mostrar info del donante -->
@@ -131,14 +131,8 @@ if (isset($_SESSION["user"]["id_usuario"])) {
                                     <?php endif; ?>
                                 </div>
                             </td>
-                            <td class="text-center">
+                            <td class="text-center" >
                                 <div class="btn-group shadow-sm" role="group">
-                                    <!-- <button class="btn btn-sm btn-ver-donacion"
-                                        style="background-color: #1a1333; color: white; border-color: #1a1333;"
-                                        data-id="<?= $donacion['id_donacion'] ?>"
-                                        data-bs-toggle="tooltip" title="Ver detalles">
-                                        <i class="uil uil-eye"></i>
-                                    </button> -->
                                     <?php if ($donacion['estado'] === 'pagado'): ?>
                                         <button class="btn btn-sm btn-success btn-recibo-donacion"
                                             data-id="<?= $donacion['id_donacion'] ?>"

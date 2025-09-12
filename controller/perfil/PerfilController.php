@@ -80,38 +80,30 @@ class PerfilController
     {
         try {
             header('Content-Type: application/json');
-
             $id = $_POST['id'] ?? $this->id_usuario;
             $nombre = $_POST['nombre'] ?? '';
             $descripcion = $_POST['descripcion'] ?? '';
             $preferencia = $_POST['preferencia'] ?? '';
-
             $redes_sociales = $_POST['redes_sociales'] ?? [];
-
             $perfilActual = $this->perfilModel->getPerfilPorUsuario($id);
             $imagen = $perfilActual['imagen'] ?? null;
             $public_id = $perfilActual['public_id'] ?? null;
 
             if (isset($_FILES['imagen']) && $_FILES['imagen']['error'] === UPLOAD_ERR_OK) {
-
                 $validation = $this->validateImage($_FILES['imagen']);
                 if (!$validation['valid']) {
-                    echo json_encode(['success' => false,  $validation['error']]);
+                    echo json_encode(['success' => false, 'message' => $validation['error']]);
                     exit;
                 }
-
                 $uploadResult = uploadImageToCloudinary(
                     $_FILES['imagen']['tmp_name'],
                     'perfiles',
                     null
                 );
-
                 if ($uploadResult['success']) {
-
                     if (!empty($perfilActual['public_id'])) {
                         deleteImageFromCloudinary($perfilActual['public_id']);
                     }
-
                     $imagen = $uploadResult['url'];
                     $public_id = $uploadResult['public_id'];
                 } else {
@@ -132,52 +124,19 @@ class PerfilController
             if ($resultadoGuardian || $resultadoFundacion) {
                 echo json_encode([
                     'success' => true,
-                    'Perfil actualizado correctamente.'
+                    'message' => 'Perfil actualizado correctamente.'
                 ]);
             } else {
                 echo json_encode([
                     'success' => false,
-                    'Error al actualizar el perfil.'
+                    'message' => 'Error al actualizar el perfil.'
                 ]);
             }
         } catch (Exception $e) {
             header('Content-Type: application/json');
             echo json_encode([
                 'success' => false,
-                'Error: ' . $e->getMessage()
-            ]);
-        }
-    }
-
-    // Método para eliminar perfil
-    public function eliminar()
-    {
-        try {
-            header('Content-Type: application/json');
-
-            $id = $_POST['id'] ?? $this->id_usuario;
-            if (empty($id)) {
-                echo json_encode(['success' => false, 'message' => 'ID de perfil no proporcionado']);
-                return;
-            }
-
-            $perfilActual = $this->perfilModel->getPerfilPorUsuario($id);
-
-            $resultado = $this->perfilModel->eliminarPerfil($id);
-
-            // Si se eliminó correctamente, eliminar también de Cloudinary
-            if ($resultado && !empty($perfilActual['public_id'])) {
-                deleteImageFromCloudinary($perfilActual['public_id']);
-            }
-
-            echo json_encode([
-                'success' => $resultado,
-                $resultado ? 'Perfil eliminado correctamente' : 'Error al eliminar perfil'
-            ]);
-        } catch (Exception $e) {
-            echo json_encode([
-                'success' => false,
-                'Error: ' . $e->getMessage()
+                'message' => 'Error: ' . $e->getMessage()
             ]);
         }
     }
@@ -190,8 +149,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if ($accion === 'editar') {
         $controller->editar();
-    } elseif ($accion === 'eliminar') {
-        $controller->eliminar();
     }
 } elseif ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $action = $_GET['action'] ?? '';

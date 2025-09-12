@@ -31,7 +31,7 @@ if (isset($_SESSION["user"]["id_usuario"])) {
     </div>
 
     <div class="table-responsive">
-        <table class="table table-hover table-bordered mb-0 shadow" id="tabla_publicacion" style="border-radius: 10px; overflow: hidden;">
+        <table class="table table-hover table-bordered mb-0 shadow table-mobile-cards" id="tabla_publicacion" style="border-radius: 10px; overflow: hidden;">
             <thead style="background: linear-gradient(135deg, #1a1333 0%, #2d1b4e 100%); color: white;">
                 <tr>
                     <th class="py-3 border-0" style="min-width: 80px;">
@@ -71,16 +71,16 @@ if (isset($_SESSION["user"]["id_usuario"])) {
                     foreach ($Publicacion as $publicacion) {
                 ?>
                         <tr class="align-middle">
-                            <td class="fw-bold" style="color: #1a1333;"><?= $publicacion['id_publicacion'] ?></td>
-                            <td>
+                            <td class="fw-bold" style="color: #1a1333;" data-label="ID:"><?= $publicacion['id_publicacion'] ?></td>
+                            <td data-label="Titulo:">
                                 <div class="d-flex align-items-center">
                                     <span class="fw-semibold"><?= htmlspecialchars($publicacion['titulo']) ?></span>
                                 </div>
                             </td>
-                            <td>
+                            <td data-label="Contenido:">
                                 <span class="fw-medium"><?= htmlspecialchars(substr($publicacion['contenido'], 0, 100)) . (strlen($publicacion['contenido']) > 100 ? '...' : '') ?></span>
                             </td>
-                            <td class="text-center">
+                            <td class="text-center" data-label="Imagen:">
                                 <?php if (!empty($publicacion['imagen'])): ?>
                                     <div class="position-relative d-inline-block">
                                         <img src="<?= htmlspecialchars($publicacion['imagen']) ?>"
@@ -100,10 +100,10 @@ if (isset($_SESSION["user"]["id_usuario"])) {
                                     </div>
                                 <?php endif; ?>
                             </td>
-                            <td class="text-center">
+                            <td class="text-center" data-label="Fecha:">
                                 <small class="text-muted fw-medium"><?= $publicacion['fecha'] ?></small>
                             </td>
-                            <td class="text-center">
+                            <td class="text-center" data-label="Fundación:">
                                 <small class="text-muted fw-medium"><?= $publicacion['nit_fundacion'] ?></small>
                             </td>
                             <td class="text-center">

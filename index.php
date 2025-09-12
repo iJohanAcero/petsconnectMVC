@@ -1,20 +1,14 @@
 <?php
-
-
 namespace App;
 
 require_once __DIR__ . '/vendor/autoload.php';
 
-
-use App\Controller\usuario\UsuarioController;
-use App\Controller\publicacion\PublicacionController;
+use App\Controller\Usuario\UsuarioController;
+use App\Controller\Publicacion\PublicacionController;
 use App\Controller\AuthController;
 use App\Config\Roles;
 
 session_start();
-
-$action = $_GET['action'] ?? null;
-$controller = new UsuarioController();
 
 function loadEnv($path) {
     if (!file_exists($path)) {
@@ -30,16 +24,54 @@ function loadEnv($path) {
     }
 }
 
-loadEnv(__DIR__ . '/.env');
+loadEnv(__DIR__ . '/../.env');
 
+// --- MANEJO DE ACCIONES AJAX PRIMERO ---
+$action = $_GET['action'] ?? null;
+
+// Procesar acciones antes que las rutas de página
+if ($action) {
+    switch ($action) {
+        case 'recientes':
+            if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+                $controller = new PublicacionController();
+                $controller->recientes();
+                exit;
+            }
+            break;
+            
+        case 'logout':
+            session_start();
+            session_destroy();
+            header("Location: https://petsconnectcol.com/index.php");
+            exit;
+            break;
+            
+        case 'login_google':
+            (new AuthController())->loginGoogle();
+            exit;
+            break;
+            
+        case 'logout':
+            (new AuthController())->logout();
+            exit;
+            break;
+            
+        case 'google_callback':
+            (new AuthController())->googleCallback();
+            exit;
+            break;
+    }
+}
 
 // --- Manejo de restablecimiento de contraseña ---
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'guardar_nueva_contrasena') {
     error_log("Entró al bloque de restablecimiento");
     $auth = new AuthController();
-    $auth->guardar_nueva_contrasena(); // Este método debe incluir la vista al final
+    $auth->guardar_nueva_contrasena();
     exit;
 }
+
 // --- Definición de rutas protegidas ---
 $routes = [
     "admin_home"    => ["role" => "admin",    "file" => "view/home/admin_home.php"],
@@ -50,17 +82,17 @@ $routes = [
     "recuperar_contrasena" => ["role" => "guest", "file" => "view/login/recuperarContraseña.php"],
     "restablecer_contrasena" => ["role" => "guest", "file" => "view/login/restablecerContraseña.php"],
     "landing" => ["role" => "guest", "file" => "view/login/landing.php"],
-
-    // Nueva ruta para la cartelera de fundaciones
     "cartelera" => [
-        "role" => "all", // o roles específicos: ["fundacion", "guardian", "admin"]
+        "role" => "all",
         "file" => "view/cartelera/vistaFundacion.php",
-        "params" => ["id"] // Parámetro dinámico en la URL
+        "params" => ["id"]
     ]
 ];
 
 // --- Manejo de formularios POST ---
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["action"])) {
+    $controller = new UsuarioController();
+    
     if ($_POST["action"] == "register") {
         $nombre = $_POST["nombre"];
         $apellido = $_POST["apellido"];
@@ -92,9 +124,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["action"])) {
             $_SESSION["user"] = $user;
 
             // DETECCIÓN DE ROL
-            $tipo_usuario = "";
-
-            // DETECTAR ROL
             if (Roles::esAdmin($user["id_usuario"])) {
                 $_SESSION["tipo_usuario"] = "admin";
                 header("Location: index.php?page=admin_home");
@@ -119,35 +148,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["action"])) {
         }
     }
 }
-
-// --- Logout ---
-if (isset($_GET["action"]) && $_GET["action"] == "logout") {
-    session_start();
-    session_destroy();
-
-    $redirect = urlencode('http://localhost/petsconnectmvc/index.php');
-    $googleLogoutUrl = "https://accounts.google.com/Logout?continue=https://appengine.google.com/_ah/logout?continue={$redirect}";
-    header("Location: $googleLogoutUrl");
-    exit;
-}
-
-// --- Login con Google ---
-if (isset($_GET['action']) && $_GET['action'] === 'login_google') {
-    (new AuthController())->loginGoogle();
-}
-if (isset($_GET['action']) && $_GET['action'] === 'google_callback') {
-    (new AuthController())->googleCallback();
-}
-
-// MOSTRAR PUBLICACIONES EN EL INICIO
-$action = $_GET['action'] ?? null;
-
-if ($action === 'recientes' && $_SERVER['REQUEST_METHOD'] === 'GET') {
-    $controller = new PublicacionController();
-    $controller->recientes();
-    exit;
-}
-
 
 // --- Si no hay sesión, mostrar landing o registro ---
 $page = $_GET["page"] ?? "";

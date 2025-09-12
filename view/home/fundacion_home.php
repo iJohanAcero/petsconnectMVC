@@ -66,9 +66,61 @@ $stats = $estadisticas->obtenerEstadisticasNavbar();
                 <img src="<?= Config::get('IMG_URL') ?>/logo/logo.png" alt="Logo" id="logo" class="d-inline-block align-text-top">
             </a>
 
+            <!-- Avatar móvil - siempre visible -->
+            <div class="dropdown d-lg-none">
+                <a class="d-flex align-items-center font-weight-bold"
+                    href="#"
+                    id="navbarDropdownMenuAvatarMobile"
+                    role="button"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false"
+                    style="text-decoration: none;">
+                    <?php
+                    $nombreImagen = !empty($perfil['imagen']) ? $perfil['imagen'] : 'default.png';
+
+                    // Si es una URL completa de Cloudinary, agregar transformaciones
+                    if (strpos($nombreImagen, 'res.cloudinary.com') !== false) {
+                        // Insertar transformaciones después de '/upload/'
+                        $rutaImagen = str_replace('/upload/', '/upload/w_40,h_40,c_fill,g_face/', $nombreImagen);
+                    } else {
+                        // Si no es URL de Cloudinary, usar como está
+                        $rutaImagen = htmlspecialchars($nombreImagen);
+                    }
+                    ?>
+                    <img
+                        src="<?= $rutaImagen ?>"
+                        class="rounded-circle"
+                        height="40"
+                        width="40"
+                        alt="Foto de perfil"
+                        loading="lazy" />
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end"
+                    aria-labelledby="navbarDropdownMenuAvatarMobile">
+                    <li>
+                        <?php if (isset($_SESSION["user"])): ?>
+                            <p class="user-select-all dropdown-item">
+                                <?php echo htmlspecialchars($_SESSION["user"]["nombre"] . ' ' . $_SESSION["user"]["apellido"]); ?>
+                            </p>
+                        <?php endif; ?>
+                    </li>
+                    <li>
+                        <?php if (isset($_SESSION["user"])): ?>
+                            <p class="user-select-all dropdown-item">
+                                <?php echo htmlspecialchars($_SESSION["user"]["email"]); ?>
+                            </p>
+                        <?php endif; ?>
+                    </li>
+                    <li class="nav-item">
+                        <a class="bg-body rounded text-muted dropdown-item" href="index.php?action=logout">
+                            <i class="uil uil-signout"></i> Cerrar Sesión
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
             <div class="collapse navbar-collapse">
                 <div class="d-flex justify-content-center flex-grow-1 align-items-center">
-
                     <!-- Solo mostrar las 2-3 estadísticas más importantes -->
                     <div class="d-flex align-items-center bg-light rounded-pill px-3 py-1 me-3">
                         <div class="bg-success rounded-circle me-2 pulse" style="width: 8px; height: 8px;"></div>
@@ -92,17 +144,16 @@ $stats = $estadisticas->obtenerEstadisticasNavbar();
                             <strong><?php echo $stats['adopciones_exitosas']; ?></strong> adopciones exitosas
                         </small>
                     </div>
-
                 </div>
 
                 <div class="d-flex align-items-center">
                     <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                     </ul>
                 </div>
-                <div class="dropdown">
 
-                    <a
-                        class="d-flex align-items-center font-weight-bold"
+                <!-- Avatar desktop - dentro del collapse -->
+                <div class="dropdown d-none d-lg-block">
+                    <a class="d-flex align-items-center font-weight-bold"
                         href="#"
                         id="navbarDropdownMenuAvatar"
                         role="button"
@@ -110,7 +161,6 @@ $stats = $estadisticas->obtenerEstadisticasNavbar();
                         aria-expanded="false"
                         style="text-decoration: none;">
                         <p class="m-1 "> Fundación </p>
-                        <!-- Foto de Perfil -->
                         <?php
                         $nombreImagen = !empty($perfil['imagen']) ? $perfil['imagen'] : 'default.png';
 
@@ -126,33 +176,26 @@ $stats = $estadisticas->obtenerEstadisticasNavbar();
                         <img
                             src="<?= $rutaImagen ?>"
                             class="rounded-circle"
+                            height="40"
+                            width="40"
                             alt="Foto de perfil"
                             loading="lazy" />
                     </a>
-                    <ul
-                        class="dropdown-menu dropdown-menu-end"
+                    <ul class="dropdown-menu dropdown-menu-end"
                         aria-labelledby="navbarDropdownMenuAvatar">
-
                         <li>
                             <?php if (isset($_SESSION["user"])): ?>
-                                <p class=" user-select-all dropdown-item">
-                                    <?php
-                                    echo htmlspecialchars($_SESSION["user"]["nombre"] . ' ' . $_SESSION["user"]["apellido"]);
-                                    ?>
+                                <p class="user-select-all dropdown-item">
+                                    <?php echo htmlspecialchars($_SESSION["user"]["nombre"] . ' ' . $_SESSION["user"]["apellido"]); ?>
                                 </p>
                             <?php endif; ?>
                         </li>
                         <li>
                             <?php if (isset($_SESSION["user"])): ?>
-                                <p class=" user-select-all dropdown-item">
+                                <p class="user-select-all dropdown-item">
                                     <?php echo htmlspecialchars($_SESSION["user"]["email"]); ?>
                                 </p>
                             <?php endif; ?>
-                        </li>
-                        <li>
-                            <a class="dropdown-item btn-cargar-perfilFundacion" href="#">
-                                <i class="uil uil-user"></i> Perfil
-                            </a>
                         </li>
                         <li class="nav-item">
                             <a class="bg-body rounded text-muted dropdown-item" href="index.php?action=logout">
@@ -295,45 +338,52 @@ $stats = $estadisticas->obtenerEstadisticasNavbar();
     <script src="<?= Config::get('JS_URL') ?>/routes/informe.js"></script>
     <script src="<?= Config::get('JS_URL') ?>/routes/dashboardFundacion.js"></script>
 
-<style>
-/* 🔹 Imagen estilo Instagram (cuadrada) */
-.imagen-publicacion {
-    width: 100%;          /* ocupa todo el ancho disponible */
-    height: auto;         /* mantiene proporción original */
-    max-height: 450px;    /* límite máximo para no deformar el layout */
-    object-fit: contain;  /* 🔑 muestra toda la imagen completa */
-    display: block;       /* elimina espacios extra */
-    margin: 0 auto;       /* centra dentro del contenedor */
-    background-color: #f8f9fa; /* opcional: relleno gris alrededor */
-}
+    <style>
+        /* 🔹 Imagen estilo Instagram (cuadrada) */
+        .imagen-publicacion {
+            width: 100%;
+            /* ocupa todo el ancho disponible */
+            height: auto;
+            /* mantiene proporción original */
+            max-height: 450px;
+            /* límite máximo para no deformar el layout */
+            object-fit: contain;
+            /* 🔑 muestra toda la imagen completa */
+            display: block;
+            /* elimina espacios extra */
+            margin: 0 auto;
+            /* centra dentro del contenedor */
+            background-color: #f8f9fa;
+            /* opcional: relleno gris alrededor */
+        }
 
-/* 🔹 Limitar descripción a 4 líneas */
-.descripcion-publicacion {
-    display: -webkit-box;
-    -webkit-line-clamp: 4;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-</style>
+        /* 🔹 Limitar descripción a 4 líneas */
+        .descripcion-publicacion {
+            display: -webkit-box;
+            -webkit-line-clamp: 4;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+    </style>
 
-<script>
-let page = 1;
-let loading = false;
-let finished = false;
+    <script>
+        let page = 1;
+        let loading = false;
+        let finished = false;
 
-function cargarPublicaciones() {
-    if (loading || finished) return;
-    loading = true;
-    $('#loader').show();
-    $.ajax({
-        url: '/petsconnectmvc/index.php?action=recientes&page=' + page,
-        method: 'GET',
-        dataType: 'json',
-        success: function(res) {
-            if (Array.isArray(res) && res.length > 0) {
-                res.forEach(pub => {
-                    $('#publicaciones-container').append(`
+        function cargarPublicaciones() {
+            if (loading || finished) return;
+            loading = true;
+            $('#loader').show();
+            $.ajax({
+                url: '/petsconnectmvc/index.php?action=recientes&page=' + page,
+                method: 'GET',
+                dataType: 'json',
+                success: function(res) {
+                    if (Array.isArray(res) && res.length > 0) {
+                        res.forEach(pub => {
+                            $('#publicaciones-container').append(`
                         <div class="row justify-content-center mb-5">
                             <div class="col-12 col-md-10 col-lg-8">
                                 <div class="card border-0 shadow-lg rounded-4 overflow-hidden">
@@ -385,33 +435,33 @@ function cargarPublicaciones() {
                             </div>
                         </div>
                     `);
-                });
-                page++;
-            } else {
-                finished = true;
-            }
-        },
-        error: function(xhr, status, error) {
-            console.error('Error al cargar publicaciones:', status, error);
-            console.warn('Detalles:', xhr.responseText);
-        },
-        complete: function() {
-            loading = false;
-            $('#loader').hide();
+                        });
+                        page++;
+                    } else {
+                        finished = true;
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error al cargar publicaciones:', status, error);
+                    console.warn('Detalles:', xhr.responseText);
+                },
+                complete: function() {
+                    loading = false;
+                    $('#loader').hide();
+                }
+            });
         }
-    });
-}
 
-// Inicializar carga y scroll infinito
-$(document).ready(function() {
-    cargarPublicaciones();
-    $(window).on('scroll', function() {
-        if ($(window).scrollTop() + $(window).height() >= $(document).height() - 150) {
+        // Inicializar carga y scroll infinito
+        $(document).ready(function() {
             cargarPublicaciones();
-        }
-    });
-});
-</script>
+            $(window).on('scroll', function() {
+                if ($(window).scrollTop() + $(window).height() >= $(document).height() - 150) {
+                    cargarPublicaciones();
+                }
+            });
+        });
+    </script>
 
 
 
