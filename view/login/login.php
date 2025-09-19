@@ -1,3 +1,16 @@
+<?php
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+if (isset($_SESSION['registro_exitoso'])) {
+    echo "<script>
+        document.addEventListener('DOMContentLoaded', function() {
+            alert('" . $_SESSION['registro_exitoso'] . "');
+        });
+    </script>";
+    unset($_SESSION['registro_exitoso']); // para que solo aparezca una vez
+}
+?>
 <!DOCTYPE html>
 <html lang="es">
 
@@ -21,16 +34,16 @@
     <title>PetsConnect | inicio sesión</title>
 </head>
 
-    <body id="hero">
-        <video class="video-desktop" muted autoplay loop>
-            <source src="Public/images/login/videobg.mp4" 
+<body id="hero">
+    <video class="video-desktop" muted autoplay loop>
+        <source src="Public/images/login/videobg.mp4"
             type="video/mp4">
-        </video>
+    </video>
 
-        <video class="video-mobile" muted autoplay loop>
-            <source src="Public/images/login/videobg3.mp4" 
+    <video class="video-mobile" muted autoplay loop>
+        <source src="Public/images/login/videobg3.mp4"
             type="video/mp4">
-        </video>
+    </video>
     <!-- ====== Header Section Start ====== -->
     <header class="ud-header" style="padding-top: 0.5rem; position: sticky; background-color: hsl(252, 30%, 10%);">
         <div class="container">

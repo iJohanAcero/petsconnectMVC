@@ -17,6 +17,5 @@ class UsuarioController {
     public function registrar($nombre, $apellido,$contrasena,$email,$direccion,$telefono ) {
         return $this->usuarioModel->registrar($nombre, $apellido ,$contrasena,$email,$direccion,$telefono);
     }
-
 }
 ?>

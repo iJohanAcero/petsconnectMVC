@@ -1,4 +1,5 @@
 <?php
+
 namespace App;
 
 require_once __DIR__ . '/vendor/autoload.php';
@@ -10,11 +11,12 @@ use App\Config\Roles;
 
 session_start();
 
-function loadEnv($path) {
+function loadEnv($path)
+{
     if (!file_exists($path)) {
         return;
     }
-    
+
     $lines = file($path, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
     foreach ($lines as $line) {
         if (strpos($line, '=') !== false && strpos($line, '#') !== 0) {
@@ -39,24 +41,24 @@ if ($action) {
                 exit;
             }
             break;
-            
+
         case 'logout':
             session_start();
             session_destroy();
             header("Location: https://petsconnectcol.com/index.php");
             exit;
             break;
-            
+
         case 'login_google':
             (new AuthController())->loginGoogle();
             exit;
             break;
-            
+
         case 'logout':
             (new AuthController())->logout();
             exit;
             break;
-            
+
         case 'google_callback':
             (new AuthController())->googleCallback();
             exit;
@@ -92,7 +94,7 @@ $routes = [
 // --- Manejo de formularios POST ---
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["action"])) {
     $controller = new UsuarioController();
-    
+
     if ($_POST["action"] == "register") {
         $nombre = $_POST["nombre"];
         $apellido = $_POST["apellido"];
@@ -105,14 +107,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["action"])) {
 
         if (is_array($resultado) && isset($resultado['success'])) {
             if ($resultado['success']) {
-                $mensajeRegsitroCorrecto = $resultado['message'];
+                // ✅ Registro exitoso
+                $_SESSION['registro_exitoso'] = "Usuario registrado con éxito. Ahora puedes iniciar sesión.";
+                header("Location: index.php?page=login");
+                exit;
             } else {
-                $mensajeRegistroIncorrecto = $resultado['message'];
+                if ($resultado['message'] === "duplicado") {
+                    // ⚠️ Correo duplicado → se queda en register.php
+                    $mensajeRegistroIncorrecto = "duplicado";
+                } else {
+                    $mensajeRegistroIncorrecto = "Error en el registro.";
+                }
             }
         } else {
             $mensajeRegistroIncorrecto = "Error inesperado en el registro.";
-        }
+        }   
     }
+
 
     if ($_POST["action"] == "login") {
         $email = $_POST["email"];

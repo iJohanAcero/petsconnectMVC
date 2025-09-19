@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Model\usuario;
+
 use App\Model\Conexion;
 use PDO;
 
@@ -89,28 +90,35 @@ class Usuario
 
     public function registrar($nombre, $apellido, $contrasena, $email, $direccion, $telefono)
     {
-        $hash = password_hash($contrasena, PASSWORD_BCRYPT);
-        $query = "INSERT INTO t_usuario (nombre, apellido, contrasena, email, direccion, telefono) VALUES (:nombre, :apellido, :contrasena, :email, :direccion, :telefono)";
-        $stmt = $this->db->prepare($query);
-        $stmt->bindParam(":nombre", $nombre);
-        $stmt->bindParam(":apellido", $apellido);
-        $stmt->bindParam(":contrasena", $hash);
-        $stmt->bindParam(":email", $email);
-        $stmt->bindParam(":direccion", $direccion);
-        $stmt->bindParam(":telefono", $telefono);
+        try {
+            $hash = password_hash($contrasena, PASSWORD_BCRYPT);
+            $query = "INSERT INTO t_usuario (nombre, apellido, contrasena, email, direccion, telefono) 
+                VALUES (:nombre, :apellido, :contrasena, :email, :direccion, :telefono)";
+            $stmt = $this->db->prepare($query);
+            $stmt->bindParam(":nombre", $nombre);
+            $stmt->bindParam(":apellido", $apellido);
+            $stmt->bindParam(":contrasena", $hash);
+            $stmt->bindParam(":email", $email);
+            $stmt->bindParam(":direccion", $direccion);
+            $stmt->bindParam(":telefono", $telefono);
 
-        if ($stmt->execute()) {
+            $stmt->execute();
+
             // Obtener el ID del nuevo usuario
             $id_usuario = $this->db->lastInsertId();
 
-            // Llamar al procedimiento almacenado para crear guardian + perfil + registro
+            // Llamar al procedimiento almacenado
             $call = $this->db->prepare("CALL crear_guardian(:id_usuario)");
             $call->bindParam(":id_usuario", $id_usuario, PDO::PARAM_INT);
             $call->execute();
 
-            return true;
+            return ["success" => true, "message" => "Usuario registrado con éxito"];
+        } catch (\PDOException $e) {
+            // ⚠️ 1062 = entrada duplicada (email único)
+            if ($e->errorInfo[1] == 1062) {
+                return ["success" => false, "message" => "duplicado"];
+            }
+            return ["success" => false, "message" => "error"];
         }
-
-        return false;
     }
 }

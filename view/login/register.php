@@ -67,48 +67,83 @@
             <div class="col-md-8 col-lg-6">
 
                 <div class="ud-login-wrapper">
-                    <form action="index.php" method="POST">
+                    <form action="index.php?page=registro" method="POST">
                         <input type="hidden" name="action" value="register">
 
                         <h2 class="card-title text-center mb-4 ">Registrar Nuevo usuario</h2>
                         <p class="text-center mb-4 ">Regístrate para tener acceso a todas las funcionalidades</p>
-
                         <div class="row g-3 mb-3">
                             <div class="col-md-6">
                                 <div class="form-floating">
-                                    <input type="text" class="form-control" name="nombre" id="nombre" placeholder="Nombre" required>
+                                    <input type="text"
+                                        class="form-control"
+                                        name="nombre"
+                                        id="nombre"
+                                        placeholder="Nombre"
+                                        required
+                                        value="<?= isset($_POST['nombre']) ? htmlspecialchars($_POST['nombre']) : '' ?>">
                                     <label for="nombre">Nombre</label>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-floating">
-                                    <input type="text" class="form-control" name="apellido" id="apellido" placeholder="Apellido" required>
+                                    <input type="text"
+                                        class="form-control"
+                                        name="apellido"
+                                        id="apellido"
+                                        placeholder="Apellido"
+                                        required
+                                        value="<?= isset($_POST['apellido']) ? htmlspecialchars($_POST['apellido']) : '' ?>">
                                     <label for="apellido">Apellido</label>
                                 </div>
                             </div>
                         </div>
 
                         <div class="form-floating mb-3 position-relative">
-                            <input type="password" class="form-control" name="contrasena" id="contrasena" placeholder="Contraseña" required>
+                            <input type="password"
+                                class="form-control"
+                                name="contrasena"
+                                id="contrasena"
+                                placeholder="Contraseña"
+                                required>
                             <label for="contrasena">Contraseña</label>
                             <div id="checked-icon2" class="position-absolute end-0 top-0 mt-3 me-3"></div>
                         </div>
 
                         <div class="form-floating mb-3 position-relative">
-                            <input type="email" class="form-control" name="email" id="email" placeholder="Email" required>
+                            <input type="email"
+                                class="form-control"
+                                name="email"
+                                id="email"
+                                placeholder="Email"
+                                required
+                                value="<?= isset($_POST['email']) ? htmlspecialchars($_POST['email']) : '' ?>">
                             <label for="email">Email</label>
                             <div id="checked-icon" class="position-absolute end-0 top-0 mt-3 me-3"></div>
                         </div>
 
                         <div class="form-floating mb-3">
-                            <input type="text" class="form-control" name="direccion" id="direccion" placeholder="Dirección" required>
+                            <input type="text"
+                                class="form-control"
+                                name="direccion"
+                                id="direccion"
+                                placeholder="Dirección"
+                                required
+                                value="<?= isset($_POST['direccion']) ? htmlspecialchars($_POST['direccion']) : '' ?>">
                             <label for="direccion">Dirección</label>
                         </div>
 
                         <div class="form-floating mb-4">
-                            <input type="text" class="form-control" name="telefono" id="telefono" placeholder="Teléfono" required>
+                            <input type="text"
+                                class="form-control"
+                                name="telefono"
+                                id="telefono"
+                                placeholder="Teléfono"
+                                required
+                                value="<?= isset($_POST['telefono']) ? htmlspecialchars($_POST['telefono']) : '' ?>">
                             <label for="telefono">Teléfono</label>
                         </div>
+
                         <div class="form-check mb-3">
                             <input class="form-check-input" type="checkbox" id="aceptoTerminos" required>
                             <p class="signup-option" for="aceptoTerminos">
@@ -288,5 +323,23 @@
     <script src="Public/js/bootstrap.bundle.min.js"></script>
     <script src="Public/js/wow.min.js"></script>
     <script src="Public/js/regex.js"></script>
+
+    <?php if (isset($mensajeRegistroIncorrecto) && $mensajeRegistroIncorrecto === "duplicado"): ?>
+        <script>
+            (function() {
+                var campo = document.querySelector('#email');
+                if (!campo) return;
+                // Mensaje nativo del navegador (como los otros campos)
+                campo.setCustomValidity('⚠️ Este correo ya está registrado');
+                campo.reportValidity();
+                // Cuando el usuario empiece a escribir, limpiamos el error
+                campo.addEventListener('input', function() {
+                    campo.setCustomValidity('');
+                }, {
+                    once: true
+                });
+            })();
+        </script>
+    <?php endif; ?>
 
 </body>
