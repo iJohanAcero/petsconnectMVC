@@ -118,6 +118,10 @@
                     </div>
                 </div>
             </div>
+            <a href="/petsconnectMVC/view/dashboard/reporteAdmin.php" class="btn btn-success" target="_blank">
+                Descargar PDF
+            </a>
+
 </body>
 
 </html>

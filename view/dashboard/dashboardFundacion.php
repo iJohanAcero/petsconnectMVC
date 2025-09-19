@@ -122,7 +122,7 @@ if (isset($_SESSION["user"]["id_usuario"])) {
                 <div class="col-md-4">
                     <div class="card">
                         <div class="card-header">
-                            
+
                             <h5 class="card-title">Donaciones por causa</h5><small class="text-muted">Total recaudado</small>
                         </div>
                         <div class="mt-2">
@@ -131,6 +131,9 @@ if (isset($_SESSION["user"]["id_usuario"])) {
                     </div>
                 </div>
             </div>
+            <a href="/petsconnectMVC/view/dashboard/reporteFundacion.php" class="btn btn-success" target="_blank">
+                Descargar PDF
+            </a>
 </body>
 
 </html>
